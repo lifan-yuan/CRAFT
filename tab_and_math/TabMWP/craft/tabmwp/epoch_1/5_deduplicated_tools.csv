@@ -1,0 +1,2730 @@
+question,answer,table,level,tool_id,code,api_call,tool,tool_call
+Hunter taught kids how to play the guitar last summer at the local community center. His job as a guitar instructor was his only source of income. Here are Hunter's finances for the summer. What was Hunter's net income last summer?,7622.0,"Earnings from job as a guitar instructor | $9,319
+Income tax and other payroll taxes | $1,697",5,3998,"import pandas as pd
+
+def calculate_net_income(finances_df):
+    """"""
+    This function takes in a pandas DataFrame representing a finances table and returns the net income.
+    Args:
+    finances_df (pd.DataFrame): A pandas DataFrame containing finance items and their amounts with columns 'Item' and 'Amount'.
+    Returns:
+    float: The net income.
+    """"""
+    # Initialize the net income
+    net_income = 0.0
+    
+    # Iterate through the finance items and calculate the net income
+    for index, row in finances_df.iterrows():
+        if 'Earnings' in row['Item']:
+            net_income += row['Amount']
+        elif 'tax' in row['Item']:
+            net_income -= row['Amount']
+    
+    return net_income","# Initialize the table into a dataframe
+finances_df = pd.DataFrame({
+    'Item': ['Earnings from job as a guitar instructor', 'Income tax and other payroll taxes'],
+    'Amount': [9319, 1697]
+})
+
+# Call the tool to solve the problem
+net_income = calculate_net_income(finances_df)
+
+# Print the answer
+print(net_income)","def calculate_net_amount_from_income_and_expenses(finances_df, item_col, amount_col, income_keywords, expense_keywords):
+    """"""
+    This function takes in a pandas DataFrame representing a table of income and expense items, and returns the net amount.
+    
+    Args:
+    finances_df (pd.DataFrame): A pandas DataFrame containing finance items and their amounts.
+    item_col (str): The column name for the finance items.
+    amount_col (str): The column name for the amounts.
+    income_keywords (list): A list of keywords to identify income items.
+    expense_keywords (list): A list of keywords to identify expense items.
+    
+    Returns:
+    float: The net amount.
+    """"""
+    # Initialize the net amount
+    net_amount = 0.0
+    
+    # Iterate through the finance items and calculate the net amount
+    for index, row in finances_df.iterrows():
+        for keyword in income_keywords:
+            if keyword in row[item_col]:
+                net_amount += row[amount_col]
+        for keyword in expense_keywords:
+            if keyword in row[item_col]:
+                net_amount -= row[amount_col]
+    
+    return net_amount","finances_data = {
+    'Item': ['Earnings from job as a guitar instructor', 'Income tax and other payroll taxes'],
+    'Amount': [9319, 1697]
+}
+
+finances_df = pd.DataFrame(finances_data)
+
+income_keywords = ['Earnings']
+expense_keywords = ['tax']
+print(calculate_net_amount_from_income_and_expenses(finances_df, ""Item"", ""Amount"", income_keywords, expense_keywords))"
+"At their family reunion, the Everett family recorded everyone's age. How many people are exactly 54 years old?",4.0,"Stem | Leaf 
+3 | 2, 7
+4 | 0, 8, 8
+5 | 4, 4, 4, 4
+6 | 1, 7
+7 | 
+8 | 
+9 | 0, 0",6,11133,"import pandas as pd
+
+def count_people_of_specific_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people of a specific age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The specific age to count.
+    Returns:
+    int: The number of people of the specific age.
+    """"""
+    # Split the age into stem and leaf
+    stem = age // 10
+    leaf = age % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = df[df['Stem'] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_people = stem_df['Leaf'].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_people = 0
+    
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[2, 7], [0, 8, 8], [4, 4, 4, 4], [1, 7], [], [], [0, 0]]
+})
+
+# Call the tool to solve the problem
+print(count_people_of_specific_age(df, 54))","def count_specific_value_in_stem_leaf(data_frame, stem_col, leaf_col, specific_value):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot and a specific value, and returns the number of occurrences of the specific value in the stem-and-leaf plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    specific_value (int): The specific value to count.
+    
+    Returns:
+    int: The number of occurrences of the specific value in the stem-and-leaf plot.
+    """"""
+    # Split the specific value into stem and leaf
+    stem = specific_value // 10
+    leaf = specific_value % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = data_frame[data_frame[stem_col] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_occurrences = stem_df[leaf_col].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_occurrences = 0
+    
+    return num_occurrences","df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[2, 7], [0, 8, 8], [4, 4, 4, 4], [1, 7], [], [], [0, 0]]
+})
+
+print(count_specific_value_in_stem_leaf(data_frame=df, stem_col='Stem', leaf_col='Leaf', specific_value=54))"
+"Mr. Yu directs the band at Highdale High School. He is getting ready to order new instruments for next year. The frequency chart shows the instruments the school already has. Several of tubas and oboes are too old to repair, so Mr. Yu plans to replace them. He wants to replace one-third of the tubas and all of the oboes. How many instruments will Mr. Yu order?",6.0,"Type | Frequency
+tuba | 6
+bass drum | 5
+french horn | 10
+oboe | 4",5,13099,"import pandas as pd
+
+def calculate_instruments_to_order(instruments_df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of instruments and calculates the number of instruments to be ordered.
+    Args:
+    instruments_df (pd.DataFrame): A pandas DataFrame containing instrument types and their frequencies with columns 'Type' and 'Frequency'.
+    Returns:
+    int: The total number of instruments to be ordered.
+    """"""
+    # Initialize the total number of instruments to order
+    total_instruments = 0
+    
+    # Calculate the number of tubas to order
+    tubas_df = instruments_df[instruments_df['Type'] == 'tuba']
+    if not tubas_df.empty:
+        tubas_frequency = tubas_df['Frequency'].values[0]
+        total_instruments += tubas_frequency // 3
+    
+    # Calculate the number of oboes to order
+    oboes_df = instruments_df[instruments_df['Type'] == 'oboe']
+    if not oboes_df.empty:
+        oboes_frequency = oboes_df['Frequency'].values[0]
+        total_instruments += oboes_frequency
+    
+    return total_instruments","# Initialize the table into a dataframe
+instruments_df = pd.DataFrame({
+    'Type': ['tuba', 'bass drum', 'french horn', 'oboe'],
+    'Frequency': [6, 5, 10, 4]
+})
+
+# Call the tool to solve the problem
+instruments_to_order = calculate_instruments_to_order(instruments_df)
+
+# Print the answer
+print(instruments_to_order)","def calculate_total_items_to_order_based_on_replacement_ratios(item_frequencies_df, item_col, frequency_col, item_replacement_ratios):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item frequencies and a dictionary of item replacement ratios, and returns the total number of items to be ordered based on the frequencies and replacement ratios.
+    
+    Args:
+    item_frequencies_df (pd.DataFrame): A pandas DataFrame containing item names and their frequencies.
+    item_col (str): The column name for the item names.
+    frequency_col (str): The column name for the item frequencies.
+    item_replacement_ratios (dict): A dictionary where the keys are item names and the values are the replacement ratios for each item.
+    
+    Returns:
+    int: The total number of items to be ordered.
+    """"""
+    # Initialize the total number of items to order
+    total_items = 0
+    
+    # Iterate through the item names and calculate the number of items to be ordered based on replacement ratios
+    for item_name, replacement_ratio in item_replacement_ratios.items():
+        # Filter the DataFrame for the specific item name
+        item_frequency_df = item_frequencies_df[item_frequencies_df[item_col] == item_name]
+        if not item_frequency_df.empty:
+            item_frequency = item_frequency_df[frequency_col].values[0]
+            total_items += int(item_frequency * replacement_ratio)
+    
+    return total_items","item_frequencies_data = {
+    'Type': ['tuba', 'bass drum', 'french horn', 'oboe'],
+    'Frequency': [6, 5, 10, 4]
+}
+
+item_frequencies_df = pd.DataFrame(item_frequencies_data)
+
+item_replacement_ratios = {""tuba"": 1/3, ""oboe"": 1}
+print(calculate_total_items_to_order_based_on_replacement_ratios(item_frequencies_df, ""Type"", ""Frequency"", item_replacement_ratios))"
+This is Ernest's complete financial record for January. How much money did Ernest get for shoveling snow for his mom?,20.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of December | | | $102.60
+1/3 | concert ticket | | $82.40 | $20.20
+1/15 | shoveling snow for Mom | $20.00 | | $40.20
+1/29 | movie rental | | $4.25 | $35.95",5,3597,"import pandas as pd
+
+def find_received_amount(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record and a description, and returns the received amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): A string representing the description of the transaction.
+    Returns:
+    float: The received amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    transaction_df = df[df['Description'] == description]
+    
+    # If the transaction exists, return the received amount
+    if not transaction_df.empty:
+        received_amount = transaction_df['Received'].values[0]
+        return received_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '1/3', '1/15', '1/29'],
+    'Description': ['Balance: end of December', 'concert ticket', 'shoveling snow for Mom', 'movie rental'],
+    'Received': [None, None, 20.00, None],
+    'Expenses': [None, 82.40, None, 4.25],
+    'Available Funds': [102.60, 20.20, 40.20, 35.95]
+})
+
+# Call the tool to solve the problem
+amount_received = find_received_amount(df, 'shoveling snow for Mom')
+print(amount_received)","def find_received_amount_for_transaction(financial_record_df, description_col, received_col, transaction_description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record, column names for the transaction description and received amount, and a transaction description, and returns the received amount for the given transaction description.
+    
+    Args:
+    financial_record_df (pd.DataFrame): A pandas DataFrame containing financial records.
+    description_col (str): The column name for the transaction descriptions.
+    received_col (str): The column name for the received amounts.
+    transaction_description (str): A string representing the description of the transaction.
+    
+    Returns:
+    float: The received amount for the given transaction description, or None if the transaction does not exist.
+    """"""
+    # Filter the DataFrame for the specific transaction description
+    transaction_df = financial_record_df[financial_record_df[description_col] == transaction_description]
+    
+    # If the transaction exists, return the received amount
+    if not transaction_df.empty:
+        received_amount = transaction_df[received_col].values[0]
+        return received_amount
+    else:
+        return None","financial_record_data = {
+    'Date': ['', '1/3', '1/15', '1/29'],
+    'Description': ['Balance: end of December', 'concert ticket', 'shoveling snow for Mom', 'movie rental'],
+    'Received': [None, None, 20.00, None],
+    'Expenses': [None, 82.40, None, 4.25],
+    'Available Funds': [102.60, 20.20, 40.20, 35.95]
+}
+
+financial_record_df = pd.DataFrame(financial_record_data)
+
+print(find_received_amount_for_transaction(financial_record_df, 'Description', 'Received', 'shoveling snow for Mom'))"
+"After growing tired of squinting while driving, Aaron went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.1875," | Polarized lenses | Regular lenses
+Cat eye frames | 7 | 4
+Browline frames | 2 | 3",8,362,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with browline frames and regular lenses
+    browline_regular = df.loc['Browline frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = browline_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 7, 'Browline frames': 2},
+    'Regular lenses': {'Cat eye frames': 4, 'Browline frames': 3}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(probability)","def calculate_probability_of_combination(counts_df, category1, category2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of counts for combinations of two categories, and returns the probability of a specific combination.
+    
+    Args:
+    counts_df (pd.DataFrame): A pandas DataFrame containing counts for combinations of two categories.
+    category1 (str): The name of the first category in the specific combination.
+    category2 (str): The name of the second category in the specific combination.
+    
+    Returns:
+    float: The probability of the specific combination.
+    """"""
+    # Calculate the total count
+    total_count = counts_df.sum().sum()
+    
+    # Get the count of the specific combination
+    specific_count = counts_df.loc[category1, category2]
+    
+    # Calculate the probability
+    probability = specific_count / total_count
+    
+    return probability","counts_data = {
+    'Polarized lenses': {'Cat eye frames': 7, 'Browline frames': 2},
+    'Regular lenses': {'Cat eye frames': 4, 'Browline frames': 3}
+}
+
+counts_df = pd.DataFrame(counts_data)
+
+print(calculate_probability_of_combination(counts_df, 'Browline frames', 'Regular lenses'))"
+"At their family reunion, the Strickland family recorded everyone's age. How many people are less than 90 years old?",8.0,"Stem | Leaf 
+1 | 6, 8
+2 | 2, 7
+3 | 2, 5
+4 | 
+5 | 0
+6 | 
+7 | 9
+8 | 
+9 | 0",4,4205,"import pandas as pd
+def count_people_less_than_90(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are less than 90 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are less than 90 years old.
+    """"""
+    # prepare a list to calculate age of each person
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is less than 90
+    filtered = [age for age in ages if age < 90]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[6, 8], [2, 7], [2, 5], [], [0], [], [9], [], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_less_than_90(df))","def count_groups_below_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of groups and a threshold value, and returns the number of groups that have values less than the threshold.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    item_threshold (int): The threshold value for filtering items.
+    
+    Returns:
+    int: The number of items with values less than the threshold.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the total value is less than the threshold
+    filtered = [item for item in items if item < item_threshold]
+    
+    # Count the number of items
+    num_items = len(filtered)
+    
+    return num_items","df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[6, 8], [2, 7], [2, 5], [], [0], [], [9], [], [0]]
+})
+print(count_groups_below_threshold_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", item_threshold=90))"
+"At their family reunion, the Levin family recorded everyone's age. How many people are exactly 84 years old?",2.0,"Stem | Leaf 
+2 | 0, 2, 3
+3 | 0, 2
+4 | 5
+5 | 0, 7
+6 | 2, 3, 3, 7
+7 | 4
+8 | 1, 2, 3, 4, 4, 6
+9 | 0",8,6332,"import pandas as pd
+
+def count_people_of_specific_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people of a specific age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The specific age to count.
+    Returns:
+    int: The number of people of the specific age.
+    """"""
+    # Split the age into stem and leaf
+    stem = age // 10
+    leaf = age % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = df[df['Stem'] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_people = stem_df['Leaf'].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_people = 0
+    
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 2, 3], [0, 2], [5], [0, 7], [2, 3, 3, 7], [4], [1, 2, 3, 4, 4, 6], [0]]
+})
+
+# Call the tool to solve the problem
+print(count_people_of_specific_age(df, 84))","def count_occurrences_of_value_in_stem_leaf(data_frame, stem_col, leaf_col, target_value):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot and a target value, and returns the number of occurrences of the target value in the plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    target_value (int): The target value to count occurrences of.
+    
+    Returns:
+    int: The number of occurrences of the target value in the stem-and-leaf plot.
+    """"""
+    # Split the target value into stem and leaf
+    stem = target_value // 10
+    leaf = target_value % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = data_frame[data_frame[stem_col] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_occurrences = stem_df[leaf_col].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_occurrences = 0
+    
+    return num_occurrences","data = {
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 2, 3], [0, 2], [5], [0, 7], [2, 3, 3, 7], [4], [1, 2, 3, 4, 4, 6], [0]]
+}
+
+df = pd.DataFrame(data)
+print(count_occurrences_of_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", target_value=84))"
+"Steve loves to play the piano but doesn't like practicing the exercises his piano teacher assigns. Steve knows the exercises will help him play better though, so he tries to motivate himself using his favorite treat—chocolate chip cookies. There is a proportional relationship between the amount of time (in hours) that Steve practices the piano, x, and how many cookies he gives himself, y. What is the constant of proportionality? Write your answer as a whole number or decimal.",2.0,"2 | 4
+3 | 6
+4 | 8
+5 | 10",7,14254,"import pandas as pd
+
+def find_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing the relationship between the amount of time (in hours) that Steve practices the piano (x) and how many cookies he gives himself (y), and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the relationship between x and y with columns 'x' and 'y'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality for each row
+    df['constant'] = df['y'] / df['x']
+    
+    # Find the mean of the constants
+    constant_of_proportionality = df['constant'].mean()
+    
+    return constant_of_proportionality","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'x': [2, 3, 4, 5],
+    'y': [4, 6, 8, 10]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = find_constant_of_proportionality(df)
+print(constant_of_proportionality)","def calculate_mean_constant_of_proportionality(data_frame, variable1_col, variable2_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of two variables and their values, and returns the mean constant of proportionality between the two variables.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing two variables and their values.
+    variable1_col (str): The column name for the first variable.
+    variable2_col (str): The column name for the second variable.
+    
+    Returns:
+    float: The mean constant of proportionality between the two variables.
+    """"""
+    # Calculate the constant of proportionality for each row
+    data_frame['constant'] = data_frame[variable2_col] / data_frame[variable1_col]
+    
+    # Find the mean of the constants
+    mean_constant_of_proportionality = data_frame['constant'].mean()
+    
+    return mean_constant_of_proportionality","data = {
+    'x': [2, 3, 4, 5],
+    'y': [4, 6, 8, 10]
+}
+
+df = pd.DataFrame(data)
+print(calculate_mean_constant_of_proportionality(data_frame=df, variable1_col='x', variable2_col='y'))"
+This is Jaden's complete financial record for July. How much money did Jaden spend on an app download?,4.95,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of June | | | $235.00
+7/11 | washing Mom's car | $10.00 | | $245.00
+7/14 | app download | | $4.95 | $240.05
+7/25 | box of popsicles | | $4.45 | $235.60",5,9356,"import pandas as pd
+
+def find_expense_by_description(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and a description, and returns the expense amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): The description of the expense to find.
+    Returns:
+    float: The expense amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    expense_df = df[df['Description'] == description]
+    
+    # Check if the filtered DataFrame is not empty
+    if not expense_df.empty:
+        expense_amount = expense_df['Expenses'].values[0]
+        return expense_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '7/11', '7/14', '7/25'],
+    'Description': ['Balance: end of June', 'washing Mom\'s car', 'app download', 'box of popsicles'],
+    'Received': ['', '$10.00', '', ''],
+    'Expenses': ['', '', '$4.95', '$4.45'],
+    'Available Funds': ['$235.00', '$245.00', '$240.05', '$235.60']
+})
+
+# Call the tool to solve the problem
+expense = find_expense_by_description(df, 'app download')
+
+# Print out the answer
+print(expense)","def find_value_by_description_in_table(data_frame, description_col, value_col, target_description):
+    """"""
+    This function takes in a pandas DataFrame representing a table with descriptions and corresponding values, and returns the value for the given target description.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing descriptions and corresponding values.
+    description_col (str): The column name for the descriptions.
+    value_col (str): The column name for the values.
+    target_description (str): The target description to find the corresponding value.
+    
+    Returns:
+    float: The value corresponding to the target description.
+    """"""
+    # Filter the DataFrame for the specific target description
+    filtered_df = data_frame[data_frame[description_col] == target_description]
+    
+    # Check if the filtered DataFrame is not empty
+    if not filtered_df.empty:
+        value = filtered_df[value_col].values[0]
+        return value
+    else:
+        return None","data = {
+    'Date': ['', '7/11', '7/14', '7/25'],
+    'Description': ['Balance: end of June', 'washing Mom\'s car', 'app download', 'box of popsicles'],
+    'Received': ['', '$10.00', '', ''],
+    'Expenses': ['', '', '$4.95', '$4.45'],
+    'Available Funds': ['$235.00', '$245.00', '$240.05', '$235.60']
+}
+
+df = pd.DataFrame(data)
+print(find_value_by_description_in_table(data_frame=df, description_col=""Description"", value_col=""Expenses"", target_description=""app download""))"
+"Ever since Carson was a small child, his favorite food has always been carrots. He likes them so much he wants to plant a garden in his backyard just to grow carrots. There is a proportional relationship between the size of Carson's garden (in square feet), x, and the number of carrots he can grow at a time, y. What is the constant of proportionality? Write your answer as a whole number or decimal.",4.0,"1 | 4
+3 | 12
+4 | 16
+5 | 20",7,8085,"import pandas as pd
+
+def find_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing the relationship between the size of Carson's garden (in square feet) and the number of carrots he can grow at a time.
+    It returns the constant of proportionality as a float.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the relationship between the size of Carson's garden (in square feet) and the number of carrots he can grow at a time with columns 'x' and 'y'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality for each row in the DataFrame
+    df['constant'] = df['y'] / df['x']
+    
+    # Find the mean of the constants
+    constant_of_proportionality = df['constant'].mean()
+    
+    return constant_of_proportionality","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'x': [1, 3, 4, 5],
+    'y': [4, 12, 16, 20]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = find_constant_of_proportionality(df)
+print(constant_of_proportionality)","def calculate_constant_of_proportionality(data_frame, variable1_col, variable2_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of two variables and their values, and returns the constant of proportionality between the two variables.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing two variables and their values.
+    variable1_col (str): The column name for the first variable.
+    variable2_col (str): The column name for the second variable.
+    
+    Returns:
+    float: The constant of proportionality between the two variables.
+    """"""
+    # Calculate the constant of proportionality for each row in the DataFrame
+    data_frame['constant'] = data_frame[variable2_col] / data_frame[variable1_col]
+    
+    # Find the mean of the constants
+    constant_of_proportionality = data_frame['constant'].mean()
+    
+    return constant_of_proportionality","data = {
+    'x': [1, 3, 4, 5],
+    'y': [4, 12, 16, 20]
+}
+
+df = pd.DataFrame(data)
+print(calculate_constant_of_proportionality(data_frame=df, variable1_col='x', variable2_col='y'))"
+Each coat rack has 2 coats. How many coats are on 4 coat racks?,8.0,"Number of coat racks | Number of coats
+1 | 2
+2 | 4
+3 | 6
+4 | ?",2,15320,"def calculate_coats_on_racks(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of coat racks and the number of coats on each, and returns the number of coats on 4 coat racks.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of coat racks and the number of coats on each with columns 'Number of coat racks' and 'Number of coats'.
+    Returns:
+    int: The number of coats on 4 coat racks.
+    """"""
+    # Find the number of coats per rack
+    coats_per_rack = df['Number of coats'][0] / df['Number of coat racks'][0]
+    
+    # Calculate the number of coats on 4 racks
+    coats_on_4_racks = coats_per_rack * 4
+    
+    return int(coats_on_4_racks)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of coat racks': [1, 2, 3, 4],
+    'Number of coats': [2, 4, 6, '?']
+})
+# Call the tool to solve the problem
+print(calculate_coats_on_racks(df))","def calculate_items_on_racks(data_frame, rack_col, item_col, rack_number):
+    """"""
+    This function takes in a pandas DataFrame representing a table of rack numbers and item numbers, and returns the number of items on a certain number of racks.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the rack numbers and the number of items on each with columns specified by rack_col and item_col.
+    rack_col (str): The column name for the rack numbers.
+    item_col (str): The column name for the item numbers.
+    rack_number (int): The number of racks for which to calculate the number of items.
+    
+    Returns:
+    int: The number of items on the specified number of racks.
+    """"""
+    # Find the number of items per rack
+    items_per_rack = data_frame[item_col][0] / data_frame[rack_col][0]
+    
+    # Calculate the number of items on the specified number of racks
+    items_on_racks = items_per_rack * rack_number
+    
+    return int(items_on_racks)","data = {
+    'Number of coat racks': [1, 2, 3],
+    'Number of coats': [2, 4, 6]
+}
+
+df = pd.DataFrame(data)
+print(calculate_items_on_racks(data_frame=df, rack_col='Number of coat racks', item_col='Number of coats', rack_number=4))"
+"This is Bill's complete financial record for January. On January 10, how much money did Bill spend?",5.5,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of December | | | $355.60
+1/10 | ice skating | | $5.50 | $350.10
+1/16 | birthday money | $25.00 | | $375.10
+1/18 | hockey stick | | $14.95 | $360.15",5,7584,"import pandas as pd
+
+def calculate_spent_money(df, date):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record and a date, and returns the amount of money spent on that date.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', 'Available Funds'.
+    date (str): A string representing the date in the format 'm/dd'.
+    Returns:
+    float: The amount of money spent on the specified date.
+    """"""
+    # Filter the DataFrame for the specific date
+    date_df = df[df['Date'] == date]
+    if not date_df.empty:
+        # If there are expenses on the specified date, return the amount
+        if pd.notnull(date_df['Expenses'].values[0]):
+            return date_df['Expenses'].values[0]
+        else:
+            return 0.0
+    else:
+        return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '1/10', '1/16', '1/18'],
+    'Description': ['Balance: end of December', 'ice skating', 'birthday money', 'hockey stick'],
+    'Received': [None, None, 25.00, None],
+    'Expenses': [None, 5.50, None, 14.95],
+    'Available Funds': [355.60, 350.10, 375.10, 360.15]
+})
+# Call the tool to solve the problem
+print(calculate_spent_money(df, '1/10'))","def calculate_expenses_on_date(financial_records_df, date_col, expenses_col, target_date):
+    """"""
+    This function takes in a pandas DataFrame representing a table of financial records and a target date, and returns the amount of money spent on the target date.
+    
+    Args:
+    financial_records_df (pd.DataFrame): A pandas DataFrame containing financial records with columns specified by date_col and expenses_col.
+    date_col (str): The column name for the date values.
+    expenses_col (str): The column name for the expenses values.
+    target_date (str): A string representing the target date in the format 'm/dd'.
+    
+    Returns:
+    float: The amount of money spent on the target date.
+    """"""
+    # Filter the DataFrame for the specific target date
+    date_df = financial_records_df[financial_records_df[date_col] == target_date]
+    if not date_df.empty:
+        # If there are expenses on the specified target date, return the amount
+        if pd.notnull(date_df[expenses_col].values[0]):
+            return date_df[expenses_col].values[0]
+        else:
+            return 0.0
+    else:
+        return 0.0","financial_records_data = {
+    'Date': ['', '1/10', '1/16', '1/18'],
+    'Description': ['Balance: end of December', 'ice skating', 'birthday money', 'hockey stick'],
+    'Received': [None, None, 25.00, None],
+    'Expenses': [None, 5.50, None, 14.95],
+    'Available Funds': [355.60, 350.10, 375.10, 360.15]
+}
+
+financial_records_df = pd.DataFrame(financial_records_data)
+
+print(calculate_expenses_on_date(financial_records_df, ""Date"", ""Expenses"", ""1/10""))"
+Some friends discussed the sizes of their coin collections. How many more coins does Diane have than Mateo?,247.0,"Name | Number of coins
+Mateo | 285
+Diane | 532
+Edgar | 788",3,9031,"import pandas as pd
+
+def calculate_difference(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of people and their coin collections, and two person names, and returns the difference in the number of coins between the two people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing people's names and their number of coins with columns 'Name' and 'Number of coins'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in the number of coins between the two people.
+    """"""
+    # Get the number of coins for the first person
+    person1_coins = df[df['Name'] == person1]['Number of coins'].values[0]
+    
+    # Get the number of coins for the second person
+    person2_coins = df[df['Name'] == person2]['Number of coins'].values[0]
+    
+    # Calculate the difference
+    difference = person2_coins - person1_coins
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Mateo', 'Diane', 'Edgar'],
+    'Number of coins': [285, 532, 788]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Mateo', 'Diane')
+print(difference)","def calculate_difference_between_two_entities(df, entity_col, quantity_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their quantities, and two entity names, and returns the difference in the quantities between the two entities.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entities and their quantities.
+    entity_col (str): The column name for the entities.
+    quantity_col (str): The column name for the quantities.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    int: The difference in the quantities between the two entities.
+    """"""
+    # Get the quantity for the first entity
+    entity1_quantity = df[df[entity_col] == entity1][quantity_col].values[0]
+    
+    # Get the quantity for the second entity
+    entity2_quantity = df[df[entity_col] == entity2][quantity_col].values[0]
+    
+    # Calculate the difference
+    difference = entity2_quantity - entity1_quantity
+    
+    return difference","df = pd.DataFrame({
+    'Name': ['Mateo', 'Diane', 'Edgar'],
+    'Number of coins': [285, 532, 788]
+})
+
+print(calculate_difference_between_two_entities(df, 'Name', 'Number of coins', 'Mateo', 'Diane'))"
+"At their family reunion, the Kemp family recorded everyone's age. How many people are exactly 31 years old?",4.0,"Stem | Leaf 
+0 | 0, 6
+1 | 0
+2 | 7
+3 | 1, 1, 1, 1
+4 | 
+5 | 2
+6 | 0, 2, 2, 6
+7 | 
+8 | 8",5,10487,"import pandas as pd
+
+def count_exact_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages in stem and leaf format, and returns the number of people with the exact given age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing ages in stem and leaf format.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The age to count the number of people with.
+    Returns:
+    int: The number of people with the exact given age.
+    """"""
+    # prepare a list to store ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the ages where the age is equal to the given age
+    filtered = [a for a in ages if a == age]
+    # count the number of people with the given age
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    'Leaf': [[0, 6], [0], [7], [1, 1, 1, 1], [], [2], [0, 2, 2, 6], [], [8]]
+})
+# Call the tool to solve the problem
+print(count_exact_age(df, 31))","def count_instances_with_exact_value_in_stem_leaf(data_frame, stem_col, leaf_col, given_value):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of instances and a given value, and returns the number of instances that have values exactly equal to the given value.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    given_value (int): The given value for filtering items.
+    
+    Returns:
+    int: The number of items with values exactly equal to the given value.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the total value is exactly equal to the given value
+    filtered = [item for item in items if item == given_value]
+    
+    # Count the number of items
+    num_items = len(filtered)
+    
+    return num_items","data = {
+    ""Stem"": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    ""Leaf"": [[0, 6], [0], [7], [1, 1, 1, 1], [], [2], [0, 2, 2, 6], [], [8]]
+}
+
+df = pd.DataFrame(data)
+print(count_instances_with_exact_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", given_value=31))"
+Each train car has 2 empty seats. How many empty seats are in 6 train cars?,12.0,"Number of train cars | Number of empty seats
+1 | 2
+2 | 4
+3 | 6
+4 | 8
+5 | 10
+6 | ?",2,15566,"def calculate_empty_seats(num_cars, seats_per_car):
+    """"""
+    This function takes in the number of train cars and the number of empty seats per car, and returns the total number of empty seats.
+    Args:
+    num_cars (int): The number of train cars.
+    seats_per_car (int): The number of empty seats per car.
+    Returns:
+    int: The total number of empty seats.
+    """"""
+    return num_cars * seats_per_car","# Call the tool to solve the problem
+print(calculate_empty_seats(6, 2))","def calculate_total_items(num_groups, items_per_group):
+    """"""
+    This function takes in the number of groups and the number of items per group, and returns the total number of items.
+    
+    Args:
+    num_groups (int): The number of groups.
+    items_per_group (int): The number of items per group.
+    
+    Returns:
+    int: The total number of items.
+    """"""
+    return num_groups * items_per_group","print(calculate_total_items(6, 2))"
+Sebastian is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient is 13-19 years old and suffers from ankle pain? Simplify any fractions.,0.25," | Knee pain | Ankle pain
+0-12 years old | 5 | 4
+13-19 years old | 3 | 4",8,9956,"import pandas as pd
+
+def calculate_probability(df, age_group, injury_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age groups and injury types, and returns the probability of a patient being in a specific age group and suffering from a specific injury type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing age groups and injury types with columns 'Age Group', 'Knee pain', 'Ankle pain'.
+    age_group (str): The age group to calculate the probability for.
+    injury_type (str): The injury type to calculate the probability for.
+    Returns:
+    float: The probability of a patient being in the specified age group and suffering from the specified injury type.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['Knee pain'].sum() + df['Ankle pain'].sum()
+    
+    # Filter the DataFrame for the specific age group and injury type
+    age_group_df = df[df.index == age_group]
+    if not age_group_df.empty:
+        num_patients = age_group_df[injury_type].values[0]
+    
+    # Calculate the probability
+    probability = num_patients / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Knee pain': [5, 3],
+    'Ankle pain': [4, 4]
+}, index=['0-12 years old', '13-19 years old'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, '13-19 years old', 'Ankle pain')
+print(probability)","def calculate_probability_for_category(df, category, count_cols):
+    """"""
+    This function takes in a pandas DataFrame representing a table of counts for different categories, and returns the probability of a specific category.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing counts for different categories.
+    category (str): The category to calculate the probability for.
+    count_cols (list): A list of column names for the counts.
+    
+    Returns:
+    float: The probability of the specified category.
+    """"""
+    # Calculate the total count
+    total_count = sum(df[col].sum() for col in count_cols)
+    
+    # Filter the DataFrame for the specific category
+    category_df = df[df.index == category]
+    if not category_df.empty:
+        category_count = sum(category_df[col].values[0] for col in count_cols)
+    
+    # Calculate the probability
+    probability = category_count / total_count
+    
+    return probability","df = pd.DataFrame({
+    'Knee pain': [5, 3],
+    'Ankle pain': [4, 4]
+}, index=['0-12 years old', '13-19 years old'])
+
+print(calculate_probability_for_category(df, '13-19 years old', ['Knee pain', 'Ankle pain']))"
+"After growing tired of squinting while driving, Tim went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses? Simplify any fractions.",0.125," | Polarized lenses | Regular lenses
+Cat eye frames | 2 | 3
+Browline frames | 6 | 5",8,14525,"import pandas as pd
+
+def calculate_probability(df, target_row, target_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability of selecting a pair with the specified target_row and target_col.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    target_row (str): The target row name (frame type) for the sunglasses.
+    target_col (str): The target column name (lens type) for the sunglasses.
+    Returns:
+    float: The probability of selecting a pair of sunglasses with the specified target_row and target_col.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the number of sunglasses with the target_row and target_col
+    target_sunglasses = df.loc[target_row, target_col]
+    
+    # Calculate the probability
+    probability = target_sunglasses / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': [2, 6],
+    'Regular lenses': [3, 5]
+}, index=['Cat eye frames', 'Browline frames'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Cat eye frames', 'Polarized lenses')
+print(probability)","def calculate_probability_from_count_table(count_table, target_row, target_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of counts and returns the probability of the event specified by the target_row and target_col.
+    
+    Args:
+    count_table (pd.DataFrame): A pandas DataFrame containing counts of different events.
+    target_row (str): The row name for the target event.
+    target_col (str): The column name for the target event.
+    
+    Returns:
+    float: The probability of the target event.
+    """"""
+    # Calculate the total count
+    total_count = count_table.sum().sum()
+    
+    # Calculate the count of the target event
+    target_count = count_table.loc[target_row, target_col]
+    
+    # Calculate the probability
+    probability = target_count / total_count
+    
+    return probability","df = pd.DataFrame({
+    'Polarized lenses': [2, 6],
+    'Regular lenses': [3, 5]
+}, index=['Cat eye frames', 'Browline frames'])
+
+print(calculate_probability_from_count_table(count_table=df, target_row='Cat eye frames', target_col='Polarized lenses'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Jerry donate to clean water than to arts education?,5.0,"Person | Clean water | Arts education
+Winston | $12 | $19
+Nate | $4 | $15
+Jerry | $6 | $1",5,9146,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Winston', 'Nate', 'Jerry'],
+    'Clean water': [12, 4, 6],
+    'Arts education': [19, 15, 1]
+})
+
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Jerry', 'Clean water', 'Arts education')
+print(donation_difference)","def calculate_donation_difference_for_person_and_causes(donations_df, person_col, person_name, cause1_col, cause2_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of donations, a column name for persons, a person's name, and column names for two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    
+    Args:
+    donations_df (pd.DataFrame): A pandas DataFrame containing donation information with columns specified by person_col, cause1_col, and cause2_col.
+    person_col (str): The column name for the persons.
+    person_name (str): The name of the person.
+    cause1_col (str): The column name for the first cause.
+    cause2_col (str): The column name for the second cause.
+    
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_donations_df = donations_df[donations_df[person_col] == person_name]
+    if not person_donations_df.empty:
+        donation_cause1 = person_donations_df[cause1_col].values[0]
+        donation_cause2 = person_donations_df[cause2_col].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","donations_data = {
+    'Person': ['Winston', 'Nate', 'Jerry'],
+    'Clean water': [12, 4, 6],
+    'Arts education': [19, 15, 1]
+}
+
+donations_df = pd.DataFrame(donations_data)
+
+print(calculate_donation_difference_for_person_and_causes(donations_df, 'Person', 'Jerry', 'Clean water', 'Arts education'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Barbara donate to animal rights than to job training?,2.0,"Person | Animal rights | Job training
+Chandler | $20 | $19
+Barbara | $18 | $16
+Sophie | $17 | $12",4,9909,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in donation amounts for the two causes by the person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation amounts with columns 'Person', 'Animal rights', 'Job training'.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in donation amounts for the two causes by the person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Chandler', 'Barbara', 'Sophie'],
+    'Animal rights': [20, 18, 17],
+    'Job training': [19, 16, 12]
+})
+
+# Call the tool to solve the problem
+difference = calculate_donation_difference(df, 'Barbara', 'Animal rights', 'Job training')
+print(difference)","def calculate_difference_between_two_columns_for_specific_row(df, id_col, row_id, col1, col2):
+    """"""
+    This function takes in a pandas DataFrame, a row identifier, and two column names, and returns the difference in values between the two columns for the specific row.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame.
+    id_col (str): The column name for the row identifier.
+    row_id (str): The identifier for the specific row.
+    col1 (str): The name of the first column.
+    col2 (str): The name of the second column.
+    
+    Returns:
+    float: The difference in values between the two columns for the specific row. Returns None if the row identifier is not found in the DataFrame.
+    """"""
+    # Filter the DataFrame for the specific row identifier
+    row_df = df[df[id_col] == row_id]
+    if not row_df.empty:
+        value_col1 = row_df[col1].values[0]
+        value_col2 = row_df[col2].values[0]
+        value_difference = value_col1 - value_col2
+        return value_difference
+    else:
+        return None","df = pd.DataFrame({
+    'Person': ['Chandler', 'Barbara', 'Sophie'],
+    'Animal rights': [20, 18, 17],
+    'Job training': [19, 16, 12]
+})
+
+difference = calculate_difference_between_two_columns_for_specific_row(df, 'Person', 'Barbara', 'Animal rights', 'Job training')
+print(difference)"
+"At their family reunion, the Mosley family recorded everyone's age. How many people are at least 81 years old?",1.0,"Stem | Leaf 
+2 | 3
+3 | 6, 7, 9
+4 | 1, 9
+5 | 2, 5
+6 | 0, 2, 6
+7 | 3, 4
+8 | 
+9 | 0",8,11583,"import pandas as pd
+def count_people_older_than_81(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least 81 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are at least 81 years old.
+    """"""
+    # prepare a list to calculate age of each person
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to 81
+    filtered = [age for age in ages if age >= 81]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[3], [6, 7, 9], [1, 9], [2, 5], [0, 2, 6], [3, 4], [], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_older_than_81(df))","def count_groups_above_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of groups and a threshold value, and returns the number of groups that have values greater than or equal to the threshold.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    item_threshold (int): The threshold value for filtering items.
+    
+    Returns:
+    int: The number of items with values greater than or equal to the threshold.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the total value is greater than or equal to the threshold
+    filtered = [item for item in items if item >= item_threshold]
+    
+    # Count the number of items
+    num_items = len(filtered)
+    
+    return num_items","data = {
+    ""Stem"": [2, 3, 4, 5, 6, 7, 8, 9],
+    ""Leaf"": [[3], [6, 7, 9], [1, 9], [2, 5], [0, 2, 6], [3, 4], [], [0]]
+}
+
+df = pd.DataFrame(data)
+print(count_groups_above_threshold_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", item_threshold=81))"
+"At family beach day, the Stafford Recreation Department offered a range of activities. How many more children than parents are swimming?",10.0,"Activity | Children | Parents
+Eating lunch | 6 | 20
+Collecting shells | 11 | 14
+Making sand castles | 14 | 20
+Swimming | 13 | 3",4,8800,"import pandas as pd
+
+def calculate_difference(df, activity):
+    """"""
+    This function takes in a pandas DataFrame representing a table of activities and the number of children and parents participating in each, and a string representing the activity of interest. It returns the difference in the number of children and parents participating in the specified activity.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing activities and the number of children and parents participating in each. The DataFrame should have columns 'Activity', 'Children', and 'Parents'.
+    activity (str): A string representing the activity of interest.
+    Returns:
+    int: The difference in the number of children and parents participating in the specified activity.
+    """"""
+    # Filter the DataFrame for the specific activity
+    activity_df = df[df['Activity'] == activity]
+    if not activity_df.empty:
+        # Calculate the difference in the number of children and parents
+        difference = activity_df['Children'].values[0] - activity_df['Parents'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Activity': ['Eating lunch', 'Collecting shells', 'Making sand castles', 'Swimming'],
+    'Children': [6, 11, 14, 13],
+    'Parents': [20, 14, 20, 3]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Swimming')
+print(difference)","def calculate_difference_between_columns_based_on_filter_value(data_frame, filter_col, value_col1, value_col2, filter_value):
+    """"""
+    This function takes in a pandas DataFrame, two column names to compare, a column name to filter, and a filter value. It returns the difference between the values in the two columns based on the filter value in the filter column.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the data to be filtered and compared.
+    filter_col (str): The column name for the filter column.
+    value_col1 (str): The column name for the first value column.
+    value_col2 (str): The column name for the second value column.
+    filter_value (str): The value in the filter column to filter the data.
+    
+    Returns:
+    int: The difference between the values in the two columns based on the filter value in the filter column.
+    """"""
+    # Filter the DataFrame for the specific filter value
+    filtered_df = data_frame[data_frame[filter_col] == filter_value]
+    if not filtered_df.empty:
+        # Calculate the difference between the values in the two columns
+        difference = filtered_df[value_col1].values[0] - filtered_df[value_col2].values[0]
+        return difference
+    else:
+        return None","data = {
+    'Activity': ['Eating lunch', 'Collecting shells', 'Making sand castles', 'Swimming'],
+    'Children': [6, 11, 14, 13],
+    'Parents': [20, 14, 20, 3]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_between_columns_based_on_filter_value(data_frame=df, filter_col=""Activity"", value_col1=""Children"", value_col2=""Parents"", filter_value=""Swimming""))"
+"At their family reunion, the Barton family recorded everyone's age. What is the age of the oldest person?",78.0,"Stem | Leaf 
+0 | 7
+1 | 6
+2 | 3, 7, 9
+3 | 1
+4 | 4, 5
+5 | 9
+6 | 0, 3, 5, 5
+7 | 3, 8",5,5261,"import pandas as pd
+
+def find_oldest_person(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the age of the oldest person.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The age of the oldest person.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # find the maximum age
+    oldest_age = max(ages)
+    return oldest_age","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[7], [6], [3, 7, 9], [1], [4, 5], [9], [0, 3, 5, 5], [3, 8]]
+})
+# Call the tool to solve the problem
+oldest_age = find_oldest_person(df)
+print(oldest_age)","def find_max_value_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items, and returns the maximum value among the items.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The maximum value among the items.
+    """"""
+    # Initialize the list to calculate items
+    items = []
+    
+    # Calculate the total value of items
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Find the maximum value
+    max_value = max(items)
+    
+    return max_value","df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[7], [6], [3, 7, 9], [1], [4, 5], [9], [0, 3, 5, 5], [3, 8]]
+})
+print(find_max_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+Each bus has 10 empty seats. How many empty seats are on 3 buses?,30.0,"Number of buses | Number of empty seats
+1 | 10
+2 | 20
+3 | ?",2,9257,"def calculate_empty_seats(df, num_buses):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of buses and the corresponding number of empty seats, and a number representing the number of buses. It returns the number of empty seats on the specified number of buses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buses and the corresponding number of empty seats with columns 'Number of buses' and 'Number of empty seats'.
+    num_buses (int): The number of buses.
+    Returns:
+    int: The number of empty seats on the specified number of buses.
+    """"""
+    # Filter the DataFrame for the row with 1 bus
+    one_bus_df = df[df['Number of buses'] == 1]
+    if not one_bus_df.empty:
+        # Get the number of empty seats on 1 bus
+        empty_seats_on_one_bus = one_bus_df['Number of empty seats'].values[0]
+        # Calculate the number of empty seats on the specified number of buses
+        empty_seats = num_buses * empty_seats_on_one_bus
+        return empty_seats
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of buses': [1, 2, 3],
+    'Number of empty seats': [10, 20, None]
+})
+# Call the tool to solve the problem
+print(calculate_empty_seats(df, 3))","def calculate_total_from_unit_and_quantity(df, quantity_col, total_col, num_items):
+    """"""
+    This function takes in a pandas DataFrame representing a table of quantities and corresponding totals, and a number representing the number of items. It returns the total for the specified number of items.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the quantities and the corresponding totals.
+    quantity_col (str): The column name for the quantities.
+    total_col (str): The column name for the totals.
+    num_items (int): The number of items.
+    
+    Returns:
+    int: The total for the specified number of items.
+    """"""
+    # Filter the DataFrame for the row with 1 item
+    one_item_df = df[df[quantity_col] == 1]
+    if not one_item_df.empty:
+        # Get the total for 1 item
+        total_for_one_item = one_item_df[total_col].values[0]
+        # Calculate the total for the specified number of items
+        total = num_items * total_for_one_item
+        return total
+    else:
+        return None","df = pd.DataFrame({
+    'Number of buses': [1, 2, 3],
+    'Number of empty seats': [10, 20, None]
+})
+print(calculate_total_from_unit_and_quantity(df, 'Number of buses', 'Number of empty seats', 3))"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,69.0,"Stem | Leaf 
+3 | 0, 0, 4, 4
+4 | 0, 0, 1, 7, 7
+5 | 0, 3
+6 | 1, 2, 9",4,16849,"import pandas as pd
+
+def find_largest_number(df):
+    """"""
+    This function takes in a pandas dataframe of red gumdrops per bag, and returns the largest number of red gumdrops in a bag.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of red gumdrops per bag.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The largest number of red gumdrops in a bag.
+    """"""
+    # prepare a list to calculate gumdrops in each bag
+    gumdrops = []
+    # calculate the total number of red gumdrops in each bag
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            gumdrops.append(stem * 10 + leaf[j])
+    # find the maximum number of gumdrops
+    max_gumdrops = max(gumdrops)
+    return max_gumdrops","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6],
+    'Leaf': [[0, 0, 4, 4], [0, 0, 1, 7, 7], [0, 3], [1, 2, 9]]
+})
+# Call the tool to solve the problem
+print(find_largest_number(df))","def find_largest_value_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items and returns the largest value among the items.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The largest value among the items.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Find the maximum value among the items
+    max_value = max(items)
+    
+    return max_value","data = {
+    ""Stem"": [3, 4, 5, 6],
+    ""Leaf"": [[0, 0, 4, 4], [0, 0, 1, 7, 7], [0, 3], [1, 2, 9]]
+}
+
+df = pd.DataFrame(data)
+print(find_largest_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,90.0,"Stem | Leaf 
+1 | 0, 5
+2 | 7
+3 | 1, 9
+4 | 2
+5 | 0, 4, 5
+6 | 1, 1, 7, 7, 9
+7 | 1, 4
+8 | 3, 9
+9 | 0",4,9203,"import pandas as pd
+
+def find_largest_number_of_gumdrops(df):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of the number of gumdrops in each bag, and returns the largest number of gumdrops.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The largest number of gumdrops.
+    """"""
+    # Initialize the largest number of gumdrops
+    largest_number = 0
+    
+    # Iterate through the stem-and-leaf plot and find the largest number
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            number = stem * 10 + leaf[j]
+            if number > largest_number:
+                largest_number = number
+    
+    return largest_number","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 5], [7], [1, 9], [2], [0, 4, 5], [1, 1, 7, 7, 9], [1, 4], [3, 9], [0]]
+})
+
+# Call the tool to solve the problem
+print(find_largest_number_of_gumdrops(df))","def find_largest_number_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot and returns the largest number in the plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The largest number in the stem-and-leaf plot.
+    """"""
+    # Initialize the largest number
+    largest_number = 0
+    
+    # Iterate through the stem-and-leaf plot and find the largest number
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            number = stem * 10 + leaf[j]
+            if number > largest_number:
+                largest_number = number
+    
+    return largest_number","df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 5], [7], [1, 9], [2], [0, 4, 5], [1, 1, 7, 7, 9], [1, 4], [3, 9], [0]]
+})
+
+print(find_largest_number_in_stem_leaf(data_frame=df, stem_col='Stem', leaf_col='Leaf'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Quinn donate to clean water than to hunger prevention?,15.0,"Person | Hunger prevention | Clean water
+Keenan | $2 | $10
+Quinn | $1 | $16
+Pablo | $10 | $11",4,9765,"import pandas as pd
+
+def calculate_difference_donations(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in donations between the two causes for the given person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Hunger prevention', and 'Clean water'.
+    person (str): The name of the person whose donations we want to compare.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in donations between the two causes for the given person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        difference = donation_cause2 - donation_cause1
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Keenan', 'Quinn', 'Pablo'],
+    'Hunger prevention': [2, 1, 10],
+    'Clean water': [10, 16, 11]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_donations(df, 'Quinn', 'Hunger prevention', 'Clean water')
+print(difference)","def calculate_difference_in_donations_for_person_between_causes(donations_df, person_col, cause1_col, cause2_col, person_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of donations, a column name for persons, two column names for causes, and a person's name, and returns the difference in donations between the two causes for the given person.
+    
+    Args:
+    donations_df (pd.DataFrame): A pandas DataFrame containing donation information.
+    person_col (str): The column name for the persons.
+    cause1_col (str): The column name for the first cause.
+    cause2_col (str): The column name for the second cause.
+    person_name (str): The name of the person whose donations we want to compare.
+    
+    Returns:
+    float: The difference in donations between the two causes for the given person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_donations_df = donations_df[donations_df[person_col] == person_name]
+    if not person_donations_df.empty:
+        donation_cause1 = person_donations_df[cause1_col].values[0]
+        donation_cause2 = person_donations_df[cause2_col].values[0]
+        difference = donation_cause2 - donation_cause1
+        return difference
+    else:
+        return None","donations_data = {
+    'Person': ['Keenan', 'Quinn', 'Pablo'],
+    'Hunger prevention': [2, 1, 10],
+    'Clean water': [10, 16, 11]
+}
+
+donations_df = pd.DataFrame(donations_data)
+
+print(calculate_difference_in_donations_for_person_between_causes(donations_df, 'Person', 'Hunger prevention', 'Clean water', 'Quinn'))"
+"At Tommy's birthday party, children and parents celebrated by participating in some activities. How many more people are swimming than jumping rope?",2.0,"Activity | Children | Parents
+Jumping rope | 9 | 2
+Swimming | 10 | 3
+Making sundaes | 11 | 2",5,16333,"import pandas as pd
+
+def calculate_difference_in_participants(activity_df, activity1, activity2):
+    """"""
+    This function takes in a pandas DataFrame representing an activity table and two activity names, and returns the difference in the number of participants between the two activities.
+    Args:
+    activity_df (pd.DataFrame): A pandas DataFrame containing activities and the number of participants (children and parents) with columns 'Activity', 'Children', and 'Parents'.
+    activity1 (str): The name of the first activity.
+    activity2 (str): The name of the second activity.
+    Returns:
+    int: The difference in the number of participants between the two activities.
+    """"""
+    # Filter the DataFrame for the specific activities
+    activity1_df = activity_df[activity_df['Activity'] == activity1]
+    activity2_df = activity_df[activity_df['Activity'] == activity2]
+    
+    # Calculate the total number of participants for each activity
+    activity1_participants = activity1_df['Children'].values[0] + activity1_df['Parents'].values[0]
+    activity2_participants = activity2_df['Children'].values[0] + activity2_df['Parents'].values[0]
+    
+    # Calculate the difference in the number of participants
+    difference = activity2_participants - activity1_participants
+    
+    return difference","# Initialize the table into a dataframe
+activity_df = pd.DataFrame({
+    'Activity': ['Jumping rope', 'Swimming', 'Making sundaes'],
+    'Children': [9, 10, 11],
+    'Parents': [2, 3, 2]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_participants(activity_df, 'Jumping rope', 'Swimming')
+print(difference)","def calculate_difference_in_participants_between_activities(activity_df, activity_col, participant1_col, participant2_col, activity1, activity2):
+    """"""
+    This function takes in a pandas DataFrame representing an activity table, two column names for participant counts, and two activity names, and returns the difference in the number of participants between the two activities.
+    
+    Args:
+    activity_df (pd.DataFrame): A pandas DataFrame containing activities and the number of participants.
+    activity_col (str): The column name for the activity names.
+    participant1_col (str): The column name for the first participant count.
+    participant2_col (str): The column name for the second participant count.
+    activity1 (str): The name of the first activity.
+    activity2 (str): The name of the second activity.
+    
+    Returns:
+    int: The difference in the number of participants between the two activities.
+    """"""
+    # Filter the DataFrame for the specific activities
+    activity1_df = activity_df[activity_df[activity_col] == activity1]
+    activity2_df = activity_df[activity_df[activity_col] == activity2]
+    
+    # Calculate the total number of participants for each activity
+    activity1_participants = activity1_df[participant1_col].values[0] + activity1_df[participant2_col].values[0]
+    activity2_participants = activity2_df[participant1_col].values[0] + activity2_df[participant2_col].values[0]
+    
+    # Calculate the difference in the number of participants
+    difference = activity2_participants - activity1_participants
+    
+    return difference","activity_data = {
+    'Activity': ['Jumping rope', 'Swimming', 'Making sundaes'],
+    'Children': [9, 10, 11],
+    'Parents': [2, 3, 2]
+}
+
+activity_df = pd.DataFrame(activity_data)
+
+print(calculate_difference_in_participants_between_activities(activity_df, 'Activity', 'Children', 'Parents', 'Jumping rope', 'Swimming'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Jordan donate to hunger prevention than to clean water?,6.0,"Person | Clean water | Hunger prevention
+Xavier | $13 | $2
+Jordan | $11 | $17
+Tucker | $8 | $17",4,10210,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Clean water', 'Hunger prevention'.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause2 - donation_cause1
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Xavier', 'Jordan', 'Tucker'],
+    'Clean water': [13, 11, 8],
+    'Hunger prevention': [2, 17, 17]
+})
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Jordan', 'Clean water', 'Hunger prevention')
+print(donation_difference)","def calculate_donation_difference_for_person(donations_df, person_col, cause1_col, cause2_col, person_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of donations, a column name for persons, two column names for causes, and a person's name, and returns the difference in the amounts of money that the person donated to the two causes.
+    
+    Args:
+    donations_df (pd.DataFrame): A pandas DataFrame containing donation information.
+    person_col (str): The column name for the persons.
+    cause1_col (str): The column name for the first cause.
+    cause2_col (str): The column name for the second cause.
+    person_name (str): The name of the person.
+    
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_donations_df = donations_df[donations_df[person_col] == person_name]
+    if not person_donations_df.empty:
+        donation_cause1 = person_donations_df[cause1_col].values[0]
+        donation_cause2 = person_donations_df[cause2_col].values[0]
+        donation_difference = donation_cause2 - donation_cause1
+        return donation_difference
+    else:
+        return None","donations_data = {
+    'Person': ['Xavier', 'Jordan', 'Tucker'],
+    'Clean water': [13, 11, 8],
+    'Hunger prevention': [2, 17, 17]
+}
+
+donations_df = pd.DataFrame(donations_data)
+
+print(calculate_donation_difference_for_person(donations_df, ""Person"", ""Clean water"", ""Hunger prevention"", ""Jordan""))"
+"At their family reunion, the McKee family recorded everyone's age. How many people are at least 35 years old but less than 46 years old?",2.0,"Stem | Leaf 
+1 | 3, 5, 6, 6, 6
+2 | 7
+3 | 4, 9
+4 | 3, 9",5,2559,"import pandas as pd
+def count_people_in_age_range(df, min_age, max_age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least min_age years old but less than max_age years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    min_age (int): The minimum age (inclusive).
+    max_age (int): The maximum age (exclusive).
+    Returns:
+    int: The number of people that are at least min_age years old but less than max_age years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to min_age and less than max_age
+    filtered = [age for age in ages if min_age <= age < max_age]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[3, 5, 6, 6, 6], [7], [4, 9], [3, 9]]
+})
+# Call the tool to solve the problem
+print(count_people_in_age_range(df, 35, 46))","def count_items_in_range_in_stem_leaf(data_frame, stem_col, leaf_col, min_value, max_value):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items and a range of values, and returns the number of items that fall within the range.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    min_value (int): The minimum value of the range (inclusive).
+    max_value (int): The maximum value of the range (exclusive).
+    
+    Returns:
+    int: The number of items with values within the range.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the total value is within the range
+    filtered = [item for item in items if min_value <= item < max_value]
+    
+    # Count the number of items
+    num_items = len(filtered)
+    
+    return num_items","data = {
+    ""Stem"": [1, 2, 3, 4],
+    ""Leaf"": [[3, 5, 6, 6, 6], [7], [4, 9], [3, 9]]
+}
+
+df = pd.DataFrame(data)
+print(count_items_in_range_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", min_value=35, max_value=46))"
+Ian decided to record the temperature every morning when he woke up. What is the lowest temperature?,2.0,"Stem | Leaf 
+0 | 2
+1 | 3
+2 | 3, 4, 4
+3 | 1, 8",5,5088,"import pandas as pd
+
+def find_lowest_temperature(df):
+    """"""
+    This function takes in a pandas dataframe of temperatures, and returns the lowest temperature.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the temperatures.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The lowest temperature.
+    """"""
+    # prepare a list to calculate temperature in each day
+    temperatures = []
+    # calculate the temperature in each day
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            temperatures.append(stem * 10 + leaf[j])
+    # find the lowest temperature
+    lowest_temperature = min(temperatures)
+    return lowest_temperature","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3],
+    'Leaf': [[2], [3], [3, 4, 4], [1, 8]]
+})
+# Call the tool to solve the problem
+print(find_lowest_temperature(df))","def find_lowest_value_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of values and returns the lowest value in the plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of values with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The lowest value in the stem-and-leaf plot.
+    """"""
+    # Initialize the list to calculate values in each entry
+    values = []
+    
+    # Calculate the value for each entry
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            values.append(stem * 10 + leaf[j])
+    
+    # Find the lowest value
+    lowest_value = min(values)
+    
+    return lowest_value","data = {
+    ""Stem"": [0, 1, 2, 3],
+    ""Leaf"": [[2], [3], [3, 4, 4], [1, 8]]
+}
+
+df = pd.DataFrame(data)
+print(find_lowest_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+Some friends met in New York City for vacation and compared how far they had traveled. How many more miles did Emilio travel than Javier?,3452.0,"Name | Miles
+Javier | 3,518
+Emilio | 6,970
+Kristen | 1,955
+Danielle | 5,543",3,9046,"import pandas as pd
+
+def calculate_difference_in_miles(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of names and miles traveled, and two names, and returns the difference in miles traveled between the two people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing names and miles traveled with columns 'Name' and 'Miles'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in miles traveled between the two people.
+    """"""
+    # Filter the DataFrame for the specific names
+    person1_df = df[df['Name'] == person1]
+    person2_df = df[df['Name'] == person2]
+    
+    # Check if both names are in the DataFrame
+    if not person1_df.empty and not person2_df.empty:
+        # Calculate the difference in miles
+        difference = person2_df['Miles'].values[0] - person1_df['Miles'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Javier', 'Emilio', 'Kristen', 'Danielle'],
+    'Miles': [3518, 6970, 1955, 5543]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_miles(df, 'Javier', 'Emilio')
+print(difference)","def calculate_difference_between_entities(data_frame, entity_col, value_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their values, and two entity names, and returns the difference in values between the two entities.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing entity names and their values.
+    entity_col (str): The column name for the entity names.
+    value_col (str): The column name for the entity values.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    float: The difference in values between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entity names
+    entity1_df = data_frame[data_frame[entity_col] == entity1]
+    entity2_df = data_frame[data_frame[entity_col] == entity2]
+    
+    # Check if both entity names are in the DataFrame
+    if not entity1_df.empty and not entity2_df.empty:
+        # Calculate the difference in values
+        difference = entity2_df[value_col].values[0] - entity1_df[value_col].values[0]
+        return difference
+    else:
+        return None","data = {
+    'Name': ['Javier', 'Emilio', 'Kristen', 'Danielle'],
+    'Miles': [3518, 6970, 1955, 5543]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_between_entities(data_frame=df, entity_col=""Name"", value_col=""Miles"", entity1=""Javier"", entity2=""Emilio""))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Cara donate to hunger prevention than Cameron?,8.0,"Person | Hunger prevention | Job training
+Cameron | $3 | $3
+Daniel | $15 | $4
+Cara | $11 | $16
+Malik | $12 | $2",4,17046,"import pandas as pd
+
+def calculate_donation_difference(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amounts of money that the two persons donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Hunger prevention', 'Job training'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The name of the cause.
+    Returns:
+    float: The difference in the amounts of money that the two persons donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific persons and cause
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the donation amounts
+    person1_donation = person1_df[cause].values[0]
+    person2_donation = person2_df[cause].values[0]
+    
+    # Calculate the difference
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Cameron', 'Daniel', 'Cara', 'Malik'],
+    'Hunger prevention': [3, 15, 11, 12],
+    'Job training': [3, 4, 16, 2]
+})
+# Call the tool to solve the problem
+difference = calculate_donation_difference(df, 'Cara', 'Cameron', 'Hunger prevention')
+print(difference)","def calculate_difference_between_entities_for_category(df, entity_col, amount_cols, entity1, entity2, category):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and amounts for various categories, two entity names, and a category, and returns the difference in the amounts for the two entities for the specific category.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entity names and their amounts for various categories.
+    entity_col (str): The column name for the entity names.
+    amount_cols (list): The column names for the amounts.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    category (str): The name of the category.
+    
+    Returns:
+    float: The difference in the amounts for the two entities for the specific category.
+    """"""
+    # Filter the DataFrame for the specific entities and category
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the amounts
+    entity1_amount = entity1_df[category].values[0]
+    entity2_amount = entity2_df[category].values[0]
+    
+    # Calculate the difference
+    amount_difference = entity1_amount - entity2_amount
+    
+    return amount_difference","df = pd.DataFrame({
+    'Person': ['Cameron', 'Daniel', 'Cara', 'Malik'],
+    'Hunger prevention': [3, 15, 11, 12],
+    'Job training': [3, 4, 16, 2]
+})
+print(calculate_difference_between_entities_for_category(df, 'Person', ['Hunger prevention', 'Job training'], 'Cara', 'Cameron', 'Hunger prevention'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much did Stanley donate to animal rights?,12.0,"Person | Arts education | Animal rights
+Julian | $2 | $3
+Stanley | $1 | $12
+Darius | $13 | $7
+Riley | $5 | $6
+Reagan | $14 | $6",4,3383,"import pandas as pd
+
+def get_donation_amount(df, person, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and a cause, and returns the amount of money that the person donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause (str): The name of the cause.
+    Returns:
+    float: The amount of money that the person donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_amount = person_df[cause].values[0]
+        return donation_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Julian', 'Stanley', 'Darius', 'Riley', 'Reagan'],
+    'Arts education': [2, 1, 13, 5, 14],
+    'Animal rights': [3, 12, 7, 6, 6]
+})
+
+# Call the tool to solve the problem
+donation_amount = get_donation_amount(df, 'Stanley', 'Animal rights')
+print(donation_amount)","def get_table_cell_value(data_frame, row_id_col, row_id, col_id):
+    """"""
+    This function takes in a pandas DataFrame, a row identifier column, a row identifier, and a column identifier, and returns the value of the cell at the intersection of the row and column.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame.
+    row_id_col (str): The column name for the row identifiers.
+    row_id (str): The row identifier.
+    col_id (str): The column identifier.
+    
+    Returns:
+    float: The value of the cell at the intersection of the row and column.
+    """"""
+    # Filter the DataFrame for the specific row identifier
+    row_df = data_frame[data_frame[row_id_col] == row_id]
+    if not row_df.empty:
+        cell_value = row_df[col_id].values[0]
+        return cell_value
+    else:
+        return None","df = pd.DataFrame({
+    'Person': ['Julian', 'Stanley', 'Darius', 'Riley', 'Reagan'],
+    'Arts education': [2, 1, 13, 5, 14],
+    'Animal rights': [3, 12, 7, 6, 6]
+})
+
+print(get_table_cell_value(data_frame=df, row_id_col='Person', row_id='Stanley', col_id='Animal rights'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Megan donate to job training than to hunger prevention?,16.0,"Person | Job training | Hunger prevention
+Amelia | $3 | $19
+Megan | $18 | $2
+Emma | $4 | $11
+Larry | $7 | $7",4,8751,"import pandas as pd
+
+def calculate_difference_in_donations(df, person):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a person's name, and returns the difference in the amounts of money that the person donated to job training and hunger prevention.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Job training', and 'Hunger prevention'.
+    person (str): The name of the person.
+    Returns:
+    float: The difference in the amounts of money that the person donated to job training and hunger prevention.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        job_training_donation = person_df['Job training'].values[0]
+        hunger_prevention_donation = person_df['Hunger prevention'].values[0]
+        difference = job_training_donation - hunger_prevention_donation
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Amelia', 'Megan', 'Emma', 'Larry'],
+    'Job training': [3, 18, 4, 7],
+    'Hunger prevention': [19, 2, 11, 7]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_donations(df, 'Megan')
+print(difference)","def calculate_difference_in_donations_for_person(donations_df, person_col, cause1_col, cause2_col, person_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of donations, column names for two causes, and a person's name, and returns the difference in the amounts of money that the person donated to the two causes.
+    
+    Args:
+    donations_df (pd.DataFrame): A pandas DataFrame containing donation information.
+    person_col (str): The column name for the person names.
+    cause1_col (str): The column name for the first cause.
+    cause2_col (str): The column name for the second cause.
+    person_name (str): The name of the person.
+    
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes. If the person's name is not found in the DataFrame, returns None.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = donations_df[donations_df[person_col] == person_name]
+    if not person_df.empty:
+        cause1_donation = person_df[cause1_col].values[0]
+        cause2_donation = person_df[cause2_col].values[0]
+        difference = cause1_donation - cause2_donation
+        return difference
+    else:
+        return None","donations_data = {
+    'Person': ['Amelia', 'Megan', 'Emma', 'Larry'],
+    'Job training': [3, 18, 4, 7],
+    'Hunger prevention': [19, 2, 11, 7]
+}
+
+donations_df = pd.DataFrame(donations_data)
+
+print(calculate_difference_in_donations_for_person(donations_df, ""Person"", ""Job training"", ""Hunger prevention"", ""Megan""))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Tammy donate to arts education than Christina?,12.0,"Person | Arts education | Hunger prevention
+Christina | $2 | $17
+Stanley | $5 | $1
+Tammy | $14 | $5",4,12037,"import pandas as pd
+
+def calculate_donation_difference(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amounts of money that the two persons donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Arts education', 'Hunger prevention'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The cause to which the donations were made.
+    Returns:
+    float: The difference in the amounts of money that the two persons donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific persons and cause
+    person1_donation = df[df['Person'] == person1][cause].values[0]
+    person2_donation = df[df['Person'] == person2][cause].values[0]
+    
+    # Calculate the difference in donations
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Christina', 'Stanley', 'Tammy'],
+    'Arts education': [2, 5, 14],
+    'Hunger prevention': [17, 1, 5]
+})
+
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Tammy', 'Christina', 'Arts education')
+print(donation_difference)","def calculate_difference_in_category_between_entities(data_frame, entity_col, category_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and categories, two entity names, and a category name, and returns the difference in amounts for the category between the two entities.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing entities and categories.
+    entity_col (str): The column name for the entities.
+    category_col (str): The column name for the category.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    float: The difference in amounts for the category between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities and category
+    entity1_amount = data_frame[data_frame[entity_col] == entity1][category_col].values[0]
+    entity2_amount = data_frame[data_frame[entity_col] == entity2][category_col].values[0]
+    
+    # Calculate the difference in amounts
+    amount_difference = entity1_amount - entity2_amount
+    
+    return amount_difference","data = {
+    'Person': ['Christina', 'Stanley', 'Tammy'],
+    'Arts education': [2, 5, 14],
+    'Hunger prevention': [17, 1, 5]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_in_category_between_entities(data_frame=df, entity_col=""Person"", category_col=""Arts education"", entity1=""Tammy"", entity2=""Christina""))"
+"At their family reunion, the Johnson family recorded everyone's age. How many people are exactly 50 years old?",3.0,"Stem | Leaf 
+5 | 0, 0, 0, 1
+6 | 
+7 | 1
+8 | 0, 1
+9 | 0",6,1243,"import pandas as pd
+
+def count_exact_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages in stem and leaf format, and returns the number of people with the exact given age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages in stem and leaf format.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The age to count the number of people with.
+    Returns:
+    int: The number of people with the exact given age.
+    """"""
+    # prepare a list to store ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the ages where the age is equal to the given age
+    filtered = [a for a in ages if a == age]
+    # count the number of people with the given age
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [5, 6, 7, 8, 9],
+    'Leaf': [[0, 0, 0, 1], [], [1], [0, 1], [0]]
+})
+# Call the tool to solve the problem
+print(count_exact_age(df, 50))","def count_occurrences_of_specific_value_in_stem_leaf(data_frame, stem_col, leaf_col, specific_value):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items and a specific value, and returns the number of occurrences of the specific value in the plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    specific_value (int): The specific value to count occurrences of.
+    
+    Returns:
+    int: The number of occurrences of the specific value in the stem-and-leaf plot.
+    """"""
+    # Initialize the list to store item values
+    item_values = []
+    
+    # Calculate the value of each item in the stem-and-leaf plot
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            item_values.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the value is equal to the specific value
+    filtered = [item for item in item_values if item == specific_value]
+    
+    # Count the number of occurrences of the specific value
+    num_occurrences = len(filtered)
+    
+    return num_occurrences","data = {
+    ""Stem"": [5, 6, 7, 8, 9],
+    ""Leaf"": [[0, 0, 0, 1], [], [1], [0, 1], [0]]
+}
+
+df = pd.DataFrame(data)
+print(count_occurrences_of_specific_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", specific_value=50))"
+This is Zoe's complete financial record for December. How much money did Zoe's grandpa give her?,40.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of November | | | $289.15
+12/4 | snowman kit | | $9.90 | $279.25
+12/14 | money from Grandpa | $40.00 | | $319.25
+12/16 | gift for teacher | | $12.45 | $306.80",5,3686,"import pandas as pd
+
+def get_received_amount(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and a description, and returns the received amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): The description of the transaction for which the received amount is to be found.
+    Returns:
+    float: The received amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    transaction_df = df[df['Description'] == description]
+    if not transaction_df.empty:
+        received_amount = transaction_df['Received'].values[0]
+        return received_amount
+    else:
+        return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '12/4', '12/14', '12/16'],
+    'Description': ['Balance: end of November', 'snowman kit', 'money from Grandpa', 'gift for teacher'],
+    'Received': ['', '', '$40.00', ''],
+    'Expenses': ['', '$9.90', '', '$12.45'],
+    'Available Funds': ['$289.15', '$279.25', '$319.25', '$306.80']
+})
+
+# Call the tool to solve the problem
+amount = get_received_amount(df, 'money from Grandpa')
+print(amount)","def get_transaction_amount_from_financial_records(financial_records_df, description_col, received_col, transaction_description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table, a transaction description, and returns the received amount for the given transaction description.
+    
+    Args:
+    financial_records_df (pd.DataFrame): A pandas DataFrame containing financial records.
+    description_col (str): The column name for the transaction descriptions.
+    received_col (str): The column name for the received amounts.
+    transaction_description (str): The description of the transaction for which the received amount is to be found.
+    
+    Returns:
+    float: The received amount for the given transaction description.
+    """"""
+    # Filter the DataFrame for the specific transaction description
+    transaction_df = financial_records_df[financial_records_df[description_col] == transaction_description]
+    if not transaction_df.empty:
+        received_amount = transaction_df[received_col].values[0]
+        return received_amount
+    else:
+        return 0.0","financial_records_data = {
+    'Date': ['', '12/4', '12/14', '12/16'],
+    'Description': ['Balance: end of November', 'snowman kit', 'money from Grandpa', 'gift for teacher'],
+    'Received': ['', '', '$40.00', ''],
+    'Expenses': ['', '$9.90', '', '$12.45'],
+    'Available Funds': ['$289.15', '$279.25', '$319.25', '$306.80']
+}
+
+financial_records_df = pd.DataFrame(financial_records_data)
+
+transaction_description = 'money from Grandpa'
+print(get_transaction_amount_from_financial_records(financial_records_df, 'Description', 'Received', transaction_description))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Johnny donate to clean water than Mitch?,5.0,"Person | Cancer research | Clean water
+Kira | $9 | $7
+Mitch | $18 | $8
+Johnny | $13 | $13",4,8578,"import pandas as pd
+
+def calculate_difference_in_donations(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amount of money donated by the two persons for the given cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Cancer research', 'Clean water', etc.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The name of the cause for which the difference in donations is to be calculated.
+    Returns:
+    float: The difference in the amount of money donated by the two persons for the given cause.
+    """"""
+    # Filter the DataFrame for the specific persons
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the donation amounts for the given cause
+    person1_donation = person1_df[cause].values[0]
+    person2_donation = person2_df[cause].values[0]
+    
+    # Calculate the difference in donations
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Kira', 'Mitch', 'Johnny'],
+    'Cancer research': [9, 18, 13],
+    'Clean water': [7, 8, 13]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_donations(df, 'Johnny', 'Mitch', 'Clean water')
+print(difference)","def calculate_difference_in_amounts(data_frame, entity_col, entity1, entity2, category):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and amounts for various categories, two entity names, and a category, and returns the difference in amounts for the given category between the two entities.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing entity names and amounts for various categories.
+    entity_col (str): The column name for the entity names.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    category (str): The name of the category for which the difference in amounts is to be calculated.
+    
+    Returns:
+    float: The difference in amounts for the given category between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = data_frame[data_frame[entity_col] == entity1]
+    entity2_df = data_frame[data_frame[entity_col] == entity2]
+    
+    # Get the amounts for the given category
+    entity1_amount = entity1_df[category].values[0]
+    entity2_amount = entity2_df[category].values[0]
+    
+    # Calculate the difference in amounts
+    amount_difference = entity1_amount - entity2_amount
+    
+    return amount_difference","data = {
+    'Person': ['Kira', 'Mitch', 'Johnny'],
+    'Cancer research': [9, 18, 13],
+    'Clean water': [7, 8, 13]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_in_amounts(data_frame=df, entity_col=""Person"", entity1=""Johnny"", entity2=""Mitch"", category=""Clean water""))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Kenji donate to arts education than to clean water?,4.0,"Person | Arts education | Clean water
+Kenji | $18 | $14
+Lexi | $3 | $12
+Sofia | $6 | $1
+Zane | $2 | $2
+Lillian | $1 | $5",4,9096,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Kenji', 'Lexi', 'Sofia', 'Zane', 'Lillian'],
+    'Arts education': [18, 3, 6, 2, 1],
+    'Clean water': [14, 12, 1, 2, 5]
+})
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Kenji', 'Arts education', 'Clean water')
+print(donation_difference)","def calculate_donation_difference_between_causes(donations_df, person_col, cause1_col, cause2_col, person_name):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two cause columns, and returns the difference in the amounts of money that the person donated to the two causes.
+    
+    Args:
+    donations_df (pd.DataFrame): A pandas DataFrame containing donation information with columns specified by person_col, cause1_col, and cause2_col.
+    person_col (str): The column name for the person names.
+    cause1_col (str): The column name for the first cause.
+    cause2_col (str): The column name for the second cause.
+    person_name (str): The name of the person.
+    
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = donations_df[donations_df[person_col] == person_name]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1_col].values[0]
+        donation_cause2 = person_df[cause2_col].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","donations_data = {
+    'Person': ['Kenji', 'Lexi', 'Sofia', 'Zane', 'Lillian'],
+    'Arts education': [18, 3, 6, 2, 1],
+    'Clean water': [14, 12, 1, 2, 5]
+}
+
+donations_df = pd.DataFrame(donations_data)
+print(calculate_donation_difference_between_causes(donations_df, ""Person"", ""Arts education"", ""Clean water"", ""Kenji""))"
+"This holiday weekend, Sue is going to Chicago to shop and to see a baseball game. To avoid traffic, Sue decides to take the train. There is a proportional relationship between the time (in minutes) Sue spends riding the train, x, and the distance she travels (in miles), y. What is the constant of proportionality? Write your answer as a whole number or decimal.",1.0,"2 | 2
+4 | 4
+9 | 9
+20 | 20",7,15268,"import pandas as pd
+
+def calculate_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of time spent riding the train and the distance travelled, and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing time spent riding the train and the distance travelled with columns 'Time' and 'Distance'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality by dividing the distance by the time for each row
+    df['Constant'] = df['Distance'] / df['Time']
+    
+    # Check if the constant of proportionality is the same for all rows
+    if df['Constant'].nunique() == 1:
+        return df['Constant'].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Time': [2, 4, 9, 20],
+    'Distance': [2, 4, 9, 20]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = calculate_constant_of_proportionality(df)
+print(constant_of_proportionality)","def calculate_constant_of_proportionality_between_two_variables(data_frame, variable1_col, variable2_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of two variables and returns the constant of proportionality between them.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing two variables with columns specified by variable1_col and variable2_col.
+    variable1_col (str): The column name for the first variable.
+    variable2_col (str): The column name for the second variable.
+    
+    Returns:
+    float: The constant of proportionality between the two variables if it's the same for all rows, otherwise None.
+    """"""
+    # Calculate the constant of proportionality by dividing variable2 by variable1 for each row
+    data_frame['Constant'] = data_frame[variable2_col] / data_frame[variable1_col]
+    
+    # Check if the constant of proportionality is the same for all rows
+    if data_frame['Constant'].nunique() == 1:
+        return data_frame['Constant'].values[0]
+    else:
+        return None","data = {
+    'Time': [2, 4, 9, 20],
+    'Distance': [2, 4, 9, 20]
+}
+
+df = pd.DataFrame(data)
+print(calculate_constant_of_proportionality_between_two_variables(data_frame=df, variable1_col=""Time"", variable2_col=""Distance""))"
+"Danny is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is designed with swirls and is made of cotton? Simplify any fractions.",0.15," | Velvet | Cotton
+Zigzags | 7 | 5
+Swirls | 5 | 3",8,5406,"import pandas as pd
+
+def calculate_probability(df, pattern, material):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection table, a pattern, and a material, and returns the probability of selecting a bow tie with the given pattern and material.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties organized by pattern and material.
+    pattern (str): The pattern of the bow tie to calculate the probability for.
+    material (str): The material of the bow tie to calculate the probability for.
+    Returns:
+    float: The probability of selecting a bow tie with the given pattern and material.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the given pattern and material
+    selected_bow_ties = df.loc[pattern, material]
+    
+    # Calculate the probability
+    probability = selected_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [7, 5],
+    'Cotton': [5, 3]
+}, index=['Zigzags', 'Swirls'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Swirls', 'Cotton')
+
+# Print the answer
+print(probability)","def calculate_probability_of_category_combination(data_frame, category1, category2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of categorical counts and two categories, and returns the probability of the specific combination of the two categories.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing counts of combinations of two categories.
+    category1 (str): The first category of the combination.
+    category2 (str): The second category of the combination.
+    
+    Returns:
+    float: The probability of the specific combination of the two categories.
+    """"""
+    # Calculate the total count of all categories
+    total_count = data_frame.sum().sum()
+    
+    # Get the count of the specific combination of categories
+    specific_count = data_frame.loc[category1, category2]
+    
+    # Calculate the probability
+    probability = specific_count / total_count
+    
+    return probability","df = pd.DataFrame({
+    'Velvet': [7, 5],
+    'Cotton': [5, 3]
+}, index=['Zigzags', 'Swirls'])
+
+print(calculate_probability_of_category_combination(data_frame=df, category1='Swirls', category2='Cotton'))"
+Martha is a physical therapist who specializes in leg injuries. Her patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from ankle pain and is 0-12 years old? Simplify any fractions.,0.375," | 0-12 years old | 13-19 years old
+Knee pain | 3 | 1
+Ankle pain | 6 | 6",8,13903,"import pandas as pd
+
+def create_probability_table(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of leg injuries and their frequencies, and returns a DataFrame with the probabilities of each injury and age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing leg injuries and their frequencies with columns 'Injury', '0-12 years old', and '13-19 years old'.
+    Returns:
+    pd.DataFrame: A DataFrame with the probabilities of each injury and age group.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['0-12 years old'].sum() + df['13-19 years old'].sum()
+    
+    # Calculate the probabilities for each injury and age group
+    df['0-12 years old'] = df['0-12 years old'] / total_patients
+    df['13-19 years old'] = df['13-19 years old'] / total_patients
+    
+    return df
+
+def find_probability(df, injury, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a probability table of leg injuries and their age groups, and returns the probability of a specific injury and age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing leg injuries and their probabilities with columns 'Injury', '0-12 years old', and '13-19 years old'.
+    injury (str): The injury to find the probability for.
+    age_group (str): The age group to find the probability for.
+    Returns:
+    float: The probability of the specific injury and age group.
+    """"""
+    # Filter the DataFrame for the specific injury
+    injury_df = df[df['Injury'] == injury]
+    
+    # Get the probability for the specific age group
+    probability = injury_df[age_group].values[0]
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Injury': ['Knee pain', 'Ankle pain'],
+    '0-12 years old': [3, 6],
+    '13-19 years old': [1, 6]
+})
+
+# Create the probability table
+probability_table = create_probability_table(df)
+
+# Find the probability of a randomly selected patient suffering from ankle pain and being 0-12 years old
+probability = find_probability(probability_table, 'Ankle pain', '0-12 years old')
+
+# Print the answer
+print(probability)","def calculate_probability_of_event_from_frequency_table(frequency_df, event_col, category_cols, event_name, category_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of event frequencies and calculates the probability of a specific event and category.
+    
+    Args:
+    frequency_df (pd.DataFrame): A pandas DataFrame containing event names and their frequencies in different categories.
+    event_col (str): The column name for the event names.
+    category_cols (list): A list of column names for the categories.
+    event_name (str): The name of the event to find the probability for.
+    category_name (str): The name of the category to find the probability for.
+    
+    Returns:
+    float: The probability of the specific event and category.
+    """"""
+    # Calculate the total frequency of all events
+    total_frequency = frequency_df[category_cols].sum().sum()
+    
+    # Filter the DataFrame for the specific event
+    event_df = frequency_df[frequency_df[event_col] == event_name]
+    
+    # Get the frequency for the specific category
+    event_frequency = event_df[category_name].values[0]
+    
+    # Calculate the probability
+    probability = event_frequency / total_frequency
+    
+    return probability","frequency_data = {
+    'Injury': ['Knee pain', 'Ankle pain'],
+    '0-12 years old': [3, 6],
+    '13-19 years old': [1, 6]
+}
+
+frequency_df = pd.DataFrame(frequency_data)
+
+print(calculate_probability_of_event_from_frequency_table(frequency_df, 'Injury', ['0-12 years old', '13-19 years old'], 'Ankle pain', '0-12 years old'))"
+"Some friends discussed the sizes of their coin collections. If you combine their collections, how many coins do Reagan and Felipe have?",2784.0,"Name | Number of coins
+Derek | 6,325
+Reagan | 1,380
+Felipe | 1,404
+Patrick | 2,500",3,6885,"import pandas as pd
+
+def calculate_total_coins(df, names):
+    """"""
+    This function takes in a pandas DataFrame representing a table of names and their coin collections, and a list of names, and returns the total number of coins for the given names.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing names and their coin collections with columns 'Name' and 'Number of coins'.
+    names (list): A list of names for which the total number of coins is to be calculated.
+    Returns:
+    int: The total number of coins for the given names.
+    """"""
+    # Initialize the total number of coins
+    total_coins = 0
+    
+    # Iterate through the names and calculate the total number of coins
+    for name in names:
+        # Filter the DataFrame for the specific name
+        name_df = df[df['Name'] == name]
+        if not name_df.empty:
+            num_coins = name_df['Number of coins'].values[0]
+            total_coins += num_coins
+    
+    return total_coins","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Derek', 'Reagan', 'Felipe', 'Patrick'],
+    'Number of coins': [6325, 1380, 1404, 2500]
+})
+# Call the tool to solve the problem
+total_coins = calculate_total_coins(df, ['Reagan', 'Felipe'])
+print(total_coins)","def calculate_total_attribute_value_for_entities(data_frame, entity_col, attribute_col, entity_list):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entity names and their attribute values, and a list of entity names, and returns the total value of the attribute for the given entities.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing entity names and their attribute values.
+    entity_col (str): The column name for the entity names.
+    attribute_col (str): The column name for the attribute values.
+    entity_list (list): A list of entity names for which the total value of the attribute is to be calculated.
+    
+    Returns:
+    int: The total value of the attribute for the given entities.
+    """"""
+    # Initialize the total value of the attribute
+    total_value = 0
+    
+    # Iterate through the entity names and calculate the total value of the attribute
+    for entity_name in entity_list:
+        # Filter the DataFrame for the specific entity name
+        entity_df = data_frame[data_frame[entity_col] == entity_name]
+        if not entity_df.empty:
+            attribute_value = entity_df[attribute_col].values[0]
+            total_value += attribute_value
+    
+    return total_value","data = {
+    'Name': ['Derek', 'Reagan', 'Felipe', 'Patrick'],
+    'Number of coins': [6325, 1380, 1404, 2500]
+}
+
+df = pd.DataFrame(data)
+entity_list = ['Reagan', 'Felipe']
+print(calculate_total_attribute_value_for_entities(data_frame=df, entity_col=""Name"", attribute_col=""Number of coins"", entity_list=entity_list))"

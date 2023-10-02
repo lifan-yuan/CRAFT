@@ -1,0 +1,173 @@
+{
+    "calculate_area_square_adjacent_vertices": [
+        "calculate_area_square_adjacent_vertices(point1, point2)"
+    ],
+    "calculate_based_on_formula": [
+        "calculate_based_on_formula(input1, input2, formula)"
+    ],
+    "calculate_distance": [
+        "calculate_distance(point1, point2)"
+    ],
+    "calculate_min_days": [
+        "calculate_min_days(principal, daily_rate, target_multiple)"
+    ],
+    "calculate_power": [
+        "calculate_power(base, exponent)"
+    ],
+    "calculate_sum_difference": [
+        "calculate_sum_difference(end_range, rounding_base)"
+    ],
+    "calculate_total_earnings": [
+        "calculate_total_earnings(hours_period1, hours_period2, extra_earnings_period2)"
+    ],
+    "calculate_total_interest": [
+        "calculate_total_interest(principal, rate, time)"
+    ],
+    "compute_difference_of_squares": [
+        "compute_difference_of_squares(num1, num2)"
+    ],
+    "count_divisions_to_target": [
+        "count_divisions_to_target(start_number, end_number, divisor)"
+    ],
+    "count_expansion_terms": [
+        "count_expansion_terms(num_terms_expr1, num_terms_expr2)"
+    ],
+    "count_numbers_fraction": [
+        "count_numbers_fraction(num_digits, fraction)"
+    ],
+    "difference_of_squares": [
+        "difference_of_squares(num1, num2)"
+    ],
+    "evaluate_exponent": [
+        "evaluate_exponent(base, exponent)"
+    ],
+    "expand_math_expression": [
+        "expand_math_expression(expression)"
+    ],
+    "find_abs_difference_in_sequences": [
+        "find_abs_difference_in_sequences(start_value, common_difference, term_number)"
+    ],
+    "find_complex_power": [
+        "find_complex_power(complex_base, integer_power)"
+    ],
+    "find_consecutive_integers_product": [
+        "find_consecutive_integers_product(product, direction)"
+    ],
+    "find_constant_in_linear_eq": [
+        "find_constant_in_linear_eq(x_coefficient, y_coefficient, sum_intercepts)"
+    ],
+    "find_constant_term_of_same_constant_poly": [
+        "find_constant_term_of_same_constant_poly(poly_product_str)"
+    ],
+    "find_day_exceed_target": [
+        "find_day_exceed_target(initial_amount, daily_multiplier, target_total)"
+    ],
+    "find_exponent_in_power_equation": [
+        "find_exponent_in_power_equation(base, result)"
+    ],
+    "find_first_term_exceeding_value": [
+        "find_first_term_exceeding_value(start_value, target_value)"
+    ],
+    "find_good_pairs": [
+        "find_good_pairs(lines)"
+    ],
+    "find_integer_satisfying_condition": [
+        "find_integer_satisfying_condition(operation, target_value)"
+    ],
+    "find_inverse_variation_value": [
+        "find_inverse_variation_value(var1_initial, var2_initial, var2_new)"
+    ],
+    "find_inversely_proportional_value": [
+        "find_inversely_proportional_value(variable2, variable1_variable2_product)"
+    ],
+    "find_investment_amount_option1": [
+        "find_investment_amount_option1(total_investment, total_return, option1_rate, option2_rate, years)"
+    ],
+    "find_item1_cost": [
+        "find_item1_cost(total_cost, item1_more_than_item2)"
+    ],
+    "find_items_for_volume": [
+        "find_items_for_volume(initial_volume, initial_items, target_volume)"
+    ],
+    "find_larger_of_two": [
+        "find_larger_of_two(total, difference)"
+    ],
+    "find_larger_of_two_numbers": [
+        "find_larger_of_two_numbers(sum_of_numbers, difference)"
+    ],
+    "find_largest_consecutive_sum": [
+        "find_largest_consecutive_sum(target_sum)"
+    ],
+    "find_largest_number_given_differences": [
+        "find_largest_number_given_differences(total_sum, large_diff, small_diff)"
+    ],
+    "find_max_area_equal_sides": [
+        "find_max_area_equal_sides(perimeter, num_sides)"
+    ],
+    "find_max_consecutive_integers": [
+        "find_max_consecutive_integers(target_sum)"
+    ],
+    "find_max_sum_consecutive_integers": [
+        "find_max_sum_consecutive_integers(product_limit, consecutive_count)"
+    ],
+    "find_maximum_value_quadratic": [
+        "find_maximum_value_quadratic(func, var)"
+    ],
+    "find_median_of_consecutive_numbers": [
+        "find_median_of_consecutive_numbers(total_sum, num_numbers)"
+    ],
+    "find_point_on_line_segment": [
+        "find_point_on_line_segment(point_a, point_b, distance_ratio)"
+    ],
+    "find_product_given_sum_and_difference": [
+        "find_product_given_sum_and_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_remainder_of_sum": [
+        "find_remainder_of_sum(n, divisor)"
+    ],
+    "find_smallest_number_in_consecutive_sequence": [
+        "find_smallest_number_in_consecutive_sequence(sum_of_numbers, count_of_numbers, step)"
+    ],
+    "find_smallest_sum_of_squares": [
+        "find_smallest_sum_of_squares(difference)"
+    ],
+    "find_time_for_target_value": [
+        "find_time_for_target_value(a, b, c, target_value, precision)"
+    ],
+    "find_time_to_reach_target": [
+        "find_time_to_reach_target(motion_equation, target_value, time_symbol)"
+    ],
+    "find_variable_in_exponential": [
+        "find_variable_in_exponential(base, exponent, constant)"
+    ],
+    "find_variable_increase": [
+        "find_variable_increase(variable_increase, base_variable1_increase, base_variable2_increase)"
+    ],
+    "from sympy import log, simplify def evaluate_and_simplify_log": [
+        "evaluate_and_simplify_log(log_base, log_value)"
+    ],
+    "half_abs_diff_squares": [
+        "half_abs_diff_squares(number1, number2)"
+    ],
+    "min_additional_items": [
+        "min_additional_items(people, items)"
+    ],
+    "multiply_numbers": [
+        "multiply_numbers(*args)"
+    ],
+    "subtract_square_roots": [
+        "subtract_square_roots(num1, num2)"
+    ],
+    "sum_integers_with_common_difference": [
+        "sum_integers_with_common_difference(lower_limit, upper_limit, common_difference)"
+    ],
+    "sum_numbers_with_condition": [
+        "sum_numbers_with_condition(start, end, condition_function)"
+    ],
+    "sum_of_arithmetic_series": [
+        "sum_of_arithmetic_series(first_term, common_difference, count)"
+    ],
+    "sum_of_smallest_multiples": [
+        "sum_of_smallest_multiples(number, count_of_multiples)"
+    ]
+}

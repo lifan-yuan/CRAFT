@@ -1,0 +1,165 @@
+import math
+
+class ImagePatch:
+    """A Python class containing a crop of an image centered around a particular object, as well as relevant information.
+    Attributes
+    ----------
+    cropped_image : array_like
+        An array-like of the cropped image taken from the original image.
+    left, lower, right, upper : int
+        An int describing the position of the (left/lower/right/upper) border of the crop's bounding box in the original image.
+
+    Methods
+    -------
+    simple_query(question: str=None)->str
+        Returns the answer to a basic question asked about the image. If no question is provided, returns the answer to "What is this?".
+    llm_query(question: str, long_answer: bool)->str
+        References a large language model (e.g., GPT) to produce a response to the given question. Default is short-form answers, can be made long-form responses with the long_answer flag.
+    bing_search(question: str)->str
+        References the Bing Search Engine to provide references to the given question.
+    """
+
+    def __init__(self, image, left: int = None, lower: int = None, right: int = None, upper: int = None):
+        """Initializes an ImagePatch object by cropping the image at the given coordinates and stores the coordinates as
+        attributes. If no coordinates are provided, the image is left unmodified, and the coordinates are set to the
+        dimensions of the image.
+        Parameters
+        -------
+        image : array_like
+            An array-like of the original image.
+        left, lower, right, upper : int
+            An int describing the position of the (left/lower/right/upper) border of the crop's bounding box in the original image.
+        """
+        if left is None and right is None and upper is None and lower is None:
+            self.cropped_image = image
+            self.left = 0
+            self.lower = 0
+            self.right = image.shape[2]  # width
+            self.upper = image.shape[1]  # height
+        else:
+            self.cropped_image = image[:, lower:upper, left:right]
+            self.left = left
+            self.upper = upper
+            self.right = right
+            self.lower = lower
+
+        self.width = self.cropped_image.shape[2]
+        self.height = self.cropped_image.shape[1]
+
+        self.horizontal_center = (self.left + self.right) / 2
+        self.vertical_center = (self.lower + self.upper) / 2
+
+    def simple_query(self, question: str = None) -> str:
+        """Returns the answer to a basic question asked about the image. If no question is provided, returns the answer
+        to "What is this?". The questions are about basic perception, and are not meant to be used for complex reasoning
+        or external knowledge.
+        Parameters
+        -------
+        question : str
+            A string describing the question to be asked.
+
+        Examples
+        -------
+
+        >>> # Which kind of baz is not fredding?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     baz_patches = image_patch.find("baz")
+        >>>     for baz_patch in baz_patches:
+        >>>         if not baz_patch.verify_property("baz", "fredding"):
+        >>>             return baz_patch.simple_query("What is this baz?")
+
+        >>> # What color is the foo?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     foo_patches = image_patch.find("foo")
+        >>>     foo_patch = foo_patches[0]
+        >>>     return foo_patch.simple_query("What is the color?")
+
+        >>> # Is the second bar from the left quuxy?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     bar_patches = image_patch.find("bar")
+        >>>     bar_patches.sort(key=lambda x: x.horizontal_center)
+        >>>     bar_patch = bar_patches[1]
+        >>>     return bar_patch.simple_query("Is the bar quuxy?")
+        """
+        return simple_query(self.cropped_image, question)
+
+    def llm_query(self, question: str, long_answer: bool = True) -> str:
+        """Answers a text question using GPT-3 for reasoning and inference. The input question is always a formatted string with a variable in it.
+        The question must be image-independent, because this function cannot process visual information. You may extract the visual feature and describe it in text form beforehand.
+
+        Parameters
+        ----------
+        question: str
+            the text question to ask. Must not contain any reference to 'the image' or 'the photo', etc.
+        long_answer: bool
+            whether to return a short answer or a long answer. Short answers are one or at most two words, very concise.
+            Long answers are longer, and may be paragraphs and explanations. Defalt is True (so long answer).
+
+        Examples
+        --------
+        >>> # What is the city this building is in?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     building_patches = image_patch.find("building")
+        >>>     building_patch = building_patches[0]
+        >>>     building_name = building_patch.simple_query("What is the name of the building?")
+        >>>     return building_patch.llm_query(f"What city is {building_name} in?", long_answer=False)
+
+        >>> # Explain the history behind this object.
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     object_patches = image_patch.find("object")
+        >>>     object_patch = object_patches[0]
+        >>>     object_name = object_patch.simple_query("What is the name of the object?")
+        >>>     return object_patch.llm_query(f"What is the history behind {object_name}?", long_answer=True)
+        """
+        return llm_query(question, long_answer)
+
+    def bing_search(self, query: str):
+        """Answers a text question using Bing Search Engine for external knowledge. The input question is always a formatted string with a variable in it.
+        The question must be image-independent, because this function cannot process visual information. You may extract the visual feature and describe it in text form beforehand.
+
+        Parameters
+        ----------
+        query: str
+            the text question to ask. Must not contain any reference to 'the image' or 'the photo', etc.
+
+        Examples
+        --------
+        >>> # When was this piece of sporting equipment invented?
+        >>> def execute_command(image) -> str:
+        >>>     image_patch = ImagePatch(image)
+        >>>     equipment_patches = image_patch.find("sporting equipment")
+        >>>     equipment_patch = equipment_patches[0]
+        >>>     equipment_name = equipment_patch.simple_query("What is the name of the sporting equipment?")
+        >>>     return equipment_patch.bing_search(f"When was {equipment_name} invented?")
+        """
+        return bing_search(query)
+
+
+Write a function using Python and the ImagePatch class (above) that could be executed to provide an answer to the query. 
+
+Consider the following guidelines:
+- Use base Python (comparison, sorting) for basic logical operations, left/right/up/down, math, etc.
+- Use the bing_search function to access external information and llm_query to perform logical reasoning, answering informational questions not concerning the image.
+
+
+INSERT_TOOL_HERE
+
+
+Query: Who is famous for allegedly doing this in a lightning storm?
+def execute_command(image)->str:
+    # The question is not direct perception, so we need to ask the image for more information
+    # Salient information: what is being done?
+    image_patch = ImagePatch(image)
+    guesses = []
+    action = image_patch.simple_query("what is being done?")
+    external_knowledge_query = "Who is famous for allegedly {} in a lightning storm?".format(action)
+    step_by_step_guess = bing_search(external_knowledge_query)
+    return step_by_step_guess
+
+
+Query: INSERT_QUERY_HERE

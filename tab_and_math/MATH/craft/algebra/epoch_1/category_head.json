@@ -1,0 +1,206 @@
+{
+    "additional_workers_needed": [
+        "additional_workers_needed(initial_workers, initial_time, target_time)"
+    ],
+    "calculate_average_rate": [
+        "calculate_average_rate(total_quantity, total_time)"
+    ],
+    "calculate_distance": [
+        "calculate_distance(time, speed_of_vehicle1, speed_ratio)"
+    ],
+    "calculate_distance_constant_speed": [
+        "calculate_distance_constant_speed(time, speed)"
+    ],
+    "calculate_duration": [
+        "calculate_duration(initial_workers, initial_duration, target_workers)"
+    ],
+    "calculate_entities": [
+        "calculate_entities(time_periods)"
+    ],
+    "calculate_equivalent_repetitions": [
+        "calculate_equivalent_repetitions(original_weight, original_repetitions, new_weight)"
+    ],
+    "calculate_final_count": [
+        "calculate_final_count(initial_count, total_time, time_interval, split_ratio)"
+    ],
+    "calculate_final_population": [
+        "calculate_final_population(initial_population, doubling_time, total_time)"
+    ],
+    "calculate_fraction_consumed": [
+        "calculate_fraction_consumed(iterations, initial_fraction)"
+    ],
+    "calculate_fractional_part": [
+        "calculate_fractional_part(total_duration, partial_duration)"
+    ],
+    "calculate_gas_cost": [
+        "calculate_gas_cost(start_odometer, end_odometer, miles_per_gallon, price_per_gallon)"
+    ],
+    "calculate_gas_property": [
+        "calculate_gas_property(initial_volume, initial_pressure, final_volume=None, final_pressure=None)"
+    ],
+    "calculate_item_difference": [
+        "calculate_item_difference(initial_squares, target_square, item_function)"
+    ],
+    "calculate_items_consumed": [
+        "calculate_items_consumed(total_time, rate)"
+    ],
+    "calculate_painting_cost_arithmetic_sequence": [
+        "calculate_painting_cost_arithmetic_sequence(total_houses, start_number, step_size, cost_per_digit)"
+    ],
+    "calculate_percentage_meeting_criteria": [
+        "calculate_percentage_meeting_criteria(total_population, subgroup_counts, subgroup_ratios)"
+    ],
+    "calculate_proportional_price": [
+        "calculate_proportional_price(base_quantity, base_price, target_quantity)"
+    ],
+    "calculate_proportional_value": [
+        "calculate_proportional_value(target_input, base_input, base_output)"
+    ],
+    "calculate_recycled_items": [
+        "calculate_recycled_items(initial_items, recycling_ratio)"
+    ],
+    "calculate_revolutions_proportional_to_radius": [
+        "calculate_revolutions_proportional_to_radius(initial_radius, initial_revolutions, target_radius)"
+    ],
+    "calculate_success_rate_increase": [
+        "calculate_success_rate_increase(initial_attempts, initial_successes, additional_attempts, additional_success_rate)"
+    ],
+    "calculate_time_based_on_speed": [
+        "calculate_time_based_on_speed(known_distance, known_time, target_distance)"
+    ],
+    "calculate_time_difference": [
+        "calculate_time_difference(task_size, speed1, speed2)"
+    ],
+    "calculate_total_with_interest": [
+        "calculate_total_with_interest(original_amount, interest_rate, num_periods)"
+    ],
+    "calculate_units_needed": [
+        "calculate_units_needed(units_per_resource1, units_per_resource2, target_resource2)"
+    ],
+    "calculate_units_per_row": [
+        "calculate_units_per_row(area, unit_size, area_conversion_factor=1, size_conversion_factor=1)"
+    ],
+    "count_items_in_stack": [
+        "count_items_in_stack(bottom_row_items, top_row_items)"
+    ],
+    "find_age_based_on_age_ratio_and_difference": [
+        "find_age_based_on_age_ratio_and_difference(person1_age_at_event, age_ratio, age_difference)"
+    ],
+    "find_capacity_from_fractions": [
+        "find_capacity_from_fractions(used_gallons, initial_fraction, final_fraction)"
+    ],
+    "find_container_capacity": [
+        "find_container_capacity(initial_fraction, final_fraction, added_substance)"
+    ],
+    "find_day_exceed_target": [
+        "find_day_exceed_target(initial_count, daily_multiplier, target_count, start_day)"
+    ],
+    "find_day_when_quantity_doubles": [
+        "find_day_when_quantity_doubles(starting_quantity, target_quantity)"
+    ],
+    "find_entity1_weight": [
+        "find_entity1_weight(total_weight, entity1_entity2_ratio, entity1_entity3_ratio)"
+    ],
+    "find_group_size": [
+        "find_group_size(total_members, total_attendees, attendance_rate_group2)"
+    ],
+    "find_initial_amount": [
+        "find_initial_amount(final_amount, consumption_rate, periods)"
+    ],
+    "find_initial_quantity": [
+        "find_initial_quantity(final_quantity, growth_rate, growth_period, total_time)"
+    ],
+    "find_inverse_proportional_quantity": [
+        "find_inverse_proportional_quantity(quantity1, value1, value2)"
+    ],
+    "find_inverse_variation": [
+        "find_inverse_variation(initial_x, initial_y, target_x)"
+    ],
+    "find_largest_side_custom_condition": [
+        "find_largest_side_custom_condition(total_fencing_length, area_multiplier, perimeter_multiplier)"
+    ],
+    "find_largest_variable_value": [
+        "find_largest_variable_value(function, variable, target_value)"
+    ],
+    "find_max_group_size": [
+        "find_max_group_size(max_group_size, leftover_members, row_adjustment, member_adjustment)"
+    ],
+    "find_midpoint": [
+        "find_midpoint(point1, point2)"
+    ],
+    "find_number_of_group1": [
+        "find_number_of_group1(total_population, total_participants, group1_ratio, group2_ratio)"
+    ],
+    "find_number_of_objects": [
+        "find_number_of_objects(total_parts, parts_per_object1, parts_per_object2, object1_per_object2)"
+    ],
+    "find_persons_age": [
+        "find_persons_age(person1_age_multiple, person2_age_difference, person1_person2_age_difference)"
+    ],
+    "find_proportional_part": [
+        "find_proportional_part(group1_total, group1_part, group2_total)"
+    ],
+    "find_quantity_on_target_day": [
+        "find_quantity_on_target_day(total_quantity, num_days, daily_increment, target_day)"
+    ],
+    "find_return_speed_generic": [
+        "find_return_speed_generic(distance, initial_speed, average_speed)"
+    ],
+    "find_species_population": [
+        "find_species_population(initial_total, final_total, species1_multiplier, species2_multiplier, target_species_multiplier, days_passed)"
+    ],
+    "find_state1_time": [
+        "find_state1_time(total_progress, total_time, state1_rate, state2_rate)"
+    ],
+    "find_successful_additional_attempts": [
+        "find_successful_additional_attempts(initial_attempts, initial_success_percentage, additional_attempts, final_success_percentage)"
+    ],
+    "find_time_to_target": [
+        "find_time_to_target(initial_value, target_value, growth_period, growth_multiplier)"
+    ],
+    "find_time_together_generic": [
+        "find_time_together_generic(time_pair1, time_pair2, time_pair3)"
+    ],
+    "find_total_cost": [
+        "find_total_cost(upfront_payment, upfront_percentage)"
+    ],
+    "find_total_items": [
+        "find_total_items(category1_count, category2_ratio, category3_ratio)"
+    ],
+    "find_value_at_target_time": [
+        "find_value_at_target_time(initial_value, growth_rate, target_time, final_value, final_time)"
+    ],
+    "overall_percent": [
+        "overall_percent(group1_percent, group2_percent, group1_total, group2_total)"
+    ],
+    "remaining_items_after_events": [
+        "remaining_items_after_events(initial_items, events, reduction_factor)"
+    ],
+    "remaining_task_fraction": [
+        "remaining_task_fraction(worker_time, work_time)"
+    ],
+    "solve_linear_system": [
+        "solve_linear_system(equations, variables)"
+    ],
+    "time_to_complete_task_together": [
+        "time_to_complete_task_together(person1_rate, person2_rate, total_task_amount)"
+    ],
+    "total_distance_after_steps": [
+        "total_distance_after_steps(total_steps, step_fraction)"
+    ],
+    "total_items_produced": [
+        "total_items_produced(initial_items, periods, growth_factor)"
+    ],
+    "total_production": [
+        "total_production(initial_production, periods, growth_factor)"
+    ],
+    "total_time_for_increasing_tasks": [
+        "total_time_for_increasing_tasks(initial_time, time_increment, num_tasks)"
+    ],
+    "total_value_decrement": [
+        "total_value_decrement(initial_value, decrement_value, stopping_condition)"
+    ],
+    "travel_time": [
+        "travel_time(distance, speed)"
+    ]
+}

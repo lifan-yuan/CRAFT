@@ -1,0 +1,131 @@
+{
+    "calculate_constant_of_proportionality": [
+        "calculate_constant_of_proportionality(data_frame, variable1_col, variable2_col)"
+    ],
+    "calculate_constant_of_proportionality_between_two_variables": [
+        "calculate_constant_of_proportionality_between_two_variables(data_frame, variable1_col, variable2_col)"
+    ],
+    "calculate_difference_between_columns_based_on_filter_value": [
+        "calculate_difference_between_columns_based_on_filter_value(data_frame, filter_col, value_col1, value_col2, filter_value)"
+    ],
+    "calculate_difference_between_entities": [
+        "calculate_difference_between_entities(data_frame, entity_col, value_col, entity1, entity2)"
+    ],
+    "calculate_difference_between_entities_for_category": [
+        "calculate_difference_between_entities_for_category(df, entity_col, amount_cols, entity1, entity2, category)"
+    ],
+    "calculate_difference_between_two_columns_for_specific_row": [
+        "calculate_difference_between_two_columns_for_specific_row(df, id_col, row_id, col1, col2)"
+    ],
+    "calculate_difference_between_two_entities": [
+        "calculate_difference_between_two_entities(df, entity_col, quantity_col, entity1, entity2)"
+    ],
+    "calculate_difference_in_amounts": [
+        "calculate_difference_in_amounts(data_frame, entity_col, entity1, entity2, category)"
+    ],
+    "calculate_difference_in_category_between_entities": [
+        "calculate_difference_in_category_between_entities(data_frame, entity_col, category_col, entity1, entity2)"
+    ],
+    "calculate_difference_in_donations_for_person": [
+        "calculate_difference_in_donations_for_person(donations_df, person_col, cause1_col, cause2_col, person_name)"
+    ],
+    "calculate_difference_in_donations_for_person_between_causes": [
+        "calculate_difference_in_donations_for_person_between_causes(donations_df, person_col, cause1_col, cause2_col, person_name)"
+    ],
+    "calculate_difference_in_participants_between_activities": [
+        "calculate_difference_in_participants_between_activities(activity_df, activity_col, participant1_col, participant2_col, activity1, activity2)"
+    ],
+    "calculate_donation_difference_between_causes": [
+        "calculate_donation_difference_between_causes(donations_df, person_col, cause1_col, cause2_col, person_name)"
+    ],
+    "calculate_donation_difference_for_person": [
+        "calculate_donation_difference_for_person(donations_df, person_col, cause1_col, cause2_col, person_name)"
+    ],
+    "calculate_donation_difference_for_person_and_causes": [
+        "calculate_donation_difference_for_person_and_causes(donations_df, person_col, person_name, cause1_col, cause2_col)"
+    ],
+    "calculate_expenses_on_date": [
+        "calculate_expenses_on_date(financial_records_df, date_col, expenses_col, target_date)"
+    ],
+    "calculate_items_on_racks": [
+        "calculate_items_on_racks(data_frame, rack_col, item_col, rack_number)"
+    ],
+    "calculate_mean_constant_of_proportionality": [
+        "calculate_mean_constant_of_proportionality(data_frame, variable1_col, variable2_col)"
+    ],
+    "calculate_net_amount_from_income_and_expenses": [
+        "calculate_net_amount_from_income_and_expenses(finances_df, item_col, amount_col, income_keywords, expense_keywords)"
+    ],
+    "calculate_probability_for_category": [
+        "calculate_probability_for_category(df, category, count_cols)"
+    ],
+    "calculate_probability_from_count_table": [
+        "calculate_probability_from_count_table(count_table, target_row, target_col)"
+    ],
+    "calculate_probability_of_category_combination": [
+        "calculate_probability_of_category_combination(data_frame, category1, category2)"
+    ],
+    "calculate_probability_of_combination": [
+        "calculate_probability_of_combination(counts_df, category1, category2)"
+    ],
+    "calculate_probability_of_event_from_frequency_table": [
+        "calculate_probability_of_event_from_frequency_table(frequency_df, event_col, category_cols, event_name, category_name)"
+    ],
+    "calculate_total_attribute_value_for_entities": [
+        "calculate_total_attribute_value_for_entities(data_frame, entity_col, attribute_col, entity_list)"
+    ],
+    "calculate_total_from_unit_and_quantity": [
+        "calculate_total_from_unit_and_quantity(df, quantity_col, total_col, num_items)"
+    ],
+    "calculate_total_items": [
+        "calculate_total_items(num_groups, items_per_group)"
+    ],
+    "calculate_total_items_to_order_based_on_replacement_ratios": [
+        "calculate_total_items_to_order_based_on_replacement_ratios(item_frequencies_df, item_col, frequency_col, item_replacement_ratios)"
+    ],
+    "count_groups_above_threshold_in_stem_leaf": [
+        "count_groups_above_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold)"
+    ],
+    "count_groups_below_threshold_in_stem_leaf": [
+        "count_groups_below_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold)"
+    ],
+    "count_instances_with_exact_value_in_stem_leaf": [
+        "count_instances_with_exact_value_in_stem_leaf(data_frame, stem_col, leaf_col, given_value)"
+    ],
+    "count_items_in_range_in_stem_leaf": [
+        "count_items_in_range_in_stem_leaf(data_frame, stem_col, leaf_col, min_value, max_value)"
+    ],
+    "count_occurrences_of_specific_value_in_stem_leaf": [
+        "count_occurrences_of_specific_value_in_stem_leaf(data_frame, stem_col, leaf_col, specific_value)"
+    ],
+    "count_occurrences_of_value_in_stem_leaf": [
+        "count_occurrences_of_value_in_stem_leaf(data_frame, stem_col, leaf_col, target_value)"
+    ],
+    "count_specific_value_in_stem_leaf": [
+        "count_specific_value_in_stem_leaf(data_frame, stem_col, leaf_col, specific_value)"
+    ],
+    "find_largest_number_in_stem_leaf": [
+        "find_largest_number_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_largest_value_in_stem_leaf": [
+        "find_largest_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_lowest_value_in_stem_leaf": [
+        "find_lowest_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_max_value_in_stem_leaf": [
+        "find_max_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_received_amount_for_transaction": [
+        "find_received_amount_for_transaction(financial_record_df, description_col, received_col, transaction_description)"
+    ],
+    "find_value_by_description_in_table": [
+        "find_value_by_description_in_table(data_frame, description_col, value_col, target_description)"
+    ],
+    "get_table_cell_value": [
+        "get_table_cell_value(data_frame, row_id_col, row_id, col_id)"
+    ],
+    "get_transaction_amount_from_financial_records": [
+        "get_transaction_amount_from_financial_records(financial_records_df, description_col, received_col, transaction_description)"
+    ]
+}

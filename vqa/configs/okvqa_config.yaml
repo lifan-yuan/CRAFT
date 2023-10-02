@@ -1,0 +1,30 @@
+# For example:
+multiprocessing: False
+path_pretrained_models: './pretrained_models'
+dataset:
+    data_path: 'data'
+blip_v2_model_type: blip2-flan-t5-xl  # Change to blip2-flan-t5-xl for smaller GPUs
+blip_half_precision: True
+# Add more changes here, following the same format as base_config.yaml
+codex:
+    temperature: 0.                                 # Temperature for Codex. (Almost) deterministic if 0
+    best_of: 1                                      # Number of tries to choose from. Use when temperature > 0
+    max_tokens: 512                                 # Maximum number of tokens to generate for Codex
+    prompt: ./prompts/eval/okvqa.prompt             # Codex prompt file, which defines the API. If you use a Chat-based model (3.5/4) try ./prompts/chatapi.prompt (doesn't support video for now due to token limits)
+    model: gpt-3.5-turbo-0613                       # Codex model to use. [code-davinci-002, gpt-3.5-turbo, gpt-4]
+
+load_models:                                        # Which pretrained models to load
+    maskrcnn: True
+    clip: False
+    glip: True
+    owlvit: False
+    tcl: False
+    gpt3_qa: True
+    gpt3_general: True
+    depth: True
+    blip: True
+    saliency: False
+    xvlm: True
+    codex: True
+    object_detector: False
+    bing: False

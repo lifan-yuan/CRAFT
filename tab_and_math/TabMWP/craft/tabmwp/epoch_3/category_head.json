@@ -1,0 +1,146 @@
+{
+    "calculate_absolute_difference_between_two_entities": [
+        "calculate_absolute_difference_between_two_entities(df, entity_col, value_col, entity1, entity2)"
+    ],
+    "calculate_constant_of_proportionality_between_two_variables": [
+        "calculate_constant_of_proportionality_between_two_variables(data_frame, variable1_col, variable2_col)"
+    ],
+    "calculate_difference_between_groups_for_item": [
+        "calculate_difference_between_groups_for_item(data_frame, item_col, group1_col, group2_col, target_item)"
+    ],
+    "calculate_difference_between_two_categories": [
+        "calculate_difference_between_two_categories(df, category_col, count_col, category1, category2, group)"
+    ],
+    "calculate_difference_between_two_columns_for_entity": [
+        "calculate_difference_between_two_columns_for_entity(data_frame, entity_col, value1_col, value2_col, entity_name)"
+    ],
+    "calculate_difference_between_two_columns_for_specific_row": [
+        "calculate_difference_between_two_columns_for_specific_row(df, row_id_col, row_id, col1, col2)"
+    ],
+    "calculate_difference_between_two_rows": [
+        "calculate_difference_between_two_rows(data_frame, row_id_col, value_col, row_id1, row_id2)"
+    ],
+    "calculate_difference_in_counts_of_two_categories": [
+        "calculate_difference_in_counts_of_two_categories(df, category_col, count_col1, count_col2, category1, category2)"
+    ],
+    "calculate_frequency_difference": [
+        "calculate_frequency_difference(df, category_col, frequency_col, category1, category2)"
+    ],
+    "calculate_increase_in_value_for_entity_between_years": [
+        "calculate_increase_in_value_for_entity_between_years(data_frame, entity_col, year1_col, year2_col, entity_name)"
+    ],
+    "calculate_items_based_on_ratio": [
+        "calculate_items_based_on_ratio(num_groups, ratio)"
+    ],
+    "calculate_items_in_groups": [
+        "calculate_items_in_groups(df, group_col, item_col, num_groups)"
+    ],
+    "calculate_items_of_type_with_ratio": [
+        "calculate_items_of_type_with_ratio(data_frame, item_col, frequency_col, item_type, item_ratio)"
+    ],
+    "calculate_mean_of_column": [
+        "calculate_mean_of_column(data_frame, column_name)"
+    ],
+    "calculate_median_of_column": [
+        "calculate_median_of_column(df, num_col)"
+    ],
+    "calculate_median_of_numerical_column": [
+        "calculate_median_of_numerical_column(df, num_col)"
+    ],
+    "calculate_mode_of_column": [
+        "calculate_mode_of_column(data_frame, column_name)"
+    ],
+    "calculate_price_difference_between_entities": [
+        "calculate_price_difference_between_entities(data_frame, entity_col, item_col, entity1, entity2, item_type)"
+    ],
+    "calculate_price_difference_between_items": [
+        "calculate_price_difference_between_items(item_prices_df, item_col, price_col, item1, item2)"
+    ],
+    "calculate_price_difference_between_years": [
+        "calculate_price_difference_between_years(item_prices_df, item_col, year1_col, year2_col, item_name)"
+    ],
+    "calculate_probability_of_specific_combination": [
+        "calculate_probability_of_specific_combination(data_frame, category1_col, category2_col, category1_value, category2_value)"
+    ],
+    "calculate_range_of_column": [
+        "calculate_range_of_column(data_frame, column_name)"
+    ],
+    "calculate_total_count_for_specific_days": [
+        "calculate_total_count_for_specific_days(df, day_col, count_col, days_list)"
+    ],
+    "calculate_total_count_from_frequency": [
+        "calculate_total_count_from_frequency(data_frame, frequency_col)"
+    ],
+    "calculate_total_count_from_frequency_table": [
+        "calculate_total_count_from_frequency_table(data_frame, frequency_col)"
+    ],
+    "calculate_total_from_frequency_and_additional_count": [
+        "calculate_total_from_frequency_and_additional_count(df, frequency_col, additional_count)"
+    ],
+    "calculate_total_from_frequency_table": [
+        "calculate_total_from_frequency_table(data_frame, frequency_col)"
+    ],
+    "calculate_total_items": [
+        "calculate_total_items(num_groups, fixed_quantity_per_group)"
+    ],
+    "calculate_total_items_after_addition": [
+        "calculate_total_items_after_addition(data_frame, category_col, frequency_col, additional_items)"
+    ],
+    "calculate_total_items_for_groups": [
+        "calculate_total_items_for_groups(data_frame, group_col, item_col, num_groups)"
+    ],
+    "calculate_total_items_from_item_quantities_per_group": [
+        "calculate_total_items_from_item_quantities_per_group(item_quantities_df, group_col, item_col, num_groups)"
+    ],
+    "count_frequency_of_specific_value": [
+        "count_frequency_of_specific_value(df, value_col, frequency_col, specific_value)"
+    ],
+    "count_groups_above_threshold_in_stem_leaf": [
+        "count_groups_above_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, group_threshold)"
+    ],
+    "count_groups_below_threshold_in_stem_leaf": [
+        "count_groups_below_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold)"
+    ],
+    "count_groups_with_exact_item_count_in_stem_leaf": [
+        "count_groups_with_exact_item_count_in_stem_leaf(data_frame, stem_col, leaf_col, item_count)"
+    ],
+    "count_instances_with_specified_value_in_stem_leaf": [
+        "count_instances_with_specified_value_in_stem_leaf(data_frame, stem_col, leaf_col, specified_value)"
+    ],
+    "count_items_with_specific_value_in_stem_leaf": [
+        "count_items_with_specific_value_in_stem_leaf(data_frame, stem_col, leaf_col, specific_value)"
+    ],
+    "count_items_with_value_above_threshold": [
+        "count_items_with_value_above_threshold(data_frame, value_col, frequency_col, value_threshold)"
+    ],
+    "count_total_members_in_group": [
+        "count_total_members_in_group(group_df, group_col, member_cols, group_name)"
+    ],
+    "count_total_people_in_group_from_subgroups": [
+        "count_total_people_in_group_from_subgroups(data_frame, group_col, subgroup1_col, subgroup2_col, group_name)"
+    ],
+    "find_largest_value_in_stem_leaf": [
+        "find_largest_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_lowest_value_in_stem_leaf": [
+        "find_lowest_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_max_value_in_stem_leaf": [
+        "find_max_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "find_smallest_value_in_stem_leaf": [
+        "find_smallest_value_in_stem_leaf(data_frame, stem_col, leaf_col)"
+    ],
+    "get_frequency_of_specific_value": [
+        "get_frequency_of_specific_value(df, value_col, frequency_col, specific_value)"
+    ],
+    "get_item_value_in_specific_year": [
+        "get_item_value_in_specific_year(item_values_df, item_col, item_name, year)"
+    ],
+    "get_value_from_table_by_identifier": [
+        "get_value_from_table_by_identifier(data_frame, identifier_col, value_col, identifier_value)"
+    ],
+    "get_value_from_table_by_row_and_column": [
+        "get_value_from_table_by_row_and_column(data_frame, row_id_col, row_id, col_id)"
+    ]
+}

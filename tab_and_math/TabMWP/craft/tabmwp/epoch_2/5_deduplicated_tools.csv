@@ -1,0 +1,2889 @@
+question,answer,table,level,tool_id,code,api_call,tool,tool_call
+"While writing a paper on making decisions in groups, Reagan researched the size of a number of committees. What is the size of the largest committee?",90.0,"Stem | Leaf 
+3 | 1, 1, 4, 4, 5, 7, 8
+4 | 6
+5 | 2, 2, 4, 7
+6 | 5, 6, 8, 8, 9
+7 | 0, 9, 9
+8 | 1, 3, 4, 8
+9 | 0",5,12461,"import pandas as pd
+
+def find_largest_committee(df):
+    """"""
+    This function takes in a pandas dataframe of committee sizes, and returns the size of the largest committee.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the sizes of committees.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The size of the largest committee.
+    """"""
+    # prepare a list to calculate size of each committee
+    sizes = []
+    # calculate the size of each committee
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            sizes.append(stem * 10 + leaf[j])
+    # find the maximum size
+    max_size = max(sizes)
+    return max_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[1, 1, 4, 4, 5, 7, 8], [6], [2, 2, 4, 7], [5, 6, 8, 8, 9], [0, 9, 9], [1, 3, 4, 8], [0]]
+})
+# Call the tool to solve the problem
+print(find_largest_committee(df))","def find_max_value_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items, and returns the maximum value among the items.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The maximum value among the items.
+    """"""
+    # Initialize the list to calculate items
+    items = []
+    
+    # Calculate the total value of items
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Find the maximum value
+    max_value = max(items)
+    
+    return max_value","data = {
+    ""Stem"": [3, 4, 5, 6, 7, 8, 9],
+    ""Leaf"": [[1, 1, 4, 4, 5, 7, 8], [6], [2, 2, 4, 7], [5, 6, 8, 8, 9], [0, 9, 9], [1, 3, 4, 8], [0]]
+}
+
+df = pd.DataFrame(data)
+print(find_max_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+"For an economics project, Denise determined the cost of ferry rides for bicycles and cars. How much does it cost to take a bicycle on the Ocracoke ferry?",3.0,"Ferry | Bicycle | Car
+Ocracoke | $3 | $15
+Fauntleroy-Vashon | $5 | $15
+Seattle-Bremerton | $8 | $12
+Mukilteu-Clinton | $5 | $7",5,9734,"import pandas as pd
+
+def get_bicycle_cost_on_ferry(ferry_df, ferry_name):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry table and a ferry name, and returns the cost of taking a bicycle on the specified ferry.
+    Args:
+    ferry_df (pd.DataFrame): A pandas DataFrame containing ferry names and their costs for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry_name (str): The name of the ferry.
+    Returns:
+    float: The cost of taking a bicycle on the specified ferry.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = ferry_df[ferry_df['Ferry'] == ferry_name]
+    if not ferry_df.empty:
+        bicycle_cost = ferry_df['Bicycle'].values[0]
+        return bicycle_cost
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Seattle-Bremerton', 'Mukilteu-Clinton'],
+    'Bicycle': [3, 5, 8, 5],
+    'Car': [15, 15, 12, 7]
+})
+# Call the tool to solve the problem
+bicycle_cost = get_bicycle_cost_on_ferry(df, 'Ocracoke')
+print(bicycle_cost)","def get_item_cost_for_entity(cost_df, entity_col, item_col, entity_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and items and their costs, and returns the cost of the specified item for the specified entity.
+    
+    Args:
+    cost_df (pd.DataFrame): A pandas DataFrame containing entity names and their costs for various items.
+    entity_col (str): The column name for the entity names.
+    item_col (str): The column name for the item costs.
+    entity_name (str): The name of the entity.
+    
+    Returns:
+    float: The cost of the item for the specified entity.
+    """"""
+    # Filter the DataFrame for the specific entity
+    entity_df = cost_df[cost_df[entity_col] == entity_name]
+    if not entity_df.empty:
+        item_cost = entity_df[item_col].values[0]
+        return item_cost
+    else:
+        return None","df = pd.DataFrame({
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Seattle-Bremerton', 'Mukilteu-Clinton'],
+    'Bicycle': [3, 5, 8, 5],
+    'Car': [15, 15, 12, 7]
+})
+print(get_item_cost_for_entity(cost_df=df, entity_col='Ferry', item_col='Bicycle', entity_name='Ocracoke'))"
+Several people compared how many Web pages they had visited. How many more Web pages did Diego visit than Carla?,591.0,"Person | Number of Web pages
+Ariel | 550
+Diego | 734
+Carla | 143
+Gabriel | 343",3,16247,"import pandas as pd
+
+def calculate_difference(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of people and the number of Web pages they visited, and returns the difference in the number of Web pages visited by two specified people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing people's names and the number of Web pages they visited with columns 'Person' and 'Number of Web pages'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in the number of Web pages visited by person1 and person2.
+    """"""
+    # Filter the DataFrame for the specific people
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the number of Web pages visited by each person
+    person1_pages = person1_df['Number of Web pages'].values[0]
+    person2_pages = person2_df['Number of Web pages'].values[0]
+    
+    # Calculate the difference
+    difference = person1_pages - person2_pages
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Ariel', 'Diego', 'Carla', 'Gabriel'],
+    'Number of Web pages': [550, 734, 143, 343]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Diego', 'Carla')
+print(difference)","def calculate_difference_between_two_entities(df, entity_col, value_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their values, and returns the difference in values between two specified entities.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entities and their values.
+    entity_col (str): The column name for the entities.
+    value_col (str): The column name for the values.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    int: The difference in values between entity1 and entity2.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the values for each entity
+    entity1_value = entity1_df[value_col].values[0]
+    entity2_value = entity2_df[value_col].values[0]
+    
+    # Calculate the difference
+    difference = entity1_value - entity2_value
+    
+    return difference","df = pd.DataFrame({
+    'Person': ['Ariel', 'Diego', 'Carla', 'Gabriel'],
+    'Number of Web pages': [550, 734, 143, 343]
+})
+
+print(calculate_difference_between_two_entities(df, 'Person', 'Number of Web pages', 'Diego', 'Carla'))"
+"For an economics project, Eduardo determined the cost of ferry rides for bicycles and cars. How much higher is the fare for a car on the Mukilteu-Clinton ferry than on the Southport-Fort Fisher ferry?",2.0,"Ferry | Bicycle | Car
+Fauntleroy-Vashon | $5 | $15
+Ocracoke | $3 | $15
+Southport-Fort Fisher | $2 | $5
+Seattle-Bremerton | $8 | $12
+Mukilteu-Clinton | $5 | $7",5,16135,"import pandas as pd
+
+def calculate_fare_difference(df, ferry1, ferry2, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table, two ferry names, and a vehicle type, and returns the fare difference between the two ferries for the specified vehicle type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and fares for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    vehicle_type (str): The type of vehicle for which to calculate the fare difference ('Bicycle' or 'Car').
+    Returns:
+    float: The fare difference between the two ferries for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specified ferries
+    ferry1_df = df[df['Ferry'] == ferry1]
+    ferry2_df = df[df['Ferry'] == ferry2]
+    
+    # Check if both ferries are in the DataFrame
+    if not ferry1_df.empty and not ferry2_df.empty:
+        # Calculate the fare difference for the specified vehicle type
+        fare_difference = abs(ferry1_df[vehicle_type].values[0] - ferry2_df[vehicle_type].values[0])
+        return fare_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Fauntleroy-Vashon', 'Ocracoke', 'Southport-Fort Fisher', 'Seattle-Bremerton', 'Mukilteu-Clinton'],
+    'Bicycle': [5, 3, 2, 8, 5],
+    'Car': [15, 15, 5, 12, 7]
+})
+
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Mukilteu-Clinton', 'Southport-Fort Fisher', 'Car')
+print(fare_difference)","def calculate_difference_between_two_entities_in_category(fare_table, entity_col, category_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a fare table, two entity names, and a category, and returns the fare difference between the two entities for the specified category.
+    
+    Args:
+    fare_table (pd.DataFrame): A pandas DataFrame containing entity names and fares for different categories.
+    entity_col (str): The column name for the entity names.
+    category_col (str): The column name for the category.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    float: The fare difference between the two entities for the specified category.
+    """"""
+    # Filter the DataFrame for the specified entities
+    entity1_df = fare_table[fare_table[entity_col] == entity1]
+    entity2_df = fare_table[fare_table[entity_col] == entity2]
+    
+    # Check if both entities are in the DataFrame
+    if not entity1_df.empty and not entity2_df.empty:
+        # Calculate the fare difference for the specified category
+        fare_difference = abs(entity1_df[category_col].values[0] - entity2_df[category_col].values[0])
+        return fare_difference
+    else:
+        return None","fare_table = pd.DataFrame({
+    'Ferry': ['Fauntleroy-Vashon', 'Ocracoke', 'Southport-Fort Fisher', 'Seattle-Bremerton', 'Mukilteu-Clinton'],
+    'Bicycle': [5, 3, 2, 8, 5],
+    'Car': [15, 15, 5, 12, 7]
+})
+
+print(calculate_difference_between_two_entities_in_category(fare_table, 'Ferry', 'Car', 'Mukilteu-Clinton', 'Southport-Fort Fisher'))"
+A transportation analyst compared various bridges' tolls. How much higher is the toll for a truck on the Golden Gate bridge than on the Fort Madison bridge?,3.0,"Bridge | Truck | Car
+Golden Gate | $7 | $6
+Fort Madison | $4 | $1
+Oakland Bay | $6 | $4",4,6103,"import pandas as pd
+
+def calculate_toll_difference(df, bridge1, bridge2, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a toll table, two bridge names, and a vehicle type, and returns the difference in tolls between the two bridges for the specified vehicle type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls for different vehicle types.
+    bridge1 (str): The name of the first bridge.
+    bridge2 (str): The name of the second bridge.
+    vehicle_type (str): The type of vehicle.
+    Returns:
+    float: The difference in tolls between the two bridges for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific bridges and vehicle type
+    bridge1_df = df[df['Bridge'] == bridge1]
+    bridge2_df = df[df['Bridge'] == bridge2]
+    
+    # Get the tolls for the specified vehicle type on the two bridges
+    bridge1_toll = bridge1_df[vehicle_type].values[0]
+    bridge2_toll = bridge2_df[vehicle_type].values[0]
+    
+    # Calculate the difference in tolls
+    toll_difference = bridge1_toll - bridge2_toll
+    
+    return toll_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Golden Gate', 'Fort Madison', 'Oakland Bay'],
+    'Truck': [7, 4, 6],
+    'Car': [6, 1, 4]
+})
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'Golden Gate', 'Fort Madison', 'Truck')
+print(toll_difference)","def calculate_difference_between_two_rows_for_column(df, row_id_col, value_col, row_id1, row_id2):
+    """"""
+    This function takes in a pandas DataFrame, a column for row identifiers, a column for values, and two row identifiers, and returns the difference in values between the two rows for the specified column.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing various rows and columns.
+    row_id_col (str): The column name for the row identifiers.
+    value_col (str): The column name for the values.
+    row_id1 (str): The identifier for the first row.
+    row_id2 (str): The identifier for the second row.
+    
+    Returns:
+    float: The difference in values between the two rows for the specified column.
+    """"""
+    # Filter the DataFrame for the specific rows
+    row1_df = df[df[row_id_col] == row_id1]
+    row2_df = df[df[row_id_col] == row_id2]
+    
+    # Get the values for the specified column on the two rows
+    row1_value = row1_df[value_col].values[0]
+    row2_value = row2_df[value_col].values[0]
+    
+    # Calculate the difference in values
+    value_difference = row1_value - row2_value
+    
+    return value_difference","df = pd.DataFrame({
+    'Bridge': ['Golden Gate', 'Fort Madison', 'Oakland Bay'],
+    'Truck': [7, 4, 6],
+    'Car': [6, 1, 4]
+})
+print(calculate_difference_between_two_rows_for_column(df, 'Bridge', 'Truck', 'Golden Gate', 'Fort Madison'))"
+Each pen has 2 cows. How many cows are in 4 pens?,8.0,"Number of pens | Number of cows
+1 | 2
+2 | 4
+3 | 6
+4 | ?",1,13541,"import pandas as pd
+
+def find_cows_in_pens(df, target_pens):
+    """"""
+    This function takes in a pandas DataFrame representing the number of cows in pens and a target number of pens, and returns the number of cows in the target number of pens.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of pens and the corresponding number of cows with columns 'Number of pens' and 'Number of cows'.
+    target_pens (int): The target number of pens for which the number of cows needs to be found.
+    Returns:
+    int: The number of cows in the target number of pens.
+    """"""
+    # Find the number of cows per pen
+    cows_per_pen = df['Number of cows'][0] / df['Number of pens'][0]
+    
+    # Calculate the number of cows in the target number of pens
+    cows_in_target_pens = target_pens * cows_per_pen
+    
+    return int(cows_in_target_pens)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of pens': [1, 2, 3],
+    'Number of cows': [2, 4, 6]
+})
+
+# Call the tool to solve the problem
+print(find_cows_in_pens(df, 4))","def calculate_items_in_target_groups(df, group_col, item_col, target_groups):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item counts per group and a target number of groups, and returns the number of items in the target number of groups.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of groups and the corresponding number of items with columns specified by group_col and item_col.
+    group_col (str): The column name for the group counts.
+    item_col (str): The column name for the item counts.
+    target_groups (int): The target number of groups for which the number of items needs to be found.
+    
+    Returns:
+    int: The number of items in the target number of groups.
+    """"""
+    # Find the number of items per group
+    items_per_group = df[item_col][0] / df[group_col][0]
+    
+    # Calculate the number of items in the target number of groups
+    items_in_target_groups = target_groups * items_per_group
+    
+    return int(items_in_target_groups)","df = pd.DataFrame({
+    'Number of pens': [1, 2, 3],
+    'Number of cows': [2, 4, 6]
+})
+
+print(calculate_items_in_target_groups(df, 'Number of pens', 'Number of cows', 4))"
+"For an economics project, Josiah determined the cost of ferry rides for bicycles and cars. How much does it cost to take a car on the Southport-Fort Fisher ferry?",5.0,"Ferry | Bicycle | Car
+Fauntleroy-Vashon | $5 | $15
+Ocracoke | $3 | $15
+Mukilteu-Clinton | $5 | $7
+Southport-Fort Fisher | $2 | $5",5,16138,"import pandas as pd
+
+def get_ferry_cost(ferry_df, ferry_name, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry cost table, a ferry name, and a vehicle type, and returns the cost of the ferry ride for the specified vehicle type.
+    Args:
+    ferry_df (pd.DataFrame): A pandas DataFrame containing ferry names and their costs for different vehicle types with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry_name (str): The name of the ferry.
+    vehicle_type (str): The type of the vehicle.
+    Returns:
+    float: The cost of the ferry ride for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = ferry_df[ferry_df['Ferry'] == ferry_name]
+    
+    # If the ferry is found in the DataFrame, return the cost for the specified vehicle type
+    if not ferry_df.empty:
+        return ferry_df[vehicle_type].values[0]
+    
+    # If the ferry is not found in the DataFrame, return None
+    return None","# Initialize the table into a dataframe
+ferry_df = pd.DataFrame({
+    'Ferry': ['Fauntleroy-Vashon', 'Ocracoke', 'Mukilteu-Clinton', 'Southport-Fort Fisher'],
+    'Bicycle': [5, 3, 5, 2],
+    'Car': [15, 15, 7, 5]
+})
+
+# Call the tool to solve the problem
+cost = get_ferry_cost(ferry_df, 'Southport-Fort Fisher', 'Car')
+print(cost)","def get_service_cost_for_item(service_costs_df, service_col, item_col, service_name, item_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of service costs for various items, a service name, and an item name, and returns the cost of the service for the specified item.
+    
+    Args:
+    service_costs_df (pd.DataFrame): A pandas DataFrame containing service names and their costs for different items.
+    service_col (str): The column name for the service names.
+    item_col (str): The column name for the item names.
+    service_name (str): The name of the service.
+    item_name (str): The name of the item.
+    
+    Returns:
+    float: The cost of the service for the specified item, or None if the service is not found in the DataFrame.
+    """"""
+    # Filter the DataFrame for the specific service
+    service_df = service_costs_df[service_costs_df[service_col] == service_name]
+    
+    # If the service is found in the DataFrame, return the cost for the specified item
+    if not service_df.empty:
+        return service_df[item_name].values[0]
+    
+    # If the service is not found in the DataFrame, return None
+    return None","service_costs_data = {
+    'Ferry': ['Fauntleroy-Vashon', 'Ocracoke', 'Mukilteu-Clinton', 'Southport-Fort Fisher'],
+    'Bicycle': [5, 3, 5, 2],
+    'Car': [15, 15, 7, 5]
+}
+
+service_costs_df = pd.DataFrame(service_costs_data)
+
+print(get_service_cost_for_item(service_costs_df, ""Ferry"", ""Car"", 'Southport-Fort Fisher', 'Car'))"
+A publisher invited authors to write stories for a special anthology. How many authors wrote exactly 4 stories?,6.0,"Stories written | Frequency
+1 | 19
+2 | 15
+3 | 7
+4 | 6
+5 | 0
+6 | 11",7,11526,"import pandas as pd
+
+def count_authors(df, num_stories):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of stories written by authors and a number of stories, and returns the number of authors who wrote exactly that number of stories.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of stories written and their frequencies with columns 'Stories written' and 'Frequency'.
+    num_stories (int): The number of stories to filter by.
+    Returns:
+    int: The number of authors who wrote exactly num_stories stories.
+    """"""
+    # Filter the DataFrame for the specific number of stories
+    stories_df = df[df['Stories written'] == num_stories]
+    if not stories_df.empty:
+        return stories_df['Frequency'].values[0]
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stories written': [1, 2, 3, 4, 5, 6],
+    'Frequency': [19, 15, 7, 6, 0, 11]
+})
+# Call the tool to solve the problem
+num_authors = count_authors(df, 4)
+print(num_authors)","def count_frequency_of_specific_value(df, value_col, frequency_col, specific_value):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table, a specific value, and returns the frequency of that specific value in the table.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing values and their frequencies.
+    value_col (str): The column name for the values.
+    frequency_col (str): The column name for the frequencies.
+    specific_value (int): The specific value to filter by.
+    
+    Returns:
+    int: The frequency of the specific value.
+    """"""
+    # Filter the DataFrame for the specific value
+    value_df = df[df[value_col] == specific_value]
+    if not value_df.empty:
+        return value_df[frequency_col].values[0]
+    else:
+        return 0","df = pd.DataFrame({
+    'Stories written': [1, 2, 3, 4, 5, 6],
+    'Frequency': [19, 15, 7, 6, 0, 11]
+})
+print(count_frequency_of_specific_value(df, 'Stories written', 'Frequency', 4))"
+Reagan's basketball team ordered new jerseys. She recorded the sizes they needed in a frequency chart. How many jerseys did they order?,14.0,"Size | Frequency
+small | 4
+medium | 7
+large | 3",5,11005,"import pandas as pd
+
+def calculate_total_jerseys(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of jersey sizes, and returns the total number of jerseys ordered.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing jersey sizes and their frequencies with columns 'Size' and 'Frequency'.
+    Returns:
+    int: The total number of jerseys ordered.
+    """"""
+    # Sum up the frequencies to get the total number of jerseys
+    total_jerseys = df['Frequency'].sum()
+    
+    return total_jerseys","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Size': ['small', 'medium', 'large'],
+    'Frequency': [4, 7, 3]
+})
+
+# Call the tool to solve the problem
+total_jerseys = calculate_total_jerseys(df)
+
+# Print the answer
+print(total_jerseys)","def calculate_total_count_from_frequency_table(data_frame, item_col, frequency_col):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of items, and returns the total count of items based on the frequencies.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing item names and their frequencies.
+    item_col (str): The column name for the item names.
+    frequency_col (str): The column name for the item frequencies.
+    
+    Returns:
+    int: The total count of items.
+    """"""
+    # Sum up the frequencies to get the total count of items
+    total_count = data_frame[frequency_col].sum()
+    
+    return total_count","data = {
+    'Size': ['small', 'medium', 'large'],
+    'Frequency': [4, 7, 3]
+}
+
+df = pd.DataFrame(data)
+print(calculate_total_count_from_frequency_table(data_frame=df, item_col=""Size"", frequency_col=""Frequency""))"
+"For an economics project, Wesley determined the cost of ferry rides for bicycles and cars. How much does it cost to take a car on the Ocracoke ferry?",15.0,"Ferry | Bicycle | Car
+Seattle-Bremerton | $8 | $12
+Southport-Fort Fisher | $2 | $5
+Ocracoke | $3 | $15",4,16299,"import pandas as pd
+
+def get_ferry_cost(df, ferry_name, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry cost table, a ferry name, and a vehicle type, and returns the cost of the ferry ride for the specified vehicle type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names, and costs for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry_name (str): The name of the ferry.
+    vehicle_type (str): The type of vehicle ('Bicycle' or 'Car').
+    Returns:
+    float: The cost of the ferry ride for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = df[df['Ferry'] == ferry_name]
+    
+    # Get the cost for the specified vehicle type
+    if not ferry_df.empty:
+        cost = ferry_df[vehicle_type].values[0]
+        return cost
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Ocracoke'],
+    'Bicycle': [8, 2, 3],
+    'Car': [12, 5, 15]
+})
+# Call the tool to solve the problem
+print(get_ferry_cost(df, 'Ocracoke', 'Car'))","def get_cost_for_item_and_service(costs_df, item_col, service_col, item_name, service_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of costs for different items and services, and returns the cost for a specific item and service.
+    
+    Args:
+    costs_df (pd.DataFrame): A pandas DataFrame containing item names and costs for different services.
+    item_col (str): The column name for the item names.
+    service_col (str): The column name for the service types.
+    item_name (str): The name of the item.
+    service_type (str): The type of service.
+    
+    Returns:
+    float: The cost for the specified item and service.
+    """"""
+    # Filter the DataFrame for the specific item
+    item_df = costs_df[costs_df[item_col] == item_name]
+    
+    # Get the cost for the specified service type
+    if not item_df.empty:
+        cost = item_df[service_type].values[0]
+        return cost
+    else:
+        return None","costs_data = {
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Ocracoke'],
+    'Bicycle': [8, 2, 3],
+    'Car': [12, 5, 15]
+}
+
+costs_df = pd.DataFrame(costs_data)
+
+print(get_cost_for_item_and_service(costs_df, ""Ferry"", [""Bicycle"", ""Car""], ""Ocracoke"", ""Car""))"
+The Mountain Moose Lodge has many customer reviews online. The number of reviews is shown in the frequency chart. Paula visits the Mountain Moose Lodge with her friends and has a great time. Paula and her friends leave 4 reviews that are all 5 stars. How many reviews does the Mountain Moose Lodge have now?,155.0,"Rating | Frequency
+5 stars | 81
+4 stars | 54
+3 stars | 5
+2 stars | 2
+1 star | 9",5,12148,"import pandas as pd
+
+def calculate_total_reviews(df, new_reviews):
+    """"""
+    This function takes in a pandas DataFrame representing a review table and a dictionary of new reviews, and returns the total number of reviews after adding the new reviews.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing review ratings and their frequencies with columns 'Rating' and 'Frequency'.
+    new_reviews (dict): A dictionary where the keys are review ratings and the values are the number of new reviews for each rating.
+    Returns:
+    int: The total number of reviews after adding the new reviews.
+    """"""
+    # Iterate through the new reviews and add them to the corresponding rating in the DataFrame
+    for rating, quantity in new_reviews.items():
+        # Filter the DataFrame for the specific rating
+        rating_df = df[df['Rating'] == rating]
+        if not rating_df.empty:
+            df.loc[df['Rating'] == rating, 'Frequency'] += quantity
+    
+    # Calculate the total number of reviews
+    total_reviews = df['Frequency'].sum()
+    
+    return total_reviews","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Rating': ['5 stars', '4 stars', '3 stars', '2 stars', '1 star'],
+    'Frequency': [81, 54, 5, 2, 9]
+})
+
+# Initialize the new reviews
+new_reviews = {'5 stars': 4}
+
+# Call the tool to solve the problem
+total_reviews = calculate_total_reviews(df, new_reviews)
+print(total_reviews)","def update_total_items_from_frequencies_and_new_quantities(item_freq_df, item_col, frequency_col, new_item_quantities):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item frequencies and a dictionary of new item quantities, and returns the total number of items after adding the new quantities based on the frequencies and new quantities.
+    
+    Args:
+    item_freq_df (pd.DataFrame): A pandas DataFrame containing item names and their frequencies.
+    item_col (str): The column name for the item names.
+    frequency_col (str): The column name for the item frequencies.
+    new_item_quantities (dict): A dictionary where the keys are item names and the values are the new quantities of each item.
+    
+    Returns:
+    int: The total number of items after adding the new quantities.
+    """"""
+    # Iterate through the new item quantities and add them to the corresponding item in the DataFrame
+    for item_name, new_quantity in new_item_quantities.items():
+        # Filter the DataFrame for the specific item name
+        item_freq_df_filtered = item_freq_df[item_freq_df[item_col] == item_name]
+        if not item_freq_df_filtered.empty:
+            item_freq_df.loc[item_freq_df[item_col] == item_name, frequency_col] += new_quantity
+    
+    # Calculate the total number of items
+    total_items = item_freq_df[frequency_col].sum()
+    
+    return total_items","item_freq_data = {
+    'Rating': ['5 stars', '4 stars', '3 stars', '2 stars', '1 star'],
+    'Frequency': [81, 54, 5, 2, 9]
+}
+
+item_freq_df = pd.DataFrame(item_freq_data)
+
+new_item_quantities = {""5 stars"": 4}
+print(update_total_items_from_frequencies_and_new_quantities(item_freq_df, ""Rating"", ""Frequency"", new_item_quantities))"
+Each office has 10 rulers. How many rulers are in 5 offices?,50.0,"Number of offices | Number of rulers
+1 | 10
+2 | 20
+3 | 30
+4 | 40
+5 | ?",1,12201,"def calculate_rulers_in_offices(office_data):
+    """"""
+    This function takes in a dictionary representing the number of offices and the number of rulers in each office, and calculates the number of rulers in 5 offices.
+    Args:
+    office_data (dict): A dictionary where the keys are the number of offices and the values are the number of rulers in each office.
+    Returns:
+    int: The number of rulers in 5 offices.
+    """"""
+    # Calculate the number of rulers in 5 offices
+    rulers_in_5_offices = office_data[1] * 5
+
+    return rulers_in_5_offices","# Initialize the table into a dictionary
+office_data = {
+    1: 10,
+    2: 20,
+    3: 30,
+    4: 40
+}
+# Call the tool to solve the problem
+rulers_in_5_offices = calculate_rulers_in_offices(office_data)
+print(rulers_in_5_offices)","def calculate_total_items_in_groups(group_data, item_per_group, num_groups):
+    """"""
+    This function takes in a dictionary representing the number of groups and the number of items in each group, and calculates the total number of items in a certain number of groups.
+    
+    Args:
+    group_data (dict): A dictionary where the keys are the number of groups and the values are the number of items in each group.
+    item_per_group (int): The number of items in one group.
+    num_groups (int): The number of groups.
+    
+    Returns:
+    int: The total number of items in the specified number of groups.
+    """"""
+    # Calculate the total number of items in the specified number of groups
+    total_items = group_data[item_per_group] * num_groups
+
+    return total_items","group_data = {
+    1: 10,
+    2: 20,
+    3: 30,
+    4: 40
+}
+print(calculate_total_items_in_groups(group_data, 1, 5))"
+"For an economics project, Victor determined the cost of ferry rides for bicycles and cars. How much higher is the fare for a bicycle on the Mukilteu-Clinton ferry than on the Southport-Fort Fisher ferry?",3.0,"Ferry | Bicycle | Car
+Seattle-Bremerton | $8 | $12
+Southport-Fort Fisher | $2 | $5
+Mukilteu-Clinton | $5 | $7",4,1304,"import pandas as pd
+
+def calculate_fare_difference(df, ferry1, ferry2):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table, and two ferry names, and returns the difference in bicycle fare between the two ferries.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for bicycles and cars with columns 'Ferry', 'Bicycle', 'Car'.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    Returns:
+    float: The difference in bicycle fare between the two ferries.
+    """"""
+    # Filter the DataFrame for the specific ferries
+    ferry1_df = df[df['Ferry'] == ferry1]
+    ferry2_df = df[df['Ferry'] == ferry2]
+    
+    # Get the bicycle fare for each ferry
+    ferry1_bicycle_fare = ferry1_df['Bicycle'].values[0]
+    ferry2_bicycle_fare = ferry2_df['Bicycle'].values[0]
+    
+    # Calculate the difference in fare
+    fare_difference = ferry1_bicycle_fare - ferry2_bicycle_fare
+    
+    return fare_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Mukilteo-Clinton'],
+    'Bicycle': [8, 2, 5],
+    'Car': [12, 5, 7]
+})
+
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Mukilteo-Clinton', 'Southport-Fort Fisher')
+
+# Print the answer
+print(fare_difference)","def calculate_cost_difference_between_two_entities(cost_df, entity_col, item_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of costs for different entities and items, and two entity names, and returns the difference in cost for a specific item between the two entities.
+    
+    Args:
+    cost_df (pd.DataFrame): A pandas DataFrame containing entity names and their costs for different items.
+    entity_col (str): The column name for the entity names.
+    item_col (str): The column name for the item costs.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    float: The difference in cost for the specific item between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = cost_df[cost_df[entity_col] == entity1]
+    entity2_df = cost_df[cost_df[entity_col] == entity2]
+    
+    # Get the cost for the item for each entity
+    entity1_item_cost = entity1_df[item_col].values[0]
+    entity2_item_cost = entity2_df[item_col].values[0]
+    
+    # Calculate the difference in cost
+    cost_difference = entity1_item_cost - entity2_item_cost
+    
+    return cost_difference","cost_data = {
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Mukilteo-Clinton'],
+    'Bicycle': [8, 2, 5],
+    'Car': [12, 5, 7]
+}
+
+cost_df = pd.DataFrame(cost_data)
+
+print(calculate_cost_difference_between_two_entities(cost_df, ""Ferry"", ""Bicycle"", 'Mukilteo-Clinton', 'Southport-Fort Fisher'))"
+Millersburg will decide whether to extend its public pool's hours by looking at the number of times its residents visited the pool last month. How many people went swimming exactly once last month?,4.0,"Number of times | Frequency
+1 | 4
+2 | 12
+3 | 16
+4 | 19",8,4405,"import pandas as pd
+
+def count_people_with_exact_visits(df, target_visits):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of visits to a public pool and a target number of visits, and returns the number of people who visited the pool exactly the target number of times.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of times people visited the pool and the frequency of those visits with columns 'Number of times' and 'Frequency'.
+    target_visits (int): The target number of visits to filter the DataFrame.
+    Returns:
+    int: The number of people who visited the pool exactly the target number of times.
+    """"""
+    # Filter the DataFrame for the target number of visits
+    target_df = df[df['Number of times'] == target_visits]
+    
+    # If the target number of visits is found in the DataFrame, return the corresponding frequency
+    if not target_df.empty:
+        return target_df['Frequency'].values[0]
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of times': [1, 2, 3, 4],
+    'Frequency': [4, 12, 16, 19]
+})
+# Call the tool to solve the problem
+print(count_people_with_exact_visits(df, 1))","def count_frequency_of_target_value(frequency_df, value_col, frequency_col, target_value):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table, a target value, and returns the frequency of the target value.
+    
+    Args:
+    frequency_df (pd.DataFrame): A pandas DataFrame containing values and their frequencies.
+    value_col (str): The column name for the values.
+    frequency_col (str): The column name for the frequencies.
+    target_value (int): The target value to filter the DataFrame.
+    
+    Returns:
+    int: The frequency of the target value.
+    """"""
+    # Filter the DataFrame for the target value
+    target_df = frequency_df[frequency_df[value_col] == target_value]
+    
+    # If the target value is found in the DataFrame, return the corresponding frequency
+    if not target_df.empty:
+        return target_df[frequency_col].values[0]
+    else:
+        return 0","frequency_data = {
+    'Number of times': [1, 2, 3, 4],
+    'Frequency': [4, 12, 16, 19]
+}
+
+frequency_df = pd.DataFrame(frequency_data)
+
+print(count_frequency_of_target_value(frequency_df, 'Number of times', 'Frequency', 1))"
+"For an economics project, Rob determined the cost of ferry rides for bicycles and cars. How much does it cost to take a bicycle on the Southport-Fort Fisher ferry?",2.0,"Ferry | Bicycle | Car
+Mukilteu-Clinton | $5 | $7
+Southport-Fort Fisher | $2 | $5
+Seattle-Bremerton | $8 | $12
+Ocracoke | $3 | $15",5,5738,"import pandas as pd
+
+def get_ferry_cost(ferry_df, ferry_name, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry cost table, a ferry name, and a vehicle type, and returns the cost of the ferry ride for the specified vehicle type.
+    Args:
+    ferry_df (pd.DataFrame): A pandas DataFrame containing ferry names and their costs for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry_name (str): The name of the ferry.
+    vehicle_type (str): The type of vehicle ('Bicycle' or 'Car').
+    Returns:
+    float: The cost of the ferry ride for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_row = ferry_df[ferry_df['Ferry'] == ferry_name]
+    
+    if not ferry_row.empty:
+        return ferry_row[vehicle_type].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+ferry_df = pd.DataFrame({
+    'Ferry': ['Mukilteu-Clinton', 'Southport-Fort Fisher', 'Seattle-Bremerton', 'Ocracoke'],
+    'Bicycle': [5, 2, 8, 3],
+    'Car': [7, 5, 12, 15]
+})
+
+# Call the tool to solve the problem
+cost = get_ferry_cost(ferry_df, 'Southport-Fort Fisher', 'Bicycle')
+print(cost)","def get_cost_for_service(data_frame, item_col, service_col, item_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item costs for various services, an item name, and a service type, and returns the cost of the service for the specified item.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing item names and their costs for various services.
+    item_col (str): The column name for the item names.
+    service_col (str): The column name for the service types.
+    item_name (str): The name of the item.
+    
+    Returns:
+    float: The cost of the service for the specified item.
+    """"""
+    # Filter the DataFrame for the specific item
+    item_row = data_frame[data_frame[item_col] == item_name]
+    
+    if not item_row.empty:
+        return item_row[service_col].values[0]
+    else:
+        return None","data = {
+    'Ferry': ['Mukilteu-Clinton', 'Southport-Fort Fisher', 'Seattle-Bremerton', 'Ocracoke'],
+    'Bicycle': [5, 2, 8, 3],
+    'Car': [7, 5, 12, 15]
+}
+
+df = pd.DataFrame(data)
+print(get_cost_for_service(data_frame=df, item_col='Ferry', service_col='Bicycle', item_name='Southport-Fort Fisher'))"
+A transportation analyst compared various bridges' tolls. How much higher is the toll for a carpool on the Hatem bridge than on the Tacoma Narrows bridge?,2.0,"Bridge | Car | Carpool
+Fort Madison | $1 | $1
+Hatem | $5 | $5
+Tacoma Narrows | $3 | $3
+George Washington | $8 | $2",4,9030,"import pandas as pd
+
+def calculate_toll_difference(df, bridge1, bridge2):
+    """"""
+    This function takes in a pandas DataFrame representing a bridge toll table and two bridge names, and returns the difference in carpool tolls between the two bridges.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge1 (str): The name of the first bridge.
+    bridge2 (str): The name of the second bridge.
+    Returns:
+    float: The difference in carpool tolls between the two bridges.
+    """"""
+    # Filter the DataFrame for the specific bridges
+    bridge1_df = df[df['Bridge'] == bridge1]
+    bridge2_df = df[df['Bridge'] == bridge2]
+    
+    # Get the carpool tolls for the two bridges
+    bridge1_toll = bridge1_df['Carpool'].values[0]
+    bridge2_toll = bridge2_df['Carpool'].values[0]
+    
+    # Calculate the difference in tolls
+    toll_difference = bridge1_toll - bridge2_toll
+    
+    return toll_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Hatem', 'Tacoma Narrows', 'George Washington'],
+    'Car': [1, 5, 3, 8],
+    'Carpool': [1, 5, 3, 2]
+})
+
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'Hatem', 'Tacoma Narrows')
+
+# Print the answer
+print(toll_difference)","def calculate_attribute_difference_between_two_entities(df, entity_col, attribute_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their attributes, two entity names, and an attribute name, and returns the difference in the attribute values between the two entities.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entity names and their attributes.
+    entity_col (str): The column name for the entity names.
+    attribute_col (str): The column name for the attribute values.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    float: The difference in attribute values between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the attribute values for the two entities
+    entity1_value = entity1_df[attribute_col].values[0]
+    entity2_value = entity2_df[attribute_col].values[0]
+    
+    # Calculate the difference in attribute values
+    attribute_difference = entity1_value - entity2_value
+    
+    return attribute_difference","df = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Hatem', 'Tacoma Narrows', 'George Washington'],
+    'Car': [1, 5, 3, 8],
+    'Carpool': [1, 5, 3, 2]
+})
+
+print(calculate_attribute_difference_between_two_entities(df, 'Bridge', 'Carpool', 'Hatem', 'Tacoma Narrows'))"
+"A transportation analyst compared various bridges' tolls. On the Hatem bridge, how much more is the toll for a truck than for a car?",5.0,"Bridge | Truck | Car
+Hatem | $10 | $5
+Golden Gate | $7 | $6
+George Washington | $16 | $8",4,1021,"import pandas as pd
+
+def calculate_toll_difference(df, bridge_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of bridge tolls and a bridge name, and returns the difference in tolls between a truck and a car for the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge tolls with columns 'Bridge', 'Truck', and 'Car'.
+    bridge_name (str): The name of the bridge for which the toll difference is to be calculated.
+    Returns:
+    float: The difference in tolls between a truck and a car for the specified bridge.
+    """"""
+    # Filter the DataFrame for the specified bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    
+    if not bridge_df.empty:
+        truck_toll = bridge_df['Truck'].values[0]
+        car_toll = bridge_df['Car'].values[0]
+        toll_difference = truck_toll - car_toll
+        return toll_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Hatem', 'Golden Gate', 'George Washington'],
+    'Truck': [10, 7, 16],
+    'Car': [5, 6, 8]
+})
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'Hatem')
+print(toll_difference)","def calculate_difference_between_columns_for_specific_row(data_frame, key_col, value_col1, value_col2, key_value):
+    """"""
+    This function takes in a pandas DataFrame, a key column, two value columns, and a key value, and returns the difference between the values of the two value columns for the row with the specified key value.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the data.
+    key_col (str): The column name for the key values.
+    value_col1 (str): The column name for the first value column.
+    value_col2 (str): The column name for the second value column.
+    key_value (str): The key value for which the difference is to be calculated.
+    
+    Returns:
+    float: The difference between the values of the two value columns for the row with the specified key value.
+    """"""
+    # Filter the DataFrame for the specified key value
+    row_df = data_frame[data_frame[key_col] == key_value]
+    
+    if not row_df.empty:
+        value1 = row_df[value_col1].values[0]
+        value2 = row_df[value_col2].values[0]
+        difference = value1 - value2
+        return difference
+    else:
+        return None","data = {
+    'Bridge': ['Hatem', 'Golden Gate', 'George Washington'],
+    'Truck': [10, 7, 16],
+    'Car': [5, 6, 8]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_between_columns_for_specific_row(data_frame=df, key_col=""Bridge"", value_col1=""Truck"", value_col2=""Car"", key_value=""Hatem""))"
+A transportation analyst compared various bridges' tolls. How much is the toll for a truck on the Golden Gate bridge?,7.0,"Bridge | Truck | Car
+George Washington | $16 | $8
+Golden Gate | $7 | $6
+Oakland Bay | $6 | $4",5,14702,"import pandas as pd
+
+def get_toll(df, bridge_name, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a toll table, a bridge name, and a vehicle type, and returns the toll for the specified vehicle on the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and tolls for different vehicle types.
+    bridge_name (str): The name of the bridge.
+    vehicle_type (str): The type of vehicle.
+    Returns:
+    float: The toll for the specified vehicle on the specified bridge.
+    """"""
+    # Filter the DataFrame for the specific bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    if not bridge_df.empty:
+        # Get the toll for the specified vehicle type
+        toll = bridge_df[vehicle_type].values[0]
+        return toll
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['George Washington', 'Golden Gate', 'Oakland Bay'],
+    'Truck': [16, 7, 6],
+    'Car': [8, 6, 4]
+})
+# Call the tool to solve the problem
+toll = get_toll(df, 'Golden Gate', 'Truck')
+print(toll)","def get_value_based_on_row_and_column_criteria(table_df, row_criterion_col, row_criterion_value, column_criterion):
+    """"""
+    This function takes in a pandas DataFrame, a column name for row criterion, a value for row criterion, and a column criterion, and returns the value in the table that meets both the row and column criteria.
+    
+    Args:
+    table_df (pd.DataFrame): A pandas DataFrame containing various data.
+    row_criterion_col (str): The column name for the row criterion.
+    row_criterion_value (str): The value for the row criterion.
+    column_criterion (str): The column criterion.
+    
+    Returns:
+    float: The value in the table that meets both the row and column criteria.
+    """"""
+    # Filter the DataFrame for the specific row criterion
+    row_criterion_df = table_df[table_df[row_criterion_col] == row_criterion_value]
+    if not row_criterion_df.empty:
+        # Get the value for the specified column criterion
+        value = row_criterion_df[column_criterion].values[0]
+        return value
+    else:
+        return None","df = pd.DataFrame({
+    'Bridge': ['George Washington', 'Golden Gate', 'Oakland Bay'],
+    'Truck': [16, 7, 6],
+    'Car': [8, 6, 4]
+})
+print(get_value_based_on_row_and_column_criteria(table_df=df, row_criterion_col='Bridge', row_criterion_value='Golden Gate', column_criterion='Truck'))"
+A transportation analyst compared various bridges' tolls. How much higher is the toll for a car on the Golden Gate bridge than on the Oakland Bay bridge?,2.0,"Bridge | Truck | Car
+Oakland Bay | $6 | $4
+Fort Madison | $4 | $1
+Hatem | $10 | $5
+Golden Gate | $7 | $6",4,6522,"import pandas as pd
+
+def calculate_toll_difference(df, bridge1, bridge2, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of bridge tolls, and calculates the difference in tolls for a specific vehicle type between two bridges.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls for different vehicle types with columns 'Bridge', 'Truck', and 'Car'.
+    bridge1 (str): The name of the first bridge.
+    bridge2 (str): The name of the second bridge.
+    vehicle_type (str): The type of vehicle for which the toll difference is to be calculated. It should be either 'Truck' or 'Car'.
+    Returns:
+    float: The difference in tolls for the specified vehicle type between the two bridges.
+    """"""
+    # Filter the DataFrame for the specific bridges
+    bridge1_df = df[df['Bridge'] == bridge1]
+    bridge2_df = df[df['Bridge'] == bridge2]
+    
+    # Get the tolls for the specified vehicle type on both bridges
+    bridge1_toll = bridge1_df[vehicle_type].values[0]
+    bridge2_toll = bridge2_df[vehicle_type].values[0]
+    
+    # Calculate the difference in tolls
+    toll_difference = abs(bridge1_toll - bridge2_toll)
+    
+    return toll_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Oakland Bay', 'Fort Madison', 'Hatem', 'Golden Gate'],
+    'Truck': [6, 4, 10, 7],
+    'Car': [4, 1, 5, 6]
+})
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'Golden Gate', 'Oakland Bay', 'Car')
+print(toll_difference)","def calculate_value_difference_between_entities(data_frame, entity_col, category_col, entity1, entity2, category_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table with entities and their values for different categories, and calculates the difference in values for a specific category between two entities.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing entity names and their values for different categories.
+    entity_col (str): The column name for the entity names.
+    category_col (str): The column name for the category values.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    category_name (str): The name of the category for which the value difference is to be calculated.
+    
+    Returns:
+    float: The difference in values for the specified category between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = data_frame[data_frame[entity_col] == entity1]
+    entity2_df = data_frame[data_frame[entity_col] == entity2]
+    
+    # Get the values for the specified category for both entities
+    entity1_value = entity1_df[category_col].values[0]
+    entity2_value = entity2_df[category_col].values[0]
+    
+    # Calculate the difference in values
+    value_difference = abs(entity1_value - entity2_value)
+    
+    return value_difference","data = {
+    'Bridge': ['Oakland Bay', 'Fort Madison', 'Hatem', 'Golden Gate'],
+    'Truck': [6, 4, 10, 7],
+    'Car': [4, 1, 5, 6]
+}
+
+df = pd.DataFrame(data)
+print(calculate_value_difference_between_entities(data_frame=df, entity_col=""Bridge"", category_col=""Car"", entity1=""Golden Gate"", entity2=""Oakland Bay"", category_name=""Car""))"
+"For an economics project, Justin determined the cost of ferry rides for bicycles and cars. How much higher is the fare for a bicycle on the Seattle-Bremerton ferry than on the Fauntleroy-Vashon ferry?",3.0,"Ferry | Bicycle | Car
+Ocracoke | $3 | $15
+Fauntleroy-Vashon | $5 | $15
+Mukilteu-Clinton | $5 | $7
+Seattle-Bremerton | $8 | $12",4,10104,"import pandas as pd
+
+def calculate_fare_difference(df, ferry1, ferry2):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table, and two ferry names, and returns the fare difference for a bicycle between the two ferries.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for bicycles and cars with columns 'Ferry', 'Bicycle', 'Car'.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    Returns:
+    float: The fare difference for a bicycle between the two ferries.
+    """"""
+    # Filter the DataFrame for the specific ferries
+    ferry1_df = df[df['Ferry'] == ferry1]
+    ferry2_df = df[df['Ferry'] == ferry2]
+    
+    # Check if the ferries exist in the DataFrame
+    if not ferry1_df.empty and not ferry2_df.empty:
+        # Calculate the fare difference
+        fare_difference = ferry1_df['Bicycle'].values[0] - ferry2_df['Bicycle'].values[0]
+        return fare_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Mukilteo-Clinton', 'Seattle-Bremerton'],
+    'Bicycle': [3, 5, 5, 8],
+    'Car': [15, 15, 7, 12]
+})
+
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Seattle-Bremerton', 'Fauntleroy-Vashon')
+
+# Print the answer
+print(fare_difference)","def calculate_fare_difference_for_vehicle_type(fares_df, ferry_col, vehicle_type_col, ferry1, ferry2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of ferry fares and two ferry names, and returns the fare difference for a specific vehicle type between the two ferries.
+    
+    Args:
+    fares_df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for various vehicle types.
+    ferry_col (str): The column name for the ferry names.
+    vehicle_type_col (str): The column name for the vehicle type fares.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    
+    Returns:
+    float: The fare difference for the specific vehicle type between the two ferries.
+    """"""
+    # Filter the DataFrame for the specific ferries
+    ferry1_df = fares_df[fares_df[ferry_col] == ferry1]
+    ferry2_df = fares_df[fares_df[ferry_col] == ferry2]
+    
+    # Check if the ferries exist in the DataFrame
+    if not ferry1_df.empty and not ferry2_df.empty:
+        # Calculate the fare difference
+        fare_difference = ferry1_df[vehicle_type_col].values[0] - ferry2_df[vehicle_type_col].values[0]
+        return fare_difference
+    else:
+        return None","fares_data = {
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Mukilteo-Clinton', 'Seattle-Bremerton'],
+    'Bicycle': [3, 5, 5, 8],
+    'Car': [15, 15, 7, 12]
+}
+
+fares_df = pd.DataFrame(fares_data)
+
+print(calculate_fare_difference_for_vehicle_type(fares_df, ""Ferry"", ""Bicycle"", 'Seattle-Bremerton', 'Fauntleroy-Vashon'))"
+Each block has 10 traffic cones. How many traffic cones are on 3 blocks?,30.0,"Number of blocks | Number of traffic cones
+1 | 10
+2 | 20
+3 | ?",2,14398,"import pandas as pd
+
+def calculate_traffic_cones(df, blocks):
+    """"""
+    This function takes in a pandas DataFrame representing a table of blocks and traffic cones, and a number of blocks, and returns the number of traffic cones on the given number of blocks.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of blocks and the corresponding number of traffic cones with columns 'Number of blocks' and 'Number of traffic cones'.
+    blocks (int): The number of blocks.
+    Returns:
+    int: The number of traffic cones on the given number of blocks.
+    """"""
+    # Find the number of traffic cones per block
+    cones_per_block = df['Number of traffic cones'][0] / df['Number of blocks'][0]
+    
+    # Calculate the number of traffic cones on the given number of blocks
+    cones = cones_per_block * blocks
+    
+    return cones","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of blocks': [1, 2],
+    'Number of traffic cones': [10, 20]
+})
+
+# Call the tool to solve the problem
+cones_on_3_blocks = calculate_traffic_cones(df, 3)
+print(cones_on_3_blocks)","def calculate_total_items_from_items_per_group_and_number_of_groups(df, group_col, item_col, number_of_groups):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item counts per unit group and a given number of groups, and returns the total number of items in the groups.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of groups and the corresponding number of items with columns specified by group_col and item_col.
+    group_col (str): The column name for the group counts.
+    item_col (str): The column name for the item counts.
+    number_of_groups (int): The number of groups.
+    
+    Returns:
+    float: The total number of items in the groups.
+    """"""
+    # Find the number of items per group
+    items_per_group = df[item_col][0] / df[group_col][0]
+    
+    # Calculate the number of items in the given number of groups
+    total_items = items_per_group * number_of_groups
+    
+    return total_items","df = pd.DataFrame({
+    'Number of blocks': [1, 2],
+    'Number of traffic cones': [10, 20]
+})
+
+print(calculate_total_items_from_items_per_group_and_number_of_groups(df, 'Number of blocks', 'Number of traffic cones', 3))"
+A transportation analyst compared various bridges' tolls. How much higher is the toll for a car on the George Washington bridge than on the Fort Madison bridge?,7.0,"Bridge | Car | Carpool
+Hatem | $5 | $5
+George Washington | $8 | $2
+Fort Madison | $1 | $1
+Tacoma Narrows | $3 | $3",4,15172,"import pandas as pd
+
+def calculate_toll_difference(df, bridge1, bridge2):
+    """"""
+    This function takes in a pandas DataFrame representing a bridge toll table and two bridge names, and returns the difference in tolls for a car between the two bridges.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge1 (str): The name of the first bridge.
+    bridge2 (str): The name of the second bridge.
+    Returns:
+    float: The difference in tolls for a car between the two bridges.
+    """"""
+    # Filter the DataFrame for the specific bridges
+    bridge1_df = df[df['Bridge'] == bridge1]
+    bridge2_df = df[df['Bridge'] == bridge2]
+    
+    # Check if the bridges exist in the DataFrame
+    if not bridge1_df.empty and not bridge2_df.empty:
+        # Calculate the difference in tolls
+        toll_difference = bridge1_df['Car'].values[0] - bridge2_df['Car'].values[0]
+        return toll_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Hatem', 'George Washington', 'Fort Madison', 'Tacoma Narrows'],
+    'Car': [5, 8, 1, 3],
+    'Carpool': [5, 2, 1, 3]
+})
+
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'George Washington', 'Fort Madison')
+
+# Print the answer
+print(toll_difference)","def calculate_difference_between_rows(data_frame, row_id_col, value_col, row_id1, row_id2):
+    """"""
+    This function takes in a pandas DataFrame, a row identifier column, a value column, and two row identifiers, and returns the difference in values between the two rows based on the value column.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the data.
+    row_id_col (str): The column name for the row identifiers.
+    value_col (str): The column name for the values to calculate the difference.
+    row_id1 (str): The identifier for the first row.
+    row_id2 (str): The identifier for the second row.
+    
+    Returns:
+    float: The difference in values between the two rows.
+    """"""
+    # Filter the DataFrame for the specific rows
+    row1_df = data_frame[data_frame[row_id_col] == row_id1]
+    row2_df = data_frame[data_frame[row_id_col] == row_id2]
+    
+    # Check if the rows exist in the DataFrame
+    if not row1_df.empty and not row2_df.empty:
+        # Calculate the difference in values
+        value_difference = row1_df[value_col].values[0] - row2_df[value_col].values[0]
+        return value_difference
+    else:
+        return None","df = pd.DataFrame({
+    'Bridge': ['Hatem', 'George Washington', 'Fort Madison', 'Tacoma Narrows'],
+    'Car': [5, 8, 1, 3],
+    'Carpool': [5, 2, 1, 3]
+})
+
+toll_difference = calculate_difference_between_rows(data_frame=df, row_id_col='Bridge', value_col='Car', row_id1='George Washington', row_id2='Fort Madison')
+print(toll_difference)"
+The owner of a plant nursery wrote down the number of roses on each bush. What is the smallest number of roses?,16.0,"Stem | Leaf 
+1 | 6, 7
+2 | 
+3 | 2, 8
+4 | 2
+5 | 3, 4
+6 | 5, 6
+7 | 3, 6
+8 | 2, 8",4,10001,"import pandas as pd
+
+def find_smallest_number_of_roses(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of roses per bush, and returns the smallest number of roses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of roses per bush with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The smallest number of roses.
+    """"""
+    # Initialize the smallest number of roses
+    smallest_roses = float('inf')
+    
+    # Iterate through the DataFrame to find the smallest number of roses
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            roses = stem * 10 + leaf[j]
+            if roses < smallest_roses:
+                smallest_roses = roses
+                
+    return smallest_roses","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8],
+    'Leaf': [[6, 7], [], [2, 8], [2], [3, 4], [5, 6], [3, 6], [2, 8]]
+})
+# Call the tool to solve the problem
+print(find_smallest_number_of_roses(df))","def find_smallest_value_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items, and returns the smallest value among the items.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The smallest value among the items.
+    """"""
+    # Initialize the smallest value
+    smallest_value = float('inf')
+    
+    # Iterate through the DataFrame to find the smallest value
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            value = stem * 10 + leaf[j]
+            if value < smallest_value:
+                smallest_value = value
+                
+    return smallest_value","df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8],
+    'Leaf': [[6, 7], [], [2, 8], [2], [3, 4], [5, 6], [3, 6], [2, 8]]
+})
+print(find_smallest_value_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+The owner of a plant nursery wrote down the number of roses on each bush. What is the smallest number of roses?,27.0,"Stem | Leaf 
+2 | 7, 9
+3 | 2, 7
+4 | 0, 4, 4, 8, 9, 9
+5 | 4, 7
+6 | 1, 6
+7 | 2, 9, 9
+8 | 5
+9 | 0",8,8916,"import pandas as pd
+
+def find_smallest_number(df):
+    """"""
+    This function takes in a pandas dataframe of roses per bush, and returns the smallest number of roses.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of roses per bush.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The smallest number of roses.
+    """"""
+    # prepare a list to calculate roses in each bush
+    roses = []
+    # calculate the total number of roses in each bush
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            roses.append(stem * 10 + leaf[j])
+    # find the smallest number of roses
+    smallest = min(roses)
+    return smallest","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[7, 9], [2, 7], [0, 4, 4, 8, 9, 9], [4, 7], [1, 6], [2, 9, 9], [5], [0]]
+})
+# Call the tool to solve the problem
+print(find_smallest_number(df))","def find_smallest_number_in_stem_leaf(data_frame, stem_col, leaf_col):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of items and returns the smallest number in the plot.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    
+    Returns:
+    int: The smallest number in the stem-and-leaf plot.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Find the smallest number
+    smallest = min(items)
+    
+    return smallest","data = {
+    ""Stem"": [2, 3, 4, 5, 6, 7, 8, 9],
+    ""Leaf"": [[7, 9], [2, 7], [0, 4, 4, 8, 9, 9], [4, 7], [1, 6], [2, 9, 9], [5], [0]]
+}
+
+df = pd.DataFrame(data)
+print(find_smallest_number_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf""))"
+"For an economics project, Franklin determined the cost of ferry rides for bicycles and cars. How much higher is the fare for a bicycle on the Seattle-Bremerton ferry than on the Ocracoke ferry?",5.0,"Ferry | Car | Bicycle
+Ocracoke | $15 | $3
+Fauntleroy-Vashon | $15 | $5
+Seattle-Bremerton | $12 | $8
+Southport-Fort Fisher | $5 | $2",5,2987,"import pandas as pd
+
+def calculate_fare_difference(df, ferry1, ferry2, vehicle_type):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table, two ferry names, and a vehicle type, and returns the fare difference between the two ferries for the specified vehicle type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names, car fares, and bicycle fares with columns 'Ferry', 'Car', and 'Bicycle'.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    vehicle_type (str): The type of vehicle for which the fare difference is to be calculated. It should be either 'Car' or 'Bicycle'.
+    Returns:
+    float: The fare difference between the two ferries for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific ferries
+    ferry1_df = df[df['Ferry'] == ferry1]
+    ferry2_df = df[df['Ferry'] == ferry2]
+    
+    # Check if both ferries are in the DataFrame
+    if not ferry1_df.empty and not ferry2_df.empty:
+        # Calculate the fare difference
+        fare_difference = abs(ferry1_df[vehicle_type].values[0] - ferry2_df[vehicle_type].values[0])
+        return fare_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Seattle-Bremerton', 'Southport-Fort Fisher'],
+    'Car': [15, 15, 12, 5],
+    'Bicycle': [3, 5, 8, 2]
+})
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Seattle-Bremerton', 'Ocracoke', 'Bicycle')
+print(fare_difference)","def calculate_fare_difference_between_entities(fares_df, entity_col, entity1, entity2, vehicle_type_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of fares, two entity names, and a vehicle type column, and returns the fare difference between the two entities for the specified vehicle type.
+    
+    Args:
+    fares_df (pd.DataFrame): A pandas DataFrame containing entity names and fares for different vehicle types.
+    entity_col (str): The column name for the entity names.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    vehicle_type_col (str): The column name for the vehicle type for which the fare difference is to be calculated.
+    
+    Returns:
+    float: The fare difference between the two entities for the specified vehicle type.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = fares_df[fares_df[entity_col] == entity1]
+    entity2_df = fares_df[fares_df[entity_col] == entity2]
+    
+    # Check if both entities are in the DataFrame
+    if not entity1_df.empty and not entity2_df.empty:
+        # Calculate the fare difference
+        fare_difference = abs(entity1_df[vehicle_type_col].values[0] - entity2_df[vehicle_type_col].values[0])
+        return fare_difference
+    else:
+        return None","fares_data = {
+    'Ferry': ['Ocracoke', 'Fauntleroy-Vashon', 'Seattle-Bremerton', 'Southport-Fort Fisher'],
+    'Car': [15, 15, 12, 5],
+    'Bicycle': [3, 5, 8, 2]
+}
+
+fares_df = pd.DataFrame(fares_data)
+
+print(calculate_fare_difference_between_entities(fares_df, ""Ferry"", ""Seattle-Bremerton"", ""Ocracoke"", ""Bicycle""))"
+An ecologist interested in the nesting patterns of birds counted the number of ducks at local lakes. How many pintail ducks live in Crescent Lake?,2.0,"Lake | Mallard ducks | Pintail ducks
+Crescent Lake | 10 | 2
+Ripple Lake | 18 | 12
+Aspen Lake | 2 | 2",5,1390,"import pandas as pd
+
+def count_pintail_ducks(df, lake_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of duck counts at local lakes and a lake name, and returns the number of pintail ducks at the specified lake.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing lake names and duck counts with columns 'Lake', 'Mallard ducks', and 'Pintail ducks'.
+    lake_name (str): The name of the lake.
+    Returns:
+    int: The number of pintail ducks at the specified lake.
+    """"""
+    # Filter the DataFrame for the specific lake
+    lake_df = df[df['Lake'] == lake_name]
+    if not lake_df.empty:
+        # Return the number of pintail ducks at the specified lake
+        return lake_df['Pintail ducks'].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Lake': ['Crescent Lake', 'Ripple Lake', 'Aspen Lake'],
+    'Mallard ducks': [10, 18, 2],
+    'Pintail ducks': [2, 12, 2]
+})
+# Call the tool to solve the problem
+print(count_pintail_ducks(df, 'Crescent Lake'))","def get_item_count_in_specific_location(data_frame, location_col, item_col, specific_location):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item counts in various locations, a location column name, an item column name, and a specific location, and returns the count of the item in the specific location.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing item counts in various locations.
+    location_col (str): The column name for the location values.
+    item_col (str): The column name for the item counts.
+    specific_location (str): The specific location to retrieve the item count from.
+    
+    Returns:
+    int: The count of the item in the specific location.
+    """"""
+    # Filter the DataFrame for the specific location
+    specific_location_df = data_frame[data_frame[location_col] == specific_location]
+    if not specific_location_df.empty:
+        # Return the count of the item in the specific location
+        return specific_location_df[item_col].values[0]
+    else:
+        return None","data = {
+    'Lake': ['Crescent Lake', 'Ripple Lake', 'Aspen Lake'],
+    'Mallard ducks': [10, 18, 2],
+    'Pintail ducks': [2, 12, 2]
+}
+
+df = pd.DataFrame(data)
+print(get_item_count_in_specific_location(data_frame=df, location_col=""Lake"", item_col=""Pintail ducks"", specific_location=""Crescent Lake""))"
+"Kenny's class is having a holiday party, and he is in charge of bringing juice. He decides to bring powdered juice mix and add water to it at school. There is a proportional relationship between the volume of water Kenny uses to make the juice (in liters), x, and the number of scoops of juice mix he uses, y. What is the constant of proportionality? Write your answer as a whole number or decimal.",2.0,"5 | 10
+6 | 12
+7 | 14
+8 | 16",7,4172,"import pandas as pd
+
+def calculate_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the volume of water and the number of scoops of juice mix, and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the volume of water and the number of scoops of juice mix with columns 'x' and 'y'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality by dividing the number of scoops by the volume of water
+    df['k'] = df['y'] / df['x']
+    
+    # Return the mean of the constant of proportionality column
+    return df['k'].mean()","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'x': [5, 6, 7, 8],
+    'y': [10, 12, 14, 16]
+})
+# Call the tool to solve the problem
+print(calculate_constant_of_proportionality(df))","def calculate_constant_of_proportionality_between_two_variables(data_frame, variable1_col, variable2_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of two variables and returns the constant of proportionality between the two variables.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the values of two variables with columns specified by variable1_col and variable2_col.
+    variable1_col (str): The column name for the first variable.
+    variable2_col (str): The column name for the second variable.
+    
+    Returns:
+    float: The constant of proportionality between the two variables.
+    """"""
+    # Calculate the constant of proportionality by dividing the values of the second variable by the values of the first variable
+    data_frame['k'] = data_frame[variable2_col] / data_frame[variable1_col]
+    
+    # Return the mean of the constant of proportionality column
+    return data_frame['k'].mean()","data = {
+    'x': [5, 6, 7, 8],
+    'y': [10, 12, 14, 16]
+}
+
+df = pd.DataFrame(data)
+print(calculate_constant_of_proportionality_between_two_variables(data_frame=df, variable1_col='x', variable2_col='y'))"
+An ecologist interested in the nesting patterns of birds counted the number of ducks at local lakes. How many pintail ducks live in Midnight Lake?,19.0,"Lake | Pintail ducks | Wood ducks
+Aspen Lake | 8 | 3
+Meadow Lake | 8 | 9
+Midnight Lake | 19 | 17",5,11645,"import pandas as pd
+
+def count_ducks(df, lake, duck_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of duck counts at different lakes, the name of a lake, and the type of duck, and returns the number of that type of duck at the specified lake.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of different types of ducks at different lakes. The DataFrame should have columns 'Lake', 'Pintail ducks', and 'Wood ducks'.
+    lake (str): The name of the lake.
+    duck_type (str): The type of duck.
+    Returns:
+    int: The number of the specified type of duck at the specified lake.
+    """"""
+    # Filter the DataFrame for the specified lake
+    lake_df = df[df['Lake'] == lake]
+    
+    # If the lake is not in the DataFrame, return 0
+    if lake_df.empty:
+        return 0
+    
+    # Return the number of the specified type of duck at the specified lake
+    return lake_df[duck_type].values[0]","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Lake': ['Aspen Lake', 'Meadow Lake', 'Midnight Lake'],
+    'Pintail ducks': [8, 8, 19],
+    'Wood ducks': [3, 9, 17]
+})
+# Call the tool to solve the problem
+print(count_ducks(df, 'Midnight Lake', 'Pintail ducks'))","def get_item_count_in_group(data_frame, group_col, item_col, group_name, item_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item counts in different groups, the name of a group, and the type of item, and returns the count of that type of item in the specified group.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the number of different types of items in different groups.
+    group_col (str): The column name for the group names.
+    item_col (str): The column name for the item types.
+    group_name (str): The name of the group.
+    item_type (str): The type of item.
+    
+    Returns:
+    int: The count of the specified type of item in the specified group.
+    """"""
+    # Filter the DataFrame for the specified group
+    group_df = data_frame[data_frame[group_col] == group_name]
+    
+    # If the group is not in the DataFrame, return 0
+    if group_df.empty:
+        return 0
+    
+    # Return the count of the specified type of item in the specified group
+    return group_df[item_col][item_type].values[0]","data = {
+    'Lake': ['Aspen Lake', 'Meadow Lake', 'Midnight Lake'],
+    'Pintail ducks': [8, 8, 19],
+    'Wood ducks': [3, 9, 17]
+}
+
+df = pd.DataFrame(data)
+print(get_item_count_in_group(data_frame=df, group_col=""Lake"", item_col=""Pintail ducks"", group_name=""Midnight Lake"", item_type=""Pintail ducks""))"
+The owner of a plant nursery wrote down the number of roses on each bush. How many bushes have fewer than 23 roses?,1.0,"Stem | Leaf 
+1 | 3
+2 | 5
+3 | 
+4 | 2, 6
+5 | 
+6 | 2
+7 | 3, 6, 7, 8",6,13138,"import pandas as pd
+def count_bushes_with_less_than_23_roses(df):
+    """"""
+    This function takes in a pandas dataframe of roses per bush, and returns the number of bushes that have less than 23 roses.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of roses per bush.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of bushes that have less than 23 roses.
+    """"""
+    # prepare a list to calculate roses in each bush
+    roses = []
+    # calculate the total number of roses in each bush
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            roses.append(stem * 10 + leaf[j])
+    # filter the bushes where the total number of roses is less than 23
+    filtered = [rose for rose in roses if rose < 23]
+    # count the number of rows
+    num_bushes = len(filtered)
+    return num_bushes","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[3], [5], [], [2, 6], [], [2], [3, 6, 7, 8]]
+})
+# Call the tool to solve the problem
+print(count_bushes_with_less_than_23_roses(df))","def count_groups_below_threshold_in_stem_leaf(data_frame, stem_col, leaf_col, item_threshold):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of groups and a threshold value, and returns the number of groups that have values less than the threshold.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    item_threshold (int): The threshold value for filtering items.
+    
+    Returns:
+    int: The number of items with values less than the threshold.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total value of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the items where the total value is less than the threshold
+    filtered = [item for item in items if item < item_threshold]
+    
+    # Count the number of items
+    num_items = len(filtered)
+    
+    return num_items","data = {
+    ""Stem"": [1, 2, 3, 4, 5, 6, 7],
+    ""Leaf"": [[3], [5], [], [2, 6], [], [2], [3, 6, 7, 8]]
+}
+
+df = pd.DataFrame(data)
+print(count_groups_below_threshold_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", item_threshold=23))"
+"For an economics project, Joy determined the cost of ferry rides for bicycles and cars. How much higher is the fare for a bicycle on the Seattle-Bremerton ferry than on the Fauntleroy-Vashon ferry?",3.0,"Ferry | Bicycle | Car
+Seattle-Bremerton | $8 | $12
+Southport-Fort Fisher | $2 | $5
+Fauntleroy-Vashon | $5 | $15
+Ocracoke | $3 | $15
+Mukilteu-Clinton | $5 | $7",5,7326,"import pandas as pd
+
+def calculate_fare_difference(df, ferry1, ferry2):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table and two ferry names, and returns the difference in bicycle fare between the two ferries.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry1 (str): The name of the first ferry.
+    ferry2 (str): The name of the second ferry.
+    Returns:
+    float: The difference in bicycle fare between the two ferries.
+    """"""
+    # Filter the DataFrame for the specific ferries
+    ferry1_df = df[df['Ferry'] == ferry1]
+    ferry2_df = df[df['Ferry'] == ferry2]
+    
+    # Check if the ferries exist in the DataFrame
+    if not ferry1_df.empty and not ferry2_df.empty:
+        # Calculate the difference in bicycle fare
+        fare_difference = ferry1_df['Bicycle'].values[0] - ferry2_df['Bicycle'].values[0]
+        return fare_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Fauntleroy-Vashon', 'Ocracoke', 'Mukilteo-Clinton'],
+    'Bicycle': [8, 2, 5, 3, 5],
+    'Car': [12, 5, 15, 15, 7]
+})
+
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Seattle-Bremerton', 'Fauntleroy-Vashon')
+
+# Print the answer
+print(fare_difference)","def calculate_fare_difference_between_items(df, item_col, fare_col, item1, item2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of items with different fare columns, and returns the difference in fare between two items for a specific fare column.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing item names and their fares for different columns.
+    item_col (str): The column name for the item names.
+    fare_col (str): The column name for the fare values.
+    item1 (str): The name of the first item.
+    item2 (str): The name of the second item.
+    
+    Returns:
+    float: The difference in fare between the two items for the specified fare column.
+    """"""
+    # Filter the DataFrame for the specific items
+    item1_df = df[df[item_col] == item1]
+    item2_df = df[df[item_col] == item2]
+    
+    # Check if the items exist in the DataFrame
+    if not item1_df.empty and not item2_df.empty:
+        # Calculate the difference in fare
+        fare_difference = item1_df[fare_col].values[0] - item2_df[fare_col].values[0]
+        return fare_difference
+    else:
+        return None","df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Southport-Fort Fisher', 'Fauntleroy-Vashon', 'Ocracoke', 'Mukilteo-Clinton'],
+    'Bicycle': [8, 2, 5, 3, 5],
+    'Car': [12, 5, 15, 15, 7]
+})
+
+fare_difference = calculate_fare_difference_between_items(df, 'Ferry', 'Bicycle', 'Seattle-Bremerton', 'Fauntleroy-Vashon')
+print(fare_difference)"
+"For an economics project, Layla determined the cost of ferry rides for bicycles and cars. How much does it cost to take a bicycle on the Southport-Fort Fisher ferry?",2.0,"Ferry | Car | Bicycle
+Seattle-Bremerton | $12 | $8
+Mukilteu-Clinton | $7 | $5
+Southport-Fort Fisher | $5 | $2
+Fauntleroy-Vashon | $15 | $5
+Ocracoke | $15 | $3",4,1902,"import pandas as pd
+
+def get_bicycle_ferry_cost(df, ferry_name):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry cost table and a ferry name, and returns the cost for a bicycle on the specified ferry.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and their costs for cars and bicycles with columns 'Ferry', 'Car', and 'Bicycle'.
+    ferry_name (str): The name of the ferry.
+    Returns:
+    float: The cost for a bicycle on the specified ferry.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = df[df['Ferry'] == ferry_name]
+    if not ferry_df.empty:
+        bicycle_cost = ferry_df['Bicycle'].values[0]
+        return bicycle_cost
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Mukilteu-Clinton', 'Southport-Fort Fisher', 'Fauntleroy-Vashon', 'Ocracoke'],
+    'Car': [12, 7, 5, 15, 15],
+    'Bicycle': [8, 5, 2, 5, 3]
+})
+# Call the tool to solve the problem
+bicycle_cost = get_bicycle_ferry_cost(df, 'Southport-Fort Fisher')
+print(bicycle_cost)","def get_item_cost_for_specific_entity(df, entity_col, item_col, entity_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their item costs, and returns the cost for a specific item for a specific entity.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entities and their item costs.
+    entity_col (str): The column name for the entities.
+    item_col (str): The column name for the item costs.
+    entity_name (str): The name of the specific entity.
+    
+    Returns:
+    float: The cost for the specific item for the specific entity.
+    """"""
+    # Filter the DataFrame for the specific entity
+    entity_df = df[df[entity_col] == entity_name]
+    if not entity_df.empty:
+        item_cost = entity_df[item_col].values[0]
+        return item_cost
+    else:
+        return None","df = pd.DataFrame({
+    'Ferry': ['Seattle-Bremerton', 'Mukilteo-Clinton', 'Southport-Fort Fisher', 'Fauntleroy-Vashon', 'Ocracoke'],
+    'Car': [12, 7, 5, 15, 15],
+    'Bicycle': [8, 5, 2, 5, 3]
+})
+print(get_item_cost_for_specific_entity(df, 'Ferry', 'Bicycle', 'Southport-Fort Fisher'))"
+A reporter counted the number of masks local artists made for this year's masquerade ball. How many artists made exactly 6 masks?,0.0,"Masks made | Frequency
+1 | 17
+2 | 18
+3 | 9
+4 | 15
+5 | 2
+6 | 0",7,11192,"import pandas as pd
+
+def count_artists(df, masks):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of masks made by artists and a number of masks, and returns the number of artists who made exactly that number of masks.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of masks made and the frequency of artists who made that number of masks. The DataFrame should have columns 'Masks made' and 'Frequency'.
+    masks (int): The number of masks to check.
+    Returns:
+    int: The number of artists who made exactly the specified number of masks.
+    """"""
+    # Filter the DataFrame for the specified number of masks
+    masks_df = df[df['Masks made'] == masks]
+    if not masks_df.empty:
+        # Return the frequency of artists who made the specified number of masks
+        return masks_df['Frequency'].values[0]
+    else:
+        # If no artists made the specified number of masks, return 0
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Masks made': [1, 2, 3, 4, 5, 6],
+    'Frequency': [17, 18, 9, 15, 2, 0]
+})
+# Call the tool to solve the problem
+print(count_artists(df, 6))","def count_frequency_of_value_in_frequency_table(df, value_col, frequency_col, target_value):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table, a target value, and returns the frequency of the target value in the table.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing a frequency table with columns specified by value_col and frequency_col.
+    value_col (str): The column name for the values.
+    frequency_col (str): The column name for the frequencies.
+    target_value (int): The target value to check the frequency.
+    
+    Returns:
+    int: The frequency of the target value in the table. If the target value is not found in the table, it returns 0.
+    """"""
+    # Filter the DataFrame for the target value
+    target_df = df[df[value_col] == target_value]
+    if not target_df.empty:
+        # Return the frequency of the target value
+        return target_df[frequency_col].values[0]
+    else:
+        # If the target value is not found in the table, return 0
+        return 0","df = pd.DataFrame({
+    'Masks made': [1, 2, 3, 4, 5, 6],
+    'Frequency': [17, 18, 9, 15, 2, 0]
+})
+print(count_frequency_of_value_in_frequency_table(df, 'Masks made', 'Frequency', 6))"
+"For an economics project, Luca determined the cost of ferry rides for bicycles and cars. On the Fauntleroy-Vashon ferry, how much higher is the fare for a car than for a bicycle?",10.0,"Ferry | Bicycle | Car
+Mukilteu-Clinton | $5 | $7
+Seattle-Bremerton | $8 | $12
+Fauntleroy-Vashon | $5 | $15
+Southport-Fort Fisher | $2 | $5
+Ocracoke | $3 | $15",4,7333,"import pandas as pd
+
+def calculate_fare_difference(df, ferry_name):
+    """"""
+    This function takes in a pandas DataFrame representing a ferry fare table and a ferry name, and returns the fare difference between a car and a bicycle for the given ferry.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for bicycles and cars with columns 'Ferry', 'Bicycle', and 'Car'.
+    ferry_name (str): The name of the ferry.
+    Returns:
+    float: The fare difference between a car and a bicycle for the given ferry.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = df[df['Ferry'] == ferry_name]
+    if not ferry_df.empty:
+        # Calculate the fare difference
+        fare_difference = ferry_df['Car'].values[0] - ferry_df['Bicycle'].values[0]
+        return fare_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Ferry': ['Mukilteo-Clinton', 'Seattle-Bremerton', 'Fauntleroy-Vashon', 'Southport-Fort Fisher', 'Ocracoke'],
+    'Bicycle': [5, 8, 5, 2, 3],
+    'Car': [7, 12, 15, 5, 15]
+})
+
+# Call the tool to solve the problem
+fare_difference = calculate_fare_difference(df, 'Fauntleroy-Vashon')
+print(fare_difference)","def calculate_fare_difference_for_vehicles(fare_df, ferry_col, vehicle1_col, vehicle2_col, ferry_name):
+    """"""
+    This function takes in a pandas DataFrame representing a fare table and a ferry name, and returns the fare difference between two types of vehicles for the given ferry.
+    
+    Args:
+    fare_df (pd.DataFrame): A pandas DataFrame containing ferry names and their fares for two types of vehicles.
+    ferry_col (str): The column name for the ferry names.
+    vehicle1_col (str): The column name for the first type of vehicle.
+    vehicle2_col (str): The column name for the second type of vehicle.
+    ferry_name (str): The name of the ferry.
+    
+    Returns:
+    float: The fare difference between the two types of vehicles for the given ferry.
+    """"""
+    # Filter the DataFrame for the specific ferry
+    ferry_df = fare_df[fare_df[ferry_col] == ferry_name]
+    if not ferry_df.empty:
+        # Calculate the fare difference
+        fare_difference = ferry_df[vehicle2_col].values[0] - ferry_df[vehicle1_col].values[0]
+        return fare_difference
+    else:
+        return None","fare_data = {
+    'Ferry': ['Mukilteo-Clinton', 'Seattle-Bremerton', 'Fauntleroy-Vashon', 'Southport-Fort Fisher', 'Ocracoke'],
+    'Bicycle': [5, 8, 5, 2, 3],
+    'Car': [7, 12, 15, 5, 15]
+}
+
+fare_df = pd.DataFrame(fare_data)
+
+print(calculate_fare_difference_for_vehicles(fare_df, ""Ferry"", ""Bicycle"", ""Car"", ""Fauntleroy-Vashon""))"
+Each cage has 2 tortoises. How many tortoises are in 4 cages?,8.0,"Number of cages | Number of tortoises
+1 | 2
+2 | 4
+3 | 6
+4 | ?",2,14753,"def calculate_tortoises_in_cages(df, num_cages):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of tortoises in each cage and a number of cages, and returns the number of tortoises in the given number of cages.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of cages and the corresponding number of tortoises with columns 'Number of cages' and 'Number of tortoises'.
+    num_cages (int): The number of cages.
+    Returns:
+    int: The number of tortoises in the given number of cages.
+    """"""
+    # Find the number of tortoises in one cage
+    tortoises_per_cage = df[df['Number of cages'] == 1]['Number of tortoises'].values[0]
+    
+    # Calculate the number of tortoises in the given number of cages
+    num_tortoises = num_cages * tortoises_per_cage
+    
+    return num_tortoises","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of cages': [1, 2, 3, 4],
+    'Number of tortoises': [2, 4, 6, None]
+})
+
+# Call the tool to solve the problem
+num_tortoises = calculate_tortoises_in_cages(df, 4)
+
+# Print the answer
+print(num_tortoises)","def calculate_items_in_groups(df, group_col, item_col, num_groups):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of items in each group and a number of groups, and returns the number of items in the given number of groups.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of groups and the corresponding number of items with columns specified by group_col and item_col.
+    group_col (str): The column name for the group counts.
+    item_col (str): The column name for the item counts.
+    num_groups (int): The number of groups.
+    
+    Returns:
+    int: The number of items in the given number of groups.
+    """"""
+    # Find the number of items in one group
+    items_per_group = df[df[group_col] == 1][item_col].values[0]
+    
+    # Calculate the number of items in the given number of groups
+    num_items = num_groups * items_per_group
+    
+    return num_items","df = pd.DataFrame({
+    'Number of cages': [1, 2, 3, 4],
+    'Number of tortoises': [2, 4, 6, None]
+})
+
+print(calculate_items_in_groups(df, 'Number of cages', 'Number of tortoises', 4))"
+A transportation analyst compared various bridges' tolls. How much is the toll for a carpool on the Fort Madison bridge?,1.0,"Bridge | Car | Carpool
+Hatem | $5 | $5
+George Washington | $8 | $2
+Fort Madison | $1 | $1",4,5185,"import pandas as pd
+
+def get_toll_for_carpool(df, bridge_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of bridge tolls and a bridge name, and returns the toll for a carpool on the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls for cars and carpools with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge_name (str): The name of the bridge.
+    Returns:
+    float: The toll for a carpool on the specified bridge.
+    """"""
+    # Filter the DataFrame for the specific bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    if not bridge_df.empty:
+        carpool_toll = bridge_df['Carpool'].values[0]
+        return carpool_toll
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Hatem', 'George Washington', 'Fort Madison'],
+    'Car': [5, 8, 1],
+    'Carpool': [5, 2, 1]
+})
+# Call the tool to solve the problem
+toll = get_toll_for_carpool(df, 'Fort Madison')
+print(toll)","def get_value_from_category_and_item(data_frame, category_col, item_col, item_name):
+    """"""
+    This function takes in a pandas DataFrame, a category column, an item column, and an item name, and returns the value in the category column for the specified item.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing various categories and items.
+    category_col (str): The column name for the categories.
+    item_col (str): The column name for the items.
+    item_name (str): The name of the item.
+    
+    Returns:
+    float: The value in the category column for the specified item.
+    """"""
+    # Filter the DataFrame for the specific item
+    item_df = data_frame[data_frame[item_col] == item_name]
+    if not item_df.empty:
+        category_value = item_df[category_col].values[0]
+        return category_value
+    else:
+        return None","df = pd.DataFrame({
+    'Bridge': ['Hatem', 'George Washington', 'Fort Madison'],
+    'Car': [5, 8, 1],
+    'Carpool': [5, 2, 1]
+})
+print(get_value_from_category_and_item(data_frame=df, category_col='Carpool', item_col='Bridge', item_name='Fort Madison'))"
+A transportation analyst compared various bridges' tolls. How much is the toll for a carpool on the Fort Madison bridge?,1.0,"Bridge | Car | Carpool
+Fort Madison | $1 | $1
+Hatem | $5 | $5
+George Washington | $8 | $2
+Tacoma Narrows | $3 | $3",5,15198,"import pandas as pd
+
+def get_toll_for_carpool(df, bridge_name):
+    """"""
+    This function takes in a pandas DataFrame representing a bridge toll table and a bridge name, and returns the toll for a carpool on the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge_name (str): The name of the bridge.
+    Returns:
+    float: The toll for a carpool on the specified bridge.
+    """"""
+    # Filter the DataFrame for the specific bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    if not bridge_df.empty:
+        carpool_toll = bridge_df['Carpool'].values[0]
+        return carpool_toll
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Hatem', 'George Washington', 'Tacoma Narrows'],
+    'Car': [1, 5, 8, 3],
+    'Carpool': [1, 5, 2, 3]
+})
+# Call the tool to solve the problem
+toll = get_toll_for_carpool(df, 'Fort Madison')
+print(toll)","def get_value_from_table_by_row_and_column(data_frame, row_col, value_col, row_name):
+    """"""
+    This function takes in a pandas DataFrame, a row column name, a value column name, and a row name, and returns the value from the specified row and column.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing various rows and columns.
+    row_col (str): The column name for the row names.
+    value_col (str): The column name for the values.
+    row_name (str): The name of the row.
+    
+    Returns:
+    float: The value from the specified row and column.
+    """"""
+    # Filter the DataFrame for the specific row
+    row_df = data_frame[data_frame[row_col] == row_name]
+    if not row_df.empty:
+        value = row_df[value_col].values[0]
+        return value
+    else:
+        return None","data_frame = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Hatem', 'George Washington', 'Tacoma Narrows'],
+    'Car': [1, 5, 8, 3],
+    'Carpool': [1, 5, 2, 3]
+})
+print(get_value_from_table_by_row_and_column(data_frame, 'Bridge', 'Carpool', 'Fort Madison'))"
+Each hamburger place has 2 waiters. How many waiters are in 3 hamburger places?,6.0,"Number of hamburger places | Number of waiters
+1 | 2
+2 | 4
+3 | ?",2,8069,"def calculate_waiters(hamburger_places, waiters_per_place):
+    """"""
+    This function takes in the number of hamburger places and the number of waiters per place, and returns the total number of waiters.
+    Args:
+    hamburger_places (int): The number of hamburger places.
+    waiters_per_place (int): The number of waiters per hamburger place.
+    Returns:
+    int: The total number of waiters.
+    """"""
+    return hamburger_places * waiters_per_place","# Call the tool to solve the problem
+print(calculate_waiters(3, 2))","def calculate_total_workers_from_places_and_workers_per_place(places, workers_per_place):
+    """"""
+    This function takes in the number of places and the number of workers per place, and returns the total number of workers.
+    
+    Args:
+    places (int): The number of places.
+    workers_per_place (int): The number of workers per place.
+    
+    Returns:
+    int: The total number of workers.
+    """"""
+    return places * workers_per_place","print(calculate_total_workers_from_places_and_workers_per_place(3, 2))"
+Several people compared how many Web pages they had visited. How many more Web pages did Philip visit than Steven?,544.0,"Person | Number of Web pages
+Javier | 3,778
+Hayley | 1,121
+Philip | 2,752
+Maura | 4,955
+Steven | 2,208",3,7290,"import pandas as pd
+
+def calculate_difference(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of people and the number of web pages they visited, and returns the difference in the number of web pages visited by two specified people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing people's names and the number of web pages they visited with columns 'Person' and 'Number of Web pages'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in the number of web pages visited by the two people.
+    """"""
+    # Filter the DataFrame for the specific people
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the number of web pages visited by each person
+    person1_pages = person1_df['Number of Web pages'].values[0]
+    person2_pages = person2_df['Number of Web pages'].values[0]
+    
+    # Calculate and return the difference
+    return abs(person1_pages - person2_pages)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Javier', 'Hayley', 'Philip', 'Maura', 'Steven'],
+    'Number of Web pages': [3778, 1121, 2752, 4955, 2208]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Philip', 'Steven')
+print(difference)","def calculate_absolute_difference_between_two_entities(df, entity_col, value_col, entity1, entity2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entities and their values, and returns the absolute difference in values between two specified entities.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entities and their values.
+    entity_col (str): The column name for the entities.
+    value_col (str): The column name for the values.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    
+    Returns:
+    int: The absolute difference in values between the two entities.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the value for each entity
+    entity1_value = entity1_df[value_col].values[0]
+    entity2_value = entity2_df[value_col].values[0]
+    
+    # Calculate and return the absolute difference
+    return abs(entity1_value - entity2_value)","df = pd.DataFrame({
+    'Person': ['Javier', 'Hayley', 'Philip', 'Maura', 'Steven'],
+    'Number of Web pages': [3778, 1121, 2752, 4955, 2208]
+})
+
+print(calculate_absolute_difference_between_two_entities(df, 'Person', 'Number of Web pages', 'Philip', 'Steven'))"
+Each restaurant table has 2 pepper shakers. How many pepper shakers are on 3 restaurant tables?,6.0,"Number of restaurant tables | Number of pepper shakers
+1 | 2
+2 | 4
+3 | ?",2,13860,"def calculate_pepper_shakers(num_tables):
+    """"""
+    This function takes in the number of restaurant tables and returns the number of pepper shakers based on the fact that each table has 2 pepper shakers.
+    Args:
+    num_tables (int): The number of restaurant tables.
+    Returns:
+    int: The number of pepper shakers.
+    """"""
+    # Calculate the number of pepper shakers
+    num_pepper_shakers = num_tables * 2
+    return num_pepper_shakers","# Call the tool to solve the problem
+print(calculate_pepper_shakers(3))","def calculate_total_items_from_groups_and_items_per_group(num_groups, items_per_group):
+    """"""
+    This function takes in the number of groups and the number of items per group, and returns the total number of items.
+    
+    Args:
+    num_groups (int): The number of groups.
+    items_per_group (int): The number of items per group.
+    
+    Returns:
+    int: The total number of items.
+    """"""
+    # Calculate the total number of items
+    total_items = num_groups * items_per_group
+    return total_items","num_tables = 3
+pepper_shakers_per_table = 2
+print(calculate_total_items_from_groups_and_items_per_group(num_tables, pepper_shakers_per_table))"
+"A transportation analyst compared various bridges' tolls. On the George Washington bridge, how much more is the toll for a car than for a carpool?",6.0,"Bridge | Car | Carpool
+Fort Madison | $1 | $1
+Tacoma Narrows | $3 | $3
+George Washington | $8 | $2
+Hatem | $5 | $5",5,4436,"import pandas as pd
+
+def calculate_toll_difference(df, bridge_name):
+    """"""
+    This function takes in a pandas DataFrame representing a bridge toll table and a bridge name, and returns the difference in toll between a car and a carpool for the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls for cars and carpools with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge_name (str): The name of the bridge to calculate the toll difference for.
+    Returns:
+    float: The difference in toll between a car and a carpool for the specified bridge.
+    """"""
+    # Filter the DataFrame for the specific bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    if not bridge_df.empty:
+        car_toll = bridge_df['Car'].values[0]
+        carpool_toll = bridge_df['Carpool'].values[0]
+        toll_difference = car_toll - carpool_toll
+        return toll_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Tacoma Narrows', 'George Washington', 'Hatem'],
+    'Car': [1, 3, 8, 5],
+    'Carpool': [1, 3, 2, 5]
+})
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'George Washington')
+print(toll_difference)","def calculate_difference_between_two_columns_for_specific_row(table_df, row_name_col, row_name, column1, column2):
+    """"""
+    This function takes in a pandas DataFrame, a row name, and two column names, and returns the difference between the values of the two columns for the specified row.
+    
+    Args:
+    table_df (pd.DataFrame): A pandas DataFrame containing various rows and columns.
+    row_name_col (str): The column name for the row names.
+    row_name (str): The name of the row to calculate the difference for.
+    column1 (str): The name of the first column.
+    column2 (str): The name of the second column.
+    
+    Returns:
+    float: The difference between the values of column1 and column2 for the specified row.
+    """"""
+    # Filter the DataFrame for the specific row
+    row_df = table_df[table_df[row_name_col] == row_name]
+    if not row_df.empty:
+        column1_value = row_df[column1].values[0]
+        column2_value = row_df[column2].values[0]
+        value_difference = column1_value - column2_value
+        return value_difference
+    else:
+        return None","df = pd.DataFrame({
+    'Bridge': ['Fort Madison', 'Tacoma Narrows', 'George Washington', 'Hatem'],
+    'Car': [1, 3, 8, 5],
+    'Carpool': [1, 3, 2, 5]
+})
+print(calculate_difference_between_two_columns_for_specific_row(table_df=df, row_name_col='Bridge', row_name='George Washington', column1='Car', column2='Carpool'))"
+"A transportation analyst compared various bridges' tolls. On the George Washington bridge, how much more is the toll for a car than for a carpool?",6.0,"Bridge | Car | Carpool
+George Washington | $8 | $2
+Hatem | $5 | $5
+Fort Madison | $1 | $1
+Tacoma Narrows | $3 | $3",5,6847,"import pandas as pd
+
+def calculate_toll_difference(df, bridge_name):
+    """"""
+    This function takes in a pandas DataFrame representing a bridge toll table and a bridge name, and returns the difference in toll between a car and a carpool for the specified bridge.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bridge names and their tolls for cars and carpools with columns 'Bridge', 'Car', and 'Carpool'.
+    bridge_name (str): The name of the bridge to calculate the toll difference for.
+    Returns:
+    float: The difference in toll between a car and a carpool for the specified bridge.
+    """"""
+    # Filter the DataFrame for the specific bridge
+    bridge_df = df[df['Bridge'] == bridge_name]
+    if not bridge_df.empty:
+        car_toll = bridge_df['Car'].values[0]
+        carpool_toll = bridge_df['Carpool'].values[0]
+        toll_difference = car_toll - carpool_toll
+        return toll_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bridge': ['George Washington', 'Hatem', 'Fort Madison', 'Tacoma Narrows'],
+    'Car': [8, 5, 1, 3],
+    'Carpool': [2, 5, 1, 3]
+})
+# Call the tool to solve the problem
+toll_difference = calculate_toll_difference(df, 'George Washington')
+print(toll_difference)","def calculate_difference_between_columns_for_item(data_frame, item_col, value_col1, value_col2, item_name):
+    """"""
+    This function takes in a pandas DataFrame, two column names, and an item name, and returns the difference between the values in the two columns for the specified item.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing items and their values in two columns.
+    item_col (str): The column name for the item names.
+    value_col1 (str): The column name for the first set of values.
+    value_col2 (str): The column name for the second set of values.
+    item_name (str): The name of the item to calculate the difference for.
+    
+    Returns:
+    float: The difference between the values in the two columns for the specified item.
+    """"""
+    # Filter the DataFrame for the specific item
+    item_df = data_frame[data_frame[item_col] == item_name]
+    if not item_df.empty:
+        value1 = item_df[value_col1].values[0]
+        value2 = item_df[value_col2].values[0]
+        difference = value1 - value2
+        return difference
+    else:
+        return None","data = {
+    'Bridge': ['George Washington', 'Hatem', 'Fort Madison', 'Tacoma Narrows'],
+    'Car': [8, 5, 1, 3],
+    'Carpool': [2, 5, 1, 3]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_between_columns_for_item(data_frame=df, item_col=""Bridge"", value_col1=""Car"", value_col2=""Carpool"", item_name=""George Washington""))"
+Jeffrey tracked the attendance at the school play. How many more people attended the play on Friday than on Sunday?,7002.0,"Day | Number of tickets
+Wednesday | 3,141
+Thursday | 5,694
+Friday | 8,862
+Saturday | 7,848
+Sunday | 1,860",3,12308,"import pandas as pd
+
+def calculate_difference_in_attendance(df, day1, day2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of attendance at a school play, and two days, and returns the difference in attendance between the two days.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and the number of tickets sold with columns 'Day' and 'Number of tickets'.
+    day1 (str): The first day to compare.
+    day2 (str): The second day to compare.
+    Returns:
+    int: The difference in attendance between the two days.
+    """"""
+    # Filter the DataFrame for the specific days
+    day1_df = df[df['Day'] == day1]
+    day2_df = df[df['Day'] == day2]
+    
+    # Check if the days are in the DataFrame
+    if not day1_df.empty and not day2_df.empty:
+        # Calculate the difference in attendance
+        difference = day1_df['Number of tickets'].values[0] - day2_df['Number of tickets'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Number of tickets': [3141, 5694, 8862, 7848, 1860]
+})
+# Call the tool to solve the problem
+difference = calculate_difference_in_attendance(df, 'Friday', 'Sunday')
+print(difference)","def calculate_difference_between_two_categories(df, category_col, value_col, category1, category2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of categories and their values, and two categories, and returns the difference in values between the two categories.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing categories and their values.
+    category_col (str): The column name for the categories.
+    value_col (str): The column name for the values.
+    category1 (str): The first category to compare.
+    category2 (str): The second category to compare.
+    
+    Returns:
+    int: The difference in values between the two categories.
+    """"""
+    # Filter the DataFrame for the specific categories
+    category1_df = df[df[category_col] == category1]
+    category2_df = df[df[category_col] == category2]
+    
+    # Check if the categories are in the DataFrame
+    if not category1_df.empty and not category2_df.empty:
+        # Calculate the difference in values
+        difference = category1_df[value_col].values[0] - category2_df[value_col].values[0]
+        return difference
+    else:
+        return None","df = pd.DataFrame({
+    'Day': ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Number of tickets': [3141, 5694, 8862, 7848, 1860]
+})
+print(calculate_difference_between_two_categories(df, 'Day', 'Number of tickets', 'Friday', 'Sunday'))"
+"An agricultural agency is researching how much cheese people have been eating in different parts of the world. In 2006, how much more cheese did Germany consume per capita than Argentina?",9.0,"Country | 1996 | 2006
+Austria | 10 | 17
+Great Britain | 9 | 10
+Australia | 10 | 10
+Argentina | 11 | 11
+Germany | 12 | 20",4,10249,"import pandas as pd
+
+def calculate_cheese_difference(df, country1, country2, year):
+    """"""
+    This function takes in a pandas DataFrame representing a table of cheese consumption per capita in different countries and years, and returns the difference in cheese consumption between two countries in a specific year.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing cheese consumption per capita in different countries and years. The DataFrame should have 'Country' as one of the columns and years as the other columns.
+    country1 (str): The name of the first country.
+    country2 (str): The name of the second country.
+    year (str): The year to compare the cheese consumption.
+    Returns:
+    float: The difference in cheese consumption per capita between the two countries in the specified year.
+    """"""
+    # Filter the DataFrame for the specific countries and year
+    country1_df = df[df['Country'] == country1]
+    country2_df = df[df['Country'] == country2]
+    
+    # Get the cheese consumption for the two countries in the specified year
+    country1_cheese = country1_df[year].values[0]
+    country2_cheese = country2_df[year].values[0]
+    
+    # Calculate the difference in cheese consumption
+    cheese_difference = country1_cheese - country2_cheese
+    
+    return cheese_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Country': ['Austria', 'Great Britain', 'Australia', 'Argentina', 'Germany'],
+    '1996': [10, 9, 10, 11, 12],
+    '2006': [17, 10, 10, 11, 20]
+})
+
+# Call the tool to solve the problem
+cheese_difference = calculate_cheese_difference(df, 'Germany', 'Argentina', '2006')
+print(cheese_difference)","def calculate_attribute_difference_between_entities_in_year(df, entity_col, entity1, entity2, attribute_year):
+    """"""
+    This function takes in a pandas DataFrame representing a table of attributes for different entities in different years, and returns the difference in the attribute between two entities in a specific year.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing attributes for different entities in different years. The DataFrame should have the entity names as one of the columns and years as the other columns.
+    entity_col (str): The column name for the entity names.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    attribute_year (str): The year to compare the attribute.
+    
+    Returns:
+    float: The difference in the attribute between the two entities in the specified year.
+    """"""
+    # Filter the DataFrame for the specific entities and year
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the attribute for the two entities in the specified year
+    entity1_attribute = entity1_df[attribute_year].values[0]
+    entity2_attribute = entity2_df[attribute_year].values[0]
+    
+    # Calculate the difference in the attribute
+    attribute_difference = entity1_attribute - entity2_attribute
+    
+    return attribute_difference","df = pd.DataFrame({
+    'Country': ['Austria', 'Great Britain', 'Australia', 'Argentina', 'Germany'],
+    '1996': [10, 9, 10, 11, 12],
+    '2006': [17, 10, 10, 11, 20]
+})
+
+print(calculate_attribute_difference_between_entities_in_year(df, 'Country', 'Germany', 'Argentina', '2006'))"
+"An agricultural agency is researching how much cheese people have been eating in different parts of the world. In 2006, how much more cheese did Germany consume per capita than Argentina?",9.0,"Country | 1996 | 2006
+Great Britain | 9 | 10
+Argentina | 11 | 11
+Germany | 12 | 20",4,4942,"import pandas as pd
+
+def cheese_consumption_difference(df, country1, country2, year):
+    """"""
+    This function takes in a pandas DataFrame representing a table of cheese consumption per capita, and returns the difference in cheese consumption between two countries in a specific year.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing cheese consumption per capita data with columns 'Country', '1996', '2006'.
+    country1 (str): The name of the first country.
+    country2 (str): The name of the second country.
+    year (str): The year to compare cheese consumption.
+    Returns:
+    float: The difference in cheese consumption per capita between the two countries in the specified year.
+    """"""
+    # Filter the DataFrame for the specific countries
+    country1_df = df[df['Country'] == country1]
+    country2_df = df[df['Country'] == country2]
+    
+    # Get the cheese consumption per capita for each country in the specified year
+    country1_cheese = country1_df[year].values[0]
+    country2_cheese = country2_df[year].values[0]
+    
+    # Calculate the difference in cheese consumption per capita
+    difference = country1_cheese - country2_cheese
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Country': ['Great Britain', 'Argentina', 'Germany'],
+    '1996': [9, 11, 12],
+    '2006': [10, 11, 20]
+})
+
+# Call the tool to solve the problem
+difference = cheese_consumption_difference(df, 'Germany', 'Argentina', '2006')
+print(difference)","def calculate_difference_in_attribute_between_entities(df, entity_col, entity1, entity2, attribute_year_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of entity attributes, and returns the difference in the attribute between two entities in a specific year.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing entity attributes with columns specified by entity_col and attribute_year_col.
+    entity_col (str): The column name for the entities.
+    entity1 (str): The name of the first entity.
+    entity2 (str): The name of the second entity.
+    attribute_year_col (str): The column name for the attribute values in the specified year.
+    
+    Returns:
+    float: The difference in the attribute between the two entities in the specified year.
+    """"""
+    # Filter the DataFrame for the specific entities
+    entity1_df = df[df[entity_col] == entity1]
+    entity2_df = df[df[entity_col] == entity2]
+    
+    # Get the attribute value for each entity in the specified year
+    entity1_attribute = entity1_df[attribute_year_col].values[0]
+    entity2_attribute = entity2_df[attribute_year_col].values[0]
+    
+    # Calculate the difference in the attribute
+    difference = entity1_attribute - entity2_attribute
+    
+    return difference","df = pd.DataFrame({
+    'Country': ['Great Britain', 'Argentina', 'Germany'],
+    '1996': [9, 11, 12],
+    '2006': [10, 11, 20]
+})
+
+print(calculate_difference_in_attribute_between_entities(df, 'Country', 'Germany', 'Argentina', '2006'))"
+The owner of a plant nursery wrote down the number of roses on each bush. How many bushes have exactly 43 roses?,0.0,"Stem | Leaf 
+4 | 8, 9, 9
+5 | 9
+6 | 7, 8
+7 | 3, 9, 9",5,3509,"import pandas as pd
+def count_bushes_with_43_roses(df):
+    """"""
+    This function takes in a pandas dataframe of roses per bush, and returns the number of bushes that have exactly 43 roses.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of roses per bush.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of bushes that have exactly 43 roses.
+    """"""
+    # prepare a list to calculate roses in each bush
+    roses = []
+    # calculate the total number of roses in each bush
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            roses.append(stem * 10 + leaf[j])
+    # filter the bushes where the total number of roses is exactly 43
+    filtered = [rose for rose in roses if rose == 43]
+    # count the number of rows
+    num_bushes = len(filtered)
+    return num_bushes","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [4, 5, 6, 7],
+    'Leaf': [[8, 9, 9], [9], [7, 8], [3, 9, 9]]
+})
+# Call the tool to solve the problem
+print(count_bushes_with_43_roses(df))","def count_groups_with_exact_number_in_stem_leaf(data_frame, stem_col, leaf_col, item_number):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of groups and a specific item number, and returns the number of groups that have exactly the given number of items.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot of items with columns specified by stem_col and leaf_col.
+    stem_col (str): The column name for the stem values.
+    leaf_col (str): The column name for the leaf values.
+    item_number (int): The specific number of items for filtering groups.
+    
+    Returns:
+    int: The number of groups with exactly the given number of items.
+    """"""
+    # Initialize the list to calculate items in each group
+    items = []
+    
+    # Calculate the total number of items in each group
+    for i in range(len(data_frame)):
+        stem = data_frame[stem_col][i]
+        leaf = data_frame[leaf_col][i]
+        for j in range(len(leaf)):
+            items.append(stem * 10 + leaf[j])
+    
+    # Filter the groups where the total number of items is exactly the given number
+    filtered = [item for item in items if item == item_number]
+    
+    # Count the number of groups
+    num_groups = len(filtered)
+    
+    return num_groups","data = {
+    ""Stem"": [4, 5, 6, 7],
+    ""Leaf"": [[8, 9, 9], [9], [7, 8], [3, 9, 9]]
+}
+
+df = pd.DataFrame(data)
+print(count_groups_with_exact_number_in_stem_leaf(data_frame=df, stem_col=""Stem"", leaf_col=""Leaf"", item_number=43))"
+A biologist recorded the number of birds at lakes in Newport. How many more geese live in Moon Lake than Spring Lake?,2.0,"Lake | Swans | Geese
+Blue Lake | 5 | 3
+Spring Lake | 2 | 17
+Moon Lake | 8 | 19
+Long Lake | 10 | 16",5,16865,"import pandas as pd
+
+def calculate_difference(df, column, location1, location2):
+    """"""
+    This function takes in a pandas DataFrame, a column name, and two location names, and returns the difference in the number of birds between the two locations.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of birds at different locations.
+    column (str): The column name of the bird type.
+    location1 (str): The name of the first location.
+    location2 (str): The name of the second location.
+    Returns:
+    int: The difference in the number of birds between the two locations.
+    """"""
+    # Filter the DataFrame for the specific locations
+    location1_df = df[df['Lake'] == location1]
+    location2_df = df[df['Lake'] == location2]
+    
+    # Get the number of birds at each location
+    location1_birds = location1_df[column].values[0]
+    location2_birds = location2_df[column].values[0]
+    
+    # Calculate the difference in the number of birds
+    difference = location1_birds - location2_birds
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Lake': ['Blue Lake', 'Spring Lake', 'Moon Lake', 'Long Lake'],
+    'Swans': [5, 2, 8, 10],
+    'Geese': [3, 17, 19, 16]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Geese', 'Moon Lake', 'Spring Lake')
+print(difference)","def calculate_difference_in_category_between_two_locations(df, location_col, category_col, location1, location2):
+    """"""
+    This function takes in a pandas DataFrame, a location column name, a category column name, and two location names, and returns the difference in the count of the category between the two locations.
+    
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing counts of categories at different locations.
+    location_col (str): The column name for the locations.
+    category_col (str): The column name for the category.
+    location1 (str): The name of the first location.
+    location2 (str): The name of the second location.
+    
+    Returns:
+    int: The difference in the count of the category between the two locations.
+    """"""
+    # Filter the DataFrame for the specific locations
+    location1_df = df[df[location_col] == location1]
+    location2_df = df[df[location_col] == location2]
+    
+    # Get the count of the category at each location
+    location1_count = location1_df[category_col].values[0]
+    location2_count = location2_df[category_col].values[0]
+    
+    # Calculate the difference in the count of the category
+    difference = location1_count - location2_count
+    
+    return difference","df = pd.DataFrame({
+    'Lake': ['Blue Lake', 'Spring Lake', 'Moon Lake', 'Long Lake'],
+    'Swans': [5, 2, 8, 10],
+    'Geese': [3, 17, 19, 16]
+})
+print(calculate_difference_in_category_between_two_locations(df, 'Lake', 'Geese', 'Moon Lake', 'Spring Lake'))"
+"Owen volunteered to bring hot dog toppings to the neighborhood barbecue. He asked his neighbors for the toppings they like and recorded their answers in a frequency chart. If 1/5 of the people who like mustard prefer spicy mustard, how many people prefer spicy mustard?",3.0,"Topping | Frequency
+ketchup | 3
+mustard | 15
+chili | 7",5,6672,"import pandas as pd
+
+def calculate_spicy_mustard_lovers(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of hot dog toppings and calculates the number of people who prefer spicy mustard.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing hot dog toppings and their frequencies with columns 'Topping' and 'Frequency'.
+    Returns:
+    int: The number of people who prefer spicy mustard.
+    """"""
+    # Filter the DataFrame for mustard
+    mustard_df = df[df['Topping'] == 'mustard']
+    
+    # If mustard is in the DataFrame, calculate the number of people who prefer spicy mustard
+    if not mustard_df.empty:
+        mustard_lovers = mustard_df['Frequency'].values[0]
+        spicy_mustard_lovers = mustard_lovers / 5
+        return spicy_mustard_lovers
+    
+    # If mustard is not in the DataFrame, return 0
+    return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Topping': ['ketchup', 'mustard', 'chili'],
+    'Frequency': [3, 15, 7]
+})
+# Call the tool to solve the problem
+spicy_mustard_lovers = calculate_spicy_mustard_lovers(df)
+print(spicy_mustard_lovers)","def calculate_variant_preference(data_frame, item_col, frequency_col, item_name, variant_ratio):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of items, an item name, and a variant ratio, and calculates the number of people who prefer a variant of the item based on the given ratio.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing item names and their frequencies.
+    item_col (str): The column name for the item names.
+    frequency_col (str): The column name for the item frequencies.
+    item_name (str): The name of the item to filter the DataFrame.
+    variant_ratio (float): The ratio of people who prefer the variant of the item.
+    
+    Returns:
+    float: The number of people who prefer the variant of the item.
+    """"""
+    # Filter the DataFrame for the specific item name
+    item_df = data_frame[data_frame[item_col] == item_name]
+    
+    # If the item is in the DataFrame, calculate the number of people who prefer the variant
+    if not item_df.empty:
+        item_frequency = item_df[frequency_col].values[0]
+        variant_frequency = item_frequency * variant_ratio
+        return variant_frequency
+    
+    # If the item is not in the DataFrame, return 0
+    return 0","data = {
+    'Topping': ['ketchup', 'mustard', 'chili'],
+    'Frequency': [3, 15, 7]
+}
+
+df = pd.DataFrame(data)
+print(calculate_variant_preference(data_frame=df, item_col=""Topping"", frequency_col=""Frequency"", item_name=""mustard"", variant_ratio=1/5))"
+Ellis Furniture Exports is shipping pieces of furniture made out of different types of wood. How many more pieces of maple furniture are there than pieces of oak furniture?,14.0,"Type of Wood | Beds | Bookcases
+Maple | 14 | 19
+Oak | 15 | 4
+Walnut | 7 | 4
+Pine | 4 | 5",4,4380,"import pandas as pd
+
+def calculate_difference(df, wood_type1, wood_type2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of furniture made out of different types of wood, and two types of wood. It returns the difference in the total number of pieces of furniture made from the two types of wood.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing types of wood and the number of pieces of furniture made from each type with columns 'Type of Wood', 'Beds', and 'Bookcases'.
+    wood_type1 (str): The first type of wood.
+    wood_type2 (str): The second type of wood.
+    Returns:
+    int: The difference in the total number of pieces of furniture made from the two types of wood.
+    """"""
+    # Filter the DataFrame for the specific types of wood
+    wood_type1_df = df[df['Type of Wood'] == wood_type1]
+    wood_type2_df = df[df['Type of Wood'] == wood_type2]
+    
+    # Calculate the total number of pieces of furniture made from each type of wood
+    wood_type1_total = wood_type1_df['Beds'].values[0] + wood_type1_df['Bookcases'].values[0]
+    wood_type2_total = wood_type2_df['Beds'].values[0] + wood_type2_df['Bookcases'].values[0]
+    
+    # Calculate the difference in the total number of pieces of furniture made from the two types of wood
+    difference = wood_type1_total - wood_type2_total
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Type of Wood': ['Maple', 'Oak', 'Walnut', 'Pine'],
+    'Beds': [14, 15, 7, 4],
+    'Bookcases': [19, 4, 4, 5]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Maple', 'Oak')
+print(difference)","def calculate_difference_between_categories(data_frame, category_col, item_col1, item_col2, category1, category2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of item counts per category, and two categories. It returns the difference in the total number of items made from the two categories.
+    
+    Args:
+    data_frame (pd.DataFrame): A pandas DataFrame containing categories and the number of items made from each category with columns specified by category_col, item_col1, and item_col2.
+    category_col (str): The column name for the categories.
+    item_col1 (str): The column name for the first item count.
+    item_col2 (str): The column name for the second item count.
+    category1 (str): The first category.
+    category2 (str): The second category.
+    
+    Returns:
+    int: The difference in the total number of items made from the two categories.
+    """"""
+    # Filter the DataFrame for the specific categories
+    category1_df = data_frame[data_frame[category_col] == category1]
+    category2_df = data_frame[data_frame[category_col] == category2]
+    
+    # Calculate the total number of items made from each category
+    category1_total = category1_df[item_col1].values[0] + category1_df[item_col2].values[0]
+    category2_total = category2_df[item_col1].values[0] + category2_df[item_col2].values[0]
+    
+    # Calculate the difference in the total number of items made from the two categories
+    difference = category1_total - category2_total
+    
+    return difference","data = {
+    'Type of Wood': ['Maple', 'Oak', 'Walnut', 'Pine'],
+    'Beds': [14, 15, 7, 4],
+    'Bookcases': [19, 4, 4, 5]
+}
+
+df = pd.DataFrame(data)
+print(calculate_difference_between_categories(data_frame=df, category_col=""Type of Wood"", item_col1=""Beds"", item_col2=""Bookcases"", category1=""Maple"", category2=""Oak""))"

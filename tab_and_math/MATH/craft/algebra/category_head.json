@@ -1,0 +1,848 @@
+{
+    "additional_workers_needed": [
+        "additional_workers_needed(initial_workers, initial_time, target_time)"
+    ],
+    "calculate_annual_interest_rate": [
+        "calculate_annual_interest_rate(initial_investment, final_value, duration_in_years)"
+    ],
+    "calculate_area_square_adjacent_vertices": [
+        "calculate_area_square_adjacent_vertices(point1, point2)"
+    ],
+    "calculate_average_rate": [
+        "calculate_average_rate(total_quantity, total_time)"
+    ],
+    "calculate_average_speed": [
+        "calculate_average_speed(distances, speeds)"
+    ],
+    "calculate_average_speed_round_trip": [
+        "calculate_average_speed_round_trip(distance_one_way, time_one_way1, time_one_way2)"
+    ],
+    "calculate_based_on_formula": [
+        "calculate_based_on_formula(input1, input2, formula)"
+    ],
+    "calculate_binary_operation": [
+        "calculate_binary_operation(operand1, operand2, operation_formula)"
+    ],
+    "calculate_combined_score": [
+        "calculate_combined_score(test_results, total_problem_count)"
+    ],
+    "calculate_compound_interest": [
+        "calculate_compound_interest(principal, rate, time)"
+    ],
+    "calculate_compound_interest_general": [
+        "calculate_compound_interest_general(principal, rate, time, frequency=1)"
+    ],
+    "calculate_distance": [
+        "calculate_distance(point1, point2)"
+    ],
+    "calculate_distance_constant_speed": [
+        "calculate_distance_constant_speed(time, speed)"
+    ],
+    "calculate_duration": [
+        "calculate_duration(initial_workers, initial_duration, target_workers)"
+    ],
+    "calculate_elements_in_stage": [
+        "calculate_elements_in_stage(initial_elements, additional_elements_per_stage, target_stage)"
+    ],
+    "calculate_entities": [
+        "calculate_entities(time_periods)"
+    ],
+    "calculate_equivalent_repetitions": [
+        "calculate_equivalent_repetitions(original_weight, original_repetitions, new_weight)"
+    ],
+    "calculate_expression": [
+        "calculate_expression(part1, operation1, part2, operation2, part3)"
+    ],
+    "calculate_factor_for_target_average": [
+        "calculate_factor_for_target_average(first_event_factor, first_event_result, target_average_result)"
+    ],
+    "calculate_final_count": [
+        "calculate_final_count(initial_count, total_time, time_interval, split_ratio)"
+    ],
+    "calculate_final_population": [
+        "calculate_final_population(initial_population, doubling_time, total_time)"
+    ],
+    "calculate_final_value_inverse_proportion": [
+        "calculate_final_value_inverse_proportion(initial_value1, initial_value2, final_value1)"
+    ],
+    "calculate_flight_cost": [
+        "calculate_flight_cost(distance, booking_fee, cost_per_km)"
+    ],
+    "calculate_fraction_consumed": [
+        "calculate_fraction_consumed(iterations, initial_fraction)"
+    ],
+    "calculate_fractional_part": [
+        "calculate_fractional_part(total_duration, partial_duration)"
+    ],
+    "calculate_gas_cost": [
+        "calculate_gas_cost(start_odometer, end_odometer, miles_per_gallon, price_per_gallon)"
+    ],
+    "calculate_gas_property": [
+        "calculate_gas_property(initial_volume, initial_pressure, final_volume=None, final_pressure=None)"
+    ],
+    "calculate_ingredient_per_unit": [
+        "calculate_ingredient_per_unit(old_units, old_ingredient_per_unit, new_units)"
+    ],
+    "calculate_item_difference": [
+        "calculate_item_difference(initial_squares, target_square, item_function)"
+    ],
+    "calculate_items_consumed": [
+        "calculate_items_consumed(total_time, rate)"
+    ],
+    "calculate_min_days": [
+        "calculate_min_days(principal, daily_rate, target_multiple)"
+    ],
+    "calculate_minimum_tasks": [
+        "calculate_minimum_tasks(target_points, point_divisor)"
+    ],
+    "calculate_output_with_ratio": [
+        "calculate_output_with_ratio(given_ingredient_amount, base_ingredient_amount, base_output_amount)"
+    ],
+    "calculate_painting_cost_arithmetic_sequence": [
+        "calculate_painting_cost_arithmetic_sequence(total_houses, start_number, step_size, cost_per_digit)"
+    ],
+    "calculate_percentage_increase": [
+        "calculate_percentage_increase(base_value, percentage_increase)"
+    ],
+    "calculate_percentage_meeting_criteria": [
+        "calculate_percentage_meeting_criteria(total_population, subgroup_counts, subgroup_ratios)"
+    ],
+    "calculate_points_product": [
+        "calculate_points_product(scoring_function, player1_rolls, player2_rolls)"
+    ],
+    "calculate_power": [
+        "calculate_power(base, exponent)"
+    ],
+    "calculate_proportional_price": [
+        "calculate_proportional_price(base_quantity, base_price, target_quantity)"
+    ],
+    "calculate_proportional_value": [
+        "calculate_proportional_value(target_input, base_input, base_output)"
+    ],
+    "calculate_ratio_of_sums": [
+        "calculate_ratio_of_sums(range1_start, range1_end, range1_step, range2_start, range2_end, range2_step)"
+    ],
+    "calculate_recycled_items": [
+        "calculate_recycled_items(initial_items, recycling_ratio)"
+    ],
+    "calculate_revolutions_proportional_to_radius": [
+        "calculate_revolutions_proportional_to_radius(initial_radius, initial_revolutions, target_radius)"
+    ],
+    "calculate_success_rate_increase": [
+        "calculate_success_rate_increase(initial_attempts, initial_successes, additional_attempts, additional_success_rate)"
+    ],
+    "calculate_sum_difference": [
+        "calculate_sum_difference(end_range, rounding_base)"
+    ],
+    "calculate_time_based_on_speed": [
+        "calculate_time_based_on_speed(known_distance, known_time, target_distance)"
+    ],
+    "calculate_time_difference": [
+        "calculate_time_difference(task_size, speed1, speed2)"
+    ],
+    "calculate_time_for_different_workforce": [
+        "calculate_time_for_different_workforce(initial_workforce, initial_time, target_workforce)"
+    ],
+    "calculate_total_cost": [
+        "calculate_total_cost(unit_cost, volume, conversion_factor)"
+    ],
+    "calculate_total_discount_percent": [
+        "calculate_total_discount_percent(discount1, discount2)"
+    ],
+    "calculate_total_earnings": [
+        "calculate_total_earnings(hours_period1, hours_period2, extra_earnings_period2)"
+    ],
+    "calculate_total_interest": [
+        "calculate_total_interest(principal, rate, time)"
+    ],
+    "calculate_total_items_arithmetic_series": [
+        "calculate_total_items_arithmetic_series(first_term, common_difference, number_of_terms)"
+    ],
+    "calculate_total_with_interest": [
+        "calculate_total_with_interest(original_amount, interest_rate, num_periods)"
+    ],
+    "calculate_units_needed": [
+        "calculate_units_needed(units_per_resource1, units_per_resource2, target_resource2)"
+    ],
+    "calculate_units_per_row": [
+        "calculate_units_per_row(area, unit_size, area_conversion_factor=1, size_conversion_factor=1)"
+    ],
+    "calculate_upward_distance": [
+        "calculate_upward_distance(point1, point2, target_point)"
+    ],
+    "calculate_work_hours_for_same_pay": [
+        "calculate_work_hours_for_same_pay(period1_hours, period1_weeks, period1_pay, period2_weeks, period2_pay)"
+    ],
+    "closest_integer_to_root": [
+        "closest_integer_to_root(n, root)"
+    ],
+    "compound_interest_difference": [
+        "compound_interest_difference(principal, rate, time, compounding_frequency_1, compounding_frequency_2)"
+    ],
+    "compute_difference_of_squares": [
+        "compute_difference_of_squares(num1, num2)"
+    ],
+    "compute_expression_for_x": [
+        "compute_expression_for_x(expression, x_value)"
+    ],
+    "compute_fraction": [
+        "compute_fraction(numerator_terms, denominator_terms)"
+    ],
+    "convert_units": [
+        "convert_units(base_unit1, base_unit2, target_unit1)"
+    ],
+    "count_divisions_to_target": [
+        "count_divisions_to_target(start_number, end_number, divisor)"
+    ],
+    "count_expansion_terms": [
+        "count_expansion_terms(num_terms_expr1, num_terms_expr2)"
+    ],
+    "count_items_in_stack": [
+        "count_items_in_stack(bottom_row_items, top_row_items)"
+    ],
+    "count_numbers_fraction": [
+        "count_numbers_fraction(num_digits, fraction)"
+    ],
+    "cubic_units_in_larger_unit": [
+        "cubic_units_in_larger_unit(conversion_factor)"
+    ],
+    "custom_operation": [
+        "custom_operation(num1, num2)"
+    ],
+    "difference_of_squares": [
+        "difference_of_squares(a, b)"
+    ],
+    "distance_from_origin": [
+        "distance_from_origin(x, y)"
+    ],
+    "evaluate_exponent": [
+        "evaluate_exponent(base, exponent)"
+    ],
+    "evaluate_expression": [
+        "evaluate_expression(expression, variable_values)"
+    ],
+    "evaluate_expression_at_x": [
+        "evaluate_expression_at_x(expr, x_value)"
+    ],
+    "evaluate_floor_ceil": [
+        "evaluate_floor_ceil(floor_value, ceil_value)"
+    ],
+    "evaluate_floor_ceil_expression": [
+        "evaluate_floor_ceil_expression(floor_number, ceil_number)"
+    ],
+    "evaluate_function_at_x": [
+        "evaluate_function_at_x(function, x_value)"
+    ],
+    "evaluate_logarithm": [
+        "evaluate_logarithm(log_base, exponent)"
+    ],
+    "expand_binomial_product": [
+        "expand_binomial_product(x, term1, term2, term3, term4)"
+    ],
+    "expand_expression": [
+        "expand_expression(product_expression)"
+    ],
+    "expand_generic_expression": [
+        "expand_generic_expression(expression_to_expand)"
+    ],
+    "expand_math_expression": [
+        "expand_math_expression(expression)"
+    ],
+    "factor_expression_difference": [
+        "factor_expression_difference(expression1, expression2)"
+    ],
+    "factor_expression_subtraction": [
+        "factor_expression_subtraction(polynomial1, polynomial2)"
+    ],
+    "factor_generic_expression": [
+        "factor_generic_expression(expression)"
+    ],
+    "factor_polynomial_expression": [
+        "factor_polynomial_expression(expression)"
+    ],
+    "find_abs_difference_in_sequences": [
+        "find_abs_difference_in_sequences(start_value, common_difference, term_number)"
+    ],
+    "find_age_based_on_age_ratio_and_difference": [
+        "find_age_based_on_age_ratio_and_difference(person1_age_at_event, age_ratio, age_difference)"
+    ],
+    "find_age_of_person1": [
+        "find_age_of_person1(age_difference, total_age)"
+    ],
+    "find_area_of_rectangle_given_perimeter_ratio": [
+        "find_area_of_rectangle_given_perimeter_ratio(rectangle_perimeter, length_to_width_ratio)"
+    ],
+    "find_arithmetic_sequence_term": [
+        "find_arithmetic_sequence_term(nth_term, nth_term_value, mth_term, mth_term_value, target_term)"
+    ],
+    "find_base_number": [
+        "find_base_number(given_value, given_percentage)"
+    ],
+    "find_capacity_from_fractions": [
+        "find_capacity_from_fractions(used_gallons, initial_fraction, final_fraction)"
+    ],
+    "find_coefficient_for_perpendicularity": [
+        "find_coefficient_for_perpendicularity(known_slope, variable_slope_coefficient)"
+    ],
+    "find_complex_power": [
+        "find_complex_power(complex_base, integer_power)"
+    ],
+    "find_composite_value": [
+        "find_composite_value(outer_func, inner_func, input_value)"
+    ],
+    "find_composition_value": [
+        "find_composition_value(outer_func, inner_func, input_value)"
+    ],
+    "find_consecutive_integers_product": [
+        "find_consecutive_integers_product(product, direction)"
+    ],
+    "find_constant_at_midpoint": [
+        "find_constant_at_midpoint(point1, point2, linear_equation)"
+    ],
+    "find_constant_for_inverse": [
+        "find_constant_for_inverse(func, inverse_func, constant)"
+    ],
+    "find_constant_for_one_real_root": [
+        "find_constant_for_one_real_root(a, b, c, variable)"
+    ],
+    "find_constant_for_parallel_line": [
+        "find_constant_for_parallel_line(given_slope, slope_multiplier)"
+    ],
+    "find_constant_in_linear_eq": [
+        "find_constant_in_linear_eq(x_coefficient, y_coefficient, sum_intercepts)"
+    ],
+    "find_constant_term_of_same_constant_poly": [
+        "find_constant_term_of_same_constant_poly(poly_product_str)"
+    ],
+    "find_container_capacity": [
+        "find_container_capacity(initial_fraction, final_fraction, added_substance)"
+    ],
+    "find_cost_of_combination": [
+        "find_cost_of_combination(item1_quantity1, item2_quantity1, cost1, item1_quantity2, item2_quantity2, cost2, target_item1_quantity, target_item2_quantity)"
+    ],
+    "find_cubed_sum": [
+        "find_cubed_sum(sum_xy, product_xy)"
+    ],
+    "find_day_exceed_target": [
+        "find_day_exceed_target(initial_count, daily_multiplier, target_count, start_day)"
+    ],
+    "find_day_when_quantity_doubles": [
+        "find_day_when_quantity_doubles(starting_quantity, target_quantity)"
+    ],
+    "find_days_not_worked_generic": [
+        "find_days_not_worked_generic(total_days, earnings_per_work_day, penalty_per_day_off, total_earnings)"
+    ],
+    "find_difference_based_on_sum_and_fraction": [
+        "find_difference_based_on_sum_and_fraction(sum_value, fraction_value)"
+    ],
+    "find_difference_between_consecutive_squares": [
+        "find_difference_between_consecutive_squares(smaller_number, larger_number)"
+    ],
+    "find_difference_between_squares": [
+        "find_difference_between_squares(num1, num2)"
+    ],
+    "find_discriminant": [
+        "find_discriminant(coeff_a, coeff_b, coeff_c)"
+    ],
+    "find_domain_size_generic": [
+        "find_domain_size_generic(start_input, start_output, rule_even, rule_odd)"
+    ],
+    "find_end_point_y": [
+        "find_end_point_y(start_point, end_x, length)"
+    ],
+    "find_endpoint_y": [
+        "find_endpoint_y(start_x, start_y, end_x, segment_length)"
+    ],
+    "find_entity1_weight": [
+        "find_entity1_weight(total_weight, entity1_entity2_ratio, entity1_entity3_ratio)"
+    ],
+    "find_exponent_in_power_equation": [
+        "find_exponent_in_power_equation(base, result)"
+    ],
+    "find_expression_value": [
+        "find_expression_value(var1, var2, given_equation, target_expression)"
+    ],
+    "find_first_term_exceeding_value": [
+        "find_first_term_exceeding_value(start_value, target_value)"
+    ],
+    "find_force_inverse_square_law": [
+        "find_force_inverse_square_law(initial_distance, initial_force, target_distance)"
+    ],
+    "find_good_pairs": [
+        "find_good_pairs(lines)"
+    ],
+    "find_greater_number_from_sum_and_difference": [
+        "find_greater_number_from_sum_and_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_greatest_product": [
+        "find_greatest_product(sum_value)"
+    ],
+    "find_group_size": [
+        "find_group_size(total_members, total_attendees, attendance_rate_group2)"
+    ],
+    "find_initial_amount": [
+        "find_initial_amount(final_amount, consumption_rate, periods)"
+    ],
+    "find_initial_fee": [
+        "find_initial_fee(cost1, nights1, cost2, nights2)"
+    ],
+    "find_initial_quantity": [
+        "find_initial_quantity(initial_ratio, final_ratio, item1_change, item2_change)"
+    ],
+    "find_integer_satisfying_condition": [
+        "find_integer_satisfying_condition(operation, target_value)"
+    ],
+    "find_integer_squares_difference": [
+        "find_integer_squares_difference(difference)"
+    ],
+    "find_intersection_of_lines": [
+        "find_intersection_of_lines(a1, b1, c1, a2, b2, c2)"
+    ],
+    "find_inverse_proportional_quantity": [
+        "find_inverse_proportional_quantity(quantity1, value1, value2)"
+    ],
+    "find_inverse_proportional_var": [
+        "find_inverse_proportional_var(var1, sum_vars, diff_vars)"
+    ],
+    "find_inverse_value_linear": [
+        "find_inverse_value_linear(coefficient, constant, target_value)"
+    ],
+    "find_inverse_value_polynomial": [
+        "find_inverse_value_polynomial(polynomial_function, target_inverse_result)"
+    ],
+    "find_inverse_variation": [
+        "find_inverse_variation(initial_x, initial_y, target_x)"
+    ],
+    "find_inverse_variation_value": [
+        "find_inverse_variation_value(initial_value1, initial_value2, target_value2, power1, power2)"
+    ],
+    "find_inversely_proportional_value": [
+        "find_inversely_proportional_value(variable2, variable1_variable2_product)"
+    ],
+    "find_investment_amount_option1": [
+        "find_investment_amount_option1(total_investment, total_return, option1_rate, option2_rate, years)"
+    ],
+    "find_item1_cost": [
+        "find_item1_cost(total_cost, item1_more_than_item2)"
+    ],
+    "find_items_for_volume": [
+        "find_items_for_volume(initial_volume, initial_items, target_volume)"
+    ],
+    "find_iteration_count": [
+        "find_iteration_count(initial_value, reduction_ratio, target_value)"
+    ],
+    "find_iterations_to_reach_target": [
+        "find_iterations_to_reach_target(initial_value, target_value, common_ratio)"
+    ],
+    "find_larger_of_two": [
+        "find_larger_of_two(total, difference)"
+    ],
+    "find_larger_of_two_numbers": [
+        "find_larger_of_two_numbers(sum_of_numbers, difference)"
+    ],
+    "find_largest_consecutive_sum": [
+        "find_largest_consecutive_sum(target_sum)"
+    ],
+    "find_largest_number_given_differences": [
+        "find_largest_number_given_differences(total_sum, large_diff, small_diff)"
+    ],
+    "find_largest_prime_factor": [
+        "find_largest_prime_factor(expression)"
+    ],
+    "find_largest_side_custom_condition": [
+        "find_largest_side_custom_condition(total_fencing_length, area_multiplier, perimeter_multiplier)"
+    ],
+    "find_largest_variable_value": [
+        "find_largest_variable_value(function, variable, target_value)"
+    ],
+    "find_largest_x_for_undefined_expression": [
+        "find_largest_x_for_undefined_expression(denominator)"
+    ],
+    "find_lattice_number_generic": [
+        "find_lattice_number_generic(row, position, positions_per_row)"
+    ],
+    "find_least_integer_periods": [
+        "find_least_integer_periods(principal, interest_rate, target_multiple)"
+    ],
+    "find_least_items": [
+        "find_least_items(score_func1, score_func2)"
+    ],
+    "find_lesser_of_two_numbers": [
+        "find_lesser_of_two_numbers(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_max_area_equal_sides": [
+        "find_max_area_equal_sides(perimeter, num_sides)"
+    ],
+    "find_max_consecutive_integers": [
+        "find_max_consecutive_integers(target_sum)"
+    ],
+    "find_max_group_size": [
+        "find_max_group_size(max_group_size, leftover_members, row_adjustment, member_adjustment)"
+    ],
+    "find_max_revenue_generic": [
+        "find_max_revenue_generic(revenue_function, domain_limit)"
+    ],
+    "find_max_sum_consecutive_integers": [
+        "find_max_sum_consecutive_integers(product_limit, consecutive_count)"
+    ],
+    "find_max_value": [
+        "find_max_value(func, var)"
+    ],
+    "find_maximum_value_quadratic": [
+        "find_maximum_value_quadratic(func, var)"
+    ],
+    "find_median_of_consecutive_numbers": [
+        "find_median_of_consecutive_numbers(total_sum, num_numbers)"
+    ],
+    "find_middle_number": [
+        "find_middle_number(sum_of_first_and_last, sequence_length)"
+    ],
+    "find_midpoint": [
+        "find_midpoint(point1, point2)"
+    ],
+    "find_midpoint_sum": [
+        "find_midpoint_sum(endpoint1, endpoint2)"
+    ],
+    "find_minimal_side_length": [
+        "find_minimal_side_length(area)"
+    ],
+    "find_minimum_value": [
+        "find_minimum_value(func, var)"
+    ],
+    "find_minimum_x_of_quadratic": [
+        "find_minimum_x_of_quadratic(quadratic_function)"
+    ],
+    "find_nth_term_geometric_sequence": [
+        "find_nth_term_geometric_sequence(first_term, common_ratio, n)"
+    ],
+    "find_nth_term_inverse_proportional": [
+        "find_nth_term_inverse_proportional(first_term, second_term, term_number)"
+    ],
+    "find_nth_term_of_power_sequence": [
+        "find_nth_term_of_power_sequence(base, term_number)"
+    ],
+    "find_number_of_expensive_items": [
+        "find_number_of_expensive_items(total_items, total_cost, cheaper_item_cost, expensive_item_cost)"
+    ],
+    "find_number_of_group1": [
+        "find_number_of_group1(total_population, total_participants, group1_ratio, group2_ratio)"
+    ],
+    "find_number_of_items": [
+        "find_number_of_items(person1, person2, condition1, condition2)"
+    ],
+    "find_number_of_items_with_denom1": [
+        "find_number_of_items_with_denom1(total_amount, total_items, denom1, denom2)"
+    ],
+    "find_number_of_objects": [
+        "find_number_of_objects(total_parts, parts_per_object1, parts_per_object2, object1_per_object2)"
+    ],
+    "find_number_of_rows": [
+        "find_number_of_rows(total_items, initial_items_per_row, items_increment_per_row)"
+    ],
+    "find_number_with_digit_sum": [
+        "find_number_with_digit_sum(target_sum, position)"
+    ],
+    "find_person4_age": [
+        "find_person4_age(person1_age, person1_person2_diff, person2_person3_diff, person3_person4_diff)"
+    ],
+    "find_persons_age": [
+        "find_persons_age(person1_age_multiple, person2_age_difference, person1_person2_age_difference)"
+    ],
+    "find_point_on_line_segment": [
+        "find_point_on_line_segment(point_a, point_b, distance_ratio)"
+    ],
+    "find_poly_at_zero": [
+        "find_poly_at_zero(poly1_const, poly2_const)"
+    ],
+    "find_positive_solution": [
+        "find_positive_solution(equations, target_variable)"
+    ],
+    "find_product_given_sum_and_difference": [
+        "find_product_given_sum_and_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_product_given_sum_difference": [
+        "find_product_given_sum_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_product_of_roots": [
+        "find_product_of_roots(a, b, c)"
+    ],
+    "find_proportional_part": [
+        "find_proportional_part(group1_total, group1_part, group2_total)"
+    ],
+    "find_quadratic_coefficients": [
+        "find_quadratic_coefficients(root1, root2)"
+    ],
+    "find_quantity_of_item1": [
+        "find_quantity_of_item1(total_quantity, total_cost, item1_cost, item2_cost)"
+    ],
+    "find_quantity_on_target_day": [
+        "find_quantity_on_target_day(total_quantity, num_days, daily_increment, target_day)"
+    ],
+    "find_range_for_product_of_floor_and_ceil": [
+        "find_range_for_product_of_floor_and_ceil(target_product)"
+    ],
+    "find_recursive_sqrt_constant": [
+        "find_recursive_sqrt_constant(constant)"
+    ],
+    "find_remainder_of_sum": [
+        "find_remainder_of_sum(n, divisor)"
+    ],
+    "find_required_hours_per_week": [
+        "find_required_hours_per_week(initial_hours_per_week, initial_weeks, initial_pay, target_weeks, target_pay)"
+    ],
+    "find_return_speed_generic": [
+        "find_return_speed_generic(distance, initial_speed, average_speed)"
+    ],
+    "find_slope": [
+        "find_slope(coeff_x, coeff_y)"
+    ],
+    "find_smaller_number": [
+        "find_smaller_number(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_smallest_dimension": [
+        "find_smallest_dimension(shape_perimeter, shape_area, side_symbols)"
+    ],
+    "find_smallest_number_in_consecutive_sequence": [
+        "find_smallest_number_in_consecutive_sequence(sum_of_numbers, count_of_numbers, step)"
+    ],
+    "find_smallest_root_quadratic": [
+        "find_smallest_root_quadratic(a, b, c)"
+    ],
+    "find_smallest_sum_of_squares": [
+        "find_smallest_sum_of_squares(difference)"
+    ],
+    "find_smallest_x_abs": [
+        "find_smallest_x_abs(a, b, c)"
+    ],
+    "find_solvent_to_add": [
+        "find_solvent_to_add(initial_solution_volume, initial_solute_percentage, target_solute_percentage)"
+    ],
+    "find_species_population": [
+        "find_species_population(initial_total, final_total, species1_multiplier, species2_multiplier, target_species_multiplier, days_passed)"
+    ],
+    "find_speed_for_same_distance": [
+        "find_speed_for_same_distance(speed1, time1, time2)"
+    ],
+    "find_state1_time": [
+        "find_state1_time(total_progress, total_time, state1_rate, state2_rate)"
+    ],
+    "find_successful_additional_attempts": [
+        "find_successful_additional_attempts(initial_attempts, initial_success_percentage, additional_attempts, final_success_percentage)"
+    ],
+    "find_sum_of_coefficients_in_polynomial": [
+        "find_sum_of_coefficients_in_polynomial(polynomial)"
+    ],
+    "find_sum_of_consecutive_numbers": [
+        "find_sum_of_consecutive_numbers(input_product)"
+    ],
+    "find_sum_of_roots": [
+        "find_sum_of_roots(coefficient_a, coefficient_b)"
+    ],
+    "find_sum_of_slope_and_intercept": [
+        "find_sum_of_slope_and_intercept(point1, point2)"
+    ],
+    "find_sum_of_solutions": [
+        "find_sum_of_solutions(equation, variable)"
+    ],
+    "find_sum_of_three_objects": [
+        "find_sum_of_three_objects(sum1, sum2, num_obj1_in_sum1, num_obj2_in_sum1, num_obj1_in_sum2, num_obj2_in_sum2, target_object)"
+    ],
+    "find_target_log_value": [
+        "find_target_log_value(given_log_base, given_log_value, target_log_base)"
+    ],
+    "find_term_in_arithmetic_sequence": [
+        "find_term_in_arithmetic_sequence(n, term1_position, term1, term2_position, term2)"
+    ],
+    "find_time_for_target_value": [
+        "find_time_for_target_value(a, b, c, target_value, precision)"
+    ],
+    "find_time_for_task": [
+        "find_time_for_task(person1_task1_time, person1_task1_size, person2_task1_size, person2_task2_size, rate_ratio)"
+    ],
+    "find_time_to_reach_target": [
+        "find_time_to_reach_target(motion_equation, target_value, time_symbol)"
+    ],
+    "find_time_to_target": [
+        "find_time_to_target(initial_value, target_value, growth_period, growth_multiplier)"
+    ],
+    "find_time_together_generic": [
+        "find_time_together_generic(time_pair1, time_pair2, time_pair3)"
+    ],
+    "find_total_cost": [
+        "find_total_cost(upfront_payment, upfront_percentage)"
+    ],
+    "find_total_items": [
+        "find_total_items(category1_count, category2_ratio, category3_ratio)"
+    ],
+    "find_total_shared_items": [
+        "find_total_shared_items(multiple)"
+    ],
+    "find_transformed_point_and_sum": [
+        "find_transformed_point_and_sum(original_point, scale_x, scale_y, shift_y)"
+    ],
+    "find_turning_point": [
+        "find_turning_point(fixed_point_x, fixed_point_y, moving_point_initial_x, moving_point_initial_y, line_slope, line_y_intercept)"
+    ],
+    "find_units_digit_condition": [
+        "find_units_digit_condition(start, end, condition_func)"
+    ],
+    "find_unknown_number": [
+        "find_unknown_number(percent1, percent2, known_num)"
+    ],
+    "find_value_at_target_time": [
+        "find_value_at_target_time(initial_value, growth_rate, target_time, final_value, final_time)"
+    ],
+    "find_value_based_on_conditions": [
+        "find_value_based_on_conditions(condition1, condition2, operation)"
+    ],
+    "find_variable_for_equal_utilities": [
+        "find_variable_for_equal_utilities(variable, utility_func1, utility_func2)"
+    ],
+    "find_variable_in_exponential": [
+        "find_variable_in_exponential(base, exponent, constant)"
+    ],
+    "find_variable_increase": [
+        "find_variable_increase(variable_increase, base_variable1_increase, base_variable2_increase)"
+    ],
+    "find_variable_value": [
+        "find_variable_value(equation, variable, disallowed_solutions)"
+    ],
+    "find_x_for_composite": [
+        "find_x_for_composite(func1, func2, target_result)"
+    ],
+    "find_y_coordinate": [
+        "find_y_coordinate(point1, point2, x3)"
+    ],
+    "floor_division": [
+        "floor_division(numerator, denominator)"
+    ],
+    "floor_of_sqrt": [
+        "floor_of_sqrt(input_number)"
+    ],
+    "from sympy import log, simplify def evaluate_and_simplify_log": [
+        "evaluate_and_simplify_log(log_base, log_value)"
+    ],
+    "from sympy import simplify, ccode def simplify_math_expression": [
+        "simplify_math_expression(expression)"
+    ],
+    "from sympy import symbols, Eq, solve def solve_equation_for_variable": [
+        "solve_equation_for_variable(equation)"
+    ],
+    "half_abs_diff_squares": [
+        "half_abs_diff_squares(number1, number2)"
+    ],
+    "largest_prime_factor": [
+        "largest_prime_factor(number)"
+    ],
+    "max_distance_from_point": [
+        "max_distance_from_point(point_x, point_y, distance_limit)"
+    ],
+    "max_missed_tasks": [
+        "max_missed_tasks(total_tasks, completion_percentage)"
+    ],
+    "max_price_per_item": [
+        "max_price_per_item(total_budget, fixed_cost, tax_rate, num_items)"
+    ],
+    "mental_multiplication": [
+        "mental_multiplication(num1, num2)"
+    ],
+    "midpoint_coordinates_sum": [
+        "midpoint_coordinates_sum(x1, y1, x2, y2)"
+    ],
+    "min_additional_items": [
+        "min_additional_items(group_size, available_items)"
+    ],
+    "min_correct_responses_to_target": [
+        "min_correct_responses_to_target(total_questions, attempted_questions, unanswered_questions, correct_score, incorrect_score, unanswered_score, target_score)"
+    ],
+    "multiply_numbers": [
+        "multiply_numbers(*args)"
+    ],
+    "overall_percent": [
+        "overall_percent(group1_percent, group2_percent, group1_total, group2_total)"
+    ],
+    "percentage_of_value_in_coin_type": [
+        "percentage_of_value_in_coin_type(num_coin1, num_coin2, coin1_value, coin2_value)"
+    ],
+    "rationalize_denominator_general": [
+        "rationalize_denominator_general(num_sqrt1, num_sqrt2, den_sqrt1, den_sqrt2)"
+    ],
+    "remaining_items_after_events": [
+        "remaining_items_after_events(initial_items, events, reduction_factor)"
+    ],
+    "remaining_task_fraction": [
+        "remaining_task_fraction(worker_time, work_time)"
+    ],
+    "scale_conversion": [
+        "scale_conversion(scale_ratio, drawing_length, drawing_unit, actual_unit)"
+    ],
+    "simplify_expression_generic": [
+        "simplify_expression_generic(expression_str)"
+    ],
+    "simplify_math_expression": [
+        "simplify_math_expression(expression)"
+    ],
+    "solve_equation": [
+        "solve_equation(equation, variable)"
+    ],
+    "solve_linear_system": [
+        "solve_linear_system(equations, variables)"
+    ],
+    "solve_radical_equation": [
+        "solve_radical_equation(variable, constant1, constant2, root1, root2)"
+    ],
+    "solve_system_of_equations": [
+        "solve_system_of_equations(relation, equation, var1, var2)"
+    ],
+    "square_number_generic": [
+        "square_number_generic(num)"
+    ],
+    "subtract_square_roots": [
+        "subtract_square_roots(num1, num2)"
+    ],
+    "sum_integers_with_common_difference": [
+        "sum_integers_with_common_difference(lower_limit, upper_limit, common_difference)"
+    ],
+    "sum_numbers_with_condition": [
+        "sum_numbers_with_condition(start, end, condition_function)"
+    ],
+    "sum_of_arithmetic_series": [
+        "sum_of_arithmetic_series(first_term, common_difference, count)"
+    ],
+    "sum_of_coefficients": [
+        "sum_of_coefficients(expression, variable)"
+    ],
+    "sum_of_smallest_multiples": [
+        "sum_of_smallest_multiples(number, count_of_multiples)"
+    ],
+    "sum_of_squares_of_coefficients": [
+        "sum_of_squares_of_coefficients(poly_coefficient, term_coefficients)"
+    ],
+    "sum_rectangle_areas": [
+        "sum_rectangle_areas(area_condition, perimeter_condition, max_side_length)"
+    ],
+    "time_to_complete_task_together": [
+        "time_to_complete_task_together(person1_rate, person2_rate, total_task_amount)"
+    ],
+    "total_distance_after_steps": [
+        "total_distance_after_steps(total_steps, step_fraction)"
+    ],
+    "total_items_produced": [
+        "total_items_produced(initial_items, periods, growth_factor)"
+    ],
+    "total_production": [
+        "total_production(initial_production, periods, growth_factor)"
+    ],
+    "total_time_for_increasing_tasks": [
+        "total_time_for_increasing_tasks(initial_time, time_increment, num_tasks)"
+    ],
+    "total_value_decrement": [
+        "total_value_decrement(initial_value, decrement_value, stopping_condition)"
+    ],
+    "travel_time": [
+        "travel_time(distance, speed)"
+    ],
+    "unit_conversion": [
+        "unit_conversion(input_value, conversion_factor)"
+    ]
+}

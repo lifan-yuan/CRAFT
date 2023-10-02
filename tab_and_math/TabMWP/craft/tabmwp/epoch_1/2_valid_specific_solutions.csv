@@ -1,0 +1,3352 @@
+question,answer,table,level,tool_id,code,api_call
+Bernie worked as a ski lift operator at White Mountain last winter. Here are Bernie's finances for the winter. What was Bernie's net income last winter?,5224.0,"Earnings from job as a ski lift operator | $6,219
+Income tax and other payroll taxes | $995",5,12699,"import pandas as pd
+
+def calculate_net_income(finances_df):
+    """"""
+    This function takes in a pandas DataFrame representing a finance table and returns the net income by subtracting taxes from earnings.
+    Args:
+    finances_df (pd.DataFrame): A pandas DataFrame containing finance items and their amounts with columns 'Item' and 'Amount'.
+    Returns:
+    float: The net income.
+    """"""
+    # Initialize the net income
+    net_income = 0.0
+    
+    # Iterate through the finance items and calculate the net income
+    for index, row in finances_df.iterrows():
+        if 'Earnings' in row['Item']:
+            net_income += row['Amount']
+        elif 'tax' in row['Item']:
+            net_income -= row['Amount']
+    
+    return net_income","# Initialize the table into a dataframe
+finances_df = pd.DataFrame({
+    'Item': ['Earnings from job as a ski lift operator', 'Income tax and other payroll taxes'],
+    'Amount': [6219, 995]
+})
+
+# Call the tool to solve the problem
+net_income = calculate_net_income(finances_df)
+print(net_income)"
+"After growing tired of squinting while driving, Sidney went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.2142857143," | Polarized lenses | Regular lenses
+Cat eye frames | 4 | 2
+Browline frames | 5 | 3",8,13088,"import pandas as pd
+
+def create_probability_table(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns a DataFrame with the probabilities of each combination.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    pd.DataFrame: A DataFrame with the probabilities of each combination.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the probabilities for each combination
+    probability_df = df / total_sunglasses
+    
+    return probability_df
+
+def get_probability_of_combination(probability_df, frame, lens):
+    """"""
+    This function takes in a pandas DataFrame with the probabilities of each combination of sunglasses, a frame type, and a lens type, and returns the probability of the specified combination.
+    Args:
+    probability_df (pd.DataFrame): A pandas DataFrame containing the probabilities of each combination of sunglasses.
+    frame (str): The frame type to get the probability for.
+    lens (str): The lens type to get the probability for.
+    Returns:
+    float: The probability of the specified combination.
+    """"""
+    return probability_df.loc[frame, lens]","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 4, 'Browline frames': 5},
+    'Regular lenses': {'Cat eye frames': 2, 'Browline frames': 3}
+})
+
+# Call the tool to create the probability table
+probability_df = create_probability_table(df)
+
+# Call the tool to get the probability of browline frames and regular lenses
+probability = get_probability_of_combination(probability_df, 'Browline frames', 'Regular lenses')
+
+# Print the answer
+print(probability)"
+"After growing tired of squinting while driving, Sidney went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames? Simplify any fractions.",0.2," | Cat eye frames | Browline frames
+Polarized lenses | 2 | 3
+Regular lenses | 2 | 3",8,9841,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with regular lenses and cat eye frames
+    regular_cat_eye = df.loc['Regular lenses', 'Cat eye frames']
+    
+    # Calculate the probability
+    probability = regular_cat_eye / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Cat eye frames': [2, 2],
+    'Browline frames': [3, 3]
+}, index=['Polarized lenses', 'Regular lenses'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames is {probability}"")"
+"At their family reunion, the Everett family recorded everyone's age. How many people are exactly 54 years old?",4.0,"Stem | Leaf 
+3 | 2, 7
+4 | 0, 8, 8
+5 | 4, 4, 4, 4
+6 | 1, 7
+7 | 
+8 | 
+9 | 0, 0",6,11133,"import pandas as pd
+
+def count_people_of_specific_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people of a specific age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The specific age to count.
+    Returns:
+    int: The number of people of the specific age.
+    """"""
+    # Split the age into stem and leaf
+    stem = age // 10
+    leaf = age % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = df[df['Stem'] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_people = stem_df['Leaf'].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_people = 0
+    
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[2, 7], [0, 8, 8], [4, 4, 4, 4], [1, 7], [], [], [0, 0]]
+})
+
+# Call the tool to solve the problem
+print(count_people_of_specific_age(df, 54))"
+"Mr. Yu directs the band at Highdale High School. He is getting ready to order new instruments for next year. The frequency chart shows the instruments the school already has. Several of tubas and oboes are too old to repair, so Mr. Yu plans to replace them. He wants to replace one-third of the tubas and all of the oboes. How many instruments will Mr. Yu order?",6.0,"Type | Frequency
+tuba | 6
+bass drum | 5
+french horn | 10
+oboe | 4",5,13099,"import pandas as pd
+
+def calculate_instruments_to_order(instruments_df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of instruments and calculates the number of instruments to be ordered.
+    Args:
+    instruments_df (pd.DataFrame): A pandas DataFrame containing instrument types and their frequencies with columns 'Type' and 'Frequency'.
+    Returns:
+    int: The total number of instruments to be ordered.
+    """"""
+    # Initialize the total number of instruments to order
+    total_instruments = 0
+    
+    # Calculate the number of tubas to order
+    tubas_df = instruments_df[instruments_df['Type'] == 'tuba']
+    if not tubas_df.empty:
+        tubas_frequency = tubas_df['Frequency'].values[0]
+        total_instruments += tubas_frequency // 3
+    
+    # Calculate the number of oboes to order
+    oboes_df = instruments_df[instruments_df['Type'] == 'oboe']
+    if not oboes_df.empty:
+        oboes_frequency = oboes_df['Frequency'].values[0]
+        total_instruments += oboes_frequency
+    
+    return total_instruments","# Initialize the table into a dataframe
+instruments_df = pd.DataFrame({
+    'Type': ['tuba', 'bass drum', 'french horn', 'oboe'],
+    'Frequency': [6, 5, 10, 4]
+})
+
+# Call the tool to solve the problem
+instruments_to_order = calculate_instruments_to_order(instruments_df)
+
+# Print the answer
+print(instruments_to_order)"
+"After growing tired of squinting while driving, Samir went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses? Simplify any fractions.",0.1818181818," | Polarized lenses | Regular lenses
+Cat eye frames | 3 | 2
+Browline frames | 4 | 2",8,16492,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with cat eye frames and regular lenses
+    cat_eye_regular = df.loc['Cat eye frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = cat_eye_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 3, 'Browline frames': 4},
+    'Regular lenses': {'Cat eye frames': 2, 'Browline frames': 2}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses is {probability}."")"
+This is Ernest's complete financial record for January. How much money did Ernest get for shoveling snow for his mom?,20.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of December | | | $102.60
+1/3 | concert ticket | | $82.40 | $20.20
+1/15 | shoveling snow for Mom | $20.00 | | $40.20
+1/29 | movie rental | | $4.25 | $35.95",5,3597,"import pandas as pd
+
+def find_received_amount(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record and a description, and returns the received amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): A string representing the description of the transaction.
+    Returns:
+    float: The received amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    transaction_df = df[df['Description'] == description]
+    
+    # If the transaction exists, return the received amount
+    if not transaction_df.empty:
+        received_amount = transaction_df['Received'].values[0]
+        return received_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '1/3', '1/15', '1/29'],
+    'Description': ['Balance: end of December', 'concert ticket', 'shoveling snow for Mom', 'movie rental'],
+    'Received': [None, None, 20.00, None],
+    'Expenses': [None, 82.40, None, 4.25],
+    'Available Funds': [102.60, 20.20, 40.20, 35.95]
+})
+
+# Call the tool to solve the problem
+amount_received = find_received_amount(df, 'shoveling snow for Mom')
+print(amount_received)"
+"After growing tired of squinting while driving, Aaron went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.1875," | Polarized lenses | Regular lenses
+Cat eye frames | 7 | 4
+Browline frames | 2 | 3",8,362,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with browline frames and regular lenses
+    browline_regular = df.loc['Browline frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = browline_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 7, 'Browline frames': 2},
+    'Regular lenses': {'Cat eye frames': 4, 'Browline frames': 3}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(probability)"
+Hunter taught kids how to play the guitar last summer at the local community center. His job as a guitar instructor was his only source of income. Here are Hunter's finances for the summer. What was Hunter's net income last summer?,7622.0,"Earnings from job as a guitar instructor | $9,319
+Income tax and other payroll taxes | $1,697",5,3998,"import pandas as pd
+
+def calculate_net_income(finances_df):
+    """"""
+    This function takes in a pandas DataFrame representing a finances table and returns the net income.
+    Args:
+    finances_df (pd.DataFrame): A pandas DataFrame containing finance items and their amounts with columns 'Item' and 'Amount'.
+    Returns:
+    float: The net income.
+    """"""
+    # Initialize the net income
+    net_income = 0.0
+    
+    # Iterate through the finance items and calculate the net income
+    for index, row in finances_df.iterrows():
+        if 'Earnings' in row['Item']:
+            net_income += row['Amount']
+        elif 'tax' in row['Item']:
+            net_income -= row['Amount']
+    
+    return net_income","# Initialize the table into a dataframe
+finances_df = pd.DataFrame({
+    'Item': ['Earnings from job as a guitar instructor', 'Income tax and other payroll taxes'],
+    'Amount': [9319, 1697]
+})
+
+# Call the tool to solve the problem
+net_income = calculate_net_income(finances_df)
+
+# Print the answer
+print(net_income)"
+"At their family reunion, the Strickland family recorded everyone's age. How many people are less than 90 years old?",8.0,"Stem | Leaf 
+1 | 6, 8
+2 | 2, 7
+3 | 2, 5
+4 | 
+5 | 0
+6 | 
+7 | 9
+8 | 
+9 | 0",4,4205,"import pandas as pd
+def count_people_less_than_90(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are less than 90 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are less than 90 years old.
+    """"""
+    # prepare a list to calculate age of each person
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is less than 90
+    filtered = [age for age in ages if age < 90]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[6, 8], [2, 7], [2, 5], [], [0], [], [9], [], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_less_than_90(df))"
+"At their family reunion, the Levin family recorded everyone's age. How many people are exactly 84 years old?",2.0,"Stem | Leaf 
+2 | 0, 2, 3
+3 | 0, 2
+4 | 5
+5 | 0, 7
+6 | 2, 3, 3, 7
+7 | 4
+8 | 1, 2, 3, 4, 4, 6
+9 | 0",8,6332,"import pandas as pd
+
+def count_people_of_specific_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people of a specific age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The specific age to count.
+    Returns:
+    int: The number of people of the specific age.
+    """"""
+    # Split the age into stem and leaf
+    stem = age // 10
+    leaf = age % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = df[df['Stem'] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf in the leaf list
+        num_people = stem_df['Leaf'].apply(lambda x: x.count(leaf)).sum()
+    else:
+        num_people = 0
+    
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 2, 3], [0, 2], [5], [0, 7], [2, 3, 3, 7], [4], [1, 2, 3, 4, 4, 6], [0]]
+})
+
+# Call the tool to solve the problem
+print(count_people_of_specific_age(df, 84))"
+"After growing tired of squinting while driving, Ernesto went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has polarized lenses and cat eye frames? Simplify any fractions.",0.2105263158," | Cat eye frames | Browline frames
+Polarized lenses | 4 | 6
+Regular lenses | 4 | 5",8,3554,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has polarized lenses and cat eye frames.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has polarized lenses and cat eye frames.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with polarized lenses and cat eye frames
+    polarized_cat_eye = df.loc['Polarized lenses', 'Cat eye frames']
+    
+    # Calculate the probability
+    probability = polarized_cat_eye / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Cat eye frames': [4, 4],
+    'Browline frames': [6, 5]
+}, index=['Polarized lenses', 'Regular lenses'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected pair of sunglasses has polarized lenses and cat eye frames is {probability}"")"
+Fred is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient is 13-19 years old and suffers from knee pain? Simplify any fractions.,0.3333333333," | Knee pain | Ankle pain
+0-12 years old | 4 | 2
+13-19 years old | 4 | 2",8,16202,"import pandas as pd
+
+def calculate_probability(df, age_group, injury_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age groups and injury types, and returns the probability of a patient being in a specific age group and suffering from a specific injury type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of patients in each age group suffering from each injury type.
+    age_group (str): The age group to calculate the probability for.
+    injury_type (str): The injury type to calculate the probability for.
+    Returns:
+    float: The probability of a patient being in the specified age group and suffering from the specified injury type.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df.sum().sum()
+    
+    # Filter the DataFrame for the specific age group and injury type
+    patient_df = df.loc[age_group, injury_type]
+    
+    # Calculate the probability
+    probability = patient_df / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Knee pain': [4, 4],
+    'Ankle pain': [2, 2]
+}, index=['0-12 years old', '13-19 years old'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, '13-19 years old', 'Knee pain')
+print(probability)"
+"Steve loves to play the piano but doesn't like practicing the exercises his piano teacher assigns. Steve knows the exercises will help him play better though, so he tries to motivate himself using his favorite treat—chocolate chip cookies. There is a proportional relationship between the amount of time (in hours) that Steve practices the piano, x, and how many cookies he gives himself, y. What is the constant of proportionality? Write your answer as a whole number or decimal.",2.0,"2 | 4
+3 | 6
+4 | 8
+5 | 10",7,14254,"import pandas as pd
+
+def find_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing the relationship between the amount of time (in hours) that Steve practices the piano (x) and how many cookies he gives himself (y), and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the relationship between x and y with columns 'x' and 'y'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality for each row
+    df['constant'] = df['y'] / df['x']
+    
+    # Find the mean of the constants
+    constant_of_proportionality = df['constant'].mean()
+    
+    return constant_of_proportionality","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'x': [2, 3, 4, 5],
+    'y': [4, 6, 8, 10]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = find_constant_of_proportionality(df)
+print(constant_of_proportionality)"
+"Patrick is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is designed with zigzags and is made of velvet? Simplify any fractions.",0.3529411765," | Velvet | Cotton
+Zigzags | 6 | 3
+Swirls | 3 | 5",8,6544,"import pandas as pd
+
+def calculate_probability(df, pattern, material):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection, a pattern, and a material, and returns the probability that a randomly selected bow tie has the specified pattern and is made of the specified material.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties for each pattern and material.
+    pattern (str): The pattern of the bow tie.
+    material (str): The material of the bow tie.
+    Returns:
+    float: The probability that a randomly selected bow tie has the specified pattern and is made of the specified material.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the specified pattern and material
+    num_specified_bow_ties = df.loc[pattern, material]
+    
+    # Calculate the probability
+    probability = num_specified_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [6, 3],
+    'Cotton': [3, 5]
+}, index=['Zigzags', 'Swirls'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Zigzags', 'Velvet')
+print(probability)"
+This is Jaden's complete financial record for July. How much money did Jaden spend on an app download?,4.95,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of June | | | $235.00
+7/11 | washing Mom's car | $10.00 | | $245.00
+7/14 | app download | | $4.95 | $240.05
+7/25 | box of popsicles | | $4.45 | $235.60",5,9356,"import pandas as pd
+
+def find_expense_by_description(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and a description, and returns the expense amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): The description of the expense to find.
+    Returns:
+    float: The expense amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    expense_df = df[df['Description'] == description]
+    
+    # Check if the filtered DataFrame is not empty
+    if not expense_df.empty:
+        expense_amount = expense_df['Expenses'].values[0]
+        return expense_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '7/11', '7/14', '7/25'],
+    'Description': ['Balance: end of June', 'washing Mom\'s car', 'app download', 'box of popsicles'],
+    'Received': ['', '$10.00', '', ''],
+    'Expenses': ['', '', '$4.95', '$4.45'],
+    'Available Funds': ['$235.00', '$245.00', '$240.05', '$235.60']
+})
+
+# Call the tool to solve the problem
+expense = find_expense_by_description(df, 'app download')
+
+# Print out the answer
+print(expense)"
+"Ever since Carson was a small child, his favorite food has always been carrots. He likes them so much he wants to plant a garden in his backyard just to grow carrots. There is a proportional relationship between the size of Carson's garden (in square feet), x, and the number of carrots he can grow at a time, y. What is the constant of proportionality? Write your answer as a whole number or decimal.",4.0,"1 | 4
+3 | 12
+4 | 16
+5 | 20",7,8085,"import pandas as pd
+
+def find_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing the relationship between the size of Carson's garden (in square feet) and the number of carrots he can grow at a time.
+    It returns the constant of proportionality as a float.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the relationship between the size of Carson's garden (in square feet) and the number of carrots he can grow at a time with columns 'x' and 'y'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality for each row in the DataFrame
+    df['constant'] = df['y'] / df['x']
+    
+    # Find the mean of the constants
+    constant_of_proportionality = df['constant'].mean()
+    
+    return constant_of_proportionality","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'x': [1, 3, 4, 5],
+    'y': [4, 12, 16, 20]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = find_constant_of_proportionality(df)
+print(constant_of_proportionality)"
+Each coat rack has 2 coats. How many coats are on 4 coat racks?,8.0,"Number of coat racks | Number of coats
+1 | 2
+2 | 4
+3 | 6
+4 | ?",2,15320,"def calculate_coats_on_racks(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of coat racks and the number of coats on each, and returns the number of coats on 4 coat racks.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of coat racks and the number of coats on each with columns 'Number of coat racks' and 'Number of coats'.
+    Returns:
+    int: The number of coats on 4 coat racks.
+    """"""
+    # Find the number of coats per rack
+    coats_per_rack = df['Number of coats'][0] / df['Number of coat racks'][0]
+    
+    # Calculate the number of coats on 4 racks
+    coats_on_4_racks = coats_per_rack * 4
+    
+    return int(coats_on_4_racks)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of coat racks': [1, 2, 3, 4],
+    'Number of coats': [2, 4, 6, '?']
+})
+# Call the tool to solve the problem
+print(calculate_coats_on_racks(df))"
+"After growing tired of squinting while driving, Jane went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames? Simplify any fractions.",0.25," | Cat eye frames | Browline frames
+Polarized lenses | 5 | 4
+Regular lenses | 4 | 3",8,15883,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with regular lenses and cat eye frames
+    regular_cat_eye = df.loc['Regular lenses', 'Cat eye frames']
+    
+    # Calculate the probability
+    probability = regular_cat_eye / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Cat eye frames': [5, 4],
+    'Browline frames': [4, 3]
+}, index=['Polarized lenses', 'Regular lenses'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected pair of sunglasses has regular lenses and cat eye frames is {probability}"")"
+"This is Bill's complete financial record for January. On January 10, how much money did Bill spend?",5.5,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of December | | | $355.60
+1/10 | ice skating | | $5.50 | $350.10
+1/16 | birthday money | $25.00 | | $375.10
+1/18 | hockey stick | | $14.95 | $360.15",5,7584,"import pandas as pd
+
+def calculate_spent_money(df, date):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record and a date, and returns the amount of money spent on that date.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', 'Available Funds'.
+    date (str): A string representing the date in the format 'm/dd'.
+    Returns:
+    float: The amount of money spent on the specified date.
+    """"""
+    # Filter the DataFrame for the specific date
+    date_df = df[df['Date'] == date]
+    if not date_df.empty:
+        # If there are expenses on the specified date, return the amount
+        if pd.notnull(date_df['Expenses'].values[0]):
+            return date_df['Expenses'].values[0]
+        else:
+            return 0.0
+    else:
+        return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '1/10', '1/16', '1/18'],
+    'Description': ['Balance: end of December', 'ice skating', 'birthday money', 'hockey stick'],
+    'Received': [None, None, 25.00, None],
+    'Expenses': [None, 5.50, None, 14.95],
+    'Available Funds': [355.60, 350.10, 375.10, 360.15]
+})
+# Call the tool to solve the problem
+print(calculate_spent_money(df, '1/10'))"
+Some friends discussed the sizes of their coin collections. How many more coins does Diane have than Mateo?,247.0,"Name | Number of coins
+Mateo | 285
+Diane | 532
+Edgar | 788",3,9031,"import pandas as pd
+
+def calculate_difference(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of people and their coin collections, and two person names, and returns the difference in the number of coins between the two people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing people's names and their number of coins with columns 'Name' and 'Number of coins'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in the number of coins between the two people.
+    """"""
+    # Get the number of coins for the first person
+    person1_coins = df[df['Name'] == person1]['Number of coins'].values[0]
+    
+    # Get the number of coins for the second person
+    person2_coins = df[df['Name'] == person2]['Number of coins'].values[0]
+    
+    # Calculate the difference
+    difference = person2_coins - person1_coins
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Mateo', 'Diane', 'Edgar'],
+    'Number of coins': [285, 532, 788]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Mateo', 'Diane')
+print(difference)"
+"At their family reunion, the Kemp family recorded everyone's age. How many people are exactly 31 years old?",4.0,"Stem | Leaf 
+0 | 0, 6
+1 | 0
+2 | 7
+3 | 1, 1, 1, 1
+4 | 
+5 | 2
+6 | 0, 2, 2, 6
+7 | 
+8 | 8",5,10487,"import pandas as pd
+
+def count_exact_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages in stem and leaf format, and returns the number of people with the exact given age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing ages in stem and leaf format.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The age to count the number of people with.
+    Returns:
+    int: The number of people with the exact given age.
+    """"""
+    # prepare a list to store ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the ages where the age is equal to the given age
+    filtered = [a for a in ages if a == age]
+    # count the number of people with the given age
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    'Leaf': [[0, 6], [0], [7], [1, 1, 1, 1], [], [2], [0, 2, 2, 6], [], [8]]
+})
+# Call the tool to solve the problem
+print(count_exact_age(df, 31))"
+Each train car has 2 empty seats. How many empty seats are in 6 train cars?,12.0,"Number of train cars | Number of empty seats
+1 | 2
+2 | 4
+3 | 6
+4 | 8
+5 | 10
+6 | ?",2,15566,"def calculate_empty_seats(num_cars, seats_per_car):
+    """"""
+    This function takes in the number of train cars and the number of empty seats per car, and returns the total number of empty seats.
+    Args:
+    num_cars (int): The number of train cars.
+    seats_per_car (int): The number of empty seats per car.
+    Returns:
+    int: The total number of empty seats.
+    """"""
+    return num_cars * seats_per_car","# Call the tool to solve the problem
+print(calculate_empty_seats(6, 2))"
+Sebastian is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient is 13-19 years old and suffers from ankle pain? Simplify any fractions.,0.25," | Knee pain | Ankle pain
+0-12 years old | 5 | 4
+13-19 years old | 3 | 4",8,9956,"import pandas as pd
+
+def calculate_probability(df, age_group, injury_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age groups and injury types, and returns the probability of a patient being in a specific age group and suffering from a specific injury type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing age groups and injury types with columns 'Age Group', 'Knee pain', 'Ankle pain'.
+    age_group (str): The age group to calculate the probability for.
+    injury_type (str): The injury type to calculate the probability for.
+    Returns:
+    float: The probability of a patient being in the specified age group and suffering from the specified injury type.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['Knee pain'].sum() + df['Ankle pain'].sum()
+    
+    # Filter the DataFrame for the specific age group and injury type
+    age_group_df = df[df.index == age_group]
+    if not age_group_df.empty:
+        num_patients = age_group_df[injury_type].values[0]
+    
+    # Calculate the probability
+    probability = num_patients / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Knee pain': [5, 3],
+    'Ankle pain': [4, 4]
+}, index=['0-12 years old', '13-19 years old'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, '13-19 years old', 'Ankle pain')
+print(probability)"
+"After growing tired of squinting while driving, Will went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.2," | Polarized lenses | Regular lenses
+Cat eye frames | 2 | 3
+Browline frames | 3 | 2",8,6790,"import pandas as pd
+
+def calculate_probability(df, target_row, target_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and calculates the probability of selecting a pair with the specified target_row and target_col.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    target_row (str): The target row name (frame type) for the probability calculation.
+    target_col (str): The target column name (lens type) for the probability calculation.
+    Returns:
+    float: The probability of selecting a pair of sunglasses with the specified target_row and target_col.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the number of sunglasses with the target_row and target_col
+    target_sunglasses = df.loc[target_row, target_col]
+    
+    # Calculate the probability
+    probability = target_sunglasses / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 2, 'Browline frames': 3},
+    'Regular lenses': {'Cat eye frames': 3, 'Browline frames': 2}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Browline frames', 'Regular lenses')
+print(f""The probability is {probability}"")"
+"After growing tired of squinting while driving, Tim went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses? Simplify any fractions.",0.125," | Polarized lenses | Regular lenses
+Cat eye frames | 2 | 3
+Browline frames | 6 | 5",8,14525,"import pandas as pd
+
+def calculate_probability(df, target_row, target_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability of selecting a pair with the specified target_row and target_col.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    target_row (str): The target row name (frame type) for the sunglasses.
+    target_col (str): The target column name (lens type) for the sunglasses.
+    Returns:
+    float: The probability of selecting a pair of sunglasses with the specified target_row and target_col.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the number of sunglasses with the target_row and target_col
+    target_sunglasses = df.loc[target_row, target_col]
+    
+    # Calculate the probability
+    probability = target_sunglasses / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': [2, 6],
+    'Regular lenses': [3, 5]
+}, index=['Cat eye frames', 'Browline frames'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Cat eye frames', 'Polarized lenses')
+print(probability)"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Jerry donate to clean water than to arts education?,5.0,"Person | Clean water | Arts education
+Winston | $12 | $19
+Nate | $4 | $15
+Jerry | $6 | $1",5,9146,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Winston', 'Nate', 'Jerry'],
+    'Clean water': [12, 4, 6],
+    'Arts education': [19, 15, 1]
+})
+
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Jerry', 'Clean water', 'Arts education')
+print(donation_difference)"
+Gabe and his brother are at a store shopping for a beanbag chair for their school's library. The store sells beanbag chairs with different fabrics and types of filling. What is the probability that a randomly selected beanbag chair is filled with foam and is made from suede? Simplify any fractions.,0.2727272727," | Velvet | Suede
+Foam | 3 | 3
+Beads | 3 | 2",8,12582,"import pandas as pd
+
+def calculate_probability(df, fabric, filling):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beanbag chairs with different fabrics and types of filling, and returns the probability that a randomly selected beanbag chair is made from a specific fabric and filled with a specific type of filling.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of beanbag chairs with different fabrics and types of filling.
+    fabric (str): The fabric of the beanbag chair.
+    filling (str): The type of filling of the beanbag chair.
+    Returns:
+    float: The probability that a randomly selected beanbag chair is made from the specified fabric and filled with the specified type of filling.
+    """"""
+    # Calculate the total number of beanbag chairs
+    total_chairs = df.sum().sum()
+    
+    # Get the number of beanbag chairs with the specified fabric and filling
+    specific_chairs = df.loc[filling, fabric]
+    
+    # Calculate the probability
+    probability = specific_chairs / total_chairs
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [3, 3],
+    'Suede': [3, 2]
+}, index=['Foam', 'Beads'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Suede', 'Foam')
+print(f""The probability that a randomly selected beanbag chair is filled with foam and is made from suede is {probability}"")"
+Edward is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from ankle pain and is 13-19 years old? Simplify any fractions.,0.2666666667," | 0-12 years old | 13-19 years old
+Knee pain | 5 | 2
+Ankle pain | 4 | 4",8,5312,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age and type of injury, and returns the probability that a randomly selected patient suffers from ankle pain and is 13-19 years old.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of patients with different types of injuries and their ages. The DataFrame should have columns '0-12 years old' and '13-19 years old', and index 'Knee pain' and 'Ankle pain'.
+    Returns:
+    float: The probability that a randomly selected patient suffers from ankle pain and is 13-19 years old.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['0-12 years old'].sum() + df['13-19 years old'].sum()
+    
+    # Calculate the number of patients who suffer from ankle pain and are 13-19 years old
+    target_patients = df.loc['Ankle pain', '13-19 years old']
+    
+    # Calculate the probability
+    probability = target_patients / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    '0-12 years old': [5, 4],
+    '13-19 years old': [2, 4]
+}, index=['Knee pain', 'Ankle pain'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(probability)"
+"The Manchester Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the gold level? Simplify your answer.",0.5344827586,"Donation level | Number of donors
+Gold | 93
+Bronze | 56
+Silver | 25",7,7507,"import pandas as pd
+
+def calculate_fraction(df, level):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a level, and returns the fraction of donors at the given level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    level (str): The donation level to calculate the fraction for.
+    Returns:
+    float: The fraction of donors at the given level.
+    """"""
+    # Filter the DataFrame for the specific level
+    level_df = df[df['Donation level'] == level]
+    if not level_df.empty:
+        level_donors = level_df['Number of donors'].values[0]
+        total_donors = df['Number of donors'].sum()
+        fraction = level_donors / total_donors
+        return fraction
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Gold', 'Bronze', 'Silver'],
+    'Number of donors': [93, 56, 25]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Gold')
+print(f""The fraction of donors at the gold level is {fraction}."")"
+"The Manchester Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the gold level? Simplify your answer.",0.4879518072,"Donation level | Number of donors
+Silver | 60
+Bronze | 25
+Gold | 81",7,17014,"import pandas as pd
+
+def calculate_fraction_of_gold_donors(df):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and returns the fraction of donors at the gold level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    Returns:
+    float: The fraction of donors at the gold level.
+    """"""
+    # Calculate the total number of donors
+    total_donors = df['Number of donors'].sum()
+    
+    # Filter the DataFrame for the gold level
+    gold_df = df[df['Donation level'] == 'Gold']
+    
+    # Calculate the number of gold donors
+    gold_donors = gold_df['Number of donors'].values[0]
+    
+    # Calculate the fraction of gold donors
+    fraction_of_gold_donors = gold_donors / total_donors
+    
+    return fraction_of_gold_donors","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Silver', 'Bronze', 'Gold'],
+    'Number of donors': [60, 25, 81]
+})
+
+# Call the tool to solve the problem
+fraction_of_gold_donors = calculate_fraction_of_gold_donors(df)
+
+# Print out the answer
+print(f""The fraction of donors at the gold level is {fraction_of_gold_donors}."")"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Barbara donate to animal rights than to job training?,2.0,"Person | Animal rights | Job training
+Chandler | $20 | $19
+Barbara | $18 | $16
+Sophie | $17 | $12",4,9909,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in donation amounts for the two causes by the person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation amounts with columns 'Person', 'Animal rights', 'Job training'.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in donation amounts for the two causes by the person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Chandler', 'Barbara', 'Sophie'],
+    'Animal rights': [20, 18, 17],
+    'Job training': [19, 16, 12]
+})
+
+# Call the tool to solve the problem
+difference = calculate_donation_difference(df, 'Barbara', 'Animal rights', 'Job training')
+print(difference)"
+"At their family reunion, the Mosley family recorded everyone's age. How many people are at least 81 years old?",1.0,"Stem | Leaf 
+2 | 3
+3 | 6, 7, 9
+4 | 1, 9
+5 | 2, 5
+6 | 0, 2, 6
+7 | 3, 4
+8 | 
+9 | 0",8,11583,"import pandas as pd
+def count_people_older_than_81(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least 81 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are at least 81 years old.
+    """"""
+    # prepare a list to calculate age of each person
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to 81
+    filtered = [age for age in ages if age >= 81]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[3], [6, 7, 9], [1, 9], [2, 5], [0, 2, 6], [3, 4], [], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_older_than_81(df))"
+"After growing tired of squinting while driving, Henry went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses? Simplify any fractions.",0.2105263158," | Polarized lenses | Regular lenses
+Cat eye frames | 4 | 4
+Browline frames | 4 | 7",8,2247,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with cat eye frames and regular lenses
+    cat_eye_regular = df.loc['Cat eye frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = cat_eye_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 4, 'Browline frames': 4},
+    'Regular lenses': {'Cat eye frames': 4, 'Browline frames': 7}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses is {probability}."")"
+"After growing tired of squinting while driving, Trisha went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses? Simplify any fractions.",0.2222222222," | Polarized lenses | Regular lenses
+Cat eye frames | 4 | 4
+Browline frames | 7 | 3",8,8734,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the number of sunglasses with cat eye frames and regular lenses
+    cat_eye_regular = df.loc['Cat eye frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = cat_eye_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 4, 'Browline frames': 7},
+    'Regular lenses': {'Cat eye frames': 4, 'Browline frames': 3}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses is {probability}."")"
+"At their family reunion, the Pearson family recorded everyone's age. How many people are at least 60 years old?",9.0,"Stem | Leaf 
+1 | 6
+2 | 3, 3, 6
+3 | 3, 3, 8, 9
+4 | 4, 6
+5 | 3, 3
+6 | 1, 7, 8
+7 | 3, 9
+8 | 0, 6, 6
+9 | 0",6,3401,"import pandas as pd
+def count_people_60_years_old(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least 60 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are at least 60 years old.
+    """"""
+    # prepare a list to calculate age of each person
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to 60
+    filtered = [age for age in ages if age >= 60]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[6], [3, 3, 6], [3, 3, 8, 9], [4, 6], [3, 3], [1, 7, 8], [3, 9], [0, 6, 6], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_60_years_old(df))"
+Dwayne is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient is 13-19 years old and suffers from ankle pain? Simplify any fractions.,0.4545454545," | Knee pain | Ankle pain
+0-12 years old | 2 | 2
+13-19 years old | 2 | 5",8,4892,"import pandas as pd
+
+def calculate_probability(df, age_group, injury_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age groups and types of injuries, and returns the probability of a patient being in a specific age group and suffering from a specific type of injury.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing age groups and types of injuries with columns 'Age Group', 'Knee pain', 'Ankle pain'.
+    age_group (str): The age group to calculate the probability for.
+    injury_type (str): The type of injury to calculate the probability for.
+    Returns:
+    float: The probability of a patient being in the specified age group and suffering from the specified type of injury.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['Knee pain'].sum() + df['Ankle pain'].sum()
+    
+    # Filter the DataFrame for the specific age group and injury type
+    age_group_df = df[df['Age Group'] == age_group]
+    if not age_group_df.empty:
+        num_patients = age_group_df[injury_type].values[0]
+    
+    # Calculate the probability
+    probability = num_patients / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Age Group': ['0-12 years old', '13-19 years old'],
+    'Knee pain': [2, 2],
+    'Ankle pain': [2, 5]
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, '13-19 years old', 'Ankle pain')
+
+# Print the answer
+print(f""The probability that a randomly selected patient is 13-19 years old and suffers from ankle pain is {probability:.2f}"")"
+"At family beach day, the Stafford Recreation Department offered a range of activities. How many more children than parents are swimming?",10.0,"Activity | Children | Parents
+Eating lunch | 6 | 20
+Collecting shells | 11 | 14
+Making sand castles | 14 | 20
+Swimming | 13 | 3",4,8800,"import pandas as pd
+
+def calculate_difference(df, activity):
+    """"""
+    This function takes in a pandas DataFrame representing a table of activities and the number of children and parents participating in each, and a string representing the activity of interest. It returns the difference in the number of children and parents participating in the specified activity.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing activities and the number of children and parents participating in each. The DataFrame should have columns 'Activity', 'Children', and 'Parents'.
+    activity (str): A string representing the activity of interest.
+    Returns:
+    int: The difference in the number of children and parents participating in the specified activity.
+    """"""
+    # Filter the DataFrame for the specific activity
+    activity_df = df[df['Activity'] == activity]
+    if not activity_df.empty:
+        # Calculate the difference in the number of children and parents
+        difference = activity_df['Children'].values[0] - activity_df['Parents'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Activity': ['Eating lunch', 'Collecting shells', 'Making sand castles', 'Swimming'],
+    'Children': [6, 11, 14, 13],
+    'Parents': [20, 14, 20, 3]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Swimming')
+print(difference)"
+Mike is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from knee pain and is 0-12 years old? Simplify any fractions.,0.2857142857," | 0-12 years old | 13-19 years old
+Knee pain | 4 | 4
+Ankle pain | 4 | 2",8,14037,"import pandas as pd
+
+def calculate_probability(df, condition):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients and their injuries, and calculates the probability of a specific condition.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of patients with different injuries and age groups.
+    condition (tuple): A tuple containing the injury and age group of interest.
+    Returns:
+    float: The probability of the specific condition.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df.sum().sum()
+    
+    # Get the number of patients with the specific condition
+    condition_patients = df.loc[condition]
+    
+    # Calculate the probability
+    probability = condition_patients / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    '0-12 years old': [4, 4],
+    '13-19 years old': [4, 2]
+}, index=['Knee pain', 'Ankle pain'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, ('Knee pain', '0-12 years old'))
+print(probability)"
+"After growing tired of squinting while driving, Bob went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has regular lenses and browline frames? Simplify any fractions.",0.2857142857," | Cat eye frames | Browline frames
+Polarized lenses | 4 | 5
+Regular lenses | 1 | 4",8,13381,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has regular lenses and browline frames.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses. The DataFrame should have columns 'Cat eye frames' and 'Browline frames', and index 'Polarized lenses' and 'Regular lenses'.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has regular lenses and browline frames.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with regular lenses and browline frames
+    regular_browline = df.loc['Regular lenses', 'Browline frames']
+    
+    # Calculate the probability
+    probability = regular_browline / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+data = {'Cat eye frames': [4, 1], 'Browline frames': [5, 4]}
+index = ['Polarized lenses', 'Regular lenses']
+df = pd.DataFrame(data, index=index)
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(probability)"
+"The Dayton Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the gold level? Simplify your answer.",0.6641791045,"Donation level | Number of donors
+Gold | 89
+Bronze | 25
+Silver | 20",7,5279,"import pandas as pd
+
+def calculate_fraction(df, level):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a level, and returns the fraction of donors at the specified level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    level (str): The donation level to calculate the fraction for.
+    Returns:
+    float: The fraction of donors at the specified level.
+    """"""
+    # Filter the DataFrame for the specified level
+    level_df = df[df['Donation level'] == level]
+    if not level_df.empty:
+        level_donors = level_df['Number of donors'].values[0]
+        total_donors = df['Number of donors'].sum()
+        fraction = level_donors / total_donors
+        return fraction
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Gold', 'Bronze', 'Silver'],
+    'Number of donors': [89, 25, 20]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Gold')
+print(f""The fraction of donors at the gold level is {fraction}."")"
+"At their family reunion, the Barton family recorded everyone's age. What is the age of the oldest person?",78.0,"Stem | Leaf 
+0 | 7
+1 | 6
+2 | 3, 7, 9
+3 | 1
+4 | 4, 5
+5 | 9
+6 | 0, 3, 5, 5
+7 | 3, 8",5,5261,"import pandas as pd
+
+def find_oldest_person(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the age of the oldest person.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The age of the oldest person.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # find the maximum age
+    oldest_age = max(ages)
+    return oldest_age","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[7], [6], [3, 7, 9], [1], [4, 5], [9], [0, 3, 5, 5], [3, 8]]
+})
+# Call the tool to solve the problem
+oldest_age = find_oldest_person(df)
+print(oldest_age)"
+Each bus has 10 empty seats. How many empty seats are on 3 buses?,30.0,"Number of buses | Number of empty seats
+1 | 10
+2 | 20
+3 | ?",2,9257,"def calculate_empty_seats(df, num_buses):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of buses and the corresponding number of empty seats, and a number representing the number of buses. It returns the number of empty seats on the specified number of buses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buses and the corresponding number of empty seats with columns 'Number of buses' and 'Number of empty seats'.
+    num_buses (int): The number of buses.
+    Returns:
+    int: The number of empty seats on the specified number of buses.
+    """"""
+    # Filter the DataFrame for the row with 1 bus
+    one_bus_df = df[df['Number of buses'] == 1]
+    if not one_bus_df.empty:
+        # Get the number of empty seats on 1 bus
+        empty_seats_on_one_bus = one_bus_df['Number of empty seats'].values[0]
+        # Calculate the number of empty seats on the specified number of buses
+        empty_seats = num_buses * empty_seats_on_one_bus
+        return empty_seats
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of buses': [1, 2, 3],
+    'Number of empty seats': [10, 20, None]
+})
+# Call the tool to solve the problem
+print(calculate_empty_seats(df, 3))"
+"At their family reunion, the Stephenson family recorded everyone's age. What is the age of the oldest person?",90.0,"Stem | Leaf 
+1 | 4, 7
+2 | 
+3 | 
+4 | 1, 5
+5 | 0, 1, 9
+6 | 2, 4
+7 | 0, 0, 8
+8 | 8, 9
+9 | 0",5,12842,"import pandas as pd
+
+def find_oldest_age(df):
+    """"""
+    This function takes in a pandas DataFrame of ages in stem and leaf format, and returns the age of the oldest person.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing ages in stem and leaf format.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The age of the oldest person.
+    """"""
+    # prepare a list to store ages
+    ages = []
+    # calculate the age for each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # find the maximum age
+    oldest_age = max(ages)
+    return oldest_age","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[4, 7], [], [], [1, 5], [0, 1, 9], [2, 4], [0, 0, 8], [8, 9], [0]]
+})
+# Call the tool to solve the problem
+oldest_age = find_oldest_age(df)
+print(f""The oldest person is {oldest_age} years old."")"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,69.0,"Stem | Leaf 
+3 | 0, 0, 4, 4
+4 | 0, 0, 1, 7, 7
+5 | 0, 3
+6 | 1, 2, 9",4,16849,"import pandas as pd
+
+def find_largest_number(df):
+    """"""
+    This function takes in a pandas dataframe of red gumdrops per bag, and returns the largest number of red gumdrops in a bag.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of red gumdrops per bag.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The largest number of red gumdrops in a bag.
+    """"""
+    # prepare a list to calculate gumdrops in each bag
+    gumdrops = []
+    # calculate the total number of red gumdrops in each bag
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            gumdrops.append(stem * 10 + leaf[j])
+    # find the maximum number of gumdrops
+    max_gumdrops = max(gumdrops)
+    return max_gumdrops","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6],
+    'Leaf': [[0, 0, 4, 4], [0, 0, 1, 7, 7], [0, 3], [1, 2, 9]]
+})
+# Call the tool to solve the problem
+print(find_largest_number(df))"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,90.0,"Stem | Leaf 
+1 | 0, 5
+2 | 7
+3 | 1, 9
+4 | 2
+5 | 0, 4, 5
+6 | 1, 1, 7, 7, 9
+7 | 1, 4
+8 | 3, 9
+9 | 0",4,9203,"import pandas as pd
+
+def find_largest_number_of_gumdrops(df):
+    """"""
+    This function takes in a pandas DataFrame representing a stem-and-leaf plot of the number of gumdrops in each bag, and returns the largest number of gumdrops.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the stem-and-leaf plot with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The largest number of gumdrops.
+    """"""
+    # Initialize the largest number of gumdrops
+    largest_number = 0
+    
+    # Iterate through the stem-and-leaf plot and find the largest number
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            number = stem * 10 + leaf[j]
+            if number > largest_number:
+                largest_number = number
+    
+    return largest_number","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 5], [7], [1, 9], [2], [0, 4, 5], [1, 1, 7, 7, 9], [1, 4], [3, 9], [0]]
+})
+
+# Call the tool to solve the problem
+print(find_largest_number_of_gumdrops(df))"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,78.0,"Stem | Leaf 
+2 | 0, 5
+3 | 0, 5, 5, 7
+4 | 2, 3, 4, 6, 9
+5 | 1, 1, 3
+6 | 4, 4
+7 | 4, 4, 8, 8",7,2027,"import pandas as pd
+
+def find_largest_number_of_gumdrops(df):
+    """"""
+    This function takes in a pandas DataFrame of red gumdrops per bag, and returns the largest number of red gumdrops in a bag.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of red gumdrops per bag.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The largest number of red gumdrops in a bag.
+    """"""
+    # prepare a list to calculate gumdrops in each bag
+    gumdrops = []
+    # calculate the total number of red gumdrops in each bag
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            gumdrops.append(stem * 10 + leaf[j])
+    # find the largest number of red gumdrops
+    largest_gumdrops = max(gumdrops)
+    return largest_gumdrops","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7],
+    'Leaf': [[0, 5], [0, 5, 5, 7], [2, 3, 4, 6, 9], [1, 1, 3], [4, 4], [4, 4, 8, 8]]
+})
+# Call the tool to solve the problem
+largest_gumdrops = find_largest_number_of_gumdrops(df)
+print(largest_gumdrops)"
+A machine dispensed red gumdrops into bags of various sizes. What is the largest number of red gumdrops?,89.0,"Stem | Leaf 
+3 | 9
+4 | 4, 9
+5 | 8
+6 | 0, 2, 3, 4, 5
+7 | 1, 5
+8 | 1, 9",4,16843,"import pandas as pd
+
+def find_largest_number(df):
+    """"""
+    This function takes in a pandas dataframe of red gumdrops per bag, and returns the largest number of red gumdrops.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of red gumdrops per bag.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The largest number of red gumdrops.
+    """"""
+    # prepare a list to calculate gumdrops in each bag
+    gumdrops = []
+    # calculate the total number of red gumdrops in each bag
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            gumdrops.append(stem * 10 + leaf[j])
+    # find the largest number of red gumdrops
+    largest = max(gumdrops)
+    return largest","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8],
+    'Leaf': [[9], [4, 9], [8], [0, 2, 3, 4, 5], [1, 5], [1, 9]]
+})
+# Call the tool to solve the problem
+print(find_largest_number(df))"
+Bridgette is a physical therapist who specializes in leg injuries. Her patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from knee pain and is 13-19 years old? Simplify any fractions.,0.2941176471," | 0-12 years old | 13-19 years old
+Knee pain | 2 | 5
+Ankle pain | 8 | 2",8,7072,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age and type of injury, and returns the probability that a randomly selected patient suffers from knee pain and is 13-19 years old.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of patients with different types of injuries and their ages. The DataFrame should have columns '0-12 years old' and '13-19 years old', and index 'Knee pain' and 'Ankle pain'.
+    Returns:
+    float: The probability that a randomly selected patient suffers from knee pain and is 13-19 years old.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df.sum().sum()
+    
+    # Get the number of patients who suffer from knee pain and are 13-19 years old
+    knee_pain_13_19 = df.loc['Knee pain', '13-19 years old']
+    
+    # Calculate the probability
+    probability = knee_pain_13_19 / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+data = {'0-12 years old': [2, 8], '13-19 years old': [5, 2]}
+index = ['Knee pain', 'Ankle pain']
+df = pd.DataFrame(data, index=index)
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected patient suffers from knee pain and is 13-19 years old is {probability:.2f}"")"
+"Mark is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is designed with swirls and is made of cotton? Simplify any fractions.",0.1428571429," | Velvet | Cotton
+Zigzags | 6 | 3
+Swirls | 3 | 2",8,6027,"import pandas as pd
+
+def calculate_probability(df, pattern, material):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection table, a pattern, and a material, and returns the probability of selecting a bow tie with the given pattern and material.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties for each pattern and material combination.
+    pattern (str): The pattern of the bow tie to calculate the probability for.
+    material (str): The material of the bow tie to calculate the probability for.
+    Returns:
+    float: The probability of selecting a bow tie with the given pattern and material.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the given pattern and material
+    selected_bow_ties = df.loc[pattern, material]
+    
+    # Calculate the probability
+    probability = selected_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [6, 3],
+    'Cotton': [3, 2]
+}, index=['Zigzags', 'Swirls'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Swirls', 'Cotton')
+print(probability)"
+"After growing tired of squinting while driving, Tanvi went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and regular lenses? Simplify any fractions.",0.2," | Polarized lenses | Regular lenses
+Cat eye frames | 7 | 3
+Browline frames | 3 | 2",8,6093,"import pandas as pd
+
+def calculate_probability(df, target_row, target_col):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and calculates the probability of selecting a pair with the specified target_row and target_col.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    target_row (str): The target row name (frame type) for the probability calculation.
+    target_col (str): The target column name (lens type) for the probability calculation.
+    Returns:
+    float: The probability of selecting a pair of sunglasses with the specified target_row and target_col.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with the target_row and target_col
+    target_sunglasses = df.loc[target_row, target_col]
+    
+    # Calculate the probability
+    probability = target_sunglasses / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': [7, 3],
+    'Regular lenses': [3, 2]
+}, index=['Cat eye frames', 'Browline frames'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Cat eye frames', 'Regular lenses')
+print(f""The probability is {probability}"")"
+"At their family reunion, the Beck family recorded everyone's age. What is the age of the oldest person?",48.0,"Stem | Leaf 
+1 | 0, 1, 4, 4, 5, 5, 6, 7, 8, 9
+2 | 0, 2, 3, 3, 6, 9
+3 | 2, 3, 3, 4, 9
+4 | 5, 8",7,12163,"import pandas as pd
+
+def find_oldest_person(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the age of the oldest person.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The age of the oldest person.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # find the maximum age
+    oldest_age = max(ages)
+    return oldest_age","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[0, 1, 4, 4, 5, 5, 6, 7, 8, 9], [0, 2, 3, 3, 6, 9], [2, 3, 3, 4, 9], [5, 8]]
+})
+# Call the tool to solve the problem
+print(find_oldest_person(df))"
+"Sally keeps all her spare keys in a box under her bed. Recently, Sally decided the box was becoming unmanageable, as none of the keys were labeled. She set about labeling them with colored stickers that indicated what each key opened. What is the probability that a randomly selected key opens the front door of the house and is labeled with a blue sticker? Simplify any fractions.",0.2222222222," | Blue sticker | Green sticker
+Front door of the house | 4 | 6
+Back door of the house | 7 | 1",8,15677,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of keys and their labels, and returns the probability that a randomly selected key opens the front door of the house and is labeled with a blue sticker.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of keys for each door and label with columns 'Blue sticker' and 'Green sticker'.
+    Returns:
+    float: The probability that a randomly selected key opens the front door of the house and is labeled with a blue sticker.
+    """"""
+    # Calculate the total number of keys
+    total_keys = df['Blue sticker'].sum() + df['Green sticker'].sum()
+    
+    # Calculate the number of keys that open the front door of the house and are labeled with a blue sticker
+    blue_front_door_keys = df.loc['Front door of the house', 'Blue sticker']
+    
+    # Calculate the probability
+    probability = blue_front_door_keys / total_keys
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Blue sticker': [4, 7],
+    'Green sticker': [6, 1]
+}, index=['Front door of the house', 'Back door of the house'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(probability)"
+Each coat rack has 2 jackets. How many jackets are on 6 coat racks?,12.0,"Number of coat racks | Number of jackets
+1 | 2
+2 | 4
+3 | 6
+4 | 8
+5 | 10
+6 | ?",2,6636,"def calculate_jackets(num_coat_racks):
+    """"""
+    This function takes in the number of coat racks and returns the number of jackets based on the pattern that each coat rack has 2 jackets.
+    Args:
+    num_coat_racks (int): The number of coat racks.
+    Returns:
+    int: The number of jackets.
+    """"""
+    # Calculate the number of jackets
+    num_jackets = num_coat_racks * 2
+    return num_jackets","# Call the tool to solve the problem
+num_jackets = calculate_jackets(6)
+print(num_jackets)"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Quinn donate to clean water than to hunger prevention?,15.0,"Person | Hunger prevention | Clean water
+Keenan | $2 | $10
+Quinn | $1 | $16
+Pablo | $10 | $11",4,9765,"import pandas as pd
+
+def calculate_difference_donations(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in donations between the two causes for the given person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Hunger prevention', and 'Clean water'.
+    person (str): The name of the person whose donations we want to compare.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in donations between the two causes for the given person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        difference = donation_cause2 - donation_cause1
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Keenan', 'Quinn', 'Pablo'],
+    'Hunger prevention': [2, 1, 10],
+    'Clean water': [10, 16, 11]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_donations(df, 'Quinn', 'Hunger prevention', 'Clean water')
+print(difference)"
+"At Tommy's birthday party, children and parents celebrated by participating in some activities. How many more people are swimming than jumping rope?",2.0,"Activity | Children | Parents
+Jumping rope | 9 | 2
+Swimming | 10 | 3
+Making sundaes | 11 | 2",5,16333,"import pandas as pd
+
+def calculate_difference_in_participants(activity_df, activity1, activity2):
+    """"""
+    This function takes in a pandas DataFrame representing an activity table and two activity names, and returns the difference in the number of participants between the two activities.
+    Args:
+    activity_df (pd.DataFrame): A pandas DataFrame containing activities and the number of participants (children and parents) with columns 'Activity', 'Children', and 'Parents'.
+    activity1 (str): The name of the first activity.
+    activity2 (str): The name of the second activity.
+    Returns:
+    int: The difference in the number of participants between the two activities.
+    """"""
+    # Filter the DataFrame for the specific activities
+    activity1_df = activity_df[activity_df['Activity'] == activity1]
+    activity2_df = activity_df[activity_df['Activity'] == activity2]
+    
+    # Calculate the total number of participants for each activity
+    activity1_participants = activity1_df['Children'].values[0] + activity1_df['Parents'].values[0]
+    activity2_participants = activity2_df['Children'].values[0] + activity2_df['Parents'].values[0]
+    
+    # Calculate the difference in the number of participants
+    difference = activity2_participants - activity1_participants
+    
+    return difference","# Initialize the table into a dataframe
+activity_df = pd.DataFrame({
+    'Activity': ['Jumping rope', 'Swimming', 'Making sundaes'],
+    'Children': [9, 10, 11],
+    'Parents': [2, 3, 2]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_participants(activity_df, 'Jumping rope', 'Swimming')
+print(difference)"
+"At their family reunion, the Quinn family recorded everyone's age. How many people are exactly 38 years old?",2.0,"Stem | Leaf 
+1 | 3
+2 | 7
+3 | 8, 8
+4 | 3
+5 | 
+6 | 3, 8
+7 | 6",8,8796,"import pandas as pd
+
+def count_people_of_specific_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people of a specific age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages of people.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The specific age to count.
+    Returns:
+    int: The number of people of the specific age.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people who are of the specific age
+    filtered = [age for age in ages if age == age]
+    # count the number of people
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[3], [7], [8, 8], [3], [], [3, 8], [6]]
+})
+# Call the tool to solve the problem
+print(count_people_of_specific_age(df, 38))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Anthony donate to hunger prevention than to clean water?,16.0,"Person | Hunger prevention | Clean water
+Josie | $20 | $10
+Anthony | $18 | $2
+Lacey | $7 | $4
+Rita | $14 | $4",5,16328,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Josie', 'Anthony', 'Lacey', 'Rita'],
+    'Hunger prevention': [20, 18, 7, 14],
+    'Clean water': [10, 2, 4, 4]
+})
+# Call the tool to solve the problem
+print(calculate_donation_difference(df, 'Anthony', 'Hunger prevention', 'Clean water'))"
+"At their family reunion, the Rudd family recorded everyone's age. How many people are at least 20 years old but less than 90 years old?",16.0,"Stem | Leaf 
+1 | 2, 4, 7, 9
+2 | 8
+3 | 1, 2, 5, 9
+4 | 1, 3, 6
+5 | 2, 2, 7
+6 | 0
+7 | 0
+8 | 3, 4, 9
+9 | 0",8,12343,"import pandas as pd
+def count_people_in_age_range(df, min_age, max_age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least min_age years old but less than max_age years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    min_age (int): The minimum age (inclusive).
+    max_age (int): The maximum age (exclusive).
+    Returns:
+    int: The number of people that are at least min_age years old but less than max_age years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to min_age and less than max_age
+    filtered = [age for age in ages if age >= min_age and age < max_age]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[2, 4, 7, 9], [8], [1, 2, 5, 9], [1, 3, 6], [2, 2, 7], [0], [0], [3, 4, 9], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_in_age_range(df, 20, 90))"
+"At their family reunion, the Morton family recorded everyone's age. How many people are at least 11 years old but less than 54 years old?",5.0,"Stem | Leaf 
+1 | 1, 2, 9
+2 | 
+3 | 
+4 | 2, 3
+5 | 5",5,2096,"import pandas as pd
+def count_people_in_age_range(df, min_age, max_age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least min_age years old but less than max_age years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    min_age (int): The minimum age.
+    max_age (int): The maximum age.
+    Returns:
+    int: The number of people that are at least min_age years old but less than max_age years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to min_age and less than max_age
+    filtered = [age for age in ages if age >= min_age and age < max_age]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5],
+    'Leaf': [[1, 2, 9], [], [], [2, 3], [5]]
+})
+# Call the tool to solve the problem
+print(count_people_in_age_range(df, 11, 54))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Josiah donate to animal rights than to hunger prevention?,7.0,"Person | Animal rights | Hunger prevention
+Josiah | $14 | $7
+Nicole | $4 | $19
+Shivani | $11 | $6
+Austen | $1 | $20
+Sue | $18 | $10",4,16167,"import pandas as pd
+
+def calculate_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in donation amounts between the two causes for the given person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Animal rights', 'Hunger prevention'.
+    person (str): The name of the person whose donation difference is to be calculated.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in donation amounts between the two causes for the given person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    
+    # Get the donation amounts for the two causes
+    cause1_donation = person_df[cause1].values[0]
+    cause2_donation = person_df[cause2].values[0]
+    
+    # Calculate the difference in donation amounts
+    donation_difference = cause1_donation - cause2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Josiah', 'Nicole', 'Shivani', 'Austen', 'Sue'],
+    'Animal rights': [14, 4, 11, 1, 18],
+    'Hunger prevention': [7, 19, 6, 20, 10]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Josiah', 'Animal rights', 'Hunger prevention')
+print(difference)"
+This is Ernesto's complete financial record for March. How much money did Ernesto receive for his birthday?,25.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of February | | | $240.35
+3/6 | hat | | $16.75 | $223.60
+3/15 | birthday money | $25.00 | | $248.60
+3/22 | movies | | $12.50 | $236.10",5,13936,"import pandas as pd
+
+def find_birthday_money(df):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and returns the amount of money Ernesto received for his birthday.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', 'Available Funds'.
+    Returns:
+    float: The amount of money Ernesto received for his birthday.
+    """"""
+    # Filter the DataFrame for the birthday money
+    birthday_money_df = df[df['Description'] == 'birthday money']
+    
+    # If there is a record for birthday money, return the amount received
+    if not birthday_money_df.empty:
+        birthday_money = birthday_money_df['Received'].values[0]
+        return birthday_money
+    
+    # If there is no record for birthday money, return 0
+    return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '3/6', '3/15', '3/22'],
+    'Description': ['Balance: end of February', 'hat', 'birthday money', 'movies'],
+    'Received': [None, None, 25.00, None],
+    'Expenses': [None, 16.75, None, 12.50],
+    'Available Funds': [240.35, 223.60, 248.60, 236.10]
+})
+# Call the tool to solve the problem
+birthday_money = find_birthday_money(df)
+print(f""Ernesto received ${birthday_money} for his birthday."")"
+Ian decided to record the temperature every morning when he woke up. What is the lowest temperature?,2.0,"Stem | Leaf 
+0 | 2
+1 | 3
+2 | 3, 4, 4
+3 | 1, 8",5,5088,"import pandas as pd
+
+def find_lowest_temperature(df):
+    """"""
+    This function takes in a pandas dataframe of temperatures, and returns the lowest temperature.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the temperatures.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The lowest temperature.
+    """"""
+    # prepare a list to calculate temperature in each day
+    temperatures = []
+    # calculate the temperature in each day
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            temperatures.append(stem * 10 + leaf[j])
+    # find the lowest temperature
+    lowest_temperature = min(temperatures)
+    return lowest_temperature","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3],
+    'Leaf': [[2], [3], [3, 4, 4], [1, 8]]
+})
+# Call the tool to solve the problem
+print(find_lowest_temperature(df))"
+"The Springfield Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the gold level? Simplify your answer.",0.1081081081,"Donation level | Number of donors
+Silver | 96
+Bronze | 36
+Gold | 16",7,15220,"import pandas as pd
+
+def calculate_fraction(df, level):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a level, and returns the fraction of donors at the given level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    level (str): The donation level to calculate the fraction for.
+    Returns:
+    float: The fraction of donors at the given level.
+    """"""
+    # Filter the DataFrame for the specific level
+    level_df = df[df['Donation level'] == level]
+    if not level_df.empty:
+        level_donors = level_df['Number of donors'].values[0]
+        total_donors = df['Number of donors'].sum()
+        fraction = level_donors / total_donors
+        return fraction
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Silver', 'Bronze', 'Gold'],
+    'Number of donors': [96, 36, 16]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Gold')
+print(fraction)"
+Some friends met in New York City for vacation and compared how far they had traveled. How many more miles did Emilio travel than Javier?,3452.0,"Name | Miles
+Javier | 3,518
+Emilio | 6,970
+Kristen | 1,955
+Danielle | 5,543",3,9046,"import pandas as pd
+
+def calculate_difference_in_miles(df, person1, person2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of names and miles traveled, and two names, and returns the difference in miles traveled between the two people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing names and miles traveled with columns 'Name' and 'Miles'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    Returns:
+    int: The difference in miles traveled between the two people.
+    """"""
+    # Filter the DataFrame for the specific names
+    person1_df = df[df['Name'] == person1]
+    person2_df = df[df['Name'] == person2]
+    
+    # Check if both names are in the DataFrame
+    if not person1_df.empty and not person2_df.empty:
+        # Calculate the difference in miles
+        difference = person2_df['Miles'].values[0] - person1_df['Miles'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Javier', 'Emilio', 'Kristen', 'Danielle'],
+    'Miles': [3518, 6970, 1955, 5543]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_miles(df, 'Javier', 'Emilio')
+print(difference)"
+"After growing tired of squinting while driving, Brian went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.2," | Polarized lenses | Regular lenses
+Cat eye frames | 2 | 4
+Browline frames | 2 | 2",8,9603,"import pandas as pd
+
+def create_sunglasses_df():
+    """"""
+    This function creates a pandas DataFrame representing the sunglasses table.
+    Returns:
+    pd.DataFrame: A pandas DataFrame containing the sunglasses table with columns 'Frames', 'Polarized', and 'Regular'.
+    """"""
+    data = {'Frames': ['Cat eye', 'Browline'],
+            'Polarized': [2, 2],
+            'Regular': [4, 2]}
+    return pd.DataFrame(data)
+
+def calculate_probability(df, frame, lens_type):
+    """"""
+    This function takes in a pandas DataFrame representing the sunglasses table, a frame type, and a lens type, and returns the probability of selecting a pair of sunglasses with the specified frame and lens type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the sunglasses table with columns 'Frames', 'Polarized', and 'Regular'.
+    frame (str): The frame type to calculate the probability for.
+    lens_type (str): The lens type to calculate the probability for.
+    Returns:
+    float: The probability of selecting a pair of sunglasses with the specified frame and lens type.
+    """"""
+    # Filter the DataFrame for the specified frame type
+    frame_df = df[df['Frames'] == frame]
+    
+    # Get the number of sunglasses with the specified frame and lens type
+    num_sunglasses = frame_df[lens_type].values[0]
+    
+    # Calculate the total number of sunglasses
+    total_sunglasses = df['Polarized'].sum() + df['Regular'].sum()
+    
+    # Calculate the probability
+    probability = num_sunglasses / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = create_sunglasses_df()
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Browline', 'Regular')
+
+# Print the answer
+print(f""The probability that a randomly selected pair of sunglasses has browline frames and regular lenses is {probability}."")"
+"Lucy keeps all her spare keys in a box under her bed. Recently, Lucy decided the box was becoming unmanageable, as none of the keys were labeled. She set about labeling them with colored stickers that indicated what each key opened. What is the probability that a randomly selected key is labeled with a green sticker and opens the front door of the house? Simplify any fractions.",0.4285714286," | Front door of the house | Back door of the house
+Blue sticker | 3 | 2
+Green sticker | 6 | 3",8,6048,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of keys and their labels, and returns the probability that a randomly selected key is labeled with a green sticker and opens the front door of the house.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of keys with each label for each door with columns 'Front door of the house' and 'Back door of the house' and index 'Blue sticker' and 'Green sticker'.
+    Returns:
+    float: The probability that a randomly selected key is labeled with a green sticker and opens the front door of the house.
+    """"""
+    # Calculate the total number of keys
+    total_keys = df['Front door of the house'].sum() + df['Back door of the house'].sum()
+    
+    # Calculate the number of keys that are labeled with a green sticker and open the front door of the house
+    green_front_keys = df.loc['Green sticker', 'Front door of the house']
+    
+    # Calculate the probability
+    probability = green_front_keys / total_keys
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Front door of the house': [3, 6],
+    'Back door of the house': [2, 3]
+}, index=['Blue sticker', 'Green sticker'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected key is labeled with a green sticker and opens the front door of the house is {probability}."")"
+"At their family reunion, the Johnston family recorded everyone's age. How many people are exactly 44 years old?",2.0,"Stem | Leaf 
+3 | 1
+4 | 4, 4
+5 | 5, 7
+6 | 
+7 | 
+8 | 
+9 | 0",8,17122,"import pandas as pd
+
+def count_exact_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are exactly a certain age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The exact age to count.
+    Returns:
+    int: The number of people that are exactly the given age.
+    """"""
+    # Split the age into stem and leaf
+    stem = age // 10
+    leaf = age % 10
+    
+    # Filter the DataFrame for the specific stem
+    stem_df = df[df['Stem'] == stem]
+    if not stem_df.empty:
+        # Count the number of occurrences of the leaf
+        leaf_count = stem_df['Leaf'].count(leaf)
+        return leaf_count
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[1], [4, 4], [5, 7], [], [], [], [0]]
+})
+# Call the tool to solve the problem
+print(count_exact_age(df, 44))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Cara donate to hunger prevention than Cameron?,8.0,"Person | Hunger prevention | Job training
+Cameron | $3 | $3
+Daniel | $15 | $4
+Cara | $11 | $16
+Malik | $12 | $2",4,17046,"import pandas as pd
+
+def calculate_donation_difference(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amounts of money that the two persons donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Hunger prevention', 'Job training'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The name of the cause.
+    Returns:
+    float: The difference in the amounts of money that the two persons donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific persons and cause
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the donation amounts
+    person1_donation = person1_df[cause].values[0]
+    person2_donation = person2_df[cause].values[0]
+    
+    # Calculate the difference
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Cameron', 'Daniel', 'Cara', 'Malik'],
+    'Hunger prevention': [3, 15, 11, 12],
+    'Job training': [3, 4, 16, 2]
+})
+# Call the tool to solve the problem
+difference = calculate_donation_difference(df, 'Cara', 'Cameron', 'Hunger prevention')
+print(difference)"
+"Jayden is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is designed with swirls and is made of velvet? Simplify any fractions.",0.3636363636," | Velvet | Cotton
+Zigzags | 2 | 2
+Swirls | 4 | 3",8,5653,"import pandas as pd
+
+def calculate_probability(df, pattern, material):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection table, a pattern, and a material, and returns the probability of selecting a bow tie with the given pattern and material.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties organized by pattern and material.
+    pattern (str): The pattern of the bow tie to calculate the probability for.
+    material (str): The material of the bow tie to calculate the probability for.
+    Returns:
+    float: The probability of selecting a bow tie with the given pattern and material.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the given pattern and material
+    selected_bow_ties = df.loc[pattern, material]
+    
+    # Calculate the probability
+    probability = selected_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [2, 4],
+    'Cotton': [2, 3]
+}, index=['Zigzags', 'Swirls'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Swirls', 'Velvet')
+print(f""The probability is {probability}"")"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much did Stanley donate to animal rights?,12.0,"Person | Arts education | Animal rights
+Julian | $2 | $3
+Stanley | $1 | $12
+Darius | $13 | $7
+Riley | $5 | $6
+Reagan | $14 | $6",4,3383,"import pandas as pd
+
+def get_donation_amount(df, person, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and a cause, and returns the amount of money that the person donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause (str): The name of the cause.
+    Returns:
+    float: The amount of money that the person donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_amount = person_df[cause].values[0]
+        return donation_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Julian', 'Stanley', 'Darius', 'Riley', 'Reagan'],
+    'Arts education': [2, 1, 13, 5, 14],
+    'Animal rights': [3, 12, 7, 6, 6]
+})
+
+# Call the tool to solve the problem
+donation_amount = get_donation_amount(df, 'Stanley', 'Animal rights')
+print(donation_amount)"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Megan donate to job training than to hunger prevention?,16.0,"Person | Job training | Hunger prevention
+Amelia | $3 | $19
+Megan | $18 | $2
+Emma | $4 | $11
+Larry | $7 | $7",4,8751,"import pandas as pd
+
+def calculate_difference_in_donations(df, person):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a person's name, and returns the difference in the amounts of money that the person donated to job training and hunger prevention.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Job training', and 'Hunger prevention'.
+    person (str): The name of the person.
+    Returns:
+    float: The difference in the amounts of money that the person donated to job training and hunger prevention.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        job_training_donation = person_df['Job training'].values[0]
+        hunger_prevention_donation = person_df['Hunger prevention'].values[0]
+        difference = job_training_donation - hunger_prevention_donation
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Amelia', 'Megan', 'Emma', 'Larry'],
+    'Job training': [3, 18, 4, 7],
+    'Hunger prevention': [19, 2, 11, 7]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_donations(df, 'Megan')
+print(difference)"
+"At their family reunion, the Novak family recorded everyone's age. How many people are less than 58 years old?",16.0,"Stem | Leaf 
+2 | 0, 3, 3, 6, 6
+3 | 5, 8
+4 | 0, 2, 3, 4, 8
+5 | 1, 1, 1, 3
+6 | 4, 6, 9, 9",7,12261,"import pandas as pd
+def count_people_less_than_58(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are less than 58 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people that are less than 58 years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is less than 58
+    filtered = [age for age in ages if age < 58]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6],
+    'Leaf': [[0, 3, 3, 6, 6], [5, 8], [0, 2, 3, 4, 8], [1, 1, 1, 3], [4, 6, 9, 9]]
+})
+# Call the tool to solve the problem
+print(count_people_less_than_58(df))"
+"After growing tired of squinting while driving, Martha went shopping for a pair of sunglasses. She tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses? Simplify any fractions.",0.25," | Polarized lenses | Regular lenses
+Cat eye frames | 5 | 5
+Browline frames | 2 | 8",8,2437,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Calculate the number of sunglasses with cat eye frames and polarized lenses
+    cat_eye_polarized = df.loc['Cat eye frames', 'Polarized lenses']
+    
+    # Calculate the probability
+    probability = cat_eye_polarized / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 5, 'Browline frames': 2},
+    'Regular lenses': {'Cat eye frames': 5, 'Browline frames': 8}
+})
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected pair of sunglasses has cat eye frames and polarized lenses is {probability:.2f}"")"
+"At their family reunion, the Palmer family recorded everyone's age. What is the age of the oldest person?",90.0,"Stem | Leaf 
+0 | 0, 7
+1 | 
+2 | 5, 7, 9
+3 | 6, 8
+4 | 0, 9
+5 | 3, 3, 4, 4
+6 | 0, 1
+7 | 0
+8 | 0
+9 | 0",5,3168,"import pandas as pd
+
+def find_oldest_person(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the age of the oldest person.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The age of the oldest person.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # find the maximum age
+    oldest_age = max(ages)
+    return oldest_age","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 7], [], [5, 7, 9], [6, 8], [0, 9], [3, 3, 4, 4], [0, 1], [0], [0], [0]]
+})
+# Call the tool to solve the problem
+print(find_oldest_person(df))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Tammy donate to arts education than Christina?,12.0,"Person | Arts education | Hunger prevention
+Christina | $2 | $17
+Stanley | $5 | $1
+Tammy | $14 | $5",4,12037,"import pandas as pd
+
+def calculate_donation_difference(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amounts of money that the two persons donated to the cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Arts education', 'Hunger prevention'.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The cause to which the donations were made.
+    Returns:
+    float: The difference in the amounts of money that the two persons donated to the cause.
+    """"""
+    # Filter the DataFrame for the specific persons and cause
+    person1_donation = df[df['Person'] == person1][cause].values[0]
+    person2_donation = df[df['Person'] == person2][cause].values[0]
+    
+    # Calculate the difference in donations
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Christina', 'Stanley', 'Tammy'],
+    'Arts education': [2, 5, 14],
+    'Hunger prevention': [17, 1, 5]
+})
+
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Tammy', 'Christina', 'Arts education')
+print(donation_difference)"
+"Sam is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is made of velvet and is designed with swirls? Simplify any fractions.",0.2941176471," | Zigzags | Swirls
+Velvet | 4 | 5
+Cotton | 2 | 6",8,3496,"import pandas as pd
+
+def calculate_probability(df, material, pattern):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection table, a material, and a pattern, and returns the probability of selecting a bow tie with the specified material and pattern.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties organized by material and pattern.
+    material (str): The material of the bow tie to calculate the probability for.
+    pattern (str): The pattern of the bow tie to calculate the probability for.
+    Returns:
+    float: The probability of selecting a bow tie with the specified material and pattern.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the specified material and pattern
+    selected_bow_ties = df.at[material, pattern]
+    
+    # Calculate the probability
+    probability = selected_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Zigzags': {'Velvet': 4, 'Cotton': 2},
+    'Swirls': {'Velvet': 5, 'Cotton': 6}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Velvet', 'Swirls')
+print(probability)"
+"After growing tired of squinting while driving, Carson went shopping for a pair of sunglasses. He tried on glasses with different frames and lenses. What is the probability that a randomly selected pair of sunglasses has browline frames and regular lenses? Simplify any fractions.",0.3333333333," | Polarized lenses | Regular lenses
+Cat eye frames | 4 | 1
+Browline frames | 3 | 4",8,2084,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of sunglasses with different frames and lenses, and returns the probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of sunglasses with different frames and lenses.
+    Returns:
+    float: The probability that a randomly selected pair of sunglasses has browline frames and regular lenses.
+    """"""
+    # Calculate the total number of sunglasses
+    total_sunglasses = df.sum().sum()
+    
+    # Get the number of sunglasses with browline frames and regular lenses
+    browline_regular = df.loc['Browline frames', 'Regular lenses']
+    
+    # Calculate the probability
+    probability = browline_regular / total_sunglasses
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Polarized lenses': {'Cat eye frames': 4, 'Browline frames': 3},
+    'Regular lenses': {'Cat eye frames': 1, 'Browline frames': 4}
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected pair of sunglasses has browline frames and regular lenses is {probability:.2f}"")"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Doug donate to job training than to hunger prevention?,16.0,"Person | Hunger prevention | Job training
+Camille | $11 | $4
+Brenna | $8 | $12
+Doug | $4 | $20",4,10224,"import pandas as pd
+
+def calculate_donation_difference(df, person):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a person's name, and returns the difference in the amounts of money that the person donated to job training and to hunger prevention.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Hunger prevention', and 'Job training'.
+    person (str): The name of the person.
+    Returns:
+    float: The difference in the amounts of money that the person donated to job training and to hunger prevention.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        # Calculate the difference in donations
+        donation_difference = person_df['Job training'].values[0] - person_df['Hunger prevention'].values[0]
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Camille', 'Brenna', 'Doug'],
+    'Hunger prevention': [11, 8, 4],
+    'Job training': [4, 12, 20]
+})
+# Call the tool to solve the problem
+print(calculate_donation_difference(df, 'Doug'))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Jordan donate to hunger prevention than to clean water?,6.0,"Person | Clean water | Hunger prevention
+Xavier | $13 | $2
+Jordan | $11 | $17
+Tucker | $8 | $17",4,10210,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Clean water', 'Hunger prevention'.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause2 - donation_cause1
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Xavier', 'Jordan', 'Tucker'],
+    'Clean water': [13, 11, 8],
+    'Hunger prevention': [2, 17, 17]
+})
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Jordan', 'Clean water', 'Hunger prevention')
+print(donation_difference)"
+Nathan just returned from a spring break volunteer trip. He is shopping for a photo album that will showcase his photos from the trip. The albums range in photo capacity and orientation. What is the probability that a randomly selected photo album is oriented vertically and holds exactly 50 photos? Simplify any fractions.,0.2105263158," | 50 photos | 100 photos
+Horizontally | 4 | 5
+Vertically | 4 | 6",8,848,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of photo albums and their orientations and capacities, and returns the probability that a randomly selected photo album is oriented vertically and holds exactly 50 photos.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of photo albums for each orientation and capacity.
+    Returns:
+    float: The probability that a randomly selected photo album is oriented vertically and holds exactly 50 photos.
+    """"""
+    # Calculate the total number of photo albums
+    total_albums = df.sum().sum()
+    
+    # Get the number of vertically oriented albums with a capacity of 50 photos
+    vertical_50_albums = df.loc['Vertically', '50 photos']
+    
+    # Calculate the probability
+    probability = vertical_50_albums / total_albums
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    '50 photos': [4, 4],
+    '100 photos': [5, 6]
+}, index=['Horizontally', 'Vertically'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected photo album is oriented vertically and holds exactly 50 photos is {probability}"")"
+"At their family reunion, the Johnson family recorded everyone's age. How many people are exactly 50 years old?",3.0,"Stem | Leaf 
+5 | 0, 0, 0, 1
+6 | 
+7 | 1
+8 | 0, 1
+9 | 0",6,1243,"import pandas as pd
+
+def count_exact_age(df, age):
+    """"""
+    This function takes in a pandas dataframe of ages in stem and leaf format, and returns the number of people with the exact given age.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages in stem and leaf format.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    age (int): The age to count the number of people with.
+    Returns:
+    int: The number of people with the exact given age.
+    """"""
+    # prepare a list to store ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the ages where the age is equal to the given age
+    filtered = [a for a in ages if a == age]
+    # count the number of people with the given age
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [5, 6, 7, 8, 9],
+    'Leaf': [[0, 0, 0, 1], [], [1], [0, 1], [0]]
+})
+# Call the tool to solve the problem
+print(count_exact_age(df, 50))"
+Shannon is a physical therapist who specializes in leg injuries. Her patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from ankle pain and is 0-12 years old? Simplify any fractions.,0.1578947368," | 0-12 years old | 13-19 years old
+Knee pain | 6 | 6
+Ankle pain | 3 | 4",8,2564,"import pandas as pd
+
+def calculate_probability(df, injury, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' injuries and their ages, and returns the probability of a patient having a specific injury and being in a specific age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of patients with each injury in each age group. The DataFrame should have injuries as the index and age groups as the columns.
+    injury (str): The injury to calculate the probability for.
+    age_group (str): The age group to calculate the probability for.
+    Returns:
+    float: The probability of a patient having the specified injury and being in the specified age group.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df.sum().sum()
+    
+    # Get the number of patients with the specified injury and in the specified age group
+    num_patients = df.loc[injury, age_group]
+    
+    # Calculate and return the probability
+    return num_patients / total_patients","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    '0-12 years old': [6, 3],
+    '13-19 years old': [6, 4]
+}, index=['Knee pain', 'Ankle pain'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Ankle pain', '0-12 years old')
+print(f""The probability is {probability}"")"
+Vijay is a physical therapist who specializes in leg injuries. His patients differ in age and type of injury. What is the probability that a randomly selected patient is 13-19 years old and suffers from ankle pain? Simplify any fractions.,0.3157894737," | Knee pain | Ankle pain
+0-12 years old | 3 | 2
+13-19 years old | 8 | 6",8,9977,"import pandas as pd
+
+def calculate_probability(df, age_group, injury_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of patients' age groups and injury types, and returns the probability of a patient being in a specific age group and having a specific injury.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing age groups and injury types with columns 'Age Group', 'Knee pain', 'Ankle pain'.
+    age_group (str): The age group to calculate the probability for.
+    injury_type (str): The injury type to calculate the probability for.
+    Returns:
+    float: The probability of a patient being in the specified age group and having the specified injury.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['Knee pain'].sum() + df['Ankle pain'].sum()
+    
+    # Filter the DataFrame for the specific age group and injury type
+    age_group_df = df[df['Age Group'] == age_group]
+    if not age_group_df.empty:
+        injury_count = age_group_df[injury_type].values[0]
+    
+    # Calculate the probability
+    probability = injury_count / total_patients
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Age Group': ['0-12 years old', '13-19 years old'],
+    'Knee pain': [3, 8],
+    'Ankle pain': [2, 6]
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, '13-19 years old', 'Ankle pain')
+print(probability)"
+Adam is shopping for a new bicycle. He is most interested in color and type of tires. What is the probability that a randomly selected bike is red and has road bike tires? Simplify any fractions.,0.4," | Road bike tires | Mountain bike tires
+Red | 6 | 3
+Green | 3 | 3",8,13425,"import pandas as pd
+
+def create_bike_df():
+    data = {'Color': ['Red', 'Green'],
+            'Road bike tires': [6, 3],
+            'Mountain bike tires': [3, 3]}
+    return pd.DataFrame(data)
+
+def calculate_probability(df, color, tire_type):
+    """"""
+    This function takes in a pandas DataFrame representing a bike table, a color, and a tire type, and returns the probability of a randomly selected bike having the specified color and tire type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing bike information with columns 'Color', 'Road bike tires', and 'Mountain bike tires'.
+    color (str): The color of the bike.
+    tire_type (str): The type of tires on the bike.
+    Returns:
+    float: The probability of a randomly selected bike having the specified color and tire type.
+    """"""
+    # Calculate the total number of bikes
+    total_bikes = df['Road bike tires'].sum() + df['Mountain bike tires'].sum()
+    
+    # Filter the DataFrame for the specific color and tire type
+    filtered_df = df[df['Color'] == color]
+    if not filtered_df.empty:
+        num_bikes_with_color_and_tire_type = filtered_df[tire_type].values[0]
+        probability = num_bikes_with_color_and_tire_type / total_bikes
+        return probability
+    else:
+        return 0","# Initialize the table into a dataframe
+df = create_bike_df()
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Red', 'Road bike tires')
+
+# Print the answer
+print(f""The probability that a randomly selected bike is red and has road bike tires is {probability}."")"
+"At their family reunion, the Blake family recorded everyone's age. How many people are less than 100 years old?",18.0,"Stem | Leaf 
+5 | 0, 1, 1, 2, 5, 6, 6, 7
+6 | 2, 2, 3, 4
+7 | 0, 6, 8
+8 | 5, 7
+9 | 0",8,1825,"import pandas as pd
+
+def count_people_under_100(df):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people who are less than 100 years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages of people.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of people who are less than 100 years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is less than 100
+    filtered = [age for age in ages if age < 100]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [5, 6, 7, 8, 9],
+    'Leaf': [[0, 1, 1, 2, 5, 6, 6, 7], [2, 2, 3, 4], [0, 6, 8], [5, 7], [0]]
+})
+# Call the tool to solve the problem
+print(count_people_under_100(df))"
+This is Zoe's complete financial record for December. How much money did Zoe's grandpa give her?,40.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of November | | | $289.15
+12/4 | snowman kit | | $9.90 | $279.25
+12/14 | money from Grandpa | $40.00 | | $319.25
+12/16 | gift for teacher | | $12.45 | $306.80",5,3686,"import pandas as pd
+
+def get_received_amount(df, description):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and a description, and returns the received amount for the given description.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', and 'Available Funds'.
+    description (str): The description of the transaction for which the received amount is to be found.
+    Returns:
+    float: The received amount for the given description.
+    """"""
+    # Filter the DataFrame for the specific description
+    transaction_df = df[df['Description'] == description]
+    if not transaction_df.empty:
+        received_amount = transaction_df['Received'].values[0]
+        return received_amount
+    else:
+        return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '12/4', '12/14', '12/16'],
+    'Description': ['Balance: end of November', 'snowman kit', 'money from Grandpa', 'gift for teacher'],
+    'Received': ['', '', '$40.00', ''],
+    'Expenses': ['', '$9.90', '', '$12.45'],
+    'Available Funds': ['$289.15', '$279.25', '$319.25', '$306.80']
+})
+
+# Call the tool to solve the problem
+amount = get_received_amount(df, 'money from Grandpa')
+print(amount)"
+"This is Carter's complete financial record for April. At the start of April, how much money did Carter have?",249.0,"Date | Description | Received | Expenses | Available Funds
+ | Balance: end of March | | | $249.00
+4/1 | basket of chicken wings | | $7.90 | $241.10
+4/16 | homework helper | $15.50 | | $256.60
+4/19 | charity | | $20.00 | $236.60",5,1871,"import pandas as pd
+
+def calculate_starting_balance(df):
+    """"""
+    This function takes in a pandas DataFrame representing a financial record table and returns the starting balance of the month.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing financial records with columns 'Date', 'Description', 'Received', 'Expenses', 'Available Funds'.
+    Returns:
+    float: The starting balance of the month.
+    """"""
+    # Find the row with the starting balance
+    starting_balance_row = df[df['Description'] == 'Balance: start of month']
+    
+    # If the starting balance row is not empty, return the starting balance
+    if not starting_balance_row.empty:
+        starting_balance = starting_balance_row['Available Funds'].values[0]
+        return starting_balance
+    
+    # If the starting balance row is empty, calculate the starting balance by subtracting the first expense from the available funds after the first expense
+    else:
+        first_expense_row = df[df['Expenses'].notna()].iloc[0]
+        first_expense = first_expense_row['Expenses']
+        available_funds_after_first_expense = first_expense_row['Available Funds']
+        starting_balance = available_funds_after_first_expense + first_expense
+        return starting_balance","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Date': ['', '4/1', '4/16', '4/19'],
+    'Description': ['Balance: end of March', 'basket of chicken wings', 'homework helper', 'charity'],
+    'Received': ['', '', 15.50, ''],
+    'Expenses': ['', 7.90, '', 20.00],
+    'Available Funds': [249.00, 241.10, 256.60, 236.60]
+})
+
+# Call the tool to solve the problem
+starting_balance = calculate_starting_balance(df)
+
+# Print the answer
+print(starting_balance)"
+"At their family reunion, the McKee family recorded everyone's age. How many people are at least 35 years old but less than 46 years old?",2.0,"Stem | Leaf 
+1 | 3, 5, 6, 6, 6
+2 | 7
+3 | 4, 9
+4 | 3, 9",5,2559,"import pandas as pd
+def count_people_in_age_range(df, min_age, max_age):
+    """"""
+    This function takes in a pandas dataframe of ages, and returns the number of people that are at least min_age years old but less than max_age years old.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the ages. The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    min_age (int): The minimum age (inclusive).
+    max_age (int): The maximum age (exclusive).
+    Returns:
+    int: The number of people that are at least min_age years old but less than max_age years old.
+    """"""
+    # prepare a list to calculate ages
+    ages = []
+    # calculate the age of each person
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            ages.append(stem * 10 + leaf[j])
+    # filter the people where the age is greater than or equal to min_age and less than max_age
+    filtered = [age for age in ages if min_age <= age < max_age]
+    # count the number of rows
+    num_people = len(filtered)
+    return num_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[3, 5, 6, 6, 6], [7], [4, 9], [3, 9]]
+})
+# Call the tool to solve the problem
+print(count_people_in_age_range(df, 35, 46))"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more money did Johnny donate to clean water than Mitch?,5.0,"Person | Cancer research | Clean water
+Kira | $9 | $7
+Mitch | $18 | $8
+Johnny | $13 | $13",4,8578,"import pandas as pd
+
+def calculate_difference_in_donations(df, person1, person2, cause):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, two person names, and a cause, and returns the difference in the amount of money donated by the two persons for the given cause.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person', 'Cancer research', 'Clean water', etc.
+    person1 (str): The name of the first person.
+    person2 (str): The name of the second person.
+    cause (str): The name of the cause for which the difference in donations is to be calculated.
+    Returns:
+    float: The difference in the amount of money donated by the two persons for the given cause.
+    """"""
+    # Filter the DataFrame for the specific persons
+    person1_df = df[df['Person'] == person1]
+    person2_df = df[df['Person'] == person2]
+    
+    # Get the donation amounts for the given cause
+    person1_donation = person1_df[cause].values[0]
+    person2_donation = person2_df[cause].values[0]
+    
+    # Calculate the difference in donations
+    donation_difference = person1_donation - person2_donation
+    
+    return donation_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Kira', 'Mitch', 'Johnny'],
+    'Cancer research': [9, 18, 13],
+    'Clean water': [7, 8, 13]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_donations(df, 'Johnny', 'Mitch', 'Clean water')
+print(difference)"
+Levi just returned from a spring break volunteer trip. He is shopping for a photo album that will showcase his photos from the trip. The albums range in photo capacity and orientation. What is the probability that a randomly selected photo album is oriented horizontally and holds exactly 50 photos? Simplify any fractions.,0.2727272727," | 50 photos | 100 photos
+Horizontally | 3 | 2
+Vertically | 4 | 2",8,968,"import pandas as pd
+
+def calculate_probability(df, orientation, photo_capacity):
+    """"""
+    This function takes in a pandas DataFrame representing a table of photo albums, the desired orientation, and the desired photo capacity, and returns the probability of randomly selecting a photo album with the specified orientation and photo capacity.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of photo albums for each orientation and photo capacity.
+    orientation (str): The desired orientation of the photo album.
+    photo_capacity (str): The desired photo capacity of the photo album.
+    Returns:
+    float: The probability of randomly selecting a photo album with the specified orientation and photo capacity.
+    """"""
+    # Calculate the total number of photo albums
+    total_albums = df.sum().sum()
+    
+    # Get the number of albums with the specified orientation and photo capacity
+    desired_albums = df.loc[orientation, photo_capacity]
+    
+    # Calculate the probability
+    probability = desired_albums / total_albums
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    '50 photos': [3, 4],
+    '100 photos': [2, 2]
+}, index=['Horizontally', 'Vertically'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Horizontally', '50 photos')
+print(probability)"
+A philanthropic organization compared the amounts of money that its members donated to certain causes. How much more did Kenji donate to arts education than to clean water?,4.0,"Person | Arts education | Clean water
+Kenji | $18 | $14
+Lexi | $3 | $12
+Sofia | $6 | $1
+Zane | $2 | $2
+Lillian | $1 | $5",4,9096,"import pandas as pd
+
+def calculate_donation_difference(df, person, cause1, cause2):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table, a person's name, and two causes, and returns the difference in the amounts of money that the person donated to the two causes.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation information with columns 'Person' and the names of the causes.
+    person (str): The name of the person.
+    cause1 (str): The name of the first cause.
+    cause2 (str): The name of the second cause.
+    Returns:
+    float: The difference in the amounts of money that the person donated to the two causes.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        donation_cause1 = person_df[cause1].values[0]
+        donation_cause2 = person_df[cause2].values[0]
+        donation_difference = donation_cause1 - donation_cause2
+        return donation_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Kenji', 'Lexi', 'Sofia', 'Zane', 'Lillian'],
+    'Arts education': [18, 3, 6, 2, 1],
+    'Clean water': [14, 12, 1, 2, 5]
+})
+# Call the tool to solve the problem
+donation_difference = calculate_donation_difference(df, 'Kenji', 'Arts education', 'Clean water')
+print(donation_difference)"
+"King High School has asked Rhianna to paint some murals around the school, and Rhianna is thrilled! Her mural in the main office will show a ray of sunlight breaking through storm clouds. Rhianna creates the perfect gray for storm clouds. There is a proportional relationship between the number of cans of black paint, x, and the number of cans of white paint, y, Rhianna mixes together. What is the constant of proportionality? Write your answer as a whole number or decimal.",2.0,"1 | 2
+3 | 6
+4 | 8
+5 | 10",7,1368,"import pandas as pd
+
+def calculate_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing the relationship between the number of cans of black paint and the number of cans of white paint, and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of cans of black paint and the number of cans of white paint with columns 'Black' and 'White'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality by dividing the number of cans of white paint by the number of cans of black paint
+    df['Constant'] = df['White'] / df['Black']
+    
+    # Return the constant of proportionality
+    return df['Constant'].mean()","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Black': [1, 3, 4, 5],
+    'White': [2, 6, 8, 10]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = calculate_constant_of_proportionality(df)
+print(constant_of_proportionality)"
+Kamal just returned from a spring break volunteer trip. He is shopping for a photo album that will showcase his photos from the trip. The albums range in photo capacity and orientation. What is the probability that a randomly selected photo album holds exactly 100 photos and is oriented vertically? Simplify any fractions.,0.3636363636," | Horizontally | Vertically
+50 photos | 2 | 2
+100 photos | 3 | 4",8,15572,"import pandas as pd
+
+def calculate_probability(df, num_photos, orientation):
+    """"""
+    This function takes in a pandas DataFrame representing a table of photo albums, the number of photos, and the orientation, and returns the probability that a randomly selected photo album holds exactly the specified number of photos and has the specified orientation.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of photos and orientations of photo albums.
+    num_photos (int): The number of photos.
+    orientation (str): The orientation of the photo album.
+    Returns:
+    float: The probability that a randomly selected photo album holds exactly the specified number of photos and has the specified orientation.
+    """"""
+    # Calculate the total number of photo albums
+    total_albums = df.sum().sum()
+    
+    # Filter the DataFrame for the specified number of photos and orientation
+    filtered_df = df.loc[df.index == num_photos, orientation]
+    
+    # Calculate the number of photo albums that meet the criteria
+    num_albums = filtered_df.values[0] if not filtered_df.empty else 0
+    
+    # Calculate the probability
+    probability = num_albums / total_albums
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Horizontally': [2, 3],
+    'Vertically': [2, 4]
+}, index=[50, 100])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 100, 'Vertically')
+print(f""The probability that a randomly selected photo album holds exactly 100 photos and is oriented vertically is {probability}."")"
+"This holiday weekend, Sue is going to Chicago to shop and to see a baseball game. To avoid traffic, Sue decides to take the train. There is a proportional relationship between the time (in minutes) Sue spends riding the train, x, and the distance she travels (in miles), y. What is the constant of proportionality? Write your answer as a whole number or decimal.",1.0,"2 | 2
+4 | 4
+9 | 9
+20 | 20",7,15268,"import pandas as pd
+
+def calculate_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of time spent riding the train and the distance travelled, and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing time spent riding the train and the distance travelled with columns 'Time' and 'Distance'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality by dividing the distance by the time for each row
+    df['Constant'] = df['Distance'] / df['Time']
+    
+    # Check if the constant of proportionality is the same for all rows
+    if df['Constant'].nunique() == 1:
+        return df['Constant'].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Time': [2, 4, 9, 20],
+    'Distance': [2, 4, 9, 20]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = calculate_constant_of_proportionality(df)
+print(constant_of_proportionality)"
+"The Springtown Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the silver level? Simplify your answer.",0.3463414634,"Donation level | Number of donors
+Gold | 69
+Bronze | 65
+Silver | 71",7,2777,"import pandas as pd
+
+def calculate_fraction(df, level):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and a level, and returns the fraction of donors at the specified level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    level (str): The donation level to calculate the fraction for.
+    Returns:
+    float: The fraction of donors at the specified level.
+    """"""
+    # Calculate the total number of donors
+    total_donors = df['Number of donors'].sum()
+    
+    # Filter the DataFrame for the specified level
+    level_df = df[df['Donation level'] == level]
+    if not level_df.empty:
+        level_donors = level_df['Number of donors'].values[0]
+        # Calculate and return the fraction of donors at the specified level
+        return level_donors / total_donors
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Gold', 'Bronze', 'Silver'],
+    'Number of donors': [69, 65, 71]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Silver')
+print(f""The fraction of donors at the silver level is {fraction}."")"
+"Danny is the proud owner of an eclectic bow tie collection. He keeps track of how many bow ties he has, and organizes them by pattern and material. What is the probability that a randomly selected bow tie is designed with swirls and is made of cotton? Simplify any fractions.",0.15," | Velvet | Cotton
+Zigzags | 7 | 5
+Swirls | 5 | 3",8,5406,"import pandas as pd
+
+def calculate_probability(df, pattern, material):
+    """"""
+    This function takes in a pandas DataFrame representing a bow tie collection table, a pattern, and a material, and returns the probability of selecting a bow tie with the given pattern and material.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of bow ties organized by pattern and material.
+    pattern (str): The pattern of the bow tie to calculate the probability for.
+    material (str): The material of the bow tie to calculate the probability for.
+    Returns:
+    float: The probability of selecting a bow tie with the given pattern and material.
+    """"""
+    # Calculate the total number of bow ties
+    total_bow_ties = df.sum().sum()
+    
+    # Get the number of bow ties with the given pattern and material
+    selected_bow_ties = df.loc[pattern, material]
+    
+    # Calculate the probability
+    probability = selected_bow_ties / total_bow_ties
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Velvet': [7, 5],
+    'Cotton': [5, 3]
+}, index=['Zigzags', 'Swirls'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Swirls', 'Cotton')
+
+# Print the answer
+print(probability)"
+Martha is a physical therapist who specializes in leg injuries. Her patients differ in age and type of injury. What is the probability that a randomly selected patient suffers from ankle pain and is 0-12 years old? Simplify any fractions.,0.375," | 0-12 years old | 13-19 years old
+Knee pain | 3 | 1
+Ankle pain | 6 | 6",8,13903,"import pandas as pd
+
+def create_probability_table(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of leg injuries and their frequencies, and returns a DataFrame with the probabilities of each injury and age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing leg injuries and their frequencies with columns 'Injury', '0-12 years old', and '13-19 years old'.
+    Returns:
+    pd.DataFrame: A DataFrame with the probabilities of each injury and age group.
+    """"""
+    # Calculate the total number of patients
+    total_patients = df['0-12 years old'].sum() + df['13-19 years old'].sum()
+    
+    # Calculate the probabilities for each injury and age group
+    df['0-12 years old'] = df['0-12 years old'] / total_patients
+    df['13-19 years old'] = df['13-19 years old'] / total_patients
+    
+    return df
+
+def find_probability(df, injury, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a probability table of leg injuries and their age groups, and returns the probability of a specific injury and age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing leg injuries and their probabilities with columns 'Injury', '0-12 years old', and '13-19 years old'.
+    injury (str): The injury to find the probability for.
+    age_group (str): The age group to find the probability for.
+    Returns:
+    float: The probability of the specific injury and age group.
+    """"""
+    # Filter the DataFrame for the specific injury
+    injury_df = df[df['Injury'] == injury]
+    
+    # Get the probability for the specific age group
+    probability = injury_df[age_group].values[0]
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Injury': ['Knee pain', 'Ankle pain'],
+    '0-12 years old': [3, 6],
+    '13-19 years old': [1, 6]
+})
+
+# Create the probability table
+probability_table = create_probability_table(df)
+
+# Find the probability of a randomly selected patient suffering from ankle pain and being 0-12 years old
+probability = find_probability(probability_table, 'Ankle pain', '0-12 years old')
+
+# Print the answer
+print(probability)"
+"The Somerville Symphony categorizes its donors as gold, silver, or bronze depending on the amount donated. What fraction of donors are at the gold level? Simplify your answer.",0.4339622642,"Donation level | Number of donors
+Silver | 76
+Bronze | 14
+Gold | 69",7,14573,"import pandas as pd
+
+def calculate_fraction_of_gold_donors(df):
+    """"""
+    This function takes in a pandas DataFrame representing a donation table and returns the fraction of donors at the gold level.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing donation levels and the number of donors with columns 'Donation level' and 'Number of donors'.
+    Returns:
+    float: The fraction of donors at the gold level.
+    """"""
+    # Calculate the total number of donors
+    total_donors = df['Number of donors'].sum()
+    
+    # Filter the DataFrame for the gold level
+    gold_df = df[df['Donation level'] == 'Gold']
+    
+    # Calculate the number of gold donors
+    gold_donors = gold_df['Number of donors'].values[0]
+    
+    # Calculate the fraction of gold donors
+    fraction_of_gold_donors = gold_donors / total_donors
+    
+    return fraction_of_gold_donors","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Donation level': ['Silver', 'Bronze', 'Gold'],
+    'Number of donors': [76, 14, 69]
+})
+
+# Call the tool to solve the problem
+fraction_of_gold_donors = calculate_fraction_of_gold_donors(df)
+
+# Print out the answer
+print(f""The fraction of donors at the gold level is {fraction_of_gold_donors}."")"
+"Some friends discussed the sizes of their coin collections. If you combine their collections, how many coins do Reagan and Felipe have?",2784.0,"Name | Number of coins
+Derek | 6,325
+Reagan | 1,380
+Felipe | 1,404
+Patrick | 2,500",3,6885,"import pandas as pd
+
+def calculate_total_coins(df, names):
+    """"""
+    This function takes in a pandas DataFrame representing a table of names and their coin collections, and a list of names, and returns the total number of coins for the given names.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing names and their coin collections with columns 'Name' and 'Number of coins'.
+    names (list): A list of names for which the total number of coins is to be calculated.
+    Returns:
+    int: The total number of coins for the given names.
+    """"""
+    # Initialize the total number of coins
+    total_coins = 0
+    
+    # Iterate through the names and calculate the total number of coins
+    for name in names:
+        # Filter the DataFrame for the specific name
+        name_df = df[df['Name'] == name]
+        if not name_df.empty:
+            num_coins = name_df['Number of coins'].values[0]
+            total_coins += num_coins
+    
+    return total_coins","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Name': ['Derek', 'Reagan', 'Felipe', 'Patrick'],
+    'Number of coins': [6325, 1380, 1404, 2500]
+})
+# Call the tool to solve the problem
+total_coins = calculate_total_coins(df, ['Reagan', 'Felipe'])
+print(total_coins)"

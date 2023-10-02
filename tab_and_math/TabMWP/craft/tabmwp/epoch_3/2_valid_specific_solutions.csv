@@ -1,0 +1,3205 @@
+question,answer,table,level,tool_id,code,api_call
+Natalie recently emptied her coin jar and counted the coins. What fraction of the coins were copper coins? Simplify your answer.,0.3552123552,"Coin | Number of coins
+Copper coins | 92
+Silver coins | 96
+Gold coins | 34
+Other | 37",7,14796,"import pandas as pd
+
+def calculate_fraction_of_copper_coins(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of coins and their counts, and returns the fraction of coins that are copper coins.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing coin types and their counts with columns 'Coin' and 'Number of coins'.
+    Returns:
+    float: The fraction of coins that are copper coins.
+    """"""
+    # Calculate the total number of coins
+    total_coins = df['Number of coins'].sum()
+    
+    # Filter the DataFrame for copper coins
+    copper_coins_df = df[df['Coin'] == 'Copper coins']
+    
+    # Calculate the number of copper coins
+    num_copper_coins = copper_coins_df['Number of coins'].values[0]
+    
+    # Calculate the fraction of coins that are copper coins
+    fraction_copper_coins = num_copper_coins / total_coins
+    
+    return fraction_copper_coins","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Coin': ['Copper coins', 'Silver coins', 'Gold coins', 'Other'],
+    'Number of coins': [92, 96, 34, 37]
+})
+# Call the tool to solve the problem
+fraction_copper_coins = calculate_fraction_of_copper_coins(df)
+print(f""The fraction of the coins that were copper coins is {fraction_copper_coins}."")"
+Some companies compared how many phone calls they made. How many more phone calls did Tad's Coffee Company make than Northside Cycles?,2933.0,"Company | Number of phone calls
+Tad's Coffee Company | 7,202
+Northside Cycles | 4,269
+Critical Insight Consulting | 2,332
+Reardon Corporation | 8,620
+Melbourne Medical Devices | 1,293",3,3764,"import pandas as pd
+
+def calculate_difference(df, company1, company2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of companies and their number of phone calls, and two company names. It returns the difference in the number of phone calls between the two companies.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing company names and their number of phone calls with columns 'Company' and 'Number of phone calls'.
+    company1 (str): The name of the first company.
+    company2 (str): The name of the second company.
+    Returns:
+    int: The difference in the number of phone calls between the two companies.
+    """"""
+    # Filter the DataFrame for the specific companies
+    company1_df = df[df['Company'] == company1]
+    company2_df = df[df['Company'] == company2]
+    
+    # Get the number of phone calls for each company
+    company1_calls = company1_df['Number of phone calls'].values[0]
+    company2_calls = company2_df['Number of phone calls'].values[0]
+    
+    # Calculate and return the difference
+    return abs(company1_calls - company2_calls)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Company': [""Tad's Coffee Company"", 'Northside Cycles', 'Critical Insight Consulting', 'Reardon Corporation', 'Melbourne Medical Devices'],
+    'Number of phone calls': [7202, 4269, 2332, 8620, 1293]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, ""Tad's Coffee Company"", 'Northside Cycles')
+print(difference)"
+"Roger is cleaning his workbench and organizing his tools. He uses a frequency chart to keep track of the different types of tools he has. If 1/2 of Roger's wrenches are metric, how many metric wrenches does Roger have?",9.0,"Type | Frequency
+hammer | 4
+pliers | 7
+screwdriver | 14
+wrench | 18",5,13263,"import pandas as pd
+
+def calculate_metric_wrenches(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of tools, and returns the number of metric wrenches.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing types of tools and their frequencies with columns 'Type' and 'Frequency'.
+    Returns:
+    int: The number of metric wrenches.
+    """"""
+    # Filter the DataFrame for wrenches
+    wrench_df = df[df['Type'] == 'wrench']
+    if not wrench_df.empty:
+        # Calculate the number of metric wrenches
+        metric_wrenches = wrench_df['Frequency'].values[0] // 2
+        return metric_wrenches
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Type': ['hammer', 'pliers', 'screwdriver', 'wrench'],
+    'Frequency': [4, 7, 14, 18]
+})
+# Call the tool to solve the problem
+print(calculate_metric_wrenches(df))"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon? Simplify any fractions.,0.2142857143," | Bacon | Cinnamon
+Under 13 years old | 2 | 4
+A teenager | 3 | 5",8,12135,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred smells, and returns the probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing buyers' ages and their preferred smells with columns 'Age' and 'Smell'.
+    Returns:
+    float: The probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Filter the DataFrame for teenagers who purchased a bacon-scented clock
+    teenager_bacon_buyers = df.loc['A teenager', 'Bacon']
+    
+    # Calculate the probability
+    probability = teenager_bacon_buyers / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bacon': [2, 3],
+    'Cinnamon': [4, 5]
+}, index=['Under 13 years old', 'A teenager'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print out the answer
+print(f""The probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon is {probability}."")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon? Simplify any fractions.,0.2727272727," | Bacon | Cinnamon
+Under 13 years old | 2 | 3
+A teenager | 3 | 3",8,3637,"import pandas as pd
+
+def calculate_probability(df, age_group, scent):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred scents, and returns the probability that a randomly selected buyer is from a specific age group and purchased a clock with a specific scent.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers in each age group for each scent. The DataFrame should have age groups as index and scents as columns.
+    age_group (str): The age group to calculate the probability for.
+    scent (str): The scent to calculate the probability for.
+    Returns:
+    float: The probability that a randomly selected buyer is from the specified age group and purchased a clock with the specified scent.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Get the number of buyers in the specified age group who purchased a clock with the specified scent
+    buyers_in_group_with_scent = df.loc[age_group, scent]
+    
+    # Calculate the probability
+    probability = buyers_in_group_with_scent / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bacon': [2, 3],
+    'Cinnamon': [3, 3]
+}, index=['Under 13 years old', 'A teenager'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'A teenager', 'Bacon')
+print(f""The probability that a randomly selected buyer is a teenager and purchased a clock scented like bacon is {probability}."")"
+Murphy has a collection of marbles of different sizes and colors. What is the probability that a randomly selected marble is red and big? Simplify any fractions.,0.2307692308," | Big | Small
+Red | 3 | 4
+Green | 2 | 4",8,16902,"import pandas as pd
+
+def create_marble_df():
+    data = {'Color': ['Red', 'Green'],
+            'Big': [3, 2],
+            'Small': [4, 4]}
+    df = pd.DataFrame(data)
+    return df
+
+def calculate_probability(df, color, size):
+    """"""
+    This function takes in a pandas DataFrame representing a marble table, a color, and a size, and returns the probability of selecting a marble with the specified color and size.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing marble counts with columns 'Color', 'Big', and 'Small'.
+    color (str): The color of the marble to calculate the probability for.
+    size (str): The size of the marble to calculate the probability for.
+    Returns:
+    float: The probability of selecting a marble with the specified color and size.
+    """"""
+    # Calculate the total number of marbles
+    total_marbles = df['Big'].sum() + df['Small'].sum()
+    
+    # Filter the DataFrame for the specified color and size
+    color_size_df = df[df['Color'] == color]
+    if not color_size_df.empty:
+        color_size_count = color_size_df[size].values[0]
+        probability = color_size_count / total_marbles
+        return probability","# Initialize the table into a dataframe
+marble_df = pd.DataFrame({
+    'Color': ['Red', 'Green'],
+    'Big': [3, 2],
+    'Small': [4, 4]
+})
+
+# Call the tool to solve the problem
+probability_red_big = calculate_probability(marble_df, 'Red', 'Big')
+print(probability_red_big)"
+"For a science fair project, Deb tracked the temperature each day. What is the lowest temperature?",10.0,"Stem | Leaf 
+1 | 0, 1, 2, 2, 3, 3, 3
+2 | 1, 5, 6, 8
+3 | 3, 3, 4, 4, 4, 5
+4 | 3",6,3081,"import pandas as pd
+def find_lowest_temperature(df):
+    """"""
+    This function takes in a pandas dataframe of temperatures, and returns the lowest temperature.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the temperatures.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The lowest temperature.
+    """"""
+    # prepare a list to calculate temperature in each day
+    temperatures = []
+    # calculate the temperature in each day
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            temperatures.append(stem * 10 + leaf[j])
+    # find the lowest temperature
+    lowest_temperature = min(temperatures)
+    return lowest_temperature","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[0, 1, 2, 2, 3, 3, 3], [1, 5, 6, 8], [3, 3, 4, 4, 4, 5], [3]]
+})
+# Call the tool to solve the problem
+print(find_lowest_temperature(df))"
+Arctic Fox Ski Village has trails on the north and south sides of the mountain. The frequency chart shows the number of trails of each difficulty on the south side. There are another 21 trails on the north side of the mountain. How many ski trails are there on both sides of the mountain combined?,47.0,"Difficulty | Frequency
+easy | 7
+intermediate | 8
+expert | 11",5,16075,"import pandas as pd
+
+def calculate_total_trails(df, north_trails):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of trails and the number of trails on the north side, and returns the total number of trails on both sides.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing trail difficulties and their frequencies with columns 'Difficulty' and 'Frequency'.
+    north_trails (int): The number of trails on the north side.
+    Returns:
+    int: The total number of trails on both sides.
+    """"""
+    # Calculate the total number of trails on the south side
+    south_trails = df['Frequency'].sum()
+    
+    # Calculate the total number of trails on both sides
+    total_trails = south_trails + north_trails
+    
+    return total_trails","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Difficulty': ['easy', 'intermediate', 'expert'],
+    'Frequency': [7, 8, 11]
+})
+
+# Number of trails on the north side
+north_trails = 21
+
+# Call the tool to solve the problem
+total_trails = calculate_total_trails(df, north_trails)
+
+# Print the answer
+print(total_trails)"
+"Mr. Swift, the band director, counted the number of instruments played by each member of the band. How many more girls than boys play the saxophone?",6.0,"Instrument | Boys | Girls
+Saxophone | 10 | 16
+Drums | 10 | 20
+Clarinet | 14 | 20
+Flute | 5 | 7
+Trumpet | 16 | 11",5,16182,"import pandas as pd
+
+def calculate_difference_in_instrument(df, instrument):
+    """"""
+    This function takes in a pandas DataFrame representing the number of instruments played by boys and girls, and returns the difference in the number of girls and boys playing the specified instrument.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of instruments played by boys and girls with columns 'Instrument', 'Boys', and 'Girls'.
+    instrument (str): The name of the instrument for which the difference in the number of players is to be calculated.
+    Returns:
+    int: The difference in the number of girls and boys playing the specified instrument.
+    """"""
+    # Filter the DataFrame for the specific instrument
+    instrument_df = df[df['Instrument'] == instrument]
+    
+    if not instrument_df.empty:
+        boys = instrument_df['Boys'].values[0]
+        girls = instrument_df['Girls'].values[0]
+        difference = girls - boys
+        return difference
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Instrument': ['Saxophone', 'Drums', 'Clarinet', 'Flute', 'Trumpet'],
+    'Boys': [10, 10, 14, 5, 16],
+    'Girls': [16, 20, 20, 7, 11]
+})
+# Call the tool to solve the problem
+difference = calculate_difference_in_instrument(df, 'Saxophone')
+print(difference)"
+Wyatt recalled how many goals he had made in soccer practice each day. What is the mode of the numbers?,6.0,"Day | Number of goals
+Friday | 10
+Saturday | 6
+Sunday | 2
+Monday | 2
+Tuesday | 10
+Wednesday | 6
+Thursday | 6",5,3147,"import pandas as pd
+from collections import Counter
+
+def calculate_mode(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of days and number of goals, and returns the mode of the number of goals.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and number of goals with columns 'Day' and 'Number of goals'.
+    Returns:
+    int: The mode of the number of goals.
+    """"""
+    # Extract the 'Number of goals' column
+    goals = df['Number of goals']
+    
+    # Calculate the frequency of each number of goals
+    freq_dict = Counter(goals)
+    
+    # Find the number of goals with the highest frequency
+    mode = max(freq_dict.keys(), key=(lambda k: freq_dict[k]))
+    
+    return mode","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+    'Number of goals': [10, 6, 2, 2, 10, 6, 6]
+})
+# Call the tool to solve the problem
+mode = calculate_mode(df)
+print(mode)"
+"Andrew, a fantasy football fan, carefully studied the number of touchdowns completed by his favorite players last season. How many players scored more than 1 touchdown last season?",54.0,"Touchdowns scored | Frequency
+0 | 13
+1 | 1
+2 | 7
+3 | 0
+4 | 19
+5 | 12
+6 | 16",7,15484,"import pandas as pd
+
+def count_players_with_more_than_one_touchdown(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of touchdowns scored and their frequencies, and returns the number of players who scored more than 1 touchdown.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of touchdowns scored and their frequencies with columns 'Touchdowns scored' and 'Frequency'.
+    Returns:
+    int: The number of players who scored more than 1 touchdown.
+    """"""
+    # Filter the DataFrame for players who scored more than 1 touchdown
+    more_than_one_touchdown_df = df[df['Touchdowns scored'] > 1]
+    
+    # Calculate the total number of players who scored more than 1 touchdown
+    num_players = more_than_one_touchdown_df['Frequency'].sum()
+    
+    return num_players","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Touchdowns scored': [0, 1, 2, 3, 4, 5, 6],
+    'Frequency': [13, 1, 7, 0, 19, 12, 16]
+})
+# Call the tool to solve the problem
+print(count_players_with_more_than_one_touchdown(df))"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like bacon and is a teenager? Simplify any fractions.,0.4545454545," | Under 13 years old | A teenager
+Bacon | 2 | 5
+Cinnamon | 3 | 1",8,2074,"import pandas as pd
+
+def calculate_probability(df, smell, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred smells, a smell, and an age group, and returns the probability that a randomly selected buyer from the given age group preferred the given smell.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers for each smell and age group.
+    smell (str): The smell of interest.
+    age_group (str): The age group of interest.
+    Returns:
+    float: The probability that a randomly selected buyer from the given age group preferred the given smell.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Calculate the number of buyers who preferred the given smell and are from the given age group
+    smell_age_group_buyers = df.loc[smell, age_group]
+    
+    # Calculate the probability
+    probability = smell_age_group_buyers / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [2, 3],
+    'A teenager': [5, 1]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Bacon', 'A teenager')
+print(f""The probability is {probability}"")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like bacon and is a teenager? Simplify any fractions.,0.25," | Under 13 years old | A teenager
+Bacon | 6 | 5
+Cinnamon | 6 | 3",8,238,"import pandas as pd
+
+def calculate_probability(df, smell, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred smells, a smell, and an age group, and returns the probability that a randomly selected buyer from the specified age group purchased a clock with the specified smell.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers for each smell and age group.
+    smell (str): The smell of the clock.
+    age_group (str): The age group of the buyer.
+    Returns:
+    float: The probability that a randomly selected buyer from the specified age group purchased a clock with the specified smell.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Calculate the number of buyers who purchased a clock with the specified smell and are from the specified age group
+    specific_buyers = df.loc[smell, age_group]
+    
+    # Calculate the probability
+    probability = specific_buyers / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [6, 6],
+    'A teenager': [5, 3]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Bacon', 'A teenager')
+print(f""The probability is {probability}"")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like bacon and is a teenager? Simplify any fractions.,0.2857142857," | Under 13 years old | A teenager
+Bacon | 2 | 4
+Cinnamon | 4 | 4",8,1903,"import pandas as pd
+
+def calculate_probability(df, smell, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and preferred smells, a smell, and an age group, and returns the probability that a randomly selected buyer from the specified age group preferred the specified smell.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers for each smell and age group. The DataFrame should have smells as the index and age groups as the columns.
+    smell (str): The smell to calculate the probability for.
+    age_group (str): The age group to calculate the probability for.
+    Returns:
+    float: The probability that a randomly selected buyer from the specified age group preferred the specified smell.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Calculate the number of buyers for the specified smell and age group
+    buyers_for_smell_and_age_group = df.loc[smell, age_group]
+    
+    # Calculate the probability
+    probability = buyers_for_smell_and_age_group / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [2, 4],
+    'A teenager': [4, 4]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Bacon', 'A teenager')
+print(probability)"
+A fashion magazine poll asks how many winter hats each reader owns. How many readers have exactly 3 winter hats?,17.0,"Number of winter hats | Frequency
+0 | 6
+1 | 20
+2 | 12
+3 | 17",8,15461,"import pandas as pd
+
+def count_readers_with_3_hats(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of winter hats owned by readers, and returns the number of readers who own exactly 3 winter hats.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of winter hats and their frequencies with columns 'Number of winter hats' and 'Frequency'.
+    Returns:
+    int: The number of readers who own exactly 3 winter hats.
+    """"""
+    # Filter the DataFrame for the row where the number of winter hats is 3
+    row = df[df['Number of winter hats'] == 3]
+    
+    # If the row exists, return the frequency. Otherwise, return 0.
+    if not row.empty:
+        return row['Frequency'].values[0]
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of winter hats': [0, 1, 2, 3],
+    'Frequency': [6, 20, 12, 17]
+})
+# Call the tool to solve the problem
+print(count_readers_with_3_hats(df))"
+A fashion magazine poll asks how many winter hats each reader owns. How many readers have exactly 3 winter hats?,10.0,"Number of winter hats | Frequency
+0 | 2
+1 | 15
+2 | 6
+3 | 10
+4 | 7
+5 | 11
+6 | 3",8,10037,"import pandas as pd
+
+def count_readers_with_3_winter_hats(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of winter hats and their frequencies, and returns the number of readers who have exactly 3 winter hats.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of winter hats and their frequencies with columns 'Number of winter hats' and 'Frequency'.
+    Returns:
+    int: The number of readers who have exactly 3 winter hats.
+    """"""
+    # Filter the DataFrame for the specific number of winter hats
+    hat_df = df[df['Number of winter hats'] == 3]
+    
+    # Get the frequency of readers with 3 winter hats
+    if not hat_df.empty:
+        frequency = hat_df['Frequency'].values[0]
+    else:
+        frequency = 0
+    
+    return frequency","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of winter hats': [0, 1, 2, 3, 4, 5, 6],
+    'Frequency': [2, 15, 6, 10, 7, 11, 3]
+})
+# Call the tool to solve the problem
+print(count_readers_with_3_winter_hats(df))"
+A fashion magazine poll asks how many winter hats each reader owns. How many readers have exactly 1 winter hat?,10.0,"Number of winter hats | Frequency
+0 | 13
+1 | 10
+2 | 0
+3 | 11
+4 | 2
+5 | 5
+6 | 3",7,6499,"import pandas as pd
+
+def count_readers_with_one_hat(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of the number of winter hats each reader owns, and returns the number of readers who own exactly one winter hat.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of winter hats and their frequencies with columns 'Number of winter hats' and 'Frequency'.
+    Returns:
+    int: The number of readers who own exactly one winter hat.
+    """"""
+    # Filter the DataFrame for the row where the number of winter hats is 1
+    one_hat_df = df[df['Number of winter hats'] == 1]
+    
+    # If the DataFrame is not empty, return the frequency of readers who own exactly one winter hat
+    if not one_hat_df.empty:
+        return one_hat_df['Frequency'].values[0]
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of winter hats': [0, 1, 2, 3, 4, 5, 6],
+    'Frequency': [13, 10, 0, 11, 2, 5, 3]
+})
+# Call the tool to solve the problem
+print(count_readers_with_one_hat(df))"
+"While working as a summer camp counselor, Simon monitored how many candy necklaces each child made. How many children are there in all?",15.0,"Candy necklaces made | Frequency
+0 | 11
+1 | 3
+2 | 0
+3 | 1",8,3610,"import pandas as pd
+
+def calculate_total_children(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of candy necklaces made by children, and returns the total number of children.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of candy necklaces made and the frequency with columns 'Candy necklaces made' and 'Frequency'.
+    Returns:
+    int: The total number of children.
+    """"""
+    # Multiply the number of candy necklaces made by the frequency and sum up the results to get the total number of children
+    total_children = df['Frequency'].sum()
+    
+    return total_children","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Candy necklaces made': [0, 1, 2, 3],
+    'Frequency': [11, 3, 0, 1]
+})
+# Call the tool to solve the problem
+total_children = calculate_total_children(df)
+print(total_children)"
+Four of the sports teams from Westminster High School decided to raise funds to buy new sports equipment. What fraction of the funds were raised by the tennis team? Simplify your answer.,0.2514792899,"Team | Funds raised ($)
+Soccer | 770
+Tennis | 850
+Track | 940
+Water polo | 820",7,732,"import pandas as pd
+from fractions import Fraction
+
+def calculate_fraction_of_funds_raised(df, team_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of funds raised by different teams and a team name, and returns the fraction of funds raised by the specified team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing team names and the funds raised with columns 'Team' and 'Funds raised ($)'.
+    team_name (str): The name of the team for which the fraction of funds raised is to be calculated.
+    Returns:
+    Fraction: The fraction of funds raised by the specified team.
+    """"""
+    # Get the total funds raised by all teams
+    total_funds = df['Funds raised ($)'].sum()
+    
+    # Get the funds raised by the specified team
+    team_funds = df[df['Team'] == team_name]['Funds raised ($)'].values[0]
+    
+    # Calculate the fraction of funds raised by the specified team
+    fraction = Fraction(team_funds, total_funds)
+    
+    return fraction","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Team': ['Soccer', 'Tennis', 'Track', 'Water polo'],
+    'Funds raised ($)': [770, 850, 940, 820]
+})
+
+# Call the tool to solve the problem
+fraction = calculate_fraction_of_funds_raised(df, 'Tennis')
+
+# Print the answer
+print(f""The fraction of the funds raised by the tennis team is {fraction}."")"
+"At a swim meet, Grayson noted the size of various swim teams. How many teams have at least 37 swimmers?",13.0,"Stem | Leaf 
+2 | 0, 2, 2, 4, 6, 7, 7
+3 | 5, 6
+4 | 3
+5 | 2, 3
+6 | 6, 8
+7 | 2, 3, 9
+8 | 0, 1, 6, 9
+9 | 0",7,11914,"import pandas as pd
+def count_teams_with_37_swimmers(df):
+    """"""
+    This function takes in a pandas dataframe of swim teams, and returns the number of teams that have at least 37 swimmers.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the size of various swim teams.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of teams that have at least 37 swimmers.
+    """"""
+    # prepare a list to calculate swimmers in each team
+    swimmers = []
+    # calculate the total number of swimmers in each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            swimmers.append(stem * 10 + leaf[j])
+    # filter the teams where the total number of swimmers is greater than or equal to 37
+    filtered = [team for team in swimmers if team >= 37]
+    # count the number of rows
+    num_teams = len(filtered)
+    return num_teams","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[0, 2, 2, 4, 6, 7, 7], [5, 6], [3], [2, 3], [6, 8], [2, 3, 9], [0, 1, 6, 9], [0]]
+})
+# Call the tool to solve the problem
+print(count_teams_with_37_swimmers(df))"
+Patterson has a collection of marbles of different sizes and colors. What is the probability that a randomly selected marble is big and red? Simplify any fractions.,0.1818181818," | Red | Green
+Big | 2 | 2
+Small | 4 | 3",8,12936,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of marble counts, and returns the probability of selecting a big and red marble.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing marble counts with columns 'Red', 'Green' and index 'Big', 'Small'.
+    Returns:
+    float: The probability of selecting a big and red marble.
+    """"""
+    # Calculate the total number of marbles
+    total_marbles = df.sum().sum()
+    
+    # Get the count of big and red marbles
+    big_red_marbles = df.loc['Big', 'Red']
+    
+    # Calculate the probability
+    probability = big_red_marbles / total_marbles
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Red': [2, 4],
+    'Green': [2, 3]
+}, index=['Big', 'Small'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected marble is big and red is {probability}"")"
+Manuel measured the length of each scarf in the clothing store where he works. How many scarves are exactly 90 centimeters?,3.0,"Stem | Leaf 
+6 | 9
+7 | 2, 5, 9, 9
+8 | 2
+9 | 0, 0, 0",4,11772,"import pandas as pd
+def count_scarves_of_length_90(df):
+    """"""
+    This function takes in a pandas dataframe of scarf lengths, and returns the number of scarves that are exactly 90 centimeters.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the lengths of scarves.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of scarves that are exactly 90 centimeters.
+    """"""
+    # prepare a list to calculate length of each scarf
+    lengths = []
+    # calculate the total length of each scarf
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            lengths.append(stem * 10 + leaf[j])
+    # filter the scarves where the length is exactly 90 centimeters
+    filtered = [length for length in lengths if length == 90]
+    # count the number of rows
+    num_scarves = len(filtered)
+    return num_scarves","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [6, 7, 8, 9],
+    'Leaf': [[9], [2, 5, 9, 9], [2], [0, 0, 0]]
+})
+# Call the tool to solve the problem
+print(count_scarves_of_length_90(df))"
+"Mr. Goodwin, the band director, counted the number of instruments played by each member of the band. How many more boys than girls play the drums?",3.0,"Instrument | Girls | Boys
+Drums | 7 | 10
+Flute | 1 | 19
+Trombone | 20 | 9
+Saxophone | 17 | 11",5,11564,"import pandas as pd
+
+def calculate_difference(df, instrument):
+    """"""
+    This function takes in a pandas DataFrame representing a table of instruments played by boys and girls, and a string representing the instrument of interest. It returns the difference in the number of boys and girls playing the specified instrument.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of instruments played by boys and girls. The DataFrame should have columns 'Instrument', 'Girls', and 'Boys'.
+    instrument (str): The instrument of interest.
+    Returns:
+    int: The difference in the number of boys and girls playing the specified instrument. If more girls play the instrument, the result will be negative.
+    """"""
+    # Filter the DataFrame for the specific instrument
+    instrument_df = df[df['Instrument'] == instrument]
+    if not instrument_df.empty:
+        # Calculate the difference in the number of boys and girls playing the instrument
+        difference = instrument_df['Boys'].values[0] - instrument_df['Girls'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Instrument': ['Drums', 'Flute', 'Trombone', 'Saxophone'],
+    'Girls': [7, 1, 20, 17],
+    'Boys': [10, 19, 9, 11]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Drums')
+print(difference)"
+A beauty salon in Kensington has three beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Dillon? Simplify your answer.,0.347826087,"Beautician | Requests
+Dillon | 480
+Samir | 540
+Whitney | 360",7,12351,"import pandas as pd
+
+def calculate_fraction(df, name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and a name of a beautician, and returns the fraction of requests for the specified beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    name (str): The name of the beautician.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Calculate the total number of requests
+    total_requests = df['Requests'].sum()
+    
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == name]
+    if not beautician_df.empty:
+        beautician_requests = beautician_df['Requests'].values[0]
+        # Calculate and return the fraction of requests for the specified beautician
+        return beautician_requests / total_requests
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Dillon', 'Samir', 'Whitney'],
+    'Requests': [480, 540, 360]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Dillon')
+print(f""The fraction of requests for Dillon is {fraction}."")"
+"To get credit for meeting his school's community service requirement, Terrell kept a volunteering log. What is the mode of the numbers?",10.0,"Day | Hours
+Wednesday | 5
+Thursday | 10
+Friday | 10
+Saturday | 5
+Sunday | 10",6,10836,"import pandas as pd
+from collections import Counter
+
+def calculate_mode(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the mode of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours with columns 'Day' and 'Hours'.
+    Returns:
+    int: The mode of the hours.
+    """"""
+    # Extract the 'Hours' column from the DataFrame
+    hours = df['Hours'].values
+    
+    # Calculate the frequency of each hour value
+    frequency = Counter(hours)
+    
+    # Find the hour(s) with the highest frequency
+    mode = [hour for hour, freq in frequency.items() if freq == max(frequency.values())]
+    
+    return mode","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Hours': [5, 10, 10, 5, 10]
+})
+# Call the tool to solve the problem
+print(calculate_mode(df))"
+Ashley's family went on a road trip and counted the number of cars they saw each day. How many cars in total did they see on Saturday and Sunday?,687.0,"Day | Number of cars
+Saturday | 339
+Sunday | 348
+Monday | 232
+Tuesday | 282",3,3816,"import pandas as pd
+
+def calculate_total_cars(df, days):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of cars seen each day and a list of days, and returns the total number of cars seen on those days.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and the number of cars seen with columns 'Day' and 'Number of cars'.
+    days (list): A list of days to calculate the total number of cars seen.
+    Returns:
+    int: The total number of cars seen on the specified days.
+    """"""
+    # Filter the DataFrame for the specified days
+    filtered_df = df[df['Day'].isin(days)]
+    
+    # Calculate the total number of cars seen
+    total_cars = filtered_df['Number of cars'].sum()
+    
+    return total_cars","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Saturday', 'Sunday', 'Monday', 'Tuesday'],
+    'Number of cars': [339, 348, 232, 282]
+})
+
+# Call the tool to solve the problem
+total_cars = calculate_total_cars(df, ['Saturday', 'Sunday'])
+print(total_cars)"
+"For a statistics project, Austin observed the number of hits and misses scored by some baseball players during batting practice. How many more misses than hits did the third baseman have?",13.0,"Player | Misses | Hits
+First baseman | 8 | 14
+Left fielder | 1 | 8
+Right fielder | 10 | 13
+Third baseman | 16 | 3
+Shortstop | 3 | 3",4,4966,"import pandas as pd
+
+def calculate_difference(df, player):
+    """"""
+    This function takes in a pandas DataFrame representing a baseball statistics table and a player's name, and returns the difference between the number of misses and hits for the specified player.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing player names, number of misses and hits with columns 'Player', 'Misses' and 'Hits'.
+    player (str): The name of the player.
+    Returns:
+    int: The difference between the number of misses and hits for the specified player.
+    """"""
+    # Filter the DataFrame for the specific player
+    player_df = df[df['Player'] == player]
+    if not player_df.empty:
+        misses = player_df['Misses'].values[0]
+        hits = player_df['Hits'].values[0]
+        difference = misses - hits
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Player': ['First baseman', 'Left fielder', 'Right fielder', 'Third baseman', 'Shortstop'],
+    'Misses': [8, 1, 10, 16, 3],
+    'Hits': [14, 8, 13, 3, 3]
+})
+# Call the tool to solve the problem
+print(calculate_difference(df, 'Third baseman'))"
+Keenan makes beautiful pottery and sells it at craft fairs. He made a frequency chart of the pieces of pottery he took to a fair last weekend. How many pieces of pottery did Keenan take altogether?,96.0,"Piece | Frequency
+bowl | 24
+cup | 30
+plate | 24
+vase | 18",5,1455,"import pandas as pd
+
+def calculate_total_pottery(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of pottery pieces and returns the total number of pottery pieces.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing pottery pieces and their frequencies with columns 'Piece' and 'Frequency'.
+    Returns:
+    int: The total number of pottery pieces.
+    """"""
+    # Calculate the total number of pottery pieces
+    total_pottery = df['Frequency'].sum()
+    
+    return total_pottery","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Piece': ['bowl', 'cup', 'plate', 'vase'],
+    'Frequency': [24, 30, 24, 18]
+})
+# Call the tool to solve the problem
+total_pottery = calculate_total_pottery(df)
+print(total_pottery)"
+A beauty salon in Newberry has three beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Paul? Simplify your answer.,0.4285714286,"Beautician | Requests
+Dakota | 900
+Kiera | 220
+Paul | 840",7,2566,"import pandas as pd
+
+def calculate_fraction(df, name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and a name of a beautician, and returns the fraction of requests for the specified beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    name (str): The name of the beautician.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Calculate the total number of requests
+    total_requests = df['Requests'].sum()
+    
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == name]
+    
+    if not beautician_df.empty:
+        # Calculate the number of requests for the specified beautician
+        beautician_requests = beautician_df['Requests'].values[0]
+        
+        # Calculate and return the fraction of requests for the specified beautician
+        return beautician_requests / total_requests
+    
+    return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Dakota', 'Kiera', 'Paul'],
+    'Requests': [900, 220, 840]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Paul')
+# Print out the answer
+print(f""The fraction of requests for Paul is {fraction}."")"
+"At a charity basketball shootout, excited fans counted the baskets and misses made by each of the team mascots. How many misses did Bradley Bear have?",11.0,"Mascot | Baskets | Misses
+Bradley Bear | 13 | 11
+Rhianna Rhino | 17 | 5
+Wendy Wolverine | 3 | 6
+Tina Tiger | 1 | 12",4,16913,"import pandas as pd
+
+def get_misses(df, mascot_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of mascot basketball shootout results and a mascot name, and returns the number of misses made by the mascot.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing mascot names, baskets made, and misses with columns 'Mascot', 'Baskets', and 'Misses'.
+    mascot_name (str): The name of the mascot.
+    Returns:
+    int: The number of misses made by the mascot.
+    """"""
+    # Filter the DataFrame for the specific mascot
+    mascot_df = df[df['Mascot'] == mascot_name]
+    if not mascot_df.empty:
+        # Return the number of misses made by the mascot
+        return mascot_df['Misses'].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Mascot': ['Bradley Bear', 'Rhianna Rhino', 'Wendy Wolverine', 'Tina Tiger'],
+    'Baskets': [13, 17, 3, 1],
+    'Misses': [11, 5, 6, 12]
+})
+# Call the tool to solve the problem
+misses = get_misses(df, 'Bradley Bear')
+print(misses)"
+Each gym locker has 5 volleyballs. How many volleyballs are in 6 gym lockers?,30.0,"Number of gym lockers | Number of volleyballs
+1 | 5
+2 | 10
+3 | 15
+4 | 20
+5 | 25
+6 | ?",2,1607,"import pandas as pd
+
+def calculate_volleyballs_in_lockers(df, num_lockers):
+    """"""
+    This function takes in a pandas DataFrame representing a table of gym lockers and the number of volleyballs in each locker, and returns the number of volleyballs in the specified number of lockers.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of gym lockers and the number of volleyballs in each locker with columns 'Number of gym lockers' and 'Number of volleyballs'.
+    num_lockers (int): The number of gym lockers to calculate the number of volleyballs for.
+    Returns:
+    int: The number of volleyballs in the specified number of gym lockers.
+    """"""
+    # Find the number of volleyballs per locker
+    volleyballs_per_locker = df['Number of volleyballs'][0] / df['Number of gym lockers'][0]
+    
+    # Calculate the number of volleyballs in the specified number of lockers
+    total_volleyballs = num_lockers * volleyballs_per_locker
+    
+    return int(total_volleyballs)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of gym lockers': [1, 2, 3, 4, 5],
+    'Number of volleyballs': [5, 10, 15, 20, 25]
+})
+
+# Call the tool to solve the problem
+num_volleyballs = calculate_volleyballs_in_lockers(df, 6)
+print(num_volleyballs)"
+Melody's Music Store sells different types of instruments. The frequency chart shows the instruments Melody has in stock. Melody wants to clear out some inventory to make room for new instruments. She decides to put half of the drums she has in stock on sale. How many drums will Melody put on sale?,15.0,"Type | Frequency
+guitar | 23
+piano | 6
+trumpet | 15
+bass drum | 13
+snare drum | 17",5,7622,"import pandas as pd
+
+def calculate_sale_items(df, item_types):
+    """"""
+    This function takes in a pandas DataFrame representing an inventory table and a list of item types, and returns the total number of items that will be put on sale.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing inventory items and their frequencies with columns 'Type' and 'Frequency'.
+    item_types (list): A list of item types that will be put on sale.
+    Returns:
+    int: The total number of items that will be put on sale.
+    """"""
+    # Initialize the total number of sale items
+    total_sale_items = 0
+    
+    # Iterate through the item types and calculate the number of sale items for each type
+    for item_type in item_types:
+        # Filter the DataFrame for the specific item type
+        item_df = df[df['Type'] == item_type]
+        if not item_df.empty:
+            item_frequency = item_df['Frequency'].values[0]
+            total_sale_items += item_frequency // 2
+    
+    return total_sale_items","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Type': ['guitar', 'piano', 'trumpet', 'bass drum', 'snare drum'],
+    'Frequency': [23, 6, 15, 13, 17]
+})
+
+# Call the tool to solve the problem
+drums_on_sale = calculate_sale_items(df, ['bass drum', 'snare drum'])
+print(drums_on_sale)"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is under 13 years old and purchased a clock scented like bacon? Simplify any fractions.,0.3846153846," | Bacon | Cinnamon
+Under 13 years old | 5 | 3
+A teenager | 3 | 2",8,17226,"import pandas as pd
+
+def calculate_probability(df, age_group, scent):
+    """"""
+    This function takes in a pandas DataFrame representing the number of buyers for each age group and scent, and calculates the probability of a randomly selected buyer being in the specified age group and purchasing the specified scent.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers for each age group and scent.
+    age_group (str): The age group of interest.
+    scent (str): The scent of interest.
+    Returns:
+    float: The probability of a randomly selected buyer being in the specified age group and purchasing the specified scent.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Get the number of buyers in the specified age group and scent
+    buyers_in_group_and_scent = df.loc[age_group, scent]
+    
+    # Calculate the probability
+    probability = buyers_in_group_and_scent / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bacon': [5, 3],
+    'Cinnamon': [3, 2]
+}, index=['Under 13 years old', 'A teenager'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Under 13 years old', 'Bacon')
+print(probability)"
+"For a science fair project, Jessica tracked the temperature each day. What is the lowest temperature?",11.0,"Stem | Leaf 
+1 | 1, 1, 2, 3, 3, 4, 6, 7, 7
+2 | 0, 4, 6, 8, 8, 9
+3 | 0, 2, 2, 3, 5, 5, 7, 8
+4 | 1",7,12801,"import pandas as pd
+
+def find_lowest_temperature(df):
+    """"""
+    This function takes in a pandas dataframe of temperatures, and returns the lowest temperature.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the temperatures.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The lowest temperature.
+    """"""
+    # prepare a list to calculate temperature in each day
+    temperatures = []
+    # calculate the temperature in each day
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            temperatures.append(stem * 10 + leaf[j])
+    # find the lowest temperature
+    lowest_temperature = min(temperatures)
+    return lowest_temperature","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[1, 1, 2, 3, 3, 4, 6, 7, 7], [0, 4, 6, 8, 8, 9], [0, 2, 2, 3, 5, 5, 7, 8], [1]]
+})
+# Call the tool to solve the problem
+print(find_lowest_temperature(df))"
+"Marco is playing a computer game in which he builds and manages an amusement park. The types of rides he has in his park are shown in the frequency chart. Marco plans to build 9 more rides. Afterward, how many rides will Marco's park have in all?",41.0,"Type | Frequency
+little-kid rides | 10
+roller coasters | 7
+water rides | 4
+spinning rides | 8
+free-fall rides | 3",5,6710,"import pandas as pd
+
+def calculate_total_rides(df, additional_rides):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart of ride types and an integer representing the number of additional rides to be built, and returns the total number of rides in the park after the additional rides are built.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing ride types and their frequencies with columns 'Type' and 'Frequency'.
+    additional_rides (int): The number of additional rides to be built.
+    Returns:
+    int: The total number of rides in the park after the additional rides are built.
+    """"""
+    # Calculate the current total number of rides
+    current_total_rides = df['Frequency'].sum()
+    
+    # Calculate the total number of rides after the additional rides are built
+    total_rides = current_total_rides + additional_rides
+    
+    return total_rides","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Type': ['little-kid rides', 'roller coasters', 'water rides', 'spinning rides', 'free-fall rides'],
+    'Frequency': [10, 7, 4, 8, 3]
+})
+
+# Call the tool to solve the problem
+total_rides = calculate_total_rides(df, 9)
+print(total_rides)"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon? Simplify any fractions.,0.2307692308," | Bacon | Cinnamon
+Under 13 years old | 3 | 5
+A teenager | 2 | 3",8,17169,"import pandas as pd
+
+def calculate_probability(df, age_group, scent):
+    """"""
+    This function takes in a pandas DataFrame representing the sales data of alarm clocks with different scents and age groups, and calculates the probability of a randomly selected buyer being in a specific age group and purchasing a specific scent.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the sales data with columns 'Age Group', 'Bacon', and 'Cinnamon'.
+    age_group (str): The age group of interest (e.g., 'Under 13 years old', 'A teenager').
+    scent (str): The scent of interest (e.g., 'Bacon', 'Cinnamon').
+    Returns:
+    float: The probability of a randomly selected buyer being in the specified age group and purchasing the specified scent.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df['Bacon'].sum() + df['Cinnamon'].sum()
+    
+    # Filter the DataFrame for the specific age group
+    age_group_df = df[df['Age Group'] == age_group]
+    
+    # Get the number of buyers in the specified age group and scent
+    buyers_in_age_group_and_scent = age_group_df[scent].values[0]
+    
+    # Calculate the probability
+    probability = buyers_in_age_group_and_scent / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Age Group': ['Under 13 years old', 'A teenager'],
+    'Bacon': [3, 2],
+    'Cinnamon': [5, 3]
+})
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'A teenager', 'Cinnamon')
+print(f""The probability is {probability}"")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon? Simplify any fractions.,0.3333333333," | Bacon | Cinnamon
+Under 13 years old | 4 | 4
+A teenager | 2 | 5",8,2305,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred smells, and returns the probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing buyers' ages and their preferred smells with columns 'Bacon', 'Cinnamon' and index as age groups.
+    Returns:
+    float: The probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df['Bacon'].sum() + df['Cinnamon'].sum()
+    
+    # Calculate the number of teenagers who purchased a clock scented like cinnamon
+    teen_cinnamon_buyers = df.loc['A teenager', 'Cinnamon']
+    
+    # Calculate the probability
+    probability = teen_cinnamon_buyers / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bacon': [4, 2],
+    'Cinnamon': [4, 5]
+}, index=['Under 13 years old', 'A teenager'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(f""The probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon is {probability}"")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon? Simplify any fractions.,0.2," | Bacon | Cinnamon
+Under 13 years old | 5 | 5
+A teenager | 6 | 4",8,5269,"import pandas as pd
+
+def calculate_probability(df, age_group, scent):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and their preferred scents, and returns the probability that a randomly selected buyer is from a specific age group and purchased a clock with a specific scent.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers in each age group and their preferred scents.
+    age_group (str): The age group to calculate the probability for.
+    scent (str): The scent to calculate the probability for.
+    Returns:
+    float: The probability that a randomly selected buyer is from the specified age group and purchased a clock with the specified scent.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Calculate the number of buyers in the specified age group who purchased a clock with the specified scent
+    specific_buyers = df.loc[age_group, scent]
+    
+    # Calculate and return the probability
+    probability = specific_buyers / total_buyers
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Bacon': [5, 6],
+    'Cinnamon': [5, 4]
+}, index=['Under 13 years old', 'A teenager'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'A teenager', 'Cinnamon')
+print(f""The probability that a randomly selected buyer is a teenager and purchased a clock scented like cinnamon is {probability}."")"
+A law firm in Fairfax kept track of how many hours were billed by each partner last year. What fraction of the hours were billed by Grayson? Simplify your answer.,0.2552552553,"Partner | Hours billed
+Gavin | 790
+Mitchell | 570
+Grayson | 850
+Bryant | 520
+Adriana | 600",7,7765,"import pandas as pd
+
+def calculate_fraction(df, partner_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of partners and their billed hours, and a partner's name, and returns the fraction of hours billed by the specified partner.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing partners and their billed hours with columns 'Partner' and 'Hours billed'.
+    partner_name (str): The name of the partner.
+    Returns:
+    float: The fraction of hours billed by the specified partner.
+    """"""
+    # Calculate the total hours billed
+    total_hours = df['Hours billed'].sum()
+    
+    # Filter the DataFrame for the specific partner
+    partner_df = df[df['Partner'] == partner_name]
+    if not partner_df.empty:
+        partner_hours = partner_df['Hours billed'].values[0]
+        # Calculate and return the fraction of hours billed by the partner
+        return partner_hours / total_hours
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Partner': ['Gavin', 'Mitchell', 'Grayson', 'Bryant', 'Adriana'],
+    'Hours billed': [790, 570, 850, 520, 600]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Grayson')
+print(fraction)"
+"At a swim meet, Roxanne noted the size of various swim teams. How many teams have at least 40 swimmers?",7.0,"Stem | Leaf 
+2 | 7, 8
+3 | 
+4 | 7
+5 | 9
+6 | 1, 8
+7 | 
+8 | 8, 8
+9 | 0",4,641,"import pandas as pd
+def count_teams_with_40_swimmers(df):
+    """"""
+    This function takes in a pandas dataframe of swim teams sizes, and returns the number of teams that have at least 40 swimmers.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the size of swim teams.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of teams that have at least 40 swimmers.
+    """"""
+    # prepare a list to calculate swimmers in each team
+    swimmers = []
+    # calculate the total number of swimmers in each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            swimmers.append(stem * 10 + leaf[j])
+    # filter the teams where the total number of swimmers is greater than or equal to 40
+    filtered = [team for team in swimmers if team >= 40]
+    # count the number of rows
+    num_teams = len(filtered)
+    return num_teams","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7, 8, 9],
+    'Leaf': [[7, 8], [], [7], [9], [1, 8], [], [8, 8], [0]]
+})
+# Call the tool to solve the problem
+print(count_teams_with_40_swimmers(df))"
+An economics student recorded the amount of per-capita aid that the U.S. gave to various countries during the 1900s. How much aid did Libya receive per capita in 1980?,5.0,"Country | 1980 | 1990
+Algeria | $9 | $10
+Afghanistan | $2 | $7
+Libya | $5 | $5
+Pakistan | $14 | $10",5,9215,"import pandas as pd
+
+def get_aid_amount(df, country, year):
+    """"""
+    This function takes in a pandas DataFrame representing a table of aid amounts, a country name, and a year, and returns the aid amount for the specified country and year.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing aid amounts with columns 'Country', '1980', '1990'.
+    country (str): The name of the country.
+    year (str): The year.
+    Returns:
+    float: The aid amount for the specified country and year.
+    """"""
+    # Filter the DataFrame for the specific country
+    country_df = df[df['Country'] == country]
+    if not country_df.empty:
+        aid_amount = country_df[year].values[0]
+        return aid_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Country': ['Algeria', 'Afghanistan', 'Libya', 'Pakistan'],
+    '1980': [9, 2, 5, 14],
+    '1990': [10, 7, 5, 10]
+})
+
+# Call the tool to solve the problem
+aid_amount = get_aid_amount(df, 'Libya', '1980')
+print(aid_amount)"
+An economics student recorded the amount of per-capita aid that the U.S. gave to various countries during the 1900s. How much aid did Libya receive per capita in 1980?,5.0,"Country | 1970 | 1980
+Libya | $3 | $5
+Algeria | $9 | $9
+Pakistan | $7 | $14",4,5244,"import pandas as pd
+
+def get_aid_amount(df, country, year):
+    """"""
+    This function takes in a pandas DataFrame representing a table of per-capita aid given by the U.S. to various countries during the 1900s, a country name, and a year, and returns the amount of aid that the country received in that year.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing per-capita aid amounts with columns 'Country', '1970', '1980', etc.
+    country (str): The name of the country.
+    year (str): The year.
+    Returns:
+    float: The amount of aid that the country received in the specified year.
+    """"""
+    # Filter the DataFrame for the specific country
+    country_df = df[df['Country'] == country]
+    if not country_df.empty:
+        # Get the aid amount for the specified year
+        aid_amount = country_df[year].values[0]
+        return aid_amount
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Country': ['Libya', 'Algeria', 'Pakistan'],
+    '1970': [3, 9, 7],
+    '1980': [5, 9, 14]
+})
+# Call the tool to solve the problem
+print(get_aid_amount(df, 'Libya', '1980'))"
+"In preparation for graduation, some teachers and students volunteered for the various graduation committees. How many people are on the music committee?",35.0,"Committee | Students | Teachers
+Program | 5 | 17
+Ticket | 20 | 5
+Music | 20 | 15
+Schedule | 15 | 20
+Food | 18 | 2",5,12179,"import pandas as pd
+
+def count_people_on_committee(df, committee_name):
+    """"""
+    This function takes in a pandas DataFrame representing a committee table and a committee name, and returns the total number of people on the specified committee.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing committee names and the number of students and teachers on each committee. The DataFrame should have columns 'Committee', 'Students', and 'Teachers'.
+    committee_name (str): The name of the committee.
+    Returns:
+    int: The total number of people on the specified committee.
+    """"""
+    # Filter the DataFrame for the specific committee
+    committee_df = df[df['Committee'] == committee_name]
+    if not committee_df.empty:
+        # Calculate the total number of people on the committee
+        total_people = committee_df['Students'].values[0] + committee_df['Teachers'].values[0]
+        return total_people
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Committee': ['Program', 'Ticket', 'Music', 'Schedule', 'Food'],
+    'Students': [5, 20, 20, 15, 18],
+    'Teachers': [17, 5, 15, 20, 2]
+})
+# Call the tool to solve the problem
+print(count_people_on_committee(df, 'Music'))"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like bacon and is under 13 years old? Simplify any fractions.,0.2777777778," | Under 13 years old | A teenager
+Bacon | 5 | 4
+Cinnamon | 4 | 5",8,12794,"import pandas as pd
+
+def calculate_probability(df, target_row, target_column):
+    """"""
+    This function takes in a pandas DataFrame representing a table of counts, a target row, and a target column, and returns the probability of the target cell.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing counts of occurrences.
+    target_row (str): The row label of the target cell.
+    target_column (str): The column label of the target cell.
+    Returns:
+    float: The probability of the target cell.
+    """"""
+    # Get the value of the target cell
+    target_value = df.loc[target_row, target_column]
+    
+    # Calculate the total count of all cells
+    total_count = df.sum().sum()
+    
+    # Calculate the probability
+    probability = target_value / total_count
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [5, 4],
+    'A teenager': [4, 5]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Bacon', 'Under 13 years old')
+
+# Print out the answer
+print(f""The probability that a randomly selected buyer purchased a clock scented like bacon and is under 13 years old is {probability}."")"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like bacon and is under 13 years old? Simplify any fractions.,0.2631578947," | Under 13 years old | A teenager
+Bacon | 5 | 4
+Cinnamon | 5 | 5",8,9173,"import pandas as pd
+
+def calculate_probability(df, target_row, target_column):
+    """"""
+    This function takes in a pandas DataFrame representing a table of counts, a target row, and a target column, and returns the probability of the target cell.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing counts of occurrences.
+    target_row (str): The row label of the target cell.
+    target_column (str): The column label of the target cell.
+    Returns:
+    float: The probability of the target cell.
+    """"""
+    # Get the value in the target cell
+    target_value = df.loc[target_row, target_column]
+    
+    # Calculate the total count of all cells
+    total_count = df.sum().sum()
+    
+    # Calculate the probability
+    probability = target_value / total_count
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [5, 5],
+    'A teenager': [4, 5]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Bacon', 'Under 13 years old')
+
+# Print out the answer
+print(f""The probability that a randomly selected buyer purchased a clock scented like bacon and is under 13 years old is {probability}."")"
+"Dr. Marshall, a zoo director, researched ticket prices at other zoos around the country. How much more does a child ticket cost at the Minnesota Zoo than at the Central Park Zoo?",5.0,"Zoo | Child | Senior
+Atlanta | $14 | $15
+Central Park | $5 | $7
+San Francisco | $9 | $12
+Minnesota | $10 | $10
+Boise | $3 | $4",4,8611,"import pandas as pd
+
+def calculate_price_difference(df, zoo1, zoo2, ticket_type):
+    """"""
+    This function takes in a pandas DataFrame representing a table of zoo ticket prices, and calculates the price difference between two zoos for a specific ticket type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing zoo names and ticket prices with columns 'Zoo', 'Child', and 'Senior'.
+    zoo1 (str): The name of the first zoo.
+    zoo2 (str): The name of the second zoo.
+    ticket_type (str): The type of ticket to compare prices for ('Child' or 'Senior').
+    Returns:
+    float: The price difference between the two zoos for the specified ticket type.
+    """"""
+    # Filter the DataFrame for the specific zoos
+    zoo1_df = df[df['Zoo'] == zoo1]
+    zoo2_df = df[df['Zoo'] == zoo2]
+    
+    # Get the ticket prices for the specified ticket type
+    zoo1_price = zoo1_df[ticket_type].values[0]
+    zoo2_price = zoo2_df[ticket_type].values[0]
+    
+    # Calculate the price difference
+    price_difference = zoo1_price - zoo2_price
+    
+    return price_difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Zoo': ['Atlanta', 'Central Park', 'San Francisco', 'Minnesota', 'Boise'],
+    'Child': [14, 5, 9, 10, 3],
+    'Senior': [15, 7, 12, 10, 4]
+})
+
+# Call the tool to solve the problem
+price_difference = calculate_price_difference(df, 'Minnesota', 'Central Park', 'Child')
+print(price_difference)"
+Each gym locker has 5 soccer balls. How many soccer balls are in 6 gym lockers?,30.0,"Number of gym lockers | Number of soccer balls
+1 | 5
+2 | 10
+3 | 15
+4 | 20
+5 | 25
+6 | ?",1,10356,"def calculate_soccer_balls(num_lockers):
+    """"""
+    This function takes in the number of gym lockers and returns the number of soccer balls based on the given ratio.
+    Args:
+    num_lockers (int): The number of gym lockers.
+    Returns:
+    int: The number of soccer balls.
+    """"""
+    # The ratio of gym lockers to soccer balls is 1:5
+    num_balls = num_lockers * 5
+    return num_balls","# Call the tool to solve the problem
+print(calculate_soccer_balls(6))"
+"While looking through an almanac at the library, Colin noticed some data showing the population density of various states. How many more people per square mile lived in Idaho in 2000 than in 1990?",3.0,"State | 1990 | 2000
+Idaho | 12 | 15
+Nevada | 10 | 18
+North Dakota | 9 | 9",4,11796,"import pandas as pd
+
+def calculate_population_increase(df, state):
+    """"""
+    This function takes in a pandas DataFrame representing a population density table and a state name, and returns the increase in population density from 1990 to 2000 for the given state.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing population density data with columns 'State', '1990', and '2000'.
+    state (str): The name of the state to calculate the population increase for.
+    Returns:
+    int: The increase in population density from 1990 to 2000 for the given state.
+    """"""
+    # Filter the DataFrame for the specific state
+    state_df = df[df['State'] == state]
+    if not state_df.empty:
+        # Calculate the increase in population density
+        increase = state_df['2000'].values[0] - state_df['1990'].values[0]
+        return increase
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'State': ['Idaho', 'Nevada', 'North Dakota'],
+    '1990': [12, 10, 9],
+    '2000': [15, 18, 9]
+})
+# Call the tool to solve the problem
+increase = calculate_population_increase(df, 'Idaho')
+print(increase)"
+Joel entered his sister into their town's Smelly Shoe Competition. Joel observed contestants of all ages proudly strutting around wearing different kinds of smelly shoes. What is the probability that a randomly selected contestant is wearing tennis shoes and is under age 12? Simplify any fractions.,0.3125," | Under age 12 | 13 to 30 years old
+Tennis shoes | 5 | 1
+High heels | 4 | 6",8,5582,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of contestants and their shoe types and ages, and returns the probability that a randomly selected contestant is wearing tennis shoes and is under age 12.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of contestants wearing different types of shoes and their ages. The DataFrame should have columns 'Under age 12' and '13 to 30 years old'.
+    Returns:
+    float: The probability that a randomly selected contestant is wearing tennis shoes and is under age 12.
+    """"""
+    # Calculate the total number of contestants
+    total_contestants = df.sum().sum()
+    
+    # Calculate the number of contestants wearing tennis shoes and under age 12
+    tennis_shoes_under_12 = df.loc['Tennis shoes', 'Under age 12']
+    
+    # Calculate the probability
+    probability = tennis_shoes_under_12 / total_contestants
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under age 12': [5, 4],
+    '13 to 30 years old': [1, 6]
+}, index=['Tennis shoes', 'High heels'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+print(probability)"
+"Hakim, a candy store employee, placed peppermint candies into jars of various sizes. How many jars had exactly 0 peppermint candies?",4.0,"Stem | Leaf 
+0 | 0, 0, 0, 0
+1 | 2
+2 | 4
+3 | 
+4 | 
+5 | 3, 5, 8",5,2809,"import pandas as pd
+def count_jars_with_0_peppermint_candies(df):
+    """"""
+    This function takes in a pandas dataframe of peppermint candies per jar, and returns the number of jars that have exactly 0 peppermint candies.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of peppermint candies per jar.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of jars that have exactly 0 peppermint candies.
+    """"""
+    # prepare a list to calculate candies in each jar
+    candies = []
+    # calculate the total number of peppermint candies in each jar
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            candies.append(stem * 10 + leaf[j])
+    # filter the jars where the total number of peppermint candies is exactly 0
+    filtered = [candy for candy in candies if candy == 0]
+    # count the number of rows
+    num_jars = len(filtered)
+    return num_jars","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [0, 1, 2, 3, 4, 5],
+    'Leaf': [[0, 0, 0, 0], [2], [4], [], [], [3, 5, 8]]
+})
+# Call the tool to solve the problem
+print(count_jars_with_0_peppermint_candies(df))"
+Each gym locker has 2 soccer balls. How many soccer balls are in 6 gym lockers?,12.0,"Number of gym lockers | Number of soccer balls
+1 | 2
+2 | 4
+3 | 6
+4 | 8
+5 | 10
+6 | ?",2,6278,"import pandas as pd
+
+def calculate_soccer_balls(df, num_lockers):
+    """"""
+    This function takes in a pandas DataFrame representing the number of gym lockers and the number of soccer balls, and returns the number of soccer balls in the given number of gym lockers.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of gym lockers and the number of soccer balls with columns 'Number of gym lockers' and 'Number of soccer balls'.
+    num_lockers (int): The number of gym lockers for which the number of soccer balls needs to be calculated.
+    Returns:
+    int: The number of soccer balls in the given number of gym lockers.
+    """"""
+    # Find the relationship between gym lockers and soccer balls
+    relationship = df['Number of soccer balls'][0] / df['Number of gym lockers'][0]
+    
+    # Calculate the number of soccer balls for the given number of gym lockers
+    num_soccer_balls = num_lockers * relationship
+    
+    return int(num_soccer_balls)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of gym lockers': [1, 2, 3, 4, 5],
+    'Number of soccer balls': [2, 4, 6, 8, 10]
+})
+
+# Call the tool to solve the problem
+num_soccer_balls = calculate_soccer_balls(df, 6)
+print(num_soccer_balls)"
+"While looking through an almanac at the library, Frank noticed some data showing the population density of various states. How many more people per square mile lived in Idaho in 2000 than in 1990?",3.0,"State | 1990 | 2000
+Nevada | 10 | 18
+Idaho | 12 | 15
+South Dakota | 9 | 10
+Wyoming | 4 | 5
+Montana | 5 | 6",5,4111,"import pandas as pd
+
+def calculate_population_increase(df, state):
+    """"""
+    This function takes in a pandas DataFrame representing a population density table and a state name, and returns the increase in population density from 1990 to 2000 for the given state.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing population density data with columns 'State', '1990', and '2000'.
+    state (str): The name of the state to calculate the population increase for.
+    Returns:
+    int: The increase in population density from 1990 to 2000 for the given state.
+    """"""
+    # Filter the DataFrame for the specific state
+    state_df = df[df['State'] == state]
+    if not state_df.empty:
+        # Calculate the increase in population density
+        population_increase = state_df['2000'].values[0] - state_df['1990'].values[0]
+        return population_increase
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'State': ['Nevada', 'Idaho', 'South Dakota', 'Wyoming', 'Montana'],
+    '1990': [10, 12, 9, 4, 5],
+    '2000': [18, 15, 10, 5, 6]
+})
+# Call the tool to solve the problem
+population_increase = calculate_population_increase(df, 'Idaho')
+print(population_increase)"
+Each shed has 10 screwdrivers. How many screwdrivers are in 6 sheds?,60.0,"Number of sheds | Number of screwdrivers
+1 | 10
+2 | 20
+3 | 30
+4 | 40
+5 | 50
+6 | ?",2,11736,"def calculate_screwdrivers(num_sheds):
+    """"""
+    This function takes in the number of sheds and returns the number of screwdrivers based on the fact that each shed has 10 screwdrivers.
+    Args:
+    num_sheds (int): The number of sheds.
+    Returns:
+    int: The number of screwdrivers.
+    """"""
+    return num_sheds * 10","# Call the tool to solve the problem
+print(calculate_screwdrivers(6))"
+Greg recalled how many goals he had made in soccer practice each day. What is the median of the numbers?,5.0,"Day | Number of goals
+Wednesday | 4
+Thursday | 7
+Friday | 0
+Saturday | 2
+Sunday | 8
+Monday | 5
+Tuesday | 6",6,6088,"import pandas as pd
+import numpy as np
+
+def calculate_median(df):
+    """"""
+    This function takes in a pandas DataFrame containing a column of numbers and returns the median of the numbers.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing a column of numbers.
+    Returns:
+    float: The median of the numbers.
+    """"""
+    # Extract the column of numbers
+    numbers = df['Number of goals'].values
+    
+    # Calculate the median using numpy
+    median = np.median(numbers)
+    
+    return median","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday'],
+    'Number of goals': [4, 7, 0, 2, 8, 5, 6]
+})
+
+# Call the tool to solve the problem
+median_goals = calculate_median(df)
+print(median_goals)"
+"A band from Greenpoint went on tour over the summer, and each member chipped in for the cost of gas. What fraction of the gas money came from Nancy? Simplify your answer.",0.25,"Band member | Contribution ($)
+Nancy | 440
+Grace | 870
+Eva | 450",7,3036,"import pandas as pd
+
+def calculate_fraction(df, member_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of band members and their contributions, and a member's name, and returns the fraction of the total contribution that came from the specified member.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing band members and their contributions with columns 'Band member' and 'Contribution ($)'.
+    member_name (str): The name of the band member.
+    Returns:
+    float: The fraction of the total contribution that came from the specified member.
+    """"""
+    # Calculate the total contribution
+    total_contribution = df['Contribution ($)'].sum()
+    
+    # Filter the DataFrame for the specified member
+    member_df = df[df['Band member'] == member_name]
+    if not member_df.empty:
+        member_contribution = member_df['Contribution ($)'].values[0]
+        # Calculate and return the fraction of the total contribution that came from the specified member
+        return member_contribution / total_contribution
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Band member': ['Nancy', 'Grace', 'Eva'],
+    'Contribution ($)': [440, 870, 450]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Nancy')
+print(f""The fraction of the gas money that came from Nancy is {fraction}."")"
+"At a swim meet, Josh noted the size of various swim teams. How many teams have fewer than 70 swimmers?",10.0,"Stem | Leaf 
+2 | 5, 9
+3 | 0, 9
+4 | 9
+5 | 3, 5, 5, 7
+6 | 3",4,5536,"import pandas as pd
+def count_teams_with_fewer_than_70_swimmers(df):
+    """"""
+    This function takes in a pandas dataframe of swim teams sizes, and returns the number of teams that have fewer than 70 swimmers.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the size of swim teams.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The number of teams that have fewer than 70 swimmers.
+    """"""
+    # prepare a list to calculate swimmers in each team
+    swimmers = []
+    # calculate the total number of swimmers in each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            swimmers.append(stem * 10 + leaf[j])
+    # filter the teams where the total number of swimmers is less than 70
+    filtered = [team for team in swimmers if team < 70]
+    # count the number of rows
+    num_teams = len(filtered)
+    return num_teams","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6],
+    'Leaf': [[5, 9], [0, 9], [9], [3, 5, 5, 7], [3]]
+})
+# Call the tool to solve the problem
+print(count_teams_with_fewer_than_70_swimmers(df))"
+"At a swim meet, Emir noted the size of various swim teams. What is the size of the largest team?",85.0,"Stem | Leaf 
+1 | 7, 8
+2 | 0, 2, 3
+3 | 7, 9
+4 | 3, 5, 7
+5 | 8
+6 | 0, 0
+7 | 6, 7, 9
+8 | 0, 4, 5",8,10694,"import pandas as pd
+
+def find_largest_team_size(df):
+    """"""
+    This function takes in a pandas DataFrame representing a stem and leaf plot of swim team sizes and returns the size of the largest team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the stem and leaf plot with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The size of the largest team.
+    """"""
+    # Prepare a list to store team sizes
+    team_sizes = []
+    
+    # Calculate the size of each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            team_sizes.append(stem * 10 + leaf[j])
+    
+    # Find the largest team size
+    largest_team_size = max(team_sizes)
+    
+    return largest_team_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7, 8],
+    'Leaf': [[7, 8], [0, 2, 3], [7, 9], [3, 5, 7], [8], [0, 0], [6, 7, 9], [0, 4, 5]]
+})
+
+# Call the tool to solve the problem
+largest_team_size = find_largest_team_size(df)
+print(largest_team_size)"
+Huffman has a collection of marbles of different sizes and colors. What is the probability that a randomly selected marble is red and big? Simplify any fractions.,0.2222222222," | Big | Small
+Red | 4 | 8
+Green | 2 | 4",8,12038,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of marble counts, and returns the probability that a randomly selected marble is red and big.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing marble counts with columns 'Big' and 'Small' and index as colors.
+    Returns:
+    float: The probability that a randomly selected marble is red and big.
+    """"""
+    # Calculate the total number of marbles
+    total_marbles = df['Big'].sum() + df['Small'].sum()
+    
+    # Calculate the number of red and big marbles
+    red_big_marbles = df.loc['Red', 'Big']
+    
+    # Calculate the probability
+    probability = red_big_marbles / total_marbles
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Big': [4, 2],
+    'Small': [8, 4]
+}, index=['Red', 'Green'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected marble is red and big is {probability:.2f}"")"
+"At the summer carnival, each member of the Dickerson family played a round of bean bag toss. How many more misses than hits did Aunt Lisa have?",9.0,"Person | Hits | Misses
+Aunt Sarah | 10 | 3
+Uncle Rob | 12 | 3
+Cousin Susan | 4 | 6
+Aunt Lisa | 2 | 11",4,6947,"import pandas as pd
+
+def calculate_misses_over_hits(df, person):
+    """"""
+    This function takes in a pandas DataFrame representing a table of hits and misses and a person's name, and returns the difference between the number of misses and hits for that person.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing persons' names, hits and misses with columns 'Person', 'Hits' and 'Misses'.
+    person (str): The name of the person.
+    Returns:
+    int: The difference between the number of misses and hits for the person.
+    """"""
+    # Filter the DataFrame for the specific person
+    person_df = df[df['Person'] == person]
+    if not person_df.empty:
+        hits = person_df['Hits'].values[0]
+        misses = person_df['Misses'].values[0]
+        return misses - hits
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Person': ['Aunt Sarah', 'Uncle Rob', 'Cousin Susan', 'Aunt Lisa'],
+    'Hits': [10, 12, 4, 2],
+    'Misses': [3, 3, 6, 11]
+})
+
+# Call the tool to solve the problem
+result = calculate_misses_over_hits(df, 'Aunt Lisa')
+print(result)"
+Heartfelt Card Company sells cards for many occasions. They use a frequency chart to track how many card designs they have for each occasion. How many more card designs does the Heartfeld Card Company have for birthdays than for graduations?,36.0,"Occasion | Frequency
+baby shower | 9
+birthday | 44
+graduation | 8
+retirement | 6
+thank you | 22
+wedding | 10",5,13304,"import pandas as pd
+
+def calculate_difference(df, occasion1, occasion2):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency chart and two occasions, and returns the difference in the number of card designs between the two occasions.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing occasions and their frequencies with columns 'Occasion' and 'Frequency'.
+    occasion1 (str): The name of the first occasion.
+    occasion2 (str): The name of the second occasion.
+    Returns:
+    int: The difference in the number of card designs between the two occasions.
+    """"""
+    # Filter the DataFrame for the specific occasions
+    occasion1_df = df[df['Occasion'] == occasion1]
+    occasion2_df = df[df['Occasion'] == occasion2]
+    
+    # Check if the occasions exist in the DataFrame
+    if not occasion1_df.empty and not occasion2_df.empty:
+        # Calculate the difference in the number of card designs
+        difference = occasion1_df['Frequency'].values[0] - occasion2_df['Frequency'].values[0]
+        return difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Occasion': ['baby shower', 'birthday', 'graduation', 'retirement', 'thank you', 'wedding'],
+    'Frequency': [9, 44, 8, 6, 22, 10]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'birthday', 'graduation')
+print(difference)"
+"Dale wants to save up some money to buy a new smartphone, so he babysits on the weekends. There is a proportional relationship between the time Dale spends babysitting (in hours), x, and the amount of money he earns babysitting (in dollars), y. What is the constant of proportionality? Write your answer as a whole number or decimal.",5.0,"1 | $5
+2 | $10
+3 | $15
+4 | $20",7,11011,"import pandas as pd
+
+def calculate_constant_of_proportionality(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of hours and earnings, and returns the constant of proportionality.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing hours and earnings with columns 'Hours' and 'Earnings'.
+    Returns:
+    float: The constant of proportionality.
+    """"""
+    # Calculate the constant of proportionality by dividing the earnings by the hours for each row
+    df['Constant'] = df['Earnings'] / df['Hours']
+    
+    # Check if the constant of proportionality is the same for all rows
+    if df['Constant'].nunique() == 1:
+        return df['Constant'].values[0]
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Hours': [1, 2, 3, 4],
+    'Earnings': [5, 10, 15, 20]
+})
+# Call the tool to solve the problem
+constant_of_proportionality = calculate_constant_of_proportionality(df)
+print(constant_of_proportionality)"
+Some companies compared how many phone calls they made. How many more phone calls did Tad's Coffee Company make than Critical Insight Consulting?,5688.0,"Company | Number of phone calls
+Reardon Corporation | 2,709
+Brave New Day Corporation | 5,726
+Tad's Coffee Company | 7,314
+Critical Insight Consulting | 1,626
+Nature Now | 4,038",3,9738,"import pandas as pd
+
+def calculate_difference_in_calls(df, company1, company2):
+    """"""
+    This function takes in a pandas DataFrame representing a table of companies and their number of phone calls, and returns the difference in phone calls between two specified companies.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing company names and their number of phone calls with columns 'Company' and 'Number of phone calls'.
+    company1 (str): The name of the first company.
+    company2 (str): The name of the second company.
+    Returns:
+    int: The difference in phone calls between the two companies.
+    """"""
+    # Filter the DataFrame for the specific companies
+    company1_df = df[df['Company'] == company1]
+    company2_df = df[df['Company'] == company2]
+    
+    # Get the number of phone calls for each company
+    company1_calls = company1_df['Number of phone calls'].values[0]
+    company2_calls = company2_df['Number of phone calls'].values[0]
+    
+    # Calculate the difference in phone calls
+    difference = company1_calls - company2_calls
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Company': ['Reardon Corporation', 'Brave New Day Corporation', ""Tad's Coffee Company"", 'Critical Insight Consulting', 'Nature Now'],
+    'Number of phone calls': [2709, 5726, 7314, 1626, 4038]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_in_calls(df, ""Tad's Coffee Company"", 'Critical Insight Consulting')
+print(difference)"
+"To get credit for meeting his school's community service requirement, Elijah kept a volunteering log. What is the mean of the numbers?",5.0,"Day | Hours
+Friday | 10
+Saturday | 7
+Sunday | 5
+Monday | 4
+Tuesday | 2
+Wednesday | 4
+Thursday | 3",7,12271,"import pandas as pd
+
+def calculate_mean(df, column_name):
+    """"""
+    This function takes in a pandas DataFrame and a column name, and returns the mean of the values in the specified column.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the data.
+    column_name (str): The name of the column for which the mean should be calculated.
+    Returns:
+    float: The mean of the values in the specified column.
+    """"""
+    # Calculate the mean of the specified column
+    mean_value = df[column_name].mean()
+    
+    return mean_value","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+    'Hours': [10, 7, 5, 4, 2, 4, 3]
+})
+# Call the tool to solve the problem
+mean_hours = calculate_mean(df, 'Hours')
+print(mean_hours)"
+Rick counted the number of words per page in his new book. What is the largest number of words?,90.0,"Stem | Leaf 
+5 | 2, 4
+6 | 1, 1, 9, 9, 9
+7 | 0, 1, 3, 6, 6
+8 | 7, 8, 9
+9 | 0",8,12272,"import pandas as pd
+
+def find_max_words(df):
+    """"""
+    This function takes in a pandas dataframe of words per page, and returns the largest number of words on a page.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of words per page.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The largest number of words on a page.
+    """"""
+    # prepare a list to calculate words in each page
+    words = []
+    # calculate the total number of words in each page
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            words.append(stem * 10 + leaf[j])
+    # find the maximum number of words
+    max_words = max(words)
+    return max_words","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [5, 6, 7, 8, 9],
+    'Leaf': [[2, 4], [1, 1, 9, 9, 9], [0, 1, 3, 6, 6], [7, 8, 9], [0]]
+})
+# Call the tool to solve the problem
+print(find_max_words(df))"
+A store recently released a new line of alarm clocks that emits a smell to wake you up in the morning. The head of sales tracked buyers' ages and which smells they preferred. What is the probability that a randomly selected buyer purchased a clock scented like cinnamon and is a teenager? Simplify any fractions.,0.3157894737," | Under 13 years old | A teenager
+Bacon | 7 | 4
+Cinnamon | 2 | 6",8,14342,"import pandas as pd
+
+def calculate_probability(df, smell, age_group):
+    """"""
+    This function takes in a pandas DataFrame representing a table of buyers' ages and preferred smells, a smell, and an age group, and returns the probability that a randomly selected buyer purchased a clock scented like the specified smell and is in the specified age group.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of buyers for each smell and age group.
+    smell (str): The smell of the clock.
+    age_group (str): The age group of the buyer.
+    Returns:
+    float: The probability that a randomly selected buyer purchased a clock scented like the specified smell and is in the specified age group.
+    """"""
+    # Calculate the total number of buyers
+    total_buyers = df.sum().sum()
+    
+    # Get the number of buyers who purchased a clock scented like the specified smell and are in the specified age group
+    buyers_with_smell_and_age_group = df.loc[smell, age_group]
+    
+    # Calculate the probability
+    probability = buyers_with_smell_and_age_group / total_buyers
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Under 13 years old': [7, 2],
+    'A teenager': [4, 6]
+}, index=['Bacon', 'Cinnamon'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Cinnamon', 'A teenager')
+print(probability)"
+Harry found out the sizes of all the clubs at his school. What is the size of the largest club?,89.0,"Stem | Leaf 
+3 | 2, 5, 7
+4 | 3, 4, 4, 6, 6, 8
+5 | 0, 3, 3, 4, 7
+6 | 1, 3, 4, 7
+7 | 
+8 | 5, 9",6,16526,"import pandas as pd
+
+def find_largest_club_size(df):
+    """"""
+    This function takes in a pandas dataframe of club sizes, and returns the size of the largest club.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the sizes of clubs.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The size of the largest club.
+    """"""
+    # prepare a list to calculate sizes of each club
+    sizes = []
+    # calculate the size of each club
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            sizes.append(stem * 10 + leaf[j])
+    # find the maximum size
+    max_size = max(sizes)
+    return max_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8],
+    'Leaf': [[2, 5, 7], [3, 4, 4, 6, 6, 8], [0, 3, 3, 4, 7], [1, 3, 4, 7], [], [5, 9]]
+})
+# Call the tool to solve the problem
+largest_club_size = find_largest_club_size(df)
+print(largest_club_size)"
+"At a swim meet, Jaylen noted the size of various swim teams. What is the size of the largest team?",76.0,"Stem | Leaf 
+2 | 5
+3 | 1
+4 | 0, 8
+5 | 3
+6 | 0, 3, 5, 5
+7 | 1, 6",5,17156,"import pandas as pd
+
+def largest_team_size(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of swim team sizes and returns the size of the largest team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing swim team sizes with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The size of the largest team.
+    """"""
+    # Prepare a list to store team sizes
+    team_sizes = []
+    
+    # Calculate the size of each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            team_sizes.append(stem * 10 + leaf[j])
+    
+    # Find the largest team size
+    largest_size = max(team_sizes)
+    
+    return largest_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [2, 3, 4, 5, 6, 7],
+    'Leaf': [[5], [1], [0, 8], [3], [0, 3, 5, 5], [1, 6]]
+})
+
+# Call the tool to solve the problem
+print(largest_team_size(df))"
+Each horse pasture has 10 sprinklers. How many sprinklers are in 3 horse pastures?,30.0,"Number of horse pastures | Number of sprinklers
+1 | 10
+2 | 20
+3 | ?",2,4337,"def calculate_sprinklers(pastures_df, num_pastures):
+    """"""
+    This function takes in a pandas DataFrame representing a table of horse pastures and their corresponding number of sprinklers, and a number of pastures, and returns the number of sprinklers in the given number of pastures.
+    Args:
+    pastures_df (pd.DataFrame): A pandas DataFrame containing the number of horse pastures and their corresponding number of sprinklers with columns 'Number of horse pastures' and 'Number of sprinklers'.
+    num_pastures (int): The number of horse pastures.
+    Returns:
+    int: The number of sprinklers in the given number of pastures.
+    """"""
+    # Get the number of sprinklers per pasture
+    sprinklers_per_pasture = pastures_df['Number of sprinklers'].values[0] / pastures_df['Number of horse pastures'].values[0]
+    
+    # Calculate the number of sprinklers in the given number of pastures
+    num_sprinklers = int(sprinklers_per_pasture * num_pastures)
+    
+    return num_sprinklers","# Initialize the table into a dataframe
+pastures_df = pd.DataFrame({
+    'Number of horse pastures': [1, 2, 3],
+    'Number of sprinklers': [10, 20, None]
+})
+
+# Call the tool to solve the problem
+num_pastures = 3
+num_sprinklers = calculate_sprinklers(pastures_df, num_pastures)
+
+# Print the answer
+print(f""There are {num_sprinklers} sprinklers in {num_pastures} horse pastures."")"
+How much more does a night's stay at Liberty Bed and Breakfast cost than a night's stay at Grand Vista Hotel?,324.0,"night's stay at Grand Vista Hotel | $132.00
+night's stay at Royal Canopy Resort | $175.00
+night's stay at Oceanspray Inn | $445.00
+night's stay at Cerulean Resort | $321.00
+night's stay at Mahogany Lodge | $425.00
+night's stay at Liberty Bed and Breakfast | $456.00",8,4277,"import pandas as pd
+
+def calculate_price_difference(hotel_df, hotel1, hotel2):
+    """"""
+    This function takes in a pandas DataFrame representing a hotel price table and two hotel names, and returns the price difference between the two hotels.
+    Args:
+    hotel_df (pd.DataFrame): A pandas DataFrame containing hotel names and their prices with columns 'Hotel' and 'Price'.
+    hotel1 (str): The name of the first hotel.
+    hotel2 (str): The name of the second hotel.
+    Returns:
+    float: The price difference between the two hotels.
+    """"""
+    # Filter the DataFrame for the specific hotels
+    hotel1_df = hotel_df[hotel_df['Hotel'] == hotel1]
+    hotel2_df = hotel_df[hotel_df['Hotel'] == hotel2]
+    
+    # Check if both hotels are in the DataFrame
+    if not hotel1_df.empty and not hotel2_df.empty:
+        # Calculate the price difference
+        price_difference = hotel2_df['Price'].values[0] - hotel1_df['Price'].values[0]
+        return price_difference
+    else:
+        return None","# Initialize the table into a dataframe
+hotel_df = pd.DataFrame({
+    'Hotel': [""night's stay at Grand Vista Hotel"", ""night's stay at Royal Canopy Resort"", ""night's stay at Oceanspray Inn"", ""night's stay at Cerulean Resort"", ""night's stay at Mahogany Lodge"", ""night's stay at Liberty Bed and Breakfast""],
+    'Price': [132.00, 175.00, 445.00, 321.00, 425.00, 456.00]
+})
+
+# Call the tool to solve the problem
+price_difference = calculate_price_difference(hotel_df, ""night's stay at Grand Vista Hotel"", ""night's stay at Liberty Bed and Breakfast"")
+print(price_difference)"
+"Mr. Gilmore, the band director, counted the number of instruments played by each member of the band. How many more girls play the drums than the flute?",2.0,"Instrument | Girls | Boys
+Trumpet | 6 | 15
+Flute | 4 | 20
+Drums | 6 | 18",5,8104,"import pandas as pd
+
+def calculate_difference(df, instrument1, instrument2, gender):
+    """"""
+    This function takes in a pandas DataFrame representing a table of instruments played by each gender, and returns the difference in the number of girls who play two different instruments.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing instruments and the number of each gender who play them. The DataFrame should have columns 'Instrument', 'Girls', and 'Boys'.
+    instrument1 (str): The name of the first instrument.
+    instrument2 (str): The name of the second instrument.
+    gender (str): The gender to compare.
+    Returns:
+    int: The difference in the number of girls who play the two instruments.
+    """"""
+    # Filter the DataFrame for the specific instruments
+    instrument1_df = df[df['Instrument'] == instrument1]
+    instrument2_df = df[df['Instrument'] == instrument2]
+    
+    # Get the number of girls who play each instrument
+    instrument1_count = instrument1_df[gender].values[0]
+    instrument2_count = instrument2_df[gender].values[0]
+    
+    # Calculate and return the difference
+    return abs(instrument1_count - instrument2_count)","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Instrument': ['Trumpet', 'Flute', 'Drums'],
+    'Girls': [6, 4, 6],
+    'Boys': [15, 20, 18]
+})
+# Call the tool to solve the problem
+difference = calculate_difference(df, 'Drums', 'Flute', 'Girls')
+print(difference)"
+"To get credit for meeting his school's community service requirement, Sandeep kept a volunteering log. What is the median of the numbers?",6.0,"Day | Hours
+Friday | 10
+Saturday | 4
+Sunday | 3
+Monday | 7
+Tuesday | 6",5,6188,"import pandas as pd
+import numpy as np
+
+def calculate_median(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the median of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours of volunteering with columns 'Day' and 'Hours'.
+    Returns:
+    float: The median of the hours.
+    """"""
+    # Extract the 'Hours' column and calculate the median
+    median_hours = np.median(df['Hours'])
+    
+    return median_hours","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday'],
+    'Hours': [10, 4, 3, 7, 6]
+})
+
+# Call the tool to solve the problem
+median_hours = calculate_median(df)
+print(median_hours)"
+Some students at Dayton Middle School signed up to help out with the school play. How many students are on the set design committee?,10.0,"Committee | Boys | Girls
+Lighting | 16 | 14
+Casting | 9 | 7
+Costume | 5 | 13
+Sound | 19 | 2
+Set design | 8 | 2",5,3253,"import pandas as pd
+
+def count_students_in_committee(df, committee_name):
+    """"""
+    This function takes in a pandas DataFrame representing a committee table and a committee name, and returns the total number of students in the committee.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing committee names and the number of boys and girls in each committee with columns 'Committee', 'Boys', and 'Girls'.
+    committee_name (str): The name of the committee.
+    Returns:
+    int: The total number of students in the committee.
+    """"""
+    # Filter the DataFrame for the specific committee
+    committee_df = df[df['Committee'] == committee_name]
+    if not committee_df.empty:
+        # Calculate the total number of students in the committee
+        total_students = committee_df['Boys'].values[0] + committee_df['Girls'].values[0]
+        return total_students
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Committee': ['Lighting', 'Casting', 'Costume', 'Sound', 'Set design'],
+    'Boys': [16, 9, 5, 19, 8],
+    'Girls': [14, 7, 13, 2, 2]
+})
+# Call the tool to solve the problem
+students_in_set_design = count_students_in_committee(df, 'Set design')
+print(students_in_set_design)"
+Jordan conducted a blind taste test on some of his friends in order to determine if organic fruits tasted different than non-organic fruits. Each friend ate one type of fruit. What is the probability that a randomly selected friend tasted peaches and preferred organic? Simplify any fractions.,0.2307692308," | Organic | Non-organic
+Apples | 4 | 2
+Peaches | 3 | 4",8,1266,"import pandas as pd
+
+def calculate_probability(df, fruit, type):
+    """"""
+    This function takes in a pandas DataFrame representing a taste test table, a fruit, and a type (organic or non-organic), and returns the probability that a randomly selected friend tasted the specified fruit and preferred the specified type.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the taste test results with columns 'Organic' and 'Non-organic' and index as fruit names.
+    fruit (str): The name of the fruit.
+    type (str): The type of the fruit ('Organic' or 'Non-organic').
+    Returns:
+    float: The probability that a randomly selected friend tasted the specified fruit and preferred the specified type.
+    """"""
+    # Calculate the total number of friends
+    total_friends = df['Organic'].sum() + df['Non-organic'].sum()
+    
+    # Calculate the number of friends who tasted the specified fruit and preferred the specified type
+    num_friends = df.loc[fruit, type]
+    
+    # Calculate the probability
+    probability = num_friends / total_friends
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Organic': [4, 3],
+    'Non-organic': [2, 4]
+}, index=['Apples', 'Peaches'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df, 'Peaches', 'Organic')
+print(f""The probability that a randomly selected friend tasted peaches and preferred organic is {probability}"")"
+Each apartment has 10 lamps. How many lamps are in 3 apartments?,30.0,"Number of apartments | Number of lamps
+1 | 10
+2 | 20
+3 | ?",2,2595,"def calculate_lamps_in_apartments(df, num_apartments):
+    """"""
+    This function takes in a pandas DataFrame representing a table of the number of lamps in each apartment and the number of apartments, and returns the number of lamps in the specified number of apartments.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of apartments and the corresponding number of lamps with columns 'Number of apartments' and 'Number of lamps'.
+    num_apartments (int): The number of apartments for which the number of lamps is to be calculated.
+    Returns:
+    int: The number of lamps in the specified number of apartments.
+    """"""
+    # Calculate the number of lamps per apartment
+    lamps_per_apartment = df['Number of lamps'][0] / df['Number of apartments'][0]
+    
+    # Calculate the number of lamps in the specified number of apartments
+    num_lamps = num_apartments * lamps_per_apartment
+    
+    return num_lamps","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of apartments': [1, 2, 3],
+    'Number of lamps': [10, 20, None]
+})
+
+# Call the tool to solve the problem
+num_lamps = calculate_lamps_in_apartments(df, 3)
+print(f'There are {num_lamps} lamps in 3 apartments.')"
+"Mr. Lowery, the band director, counted the number of instruments played by each member of the band. How many more band members play the drums than the flute?",2.0,"Instrument | Boys | Girls
+Clarinet | 17 | 6
+Trombone | 11 | 3
+Drums | 15 | 4
+Flute | 8 | 9",5,14647,"import pandas as pd
+
+def calculate_difference_instruments(df, instrument1, instrument2):
+    """"""
+    This function takes in a pandas DataFrame representing the number of instruments played by boys and girls, and returns the difference in the number of band members playing the two specified instruments.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of instruments played by boys and girls with columns 'Instrument', 'Boys', and 'Girls'.
+    instrument1 (str): The name of the first instrument.
+    instrument2 (str): The name of the second instrument.
+    Returns:
+    int: The difference in the number of band members playing the two specified instruments.
+    """"""
+    # Filter the DataFrame for the specific instruments
+    instrument1_df = df[df['Instrument'] == instrument1]
+    instrument2_df = df[df['Instrument'] == instrument2]
+    
+    # Calculate the total number of band members playing each instrument
+    instrument1_total = instrument1_df['Boys'].values[0] + instrument1_df['Girls'].values[0]
+    instrument2_total = instrument2_df['Boys'].values[0] + instrument2_df['Girls'].values[0]
+    
+    # Calculate the difference in the number of band members playing the two instruments
+    difference = abs(instrument1_total - instrument2_total)
+    
+    return difference","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Instrument': ['Clarinet', 'Trombone', 'Drums', 'Flute'],
+    'Boys': [17, 11, 15, 8],
+    'Girls': [6, 3, 4, 9]
+})
+
+# Call the tool to solve the problem
+difference = calculate_difference_instruments(df, 'Drums', 'Flute')
+print(difference)"
+A beauty salon in Lanberry has three beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Joseph? Simplify your answer.,0.512195122,"Beautician | Requests
+Rob | 270
+Shane | 130
+Joseph | 420",7,5897,"import pandas as pd
+
+def calculate_fraction_of_requests(df, beautician_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and returns the fraction of requests for a specific beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    beautician_name (str): The name of the beautician for which the fraction of requests is to be calculated.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == beautician_name]
+    if not beautician_df.empty:
+        beautician_requests = beautician_df['Requests'].values[0]
+        total_requests = df['Requests'].sum()
+        fraction_of_requests = beautician_requests / total_requests
+        return fraction_of_requests
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Rob', 'Shane', 'Joseph'],
+    'Requests': [270, 130, 420]
+})
+
+# Call the tool to solve the problem
+fraction_of_requests = calculate_fraction_of_requests(df, 'Joseph')
+
+# Print the answer
+print(fraction_of_requests)"
+"Curious about people's recycling behaviors, Latrell put on some gloves and sifted through some recycling and trash bins. He kept count of the plastic type of each bottle and which bottles are properly dispensed. What is the probability that a randomly selected bottle is correctly placed and is made of plastic #4? Simplify any fractions.",0.2857142857," | Plastic #2 | Plastic #4
+Correctly placed | 4 | 4
+Incorrectly placed | 3 | 3",8,9201,"import pandas as pd
+
+def calculate_probability(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of plastic types and their placement, and returns the probability that a randomly selected bottle is correctly placed and is made of plastic #4.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing plastic types and their placement with columns 'Plastic #2', 'Plastic #4' and rows 'Correctly placed', 'Incorrectly placed'.
+    Returns:
+    float: The probability that a randomly selected bottle is correctly placed and is made of plastic #4.
+    """"""
+    # Calculate the total number of bottles
+    total_bottles = df['Plastic #2'].sum() + df['Plastic #4'].sum()
+    
+    # Calculate the number of correctly placed bottles made of plastic #4
+    correctly_placed_plastic_4 = df.loc['Correctly placed', 'Plastic #4']
+    
+    # Calculate the probability
+    probability = correctly_placed_plastic_4 / total_bottles
+    
+    return probability","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Plastic #2': [4, 3],
+    'Plastic #4': [4, 3]
+}, index=['Correctly placed', 'Incorrectly placed'])
+
+# Call the tool to solve the problem
+probability = calculate_probability(df)
+
+# Print the answer
+print(f""The probability that a randomly selected bottle is correctly placed and is made of plastic #4 is {probability}."")"
+"To get credit for meeting his school's community service requirement, Wayne kept a volunteering log. What is the mode of the numbers?",5.0,"Day | Hours
+Wednesday | 5
+Thursday | 5
+Friday | 2
+Saturday | 5
+Sunday | 2",7,14778,"import pandas as pd
+from collections import Counter
+
+def calculate_mode(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the mode of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours with columns 'Day' and 'Hours'.
+    Returns:
+    int: The mode of the hours.
+    """"""
+    # Extract the 'Hours' column from the DataFrame
+    hours = df['Hours'].values
+    
+    # Calculate the frequency of each number in the 'Hours' column
+    counter = Counter(hours)
+    
+    # Find the number with the highest frequency
+    mode = counter.most_common(1)[0][0]
+    
+    return mode","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Hours': [5, 5, 2, 5, 2]
+})
+# Call the tool to solve the problem
+print(calculate_mode(df))"
+Each football field has 10 sprinklers. How many sprinklers are on 6 football fields?,60.0,"Number of football fields | Number of sprinklers
+1 | 10
+2 | 20
+3 | 30
+4 | 40
+5 | 50
+6 | ?",1,14924,"import pandas as pd
+
+def calculate_sprinklers_for_fields(df, num_fields):
+    """"""
+    This function takes in a pandas DataFrame representing a table of football fields and their corresponding number of sprinklers, and returns the number of sprinklers for the given number of football fields.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of football fields and their corresponding number of sprinklers with columns 'Number of football fields' and 'Number of sprinklers'.
+    num_fields (int): The number of football fields for which the number of sprinklers is to be calculated.
+    Returns:
+    int: The number of sprinklers for the given number of football fields.
+    """"""
+    # Calculate the number of sprinklers per football field
+    sprinklers_per_field = df['Number of sprinklers'][0] // df['Number of football fields'][0]
+    
+    # Calculate the number of sprinklers for the given number of football fields
+    total_sprinklers = num_fields * sprinklers_per_field
+    
+    return total_sprinklers","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Number of football fields': [1, 2, 3, 4, 5],
+    'Number of sprinklers': [10, 20, 30, 40, 50]
+})
+
+# Call the tool to solve the problem
+num_fields = 6
+num_sprinklers = calculate_sprinklers_for_fields(df, num_fields)
+print(num_sprinklers)"
+Five of the sports teams from Westminster High School decided to raise funds to buy new sports equipment. What fraction of the funds were raised by the water polo team? Simplify your answer.,0.1947483589,"Team | Funds raised ($)
+Tennis | 920
+Baseball | 990
+Basketball | 940
+Water polo | 890
+Football | 830",7,17244,"import pandas as pd
+
+def calculate_fraction(df, team_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of funds raised by different teams and a team name, and returns the fraction of the total funds raised by the specified team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing team names and the funds they raised with columns 'Team' and 'Funds raised ($)'.
+    team_name (str): The name of the team for which to calculate the fraction of funds raised.
+    Returns:
+    float: The fraction of the total funds raised by the specified team.
+    """"""
+    # Calculate the total funds raised
+    total_funds = df['Funds raised ($)'].sum()
+    
+    # Filter the DataFrame for the specified team
+    team_df = df[df['Team'] == team_name]
+    if not team_df.empty:
+        team_funds = team_df['Funds raised ($)'].values[0]
+        # Calculate and return the fraction of funds raised by the team
+        return team_funds / total_funds
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Team': ['Tennis', 'Baseball', 'Basketball', 'Water polo', 'Football'],
+    'Funds raised ($)': [920, 990, 940, 890, 830]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Water polo')
+print(f""The fraction of the funds raised by the water polo team is {fraction}."")"
+Jessica found a list of the number of roller coasters at each amusement park in the state. What is the smallest number of roller coasters?,10.0,"Stem | Leaf 
+1 | 0, 4, 5, 6
+2 | 1, 2, 3, 4, 5, 9
+3 | 8, 9, 9
+4 | 1, 3, 4, 6, 6, 8, 9",8,5000,"import pandas as pd
+
+def find_smallest_number(df):
+    """"""
+    This function takes in a pandas dataframe of roller coasters per amusement park, and returns the smallest number of roller coasters.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the number of roller coasters per amusement park.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The smallest number of roller coasters.
+    """"""
+    # prepare a list to calculate roller coasters in each park
+    roller_coasters = []
+    # calculate the total number of roller coasters in each park
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            roller_coasters.append(stem * 10 + leaf[j])
+    # find the smallest number of roller coasters
+    smallest_number = min(roller_coasters)
+    return smallest_number","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4],
+    'Leaf': [[0, 4, 5, 6], [1, 2, 3, 4, 5, 9], [8, 9, 9], [1, 3, 4, 6, 6, 8, 9]]
+})
+# Call the tool to solve the problem
+smallest_number = find_smallest_number(df)
+print(smallest_number)"
+A beauty salon in Newberry has three beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Roxanne? Simplify your answer.,0.4782608696,"Beautician | Requests
+Roxanne | 770
+Zach | 140
+Maddie | 700",7,10811,"import pandas as pd
+
+def calculate_fraction(df, name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and a name of a beautician, and returns the fraction of requests for the specified beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    name (str): The name of the beautician.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == name]
+    if not beautician_df.empty:
+        # Calculate the total number of requests
+        total_requests = df['Requests'].sum()
+        # Calculate the number of requests for the specified beautician
+        beautician_requests = beautician_df['Requests'].values[0]
+        # Calculate and return the fraction of requests for the specified beautician
+        return beautician_requests / total_requests
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Roxanne', 'Zach', 'Maddie'],
+    'Requests': [770, 140, 700]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Roxanne')
+print(f""The fraction of requests for Roxanne is {fraction}"")"
+"At a swim meet, Quincy noted the size of various swim teams. What is the size of the largest team?",87.0,"Stem | Leaf 
+4 | 1, 3, 4, 9
+5 | 0, 0, 1
+6 | 2, 4, 4, 5, 7, 9
+7 | 2, 4, 5
+8 | 3, 4, 5, 7",6,13013,"import pandas as pd
+
+def find_largest_team_size(df):
+    """"""
+    This function takes in a pandas DataFrame representing a table of swim team sizes and returns the size of the largest team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing swim team sizes with columns 'Stem' and 'Leaf'.
+    Returns:
+    int: The size of the largest team.
+    """"""
+    # Prepare a list to store team sizes
+    team_sizes = []
+    
+    # Calculate the size of each team
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            team_sizes.append(stem * 10 + leaf[j])
+    
+    # Find the largest team size
+    largest_team_size = max(team_sizes)
+    
+    return largest_team_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [4, 5, 6, 7, 8],
+    'Leaf': [[1, 3, 4, 9], [0, 0, 1], [2, 4, 4, 5, 7, 9], [2, 4, 5], [3, 4, 5, 7]]
+})
+
+# Call the tool to solve the problem
+largest_team_size = find_largest_team_size(df)
+print(largest_team_size)"
+"An Idaho farmer has been monitoring crop prices over time. Per cwt, how much did potatoes cost in 2003?",4.0,"Crop | 2003 | 2004
+Lentils | $18 | $14
+Canola | $10 | $11
+Onions | $11 | $7
+Potatoes | $4 | $4",4,3341,"import pandas as pd
+
+def get_crop_price(crop_prices_df, crop, year):
+    """"""
+    This function takes in a pandas DataFrame representing crop prices over time, a crop name, and a year, and returns the price of the crop in the specified year.
+    Args:
+    crop_prices_df (pd.DataFrame): A pandas DataFrame containing crop prices over time with columns 'Crop', and years as column names.
+    crop (str): The name of the crop to get the price for.
+    year (str): The year to get the price for the specified crop.
+    Returns:
+    float: The price of the specified crop in the specified year.
+    """"""
+    # Filter the DataFrame for the specific crop
+    crop_df = crop_prices_df[crop_prices_df['Crop'] == crop]
+    
+    # Get the price of the crop in the specified year
+    if not crop_df.empty:
+        price = crop_df[year].values[0]
+        return price
+    else:
+        return None","# Initialize the table into a dataframe
+crop_prices_df = pd.DataFrame({
+    'Crop': ['Lentils', 'Canola', 'Onions', 'Potatoes'],
+    '2003': [18, 10, 11, 4],
+    '2004': [14, 11, 7, 4]
+})
+
+# Call the tool to solve the problem
+potato_price_2003 = get_crop_price(crop_prices_df, 'Potatoes', '2003')
+print(potato_price_2003)"
+"To get credit for meeting his school's community service requirement, Sandeep kept a volunteering log. What is the mode of the numbers?",2.0,"Day | Hours
+Sunday | 3
+Monday | 3
+Tuesday | 2
+Wednesday | 2
+Thursday | 2",5,8850,"import pandas as pd
+from collections import Counter
+
+def calculate_mode(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the mode of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours with columns 'Day' and 'Hours'.
+    Returns:
+    int: The mode of the hours.
+    """"""
+    # Extract the 'Hours' column from the DataFrame
+    hours = df['Hours'].values
+    
+    # Calculate the frequency of each hour value
+    frequency = Counter(hours)
+    
+    # Find the hour(s) with the highest frequency
+    mode = [hour for hour, freq in frequency.items() if freq == max(frequency.values())]
+    
+    return mode","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+    'Hours': [3, 3, 2, 2, 2]
+})
+# Call the tool to solve the problem
+print(calculate_mode(df))"
+"To get credit for meeting his school's community service requirement, Edmond kept a volunteering log. What is the range of the numbers?",5.0,"Day | Hours
+Monday | 6
+Tuesday | 6
+Wednesday | 6
+Thursday | 8
+Friday | 3
+Saturday | 7",7,4943,"import pandas as pd
+
+def calculate_range(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the range of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours with columns 'Day' and 'Hours'.
+    Returns:
+    int: The range of the hours.
+    """"""
+    # Calculate the range of the hours
+    range_hours = df['Hours'].max() - df['Hours'].min()
+    
+    return range_hours","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'Hours': [6, 6, 6, 8, 3, 7]
+})
+# Call the tool to solve the problem
+range_hours = calculate_range(df)
+print(range_hours)"
+Four of the sports teams from Lancaster High School decided to raise funds to buy new sports equipment. What fraction of the funds were raised by the football team? Simplify your answer.,0.1506024096,"Team | Funds raised ($)
+Basketball | 880
+Track | 960
+Water polo | 980
+Football | 500",7,417,"import pandas as pd
+from fractions import Fraction
+
+def calculate_fraction_of_funds_raised(df, team_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of funds raised by different teams and a team name, and returns the fraction of funds raised by the specified team.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing team names and the funds they raised with columns 'Team' and 'Funds raised ($)'.
+    team_name (str): The name of the team for which the fraction of funds raised should be calculated.
+    Returns:
+    Fraction: The fraction of funds raised by the specified team.
+    """"""
+    # Get the total funds raised by all teams
+    total_funds = df['Funds raised ($)'].sum()
+    
+    # Get the funds raised by the specified team
+    team_funds = df[df['Team'] == team_name]['Funds raised ($)'].values[0]
+    
+    # Calculate the fraction of funds raised by the specified team
+    fraction = Fraction(team_funds, total_funds)
+    
+    return fraction","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Team': ['Basketball', 'Track', 'Water polo', 'Football'],
+    'Funds raised ($)': [880, 960, 980, 500]
+})
+
+# Call the tool to solve the problem
+fraction = calculate_fraction_of_funds_raised(df, 'Football')
+
+# Print the answer
+print(fraction)"
+A beauty salon in Westminster has four beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Jennifer? Simplify your answer.,0.2051282051,"Beautician | Requests
+Edwin | 60
+Jennifer | 400
+Sasha | 900
+Cameron | 590",7,7151,"import pandas as pd
+
+def calculate_fraction(df, name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and a name of a beautician, and returns the fraction of requests for the specified beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    name (str): The name of the beautician.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == name]
+    if not beautician_df.empty:
+        # Calculate the total number of requests
+        total_requests = df['Requests'].sum()
+        # Calculate the number of requests for the specified beautician
+        beautician_requests = beautician_df['Requests'].values[0]
+        # Calculate and return the fraction of requests for the specified beautician
+        return beautician_requests / total_requests
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Edwin', 'Jennifer', 'Sasha', 'Cameron'],
+    'Requests': [60, 400, 900, 590]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction(df, 'Jennifer')
+print(f""The fraction of requests for Jennifer is {fraction}."")"
+An adventure tour company found out how many whales people saw on its most popular whale tour. How many people are there in all?,43.0,"Whales spotted | Frequency
+0 | 0
+1 | 3
+2 | 20
+3 | 5
+4 | 7
+5 | 8",8,13442,"import pandas as pd
+
+def calculate_total_people(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of whales spotted and returns the total number of people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of whales spotted and the frequency with columns 'Whales spotted' and 'Frequency'.
+    Returns:
+    int: The total number of people.
+    """"""
+    # Multiply the number of whales spotted by the frequency and sum up the results
+    total_people = df['Frequency'].sum()
+    
+    return total_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Whales spotted': [0, 1, 2, 3, 4, 5],
+    'Frequency': [0, 3, 20, 5, 7, 8]
+})
+
+# Call the tool to solve the problem
+total_people = calculate_total_people(df)
+print(total_people)"
+An adventure tour company found out how many whales people saw on its most popular whale tour. How many people are there in all?,42.0,"Whales spotted | Frequency
+0 | 6
+1 | 0
+2 | 14
+3 | 2
+4 | 20",7,3382,"import pandas as pd
+
+def calculate_total_people(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of whales spotted and returns the total number of people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of whales spotted and the frequency with columns 'Whales spotted' and 'Frequency'.
+    Returns:
+    int: The total number of people.
+    """"""
+    # Multiply the number of whales spotted by the frequency and sum up the results
+    total_people = df['Frequency'].sum()
+    
+    return total_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Whales spotted': [0, 1, 2, 3, 4],
+    'Frequency': [6, 0, 14, 2, 20]
+})
+# Call the tool to solve the problem
+total_people = calculate_total_people(df)
+print(total_people)"
+An adventure tour company found out how many whales people saw on its most popular whale tour. How many people are there in all?,44.0,"Whales spotted | Frequency
+0 | 12
+1 | 20
+2 | 8
+3 | 4",7,15702,"import pandas as pd
+
+def calculate_total_people(df):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of whales spotted and returns the total number of people.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of whales spotted and the frequency with columns 'Whales spotted' and 'Frequency'.
+    Returns:
+    int: The total number of people.
+    """"""
+    # Multiply the number of whales spotted by the frequency and sum up the results
+    total_people = (df['Whales spotted'] * df['Frequency']).sum()
+    
+    return total_people","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Whales spotted': [0, 1, 2, 3],
+    'Frequency': [12, 20, 8, 4]
+})
+
+# Call the tool to solve the problem
+total_people = calculate_total_people(df)
+print(total_people)"
+Spencer found out the sizes of all the clubs at his school. What is the size of the smallest club?,11.0,"Stem | Leaf 
+1 | 1, 1, 5, 6, 9, 9
+2 | 1, 5
+3 | 0, 4, 4
+4 | 2, 3, 6
+5 | 2, 5, 5
+6 | 3
+7 | 0, 9",6,3470,"import pandas as pd
+
+def find_smallest_club(df):
+    """"""
+    This function takes in a pandas dataframe of club sizes, and returns the size of the smallest club.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the sizes of clubs.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    Returns:
+    int: The size of the smallest club.
+    """"""
+    # prepare a list to calculate sizes of each club
+    sizes = []
+    # calculate the size of each club
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            sizes.append(stem * 10 + leaf[j])
+    # find the smallest size
+    smallest_size = min(sizes)
+    return smallest_size","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [1, 2, 3, 4, 5, 6, 7],
+    'Leaf': [[1, 1, 5, 6, 9, 9], [1, 5], [0, 4, 4], [2, 3, 6], [2, 5, 5], [3], [0, 9]]
+})
+# Call the tool to solve the problem
+print(find_smallest_club(df))"
+"An Idaho farmer has been monitoring crop prices over time. Per cwt, how much more did lentils cost in 2006 than in 2005?",4.0,"Crop | 2005 | 2006
+Lentils | $12 | $16
+Potatoes | $6 | $6
+Canola | $10 | $12
+Onions | $8 | $17
+Peas | $6 | $8",5,11942,"import pandas as pd
+
+def calculate_price_difference(df, crop):
+    """"""
+    This function takes in a pandas DataFrame representing a crop price table and a string of crop name, and returns the price difference of the crop between 2006 and 2005.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing crop names and their prices in 2005 and 2006 with columns 'Crop', '2005' and '2006'.
+    crop (str): A string representing the name of the crop.
+    Returns:
+    float: The price difference of the crop between 2006 and 2005.
+    """"""
+    # Filter the DataFrame for the specific crop
+    crop_df = df[df['Crop'] == crop]
+    if not crop_df.empty:
+        price_2005 = crop_df['2005'].values[0]
+        price_2006 = crop_df['2006'].values[0]
+        price_difference = price_2006 - price_2005
+        return price_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Crop': ['Lentils', 'Potatoes', 'Canola', 'Onions', 'Peas'],
+    '2005': [12, 6, 10, 8, 6],
+    '2006': [16, 6, 12, 17, 8]
+})
+
+# Call the tool to solve the problem
+price_difference = calculate_price_difference(df, 'Lentils')
+print(price_difference)"
+"An Idaho farmer has been monitoring crop prices over time. Per cwt, how much more did lentils cost in 2006 than in 2005?",4.0,"Crop | 2005 | 2006
+Canola | $10 | $12
+Onions | $8 | $17
+Apples | $18 | $19
+Peas | $6 | $8
+Lentils | $12 | $16",4,6380,"import pandas as pd
+
+def calculate_price_difference(df, crop):
+    """"""
+    This function takes in a pandas DataFrame representing a crop price table and a crop name, and returns the price difference of the crop between 2006 and 2005.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing crop names and their prices in 2005 and 2006 with columns 'Crop', '2005' and '2006'.
+    crop (str): The name of the crop.
+    Returns:
+    float: The price difference of the crop between 2006 and 2005.
+    """"""
+    # Filter the DataFrame for the specific crop
+    crop_df = df[df['Crop'] == crop]
+    if not crop_df.empty:
+        price_2005 = crop_df['2005'].values[0]
+        price_2006 = crop_df['2006'].values[0]
+        price_difference = price_2006 - price_2005
+        return price_difference
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Crop': ['Canola', 'Onions', 'Apples', 'Peas', 'Lentils'],
+    '2005': [10, 8, 18, 6, 12],
+    '2006': [12, 17, 19, 8, 16]
+})
+
+# Call the tool to solve the problem
+price_difference = calculate_price_difference(df, 'Lentils')
+print(price_difference)"
+The soccer coach is preparing for the upcoming season by seeing how many goals his team members scored last season. How many team members scored exactly 3 goals last season?,14.0,"Goals scored | Frequency
+0 | 8
+1 | 4
+2 | 6
+3 | 14
+4 | 11
+5 | 2
+6 | 3",7,6895,"import pandas as pd
+
+def count_players_with_goals(df, goals):
+    """"""
+    This function takes in a pandas DataFrame representing a frequency table of goals scored by team members and a specific number of goals, and returns the frequency of team members who scored exactly that number of goals.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing the number of goals scored and their frequencies with columns 'Goals scored' and 'Frequency'.
+    goals (int): The specific number of goals to look for.
+    Returns:
+    int: The frequency of team members who scored exactly the specified number of goals.
+    """"""
+    # Filter the DataFrame for the specific number of goals
+    goals_df = df[df['Goals scored'] == goals]
+    if not goals_df.empty:
+        frequency = goals_df['Frequency'].values[0]
+        return frequency
+    else:
+        return 0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Goals scored': [0, 1, 2, 3, 4, 5, 6],
+    'Frequency': [8, 4, 6, 14, 11, 2, 3]
+})
+# Call the tool to solve the problem
+print(count_players_with_goals(df, 3))"
+"To get credit for meeting his school's community service requirement, Levi kept a volunteering log. What is the mode of the numbers?",12.0,"Day | Hours
+Monday | 8
+Tuesday | 7
+Wednesday | 8
+Thursday | 12
+Friday | 12
+Saturday | 7
+Sunday | 12",5,16290,"import pandas as pd
+from collections import Counter
+
+def calculate_mode(df):
+    """"""
+    This function takes in a pandas DataFrame representing a volunteering log and returns the mode of the hours.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing days and hours with columns 'Day' and 'Hours'.
+    Returns:
+    int: The mode of the hours.
+    """"""
+    # Extract the 'Hours' column from the DataFrame
+    hours = df['Hours'].values
+    
+    # Calculate the frequency of each hour value
+    freq_dict = Counter(hours)
+    
+    # Find the hour(s) with the highest frequency
+    mode = [k for k, v in freq_dict.items() if v == max(list(freq_dict.values()))]
+    
+    return mode","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Day': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Hours': [8, 7, 8, 12, 12, 7, 12]
+})
+# Call the tool to solve the problem
+print(calculate_mode(df))"
+A beauty salon in Vindale has three beauticians and keeps track of how often clients request each one specifically. What fraction of requests were for Bruce? Simplify your answer.,0.1340782123,"Beautician | Requests
+Bruce | 240
+Ruth | 740
+Gavin | 810",7,78,"import pandas as pd
+
+def calculate_fraction_of_requests(df, beautician_name):
+    """"""
+    This function takes in a pandas DataFrame representing a table of beauticians and their requests, and returns the fraction of requests for a specific beautician.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing beauticians and their requests with columns 'Beautician' and 'Requests'.
+    beautician_name (str): The name of the beautician for which the fraction of requests is to be calculated.
+    Returns:
+    float: The fraction of requests for the specified beautician.
+    """"""
+    # Filter the DataFrame for the specific beautician
+    beautician_df = df[df['Beautician'] == beautician_name]
+    if not beautician_df.empty:
+        beautician_requests = beautician_df['Requests'].values[0]
+        total_requests = df['Requests'].sum()
+        fraction_of_requests = beautician_requests / total_requests
+        return fraction_of_requests
+    else:
+        return 0.0","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Beautician': ['Bruce', 'Ruth', 'Gavin'],
+    'Requests': [240, 740, 810]
+})
+# Call the tool to solve the problem
+fraction = calculate_fraction_of_requests(df, 'Bruce')
+print(f""The fraction of requests for Bruce is {fraction}"")"
+"Dr. Brady, a zoo director, researched ticket prices at other zoos around the country. How much does an adult ticket to the Los Angeles Zoo cost?",13.0,"Zoo | Adult | Child
+Brookfield | $12 | $8
+Los Angeles | $13 | $8
+Cleveland | $10 | $7
+Bronx | $15 | $11
+Central Florida | $11 | $7",5,4092,"import pandas as pd
+
+def get_adult_ticket_price(df, zoo_name):
+    """"""
+    This function takes in a pandas DataFrame representing a zoo ticket price table and a zoo name, and returns the adult ticket price for the specified zoo.
+    Args:
+    df (pd.DataFrame): A pandas DataFrame containing zoo names and their ticket prices with columns 'Zoo', 'Adult', and 'Child'.
+    zoo_name (str): The name of the zoo.
+    Returns:
+    float: The adult ticket price for the specified zoo.
+    """"""
+    # Filter the DataFrame for the specific zoo
+    zoo_df = df[df['Zoo'] == zoo_name]
+    if not zoo_df.empty:
+        adult_ticket_price = zoo_df['Adult'].values[0]
+        return adult_ticket_price
+    else:
+        return None","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Zoo': ['Brookfield', 'Los Angeles', 'Cleveland', 'Bronx', 'Central Florida'],
+    'Adult': [12, 13, 10, 15, 11],
+    'Child': [8, 8, 7, 11, 7]
+})
+# Call the tool to solve the problem
+adult_ticket_price = get_adult_ticket_price(df, 'Los Angeles')
+print(adult_ticket_price)"
+Each bowl has 2 cherries. How many cherries are in 6 bowls?,12.0,"Number of bowls | Number of cherries
+1 | 2
+2 | 4
+3 | 6
+4 | 8
+5 | 10
+6 | ?",1,10032,"def calculate_cherries_in_bowls(num_bowls):
+    """"""
+    This function takes in the number of bowls and returns the number of cherries in those bowls.
+    Args:
+    num_bowls (int): The number of bowls.
+    Returns:
+    int: The number of cherries in the bowls.
+    """"""
+    # Each bowl has 2 cherries
+    num_cherries = num_bowls * 2
+    return num_cherries","# Call the tool to solve the problem
+print(calculate_cherries_in_bowls(6))"
+A Technical Assistance Manager monitored his customers' wait times. How many people waited for exactly 39 minutes?,3.0,"Stem | Leaf 
+3 | 1, 1, 7, 9, 9, 9
+4 | 0, 3, 5, 5, 6, 7, 8, 9
+5 | 0, 6
+6 | 7, 9, 9
+7 | 3, 7
+8 | 0, 2, 7, 9",6,15580,"import pandas as pd
+
+def count_customers_with_wait_time(df, wait_time):
+    """"""
+    This function takes in a pandas dataframe of customers' wait times, and returns the number of customers who waited for exactly a certain amount of time.
+    Args:
+    df (pandas.DataFrame): A pandas DataFrame object containing the customers' wait times.
+    The dataframe should contain ""Stem"" and ""Leaf"" columns.
+    wait_time (int): The wait time to count.
+    Returns:
+    int: The number of customers who waited for exactly the specified wait time.
+    """"""
+    # prepare a list to calculate wait times
+    wait_times = []
+    # calculate the total wait time for each customer
+    for i in range(len(df)):
+        stem = df['Stem'][i]
+        leaf = df['Leaf'][i]
+        for j in range(len(leaf)):
+            wait_times.append(stem * 10 + leaf[j])
+    # filter the customers where the wait time is exactly the specified wait time
+    filtered = [time for time in wait_times if time == wait_time]
+    # count the number of customers
+    num_customers = len(filtered)
+    return num_customers","# Initialize the table into a dataframe
+df = pd.DataFrame({
+    'Stem': [3, 4, 5, 6, 7, 8],
+    'Leaf': [[1, 1, 7, 9, 9, 9], [0, 3, 5, 5, 6, 7, 8, 9], [0, 6], [7, 9, 9], [3, 7], [0, 2, 7, 9]]
+})
+# Call the tool to solve the problem
+print(count_customers_with_wait_time(df, 39))"

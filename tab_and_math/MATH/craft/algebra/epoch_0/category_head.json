@@ -1,0 +1,323 @@
+{
+    "calculate_annual_interest_rate": [
+        "calculate_annual_interest_rate(initial_investment, final_value, duration_in_years)"
+    ],
+    "calculate_average_speed": [
+        "calculate_average_speed(distances, speeds)"
+    ],
+    "calculate_binary_operation": [
+        "calculate_binary_operation(operand1, operand2, operation_formula)"
+    ],
+    "calculate_compound_interest": [
+        "calculate_compound_interest(principal, rate, time)"
+    ],
+    "calculate_distance": [
+        "calculate_distance(point1, point2)"
+    ],
+    "calculate_elements_in_stage": [
+        "calculate_elements_in_stage(initial_elements, additional_elements_per_stage, target_stage)"
+    ],
+    "calculate_expression": [
+        "calculate_expression(part1, operation1, part2, operation2, part3)"
+    ],
+    "calculate_final_value_inverse_proportion": [
+        "calculate_final_value_inverse_proportion(initial_value1, initial_value2, final_value1)"
+    ],
+    "calculate_output_with_ratio": [
+        "calculate_output_with_ratio(given_ingredient_amount, base_ingredient_amount, base_output_amount)"
+    ],
+    "calculate_total_discount_percent": [
+        "calculate_total_discount_percent(discount1, discount2)"
+    ],
+    "calculate_work_hours_for_same_pay": [
+        "calculate_work_hours_for_same_pay(period1_hours, period1_weeks, period1_pay, period2_weeks, period2_pay)"
+    ],
+    "closest_integer_to_root": [
+        "closest_integer_to_root(n, root)"
+    ],
+    "compute_expression_for_x": [
+        "compute_expression_for_x(expression, x_value)"
+    ],
+    "compute_fraction": [
+        "compute_fraction(numerator_terms, denominator_terms)"
+    ],
+    "cubic_units_in_larger_unit": [
+        "cubic_units_in_larger_unit(conversion_factor)"
+    ],
+    "custom_operation": [
+        "custom_operation(num1, num2)"
+    ],
+    "distance_from_origin": [
+        "distance_from_origin(x, y)"
+    ],
+    "evaluate_expression": [
+        "evaluate_expression(expression, variable_values)"
+    ],
+    "evaluate_expression_at_x": [
+        "evaluate_expression_at_x(expr, x_value)"
+    ],
+    "evaluate_floor_ceil": [
+        "evaluate_floor_ceil(floor_value, ceil_value)"
+    ],
+    "evaluate_floor_ceil_expression": [
+        "evaluate_floor_ceil_expression(floor_number, ceil_number)"
+    ],
+    "evaluate_function_at_x": [
+        "evaluate_function_at_x(function, x_value)"
+    ],
+    "evaluate_logarithm": [
+        "evaluate_logarithm(log_base, exponent)"
+    ],
+    "factor_generic_expression": [
+        "factor_generic_expression(expression)"
+    ],
+    "find_arithmetic_sequence_term": [
+        "find_arithmetic_sequence_term(nth_term, nth_term_value, mth_term, mth_term_value, target_term)"
+    ],
+    "find_coefficient_for_perpendicularity": [
+        "find_coefficient_for_perpendicularity(known_slope, variable_slope_coefficient)"
+    ],
+    "find_composite_value": [
+        "find_composite_value(outer_func, inner_func, input_value)"
+    ],
+    "find_composition_value": [
+        "find_composition_value(outer_func, inner_func, input_value)"
+    ],
+    "find_constant_at_midpoint": [
+        "find_constant_at_midpoint(point1, point2, linear_equation)"
+    ],
+    "find_constant_for_inverse": [
+        "find_constant_for_inverse(func, inverse_func, constant)"
+    ],
+    "find_constant_for_one_real_root": [
+        "find_constant_for_one_real_root(a, b, c, variable)"
+    ],
+    "find_constant_for_parallel_line": [
+        "find_constant_for_parallel_line(given_slope, slope_multiplier)"
+    ],
+    "find_cubed_sum": [
+        "find_cubed_sum(sum_xy, product_xy)"
+    ],
+    "find_difference_based_on_sum_and_fraction": [
+        "find_difference_based_on_sum_and_fraction(sum_value, fraction_value)"
+    ],
+    "find_discriminant": [
+        "find_discriminant(coeff_a, coeff_b, coeff_c)"
+    ],
+    "find_domain_size_generic": [
+        "find_domain_size_generic(start_input, start_output, rule_even, rule_odd)"
+    ],
+    "find_end_point_y": [
+        "find_end_point_y(start_point, end_x, length)"
+    ],
+    "find_endpoint_y": [
+        "find_endpoint_y(start_x, start_y, end_x, segment_length)"
+    ],
+    "find_expression_value": [
+        "find_expression_value(var1, var2, given_equation, target_expression)"
+    ],
+    "find_greater_number_from_sum_and_difference": [
+        "find_greater_number_from_sum_and_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_initial_fee": [
+        "find_initial_fee(cost1, nights1, cost2, nights2)"
+    ],
+    "find_initial_quantity": [
+        "find_initial_quantity(initial_ratio, final_ratio, item1_change, item2_change)"
+    ],
+    "find_integer_squares_difference": [
+        "find_integer_squares_difference(difference)"
+    ],
+    "find_intersection_of_lines": [
+        "find_intersection_of_lines(a1, b1, c1, a2, b2, c2)"
+    ],
+    "find_inverse_proportional_var": [
+        "find_inverse_proportional_var(var1, sum_vars, diff_vars)"
+    ],
+    "find_inverse_value_linear": [
+        "find_inverse_value_linear(coefficient, constant, target_value)"
+    ],
+    "find_inverse_value_polynomial": [
+        "find_inverse_value_polynomial(polynomial_function, target_inverse_result)"
+    ],
+    "find_inverse_variation_value": [
+        "find_inverse_variation_value(initial_value1, initial_value2, target_value2, power1, power2)"
+    ],
+    "find_largest_prime_factor": [
+        "find_largest_prime_factor(expression)"
+    ],
+    "find_largest_x_for_undefined_expression": [
+        "find_largest_x_for_undefined_expression(denominator)"
+    ],
+    "find_max_value": [
+        "find_max_value(func, var)"
+    ],
+    "find_middle_number": [
+        "find_middle_number(sum_of_first_and_last, sequence_length)"
+    ],
+    "find_midpoint_sum": [
+        "find_midpoint_sum(endpoint1, endpoint2)"
+    ],
+    "find_minimal_side_length": [
+        "find_minimal_side_length(area)"
+    ],
+    "find_minimum_value": [
+        "find_minimum_value(func, var)"
+    ],
+    "find_minimum_x_of_quadratic": [
+        "find_minimum_x_of_quadratic(quadratic_function)"
+    ],
+    "find_nth_term_geometric_sequence": [
+        "find_nth_term_geometric_sequence(first_term, common_ratio, n)"
+    ],
+    "find_nth_term_of_power_sequence": [
+        "find_nth_term_of_power_sequence(base, term_number)"
+    ],
+    "find_number_of_expensive_items": [
+        "find_number_of_expensive_items(total_items, total_cost, cheaper_item_cost, expensive_item_cost)"
+    ],
+    "find_number_of_items": [
+        "find_number_of_items(person1, person2, condition1, condition2)"
+    ],
+    "find_number_of_items_with_denom1": [
+        "find_number_of_items_with_denom1(total_amount, total_items, denom1, denom2)"
+    ],
+    "find_number_of_rows": [
+        "find_number_of_rows(total_items, initial_items_per_row, items_increment_per_row)"
+    ],
+    "find_number_with_digit_sum": [
+        "find_number_with_digit_sum(target_sum, position)"
+    ],
+    "find_poly_at_zero": [
+        "find_poly_at_zero(poly1_const, poly2_const)"
+    ],
+    "find_positive_solution": [
+        "find_positive_solution(equations, target_variable)"
+    ],
+    "find_product_given_sum_difference": [
+        "find_product_given_sum_difference(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_product_of_roots": [
+        "find_product_of_roots(a, b, c)"
+    ],
+    "find_quadratic_coefficients": [
+        "find_quadratic_coefficients(root1, root2)"
+    ],
+    "find_range_for_product_of_floor_and_ceil": [
+        "find_range_for_product_of_floor_and_ceil(target_product)"
+    ],
+    "find_recursive_sqrt_constant": [
+        "find_recursive_sqrt_constant(constant)"
+    ],
+    "find_required_hours_per_week": [
+        "find_required_hours_per_week(initial_hours_per_week, initial_weeks, initial_pay, target_weeks, target_pay)"
+    ],
+    "find_slope": [
+        "find_slope(coeff_x, coeff_y)"
+    ],
+    "find_smaller_number": [
+        "find_smaller_number(sum_of_numbers, difference_of_numbers)"
+    ],
+    "find_smallest_root_quadratic": [
+        "find_smallest_root_quadratic(a, b, c)"
+    ],
+    "find_smallest_x_abs": [
+        "find_smallest_x_abs(a, b, c)"
+    ],
+    "find_sum_of_coefficients_in_polynomial": [
+        "find_sum_of_coefficients_in_polynomial(polynomial)"
+    ],
+    "find_sum_of_roots": [
+        "find_sum_of_roots(coefficient_a, coefficient_b)"
+    ],
+    "find_sum_of_slope_and_intercept": [
+        "find_sum_of_slope_and_intercept(point1, point2)"
+    ],
+    "find_sum_of_solutions": [
+        "find_sum_of_solutions(equation, variable)"
+    ],
+    "find_sum_of_three_objects": [
+        "find_sum_of_three_objects(sum1, sum2, num_obj1_in_sum1, num_obj2_in_sum1, num_obj1_in_sum2, num_obj2_in_sum2, target_object)"
+    ],
+    "find_target_log_value": [
+        "find_target_log_value(given_log_base, given_log_value, target_log_base)"
+    ],
+    "find_term_in_arithmetic_sequence": [
+        "find_term_in_arithmetic_sequence(n, term1_position, term1, term2_position, term2)"
+    ],
+    "find_transformed_point_and_sum": [
+        "find_transformed_point_and_sum(original_point, scale_x, scale_y, shift_y)"
+    ],
+    "find_units_digit_condition": [
+        "find_units_digit_condition(start, end, condition_func)"
+    ],
+    "find_unknown_number": [
+        "find_unknown_number(percent1, percent2, known_num)"
+    ],
+    "find_value_based_on_conditions": [
+        "find_value_based_on_conditions(condition1, condition2, operation)"
+    ],
+    "find_variable_for_equal_utilities": [
+        "find_variable_for_equal_utilities(variable, utility_func1, utility_func2)"
+    ],
+    "find_variable_value": [
+        "find_variable_value(equation, variable, disallowed_solutions)"
+    ],
+    "find_x_for_composite": [
+        "find_x_for_composite(func1, func2, target_result)"
+    ],
+    "find_y_coordinate": [
+        "find_y_coordinate(point1, point2, x3)"
+    ],
+    "floor_division": [
+        "floor_division(numerator, denominator)"
+    ],
+    "floor_of_sqrt": [
+        "floor_of_sqrt(input_number)"
+    ],
+    "from sympy import simplify, ccode def simplify_math_expression": [
+        "simplify_math_expression(expression)"
+    ],
+    "from sympy import symbols, Eq, solve def solve_equation_for_variable": [
+        "solve_equation_for_variable(equation)"
+    ],
+    "max_distance_from_point": [
+        "max_distance_from_point(point_x, point_y, distance_limit)"
+    ],
+    "midpoint_coordinates_sum": [
+        "midpoint_coordinates_sum(x1, y1, x2, y2)"
+    ],
+    "min_additional_items": [
+        "min_additional_items(group_size, available_items)"
+    ],
+    "rationalize_denominator_general": [
+        "rationalize_denominator_general(num_sqrt1, num_sqrt2, den_sqrt1, den_sqrt2)"
+    ],
+    "scale_conversion": [
+        "scale_conversion(scale_ratio, drawing_length, drawing_unit, actual_unit)"
+    ],
+    "simplify_expression_generic": [
+        "simplify_expression_generic(expression_str)"
+    ],
+    "simplify_math_expression": [
+        "simplify_math_expression(expression)"
+    ],
+    "solve_equation": [
+        "solve_equation(equation, variable)"
+    ],
+    "solve_radical_equation": [
+        "solve_radical_equation(variable, constant1, constant2, root1, root2)"
+    ],
+    "solve_system_of_equations": [
+        "solve_system_of_equations(relation, equation, var1, var2)"
+    ],
+    "sum_of_coefficients": [
+        "sum_of_coefficients(expression, variable)"
+    ],
+    "sum_of_squares_of_coefficients": [
+        "sum_of_squares_of_coefficients(poly_coefficient, term_coefficients)"
+    ],
+    "sum_rectangle_areas": [
+        "sum_rectangle_areas(area_condition, perimeter_condition, max_side_length)"
+    ]
+}
