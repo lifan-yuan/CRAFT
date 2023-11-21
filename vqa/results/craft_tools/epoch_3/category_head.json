@@ -1,0 +1,64 @@
+{
+    "0": [
+        "infer_competition_outcome(image_patch: ImagePatch, person_name: str, competition_type: str, action: str, possession: str, query: str) -> str"
+    ],
+    "1": [
+        "infer_reasons_for_situation(image_patch: ImagePatch, object_name: str, situation: str, query: str) -> str"
+    ],
+    "2": [
+        "identify_attachment_object(image_patch: ImagePatch, object_name: str, possible_attachments: List[str], query: str) -> str"
+    ],
+    "3": [
+        "identify_object_around_other(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_vertical_position: str, query: str) -> str"
+    ],
+    "4": [
+        "check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ],
+    "5": [
+        "identify_activities_in_location(image_patch: ImagePatch, location_name: str, object_name: str, query: str) -> str",
+        "identify_items_in_location(image_patch: ImagePatch, location_name: str, query: str) -> str",
+        "find_action_location(image_patch: ImagePatch, action: str) -> str"
+    ],
+    "6": [
+        "find_connection_between_object_and_topic(image_patch: ImagePatch, object_name: str, topic: str, query: str) -> str"
+    ],
+    "7": [
+        "guess_material_of_object(image_patch: ImagePatch, object_name: str, location: str, query: str) -> str"
+    ],
+    "8": [
+        "check_observation_within_distance(image_patch: ImagePatch, observing_object_name: str, observed_object_name: str, distance_threshold: int) -> str"
+    ],
+    "9": [
+        "infer_object_attributes_based_on_environment(image_patch: ImagePatch, object_name: str, environment_name: str, query: str) -> str"
+    ],
+    "10": [
+        "check_extent_of_condition_on_object(image_patch: ImagePatch, object_name: str, condition_name: str, query: str) -> str"
+    ],
+    "11": [
+        "check_relative_position(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_position: str, query: str) -> str"
+    ],
+    "12": [
+        "determine_most_similar_category(image_patch: ImagePatch, object_name: str, categories: List[str], query: str) -> str"
+    ],
+    "13": [
+        "check_attribute_existence(image_patch: ImagePatch, object_name: str, attribute: str) -> str"
+    ],
+    "14": [
+        "identify_attribute_type(image_patch: ImagePatch, object_name: str, attribute_options: List[str], query: str) -> str"
+    ],
+    "15": [
+        "infer_purpose_of_objects_together(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str) -> str"
+    ],
+    "16": [
+        "check_group_action_in_location(image_patch: ImagePatch, group_name: str, action: str, location: str) -> str"
+    ],
+    "17": [
+        "infer_gesture_meaning(image_patch: ImagePatch, object_name: str, gesture: str, long_answer: bool = False) -> str"
+    ],
+    "18": [
+        "find_purpose_of_object(image: Image, object_name: str, query: str, long_answer: bool = False) -> str"
+    ],
+    "19": [
+        "analyze_design_principles(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ]
+}

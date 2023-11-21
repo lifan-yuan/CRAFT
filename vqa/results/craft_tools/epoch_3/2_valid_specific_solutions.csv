@@ -1,0 +1,300 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000146855.jpg,Where is the teenager swinging from?,Identify the location of the teenager's swing.,Traffic light pole.,vqa_22504,,Where is the teenager swinging from?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	teenager_patches = image_patch.find(""teenager"")
+	if len(teenager_patches) == 0:
+		# If no teenager is found, query the image directly with simple_query instead of
+		# returning a long string like ""There is no teenager.""
+		return image_patch.simple_query(""Where is the teenager swinging from?"")
+	teenager_patch = teenager_patches[0]
+	swing_patches = image_patch.find(""swing"")
+	swing_from_patches = [patch for patch in swing_patches if patch.overlaps_with(teenager_patch.left, teenager_patch.lower, teenager_patch.right, teenager_patch.upper)]
+	if len(swing_from_patches) == 0:
+		return ""not swinging from anywhere visible in the image""
+	swing_from_patch = swing_from_patches[0]
+	return swing_from_patch.simple_query(""What is this?"")",vqa
+000000234118.jpg,Could the man have won a stage in a surfing competition?,Could the man have won a stage in a surfing competition?,"Yes, it is possible that the man holding the surfboard that reads ""Stage 3 Winner"" has won a stage in a surfing competition. Surfing competitions can be organized in multiple stages or rounds, with surfers advancing through the stages based on their performance or scores. 
+
+In this case, the man holding the surfboard could have emerged as the winner of the third stage in the competition, which would justify the surfboard saying ""Stage 3 Winner."" By holding up the surfboard with that message, he may be celebrating his victory and sharing his achievement with others.
+
+Surfing competitions often involve judging participants on factors such as the difficulty of the maneuvers they perform, the size of the wave they ride, their speed and power, and the overall impression they leave on the judges. Winning a stage in a surfing competition is an impressive accomplishment that reflects both the surfer's skill and their ability to excel in the often unpredictable conditions of the ocean.",llava_16908,000000234118,Could the man have won a stage in a surfing competition?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	# If no man is found, query the image directly with simple_query instead of returning a long string like ""There is no man.""
+	if len(man_patches) == 0:
+		return image_patch.simple_query(""Could the man have won a stage in a surfing competition?"")
+	man_patch = man_patches[0]
+	# Check if the man possesses surfboard or is surfing
+	if man_patch.verify_property(""man"", ""surfing"") or man_patch.verify_property(""man"", ""has surfboard""):
+		# Using llm_query to infer whether the man could have won based on the result of the surfing.
+		surf_result = man_patch.simple_query(""How was his surfing?"")
+		return man_patch.llm_query(""Could someone have won a stage in a surfing competition if they were {}"".format(surf_result), long_answer=False)
+	# If the man doesn't possess surfboard or is not surfing, then it's unlikely to win a surfing competition
+	else:
+		return ""no""",vqa
+000000023000.jpg,What could be the possible reasons for the man kneeling down on the tennis court?,What could be the possible reasons for the man kneeling down on the tennis court?,"There can be multiple reasons for the man kneeling down on the tennis court. Some possible reasons might include:
+
+1. Taking a break: The man might be pausing to catch his breath or rest for a moment during a tennis match or practice session.
+2. Picking up a ball: He could be bending down to pick up a tennis ball that was on the ground.
+3. Stretching or preparing: The man may be stretching or getting ready for his next move in the game, such as serving the ball or getting into position for a shot.
+4. Emotional reaction: The kneeling position could be an emotional reaction to a hard-fought point or an important victory, expressing feelings like relief, happiness, or even exhaustion.
+
+Without additional context, it is difficult to pinpoint the exact reason for his actions. However, these possibilities give some insight into what he might be doing while kneeling down on the tennis court with his racket in hand.",llava_21898,000000023000,What could be the possible reasons for the man kneeling down on the tennis court?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	# The given situation/question is not direct perception, but inference based on series of perceptions.
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""The image does not contain a man.""
+	man_patch = man_patches[0]
+	if not man_patch.verify_property(""man"", ""kneeling""):
+		return ""The man is not kneeling.""
+	return man_patch.llm_query(""What could be the possible reasons for a man kneeling down on a tennis court?"")",vqa
+000000165770.jpg,Are the paper towels hanging from a dispenser or a roll?,Are the paper towels hanging from a dispenser or a roll?,The paper towels are hanging from a roll.,llava_31550,000000165770,Are the paper towels hanging from a dispenser or a roll?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	paper_towel_patches = image_patch.find(""paper towels"")
+	if len(paper_towel_patches) == 0:
+		# If no paper towels are found, query the image directly with simple_query 
+		# instead of returning a long string like ""There are no paper towels.""
+		return image_patch.simple_query(""Are the paper towels hanging from a dispenser or a roll?"")
+	# Question assumes one paper towel patch
+	return paper_towel_patches[0].best_text_match([""dispenser"", ""roll""])",vqa
+000000026304.jpg,What kind of tree are the women standing under?,What kind of tree are the women standing under?,"The women are standing under a cherry blossom tree. The tree is in full bloom, making it a beautiful and appealing subject for photographs.",llava_32353,000000026304,What kind of tree are the women standing under?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	# Checking if there are women in the image
+	if len(women_patches) == 0:
+		return ""no women in the image""
+	# Assuming all women patches are under the same tree
+	women_patch = women_patches[0] 
+	# Extending the search above the women to find the tree
+	tree_patch = image_patch.crop(left=0, lower=0, right=image_patch.width, upper=women_patch.upper)
+	tree_type = tree_patch.simple_query(""what kind of tree is this?"")
+	return tree_type",vqa
+000000329141.jpg,Is this lunch packed in an organized manner?,Is this lunch packed in an organized manner?,"Yes, the lunch appears to be well-packed and organized, with each type of food item placed neatly in its own container.",llava_59292,000000329141,Is this lunch packed in an organized manner?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	packed_lunch_patch = image_patch.find(""packed lunch"")
+	if len(packed_lunch_patch) == 0:
+		return ""no""
+	organized = packed_lunch_patch[0].verify_property(""packed lunch"", ""organized"")
+	return bool_to_yesno(organized)",vqa
+000000075516.jpg,What activities are the people engaged in at the bike shop?,What activities are the people engaged in at the bike shop?,"The people are checking or repairing bicycles, assembling bikes, and possibly assisting customers with their bike-related needs.",llava_63533,000000075516,What activities are the people engaged in at the bike shop?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	bike_shop_patches = image_patch.find(""bike shop"")
+	activity_list = []
+	for patch in bike_shop_patches:
+		people_patches = patch.find(""people"")
+		for people in people_patches:
+			activity = people.simple_query(""What activity are these people engaged in?"")
+			if activity not in activity_list:
+				activity_list.append(activity)
+	return ', '.join(activity_list) if activity_list else ""No activities are taking place.""",vqa
+000000239427.jpg,What is the connection between the image of the man in the poster and reggae music?,What is the connection between the image of the man in the poster and reggae music?,"The man in the poster is Bob Marley, a singer, songwriter, and musician who is considered one of the pioneers of reggae music. Reggae is a genre of music that originated in Jamaica in the late 1960s, characterized by its distinctive rhythmic style, use of syncopated beats, and socially conscious lyrics, often addressing themes such as love, peace, and social justice.
+
+Bob Marley's influence on the development and popularization of reggae music is immense. As the leading member of the band The Wailers, he helped bring the genre to international prominence, with hits like ""No Woman, No Cry,"" ""Buffalo Soldier,"" ""One Love,"" and ""Could You Be Loved."" Marley's music and message continue to inspire and resonate with people around the world, even after his death in 1981, making him an enduring symbol of reggae music and its associated cultural movement, Rastafarianism.",llava_75023,000000239427,What is the connection between the image of the man in the poster and reggae music?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_in_poster_patches = image_patch.find(""man in the poster"")
+	if len(man_in_poster_patches) == 0:
+		return image_patch.simple_query(""What is the connection between the image of the man in the poster and reggae music?"")
+	man_in_poster_patch = man_in_poster_patches[0]
+	man_name = man_in_poster_patch.simple_query(""Who is the man in the poster?"")
+	connection_query = ""What is the connection between {} and reggae music?"".format(man_name)
+	connection = llm_query(connection_query, long_answer=False)
+	return connection",vqa
+000000497227.jpg,What type of toy is sitting in the stroller?,What type of toy is sitting in the stroller?,A teddy bear is sitting in the stroller.,llava_76229,000000497227,What type of toy is sitting in the stroller?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	stroller_patches = image_patch.find(""stroller"")
+	if len(stroller_patches) == 0:
+		# If no stroller is found, query the image directly with simple_query instead of returning a long string like ""There is no stroller.""
+		return image_patch.simple_query(""What type of toy is sitting in the stroller?"")
+	stroller_patch = stroller_patches[0]
+	toy_patches = image_patch.find(""toy"")
+	for toy_patch in toy_patches:
+		if stroller_patch.overlaps_with(toy_patch.left, toy_patch.lower, toy_patch.right, toy_patch.upper):
+			return toy_patch.simple_query(""What type of toy is this?"")
+	return ""There is no toy in the stroller""",vqa
+000000166370.jpg,What material do you think the statue on the roof is made of?,What material do you think the statue on the roof is made of?,"I cannot confidently determine the material of the statue in the image. However, statues on top of buildings are often made of materials such as stone, concrete, bronze, or other metals. A more detailed or close-up view of the statue would be required to confidently identify the material used.",llava_78670,000000166370,What material do you think the statue on the roof is made of?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	statue_patches = image_patch.find(""statue on the roof"")
+	if len(statue_patches) == 0:
+		return image_patch.simple_query(""What material do you think the statue on the roof is made of?"")
+	statue_patch = statue_patches[0]
+	material_guess = statue_patch.simple_query(""What material is the statue made of?"")
+	return material_guess",vqa
+000000085974.jpg,Can you describe any possible scenarios in which the woman may be lying down in front of the horse statue?,Can you describe any possible scenarios in which the woman may be lying down in front of the horse statue?,"There could be several possible scenarios for the woman lying down in front of the horse statue, some of which include:
+
+1. Relaxation: The woman might be taking a break or resting while traveling or sightseeing. The grassy area around the horse statue could provide a comfortable spot to relax and rejuvenate before continuing her journey.
+
+2. Admiration: The woman may be an artist, a photographer, or a fan of sculptures and might be lying down to observe and admire the details and craftsmanship of the horse statue from a unique perspective.
+
+3. Picnic or social gathering: The woman could be waiting for a friend or a group of people to join her for a picnic, an outdoor activity, or a social gathering. The horse statue might serve as a recognizable meeting point, and she's enjoying the time lying down on the grass while waiting for others to arrive.
+
+4. Artistic or creative expression: The woman might be posing for a photoshoot or performing as part of an artistic or creative project related to the horse statue. In this case, her posture and position could be intentionally arranged.
+
+Although it is challenging to pinpoint the exact reason behind the woman's action from a single image, these scenarios provide possible contextual explanations behind her decision to lie down in front of the blue horse statue.",llava_79687,000000085974,Can you describe any possible scenarios in which the woman may be lying down in front of the horse statue?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	question = ""Can you describe any possible scenarios in which a woman may be lying down in front of a horse statue?""
+	answer = image_patch.llm_query(question, long_answer=True)
+	return answer",vqa
+000000228224.jpg,"Can you provide a brief summary of the character Merida from ""Brave""?","Can you provide a brief summary of the character Merida from ""Brave""?","Merida is the main character in the animated film ""Brave,"" produced by Pixar Animation Studios and released by Walt Disney Pictures. She is a strong-willed and independent princess from the Scottish kingdom of DunBroch. Merida is a skilled archer and is known for her rebellious nature and striking red curly hair.
+
+In the movie, Merida defies tradition when she refuses to accept an arranged marriage as dictated by custom. Instead, she accidentally unleashes a curse upon her family, causing her mother to be transformed into a bear. Merida must then embark on a journey of courage, understanding, and self-discovery, taking responsibility for her actions and working to mend the broken bond between her and her mother. Ultimately, Merida learns the importance of family, love, and selflessness, upholding her character as a fearless and inspiring role model.",llava_84404,000000228224,"Can you provide a brief summary of the character Merida from ""Brave""?","def execute_command(image):
+	# The query is not about the image, it's informational, need to use external knowledge.
+	# Perform a Bing search to provide a brief summary of the character.
+	summary = bing_search(""Character summary of Merida from Brave"")
+	return summary",vqa
+000000412508.jpg,What items are present at the campsite?,What items are present at the campsite?,"At the campsite, there is a tent, a picnic table, a grill, lawn chairs, and a vehicle parked nearby.",llava_85789,000000412508,What items are present at the campsite?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	campsite_patches = image_patch.find(""campsite"")
+	if len(campsite_patches) == 0:
+		return image_patch.simple_query(""What items are present at the campsite?"")
+	campsite_patch = campsite_patches[0]
+	items = campsite_patch.simple_query(""What items are present?"")
+	return items",vqa
+000000558748.jpg,What does the presence of oranges in an indoor building suggest about the trees' stage of growth and care requirements?,What does the presence of oranges in an indoor building suggest about the trees' stage of growth and care requirements?,"The presence of oranges growing on trees inside an indoor building suggests that these trees have reached a certain level of maturity and are capable of producing fruit. These trees are likely being well-cared for and provided with the necessary environmental conditions, such as adequate light, temperature, and humidity, to facilitate their growth and fruit-bearing capabilities. 
+
+For people who purchase these small orange trees, they will need to consider providing similar conditions to maintain the tree's health and fruit production. These conditions might include suitable indoor or outdoor environments, depending on the specific species and regional climate. Also, proper watering, fertilizing, and pest management practices should be followed to ensure the overall well-being of the orange trees. By transplanting these trees to their residential or commercial properties and providing the necessary care, new owners can expect continued fruit production and enjoy fresh, homegrown oranges.",llava_101779,000000558748,What does the presence of oranges in an indoor building suggest about the trees' stage of growth and care requirements?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	if image_patch.exists(""oranges"") and image_patch.exists(""indoor building""):
+		return image_patch.llm_query(""What does the presence of oranges in an indoor building suggest about the trees' stage of growth and care requirements?"")
+	else:
+		return ""The image does not contain indoor orange trees.""",vqa
+000000576343.jpg,Is the entire house being demolished or just part of it?,Is the entire house being demolished or just part of it?,"The image shows only a part of the house being demolished, specifically a wall in the bathroom.",llava_112614,000000576343,Is the entire house being demolished or just part of it?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	demolished_area_patch = image_patch.find(""demolition area"")
+	if len(demolished_area_patch) == 0:
+		return image_patch.simple_query(""Is the entire house being demolished or just part of it?"")
+	
+	house_patches = image_patch.find(""house"")
+	if len(house_patches) == 0:
+		return ""no house""
+	house_patch = house_patches[0]
+	
+	for demolished_area in demolished_area_patch:
+		if demolished_area.overlaps_with(house_patch.left, house_patch.lower, house_patch.right, house_patch.upper):
+			if demolished_area.width * demolished_area.height > 0.9 * house_patch.width * house_patch.height:
+				return ""entire""
+			else:
+				return ""part""
+	
+	return ""no demolition""",vqa
+000000277950.jpg,Are the boys inside or outside of the jail replica?,Are the boys inside or outside of the jail replica?,"The older boy is standing outside of the jail replica, while the younger brother or another child is inside the structure.",llava_121094,000000277950,Are the boys inside or outside of the jail replica?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boys_patches = image_patch.find(""boys"")
+	if len(boys_patches) == 0:
+		return image_patch.simple_query(""Are the boys inside or outside of the jail replica?"")
+	boys_patch = boys_patches[0]
+	jail_replica_patches = image_patch.find(""jail replica"")
+	if len(jail_replica_patches) == 0:
+		return ""outside""
+	jail_replica_patch = jail_replica_patches[0]
+	if boys_patch.overlaps_with(jail_replica_patch.left, jail_replica_patch.lower, jail_replica_patch.right, jail_replica_patch.upper):
+		return ""inside""
+	else:
+		return ""outside""",vqa
+000000320744.jpg,Is the motorcycle-riding skeleton a living creature or an artistic sculpture?,Is the motorcycle-riding skeleton a living creature or an artistic sculpture?,"The skeleton is an artistic sculpture that has been skillfully posed on a motorcycle, performing a wheelie in the desert landscape.",llava_133752,000000320744,Is the motorcycle-riding skeleton a living creature or an artistic sculpture?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	skeleton_patches = image_patch.find(""motorcycle-riding skeleton"")
+	if len(skeleton_patches) == 0:
+		return image_patch.simple_query(""Is the motorcycle-riding skeleton more similar to a living creature or an artistic sculpture?"")
+	skeleton_patch = skeleton_patches[0]
+	return skeleton_patch.best_text_match([""living creature"", ""artistic sculpture""])",vqa
+000000427123.jpg,Are any of the officers wearing medals around their necks?,Are any of the officers wearing medals around their necks?,"Yes, two of the three officers are wearing medals around their necks.",llava_147108,000000427123,Are any of the officers wearing medals around their necks?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	officer_patches = image_patch.find(""officers"")
+	if len(officer_patches) == 0:
+		# If no officers are found, then there are no medals around their necks
+		return ""no""
+	
+	for officer_patch in officer_patches:
+		if officer_patch.exists(""medal around neck""):
+			return ""yes""
+	return ""no""",vqa
+000000335865.jpg,What type of metal is the pitcher made of?,What type of metal is the pitcher made of?,The pitcher is made of copper.,llava_162235,000000335865,What type of metal is the pitcher made of?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pitcher_patches = image_patch.find(""pitcher"")
+	if len(pitcher_patches) == 0:
+		return image_patch.simple_query(""What type of metal is the pitcher made of?"")
+	pitcher_patch = pitcher_patches[0]
+	return pitcher_patch.best_text_match([""iron"", ""steel"", ""aluminium"", ""copper"", ""noble metal"", ""transition metal"", ""other""])",vqa
+000000317512.jpg,What seems to be the purpose of having the scissors on the cutting board with the sun-dried tomatoes?,What seems to be the purpose of having the scissors on the cutting board with the sun-dried tomatoes?,"The scissors are likely being used as a convenient tool to cut the sun-dried tomatoes into smaller pieces or slivers for cooking or serving purposes. We can see some cut sun-dried tomatoes to the left of the scissors, while there are uncut tomatoes on the right.",llava_181310,000000317512,What seems to be the purpose of having the scissors on the cutting board with the sun-dried tomatoes?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	scissors_patches = image_patch.find(""scissors"")
+	tomatoes_patches = image_patch.find(""sun-dried tomatoes"")
+	if len(scissors_patches) == 0 or len(tomatoes_patches) == 0:
+		# If no scissors or tomatoes are found, query the image directly with simple_query instead of returning a long string like ""There are no scissors""
+		return image_patch.simple_query(""What seems to be the purpose of having the scissors on the cutting board with the sun-dried tomatoes?"")
+	scissors_patch = scissors_patches[0]
+	tomatoes_patch = tomatoes_patches[0]
+	if not scissors_patch.overlaps_with(tomatoes_patch.left, tomatoes_patch.lower, tomatoes_patch.right, tomatoes_patch.upper):
+		return ""no obvious reason""
+	else: 
+		# Inference from image: probably to cut the tomatoes
+		# However, this might not be enough, so use a language model for more inference
+		return scissors_patch.llm_query(""What could be the purpose of using scissors with sun-dried tomatoes on a cutting board?"", long_answer=False)",vqa
+000000002752.jpg,Are the women eating while sitting together in the living room?,Are the women eating while sitting together in the living room?,"Yes, the women are eating while sitting on the couches in the living room.",llava_187003,000000002752,Are the women eating while sitting together in the living room?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	living_room_patches = image_patch.find(""living room"")
+	if len(women_patches) == 0 or len(living_room_patches) == 0:
+		# If no women or living room are found, return ""no""
+		return ""no""
+	for woman_patch in women_patches:
+		for room_patch in living_room_patches:
+			# Check if the woman is in the living room
+			if woman_patch.overlaps_with(room_patch.left, room_patch.lower, room_patch.right, room_patch.upper):
+				# Check if the woman is eating
+				if woman_patch.verify_property(""woman"", ""eating""):
+					# Check if the woman is sitting
+					if woman_patch.verify_property(""woman"", ""sitting""):
+						return ""yes""
+	return ""no""",vqa
+000000249125.jpg,"What can be inferred from the bystander's ""thumbs up"" gesture?","What can be inferred from the bystander's ""thumbs up"" gesture?","The bystander's ""thumbs up"" gesture can suggest several things, such as their satisfaction with the pizzas' taste, quality, or appearance. It could also imply that the pizzas were made to their liking or that they are excited to eat or share them with others. The positive gesture serves as validation, encouraging others to try or purchase the pizzas, and reflects a general sense of approval or pleasure towards the pizzas on display.",llava_190435,000000249125,"What can be inferred from the bystander's ""thumbs up"" gesture?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	bystander_patches = image_patch.find(""bystander"")
+	if len(bystander_patches) == 0:
+		return ""Cannot infer as there is no bystander.""
+	# LLM Query assumes there is one bystander patch
+	return bystander_patches[0].llm_query(""What can be inferred from a 'thumbs up' gesture?"", long_answer=False)",vqa
+000000532253.jpg,What is the purpose of the knitted hats on the eggs?,What is the purpose of the knitted hats on the eggs?,"The knitted hats on the eggs serve as playful decorations or accessories to add a fun and creative element to the table setting or breakfast arrangement. The hats may also provide some insulation, helping to keep the boiled eggs warm for a longer period of time. However, the main purpose appears to be adding a touch of charm and whimsy to the overall presentation.",llava_193581,000000532253,What is the purpose of the knitted hats on the eggs?,"def execute_command(image)->str:
+	# Extracting visual information
+	image_patch = ImagePatch(image)
+	hat_patches = image_patch.find(""knitted hat on egg"")
+	if len(hat_patches) == 0:
+		return ""The image does not have any knitted hats on eggs""
+	# Query GPT for reasoning about purpose
+	return hat_patches[0].llm_query(""What is the purpose of a knitted hat on an egg?"", long_answer=True)",vqa
+000000297877.jpg,What is the material of the catcher statue?,What is the material of the catcher statue?,The catcher statue is made of bronze.,llava_246012,000000297877,What is the material of the catcher statue?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	catcher_patches = image_patch.find(""catcher statue"")
+	if len(catcher_patches) == 0:
+		return image_patch.simple_query(""What is the material of the catcher statue?"")
+	catcher_patch = catcher_patches[0]
+	return catcher_patch.simple_query(""What is the material of this?"")",vqa
+000000028835.jpg,Are there any people observing the man working on the mannequin head?,Are there any people observing the man working on the mannequin head?,"Yes, there are a couple of people standing in front of the man and watching as he works on the mannequin head.",llava_246444,000000028835,Are there any people observing the man working on the mannequin head?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	mannequin_patches = image_patch.find(""mannequin head"")
+	observing_patches = image_patch.find(""observing people"")
+	# If we do not find any mannequin of if no person is observing anything, we get a ""no"".
+	if len(mannequin_patches) == 0 or len(observing_patches) == 0:
+		return ""no""
+	man_working_patch = mannequin_patches[0]
+	for observing_patch in observing_patches:
+		# If the distance between a person and the man working with the mannequin is relatively short, we get a ""yes"".
+		if distance(observing_patch, man_working_patch) < 100: # let's assume 100 is a reasonable threshold value.
+			return ""yes""
+	return ""no""",vqa
+000000534094.jpg,How are Shell fuel pumps designed in terms of user experience?,How are Shell fuel pumps designed in terms of user experience?,"Shell fuel pumps are designed to be easy to use, providing customers with a convenient and straightforward experience while filling up their vehicles. This user-friendly design includes clear instructions, informative stickers, and features such as the small TV to make the process more engaging and efficient.",llava_247226,000000534094,How are Shell fuel pumps designed in terms of user experience?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	shell_fuel_pump_patches = image_patch.find(""Shell fuel pump"")
+	if len(shell_fuel_pump_patches) == 0:
+		return image_patch.simple_query(""How are Shell fuel pumps designed in terms of user experience?"")
+	shell_fuel_pump_patch = shell_fuel_pump_patches[0]
+	shell_fuel_pump_design = shell_fuel_pump_patch.llm_query(""What are the design principles for Shell fuel pumps in terms of user experience?"")
+	return shell_fuel_pump_design",vqa
+000000239930.jpg,Where is the man carving the turkey?,Where is the man carving the turkey?,"The man is carving the turkey in the kitchen, on a kitchen counter or table.",llava_248263,000000239930,Where is the man carving the turkey?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	carving_patches = image_patch.find(""man carving turkey"")
+	# Assumption: There's only one carving action in the scene
+	carving_patch = carving_patches[0]
+	location = carving_patch.simple_query(""where is this happening?"")
+	return location",vqa

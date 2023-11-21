@@ -1,0 +1,110 @@
+{
+    "0": [
+        "check_connection_method(image_patch: ImagePatch, object_name: str, part_name: str) -> str"
+    ],
+    "1": [
+        "identify_entity_interacting_with_object(image_patch: ImagePatch, entity_name: str, object_name: str, query: str) -> str"
+    ],
+    "2": [
+        "identify_objects_on_given_object(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "identify_attribute_type(image_patch: ImagePatch, object_name: str, attribute_name: str, query: str) -> str"
+    ],
+    "3": [
+        "provide_detailed_explanation(image_patch: ImagePatch, question: str) -> str"
+    ],
+    "4": [
+        "check_interaction_between_two_objects(image_patch: ImagePatch, object_name: str, interaction_query: str) -> str"
+    ],
+    "5": [
+        "identify_action_location(image_patch: ImagePatch, action_name: str) -> str"
+    ],
+    "6": [
+        "determine_time_context_of_image(image_patch: ImagePatch, object_name: str, time_contexts: List[str], query: str) -> str"
+    ],
+    "7": [
+        "discuss_quality_time_with_group(image_patch: ImagePatch, group_name: str, query: str) -> str"
+    ],
+    "8": [
+        "infer_reason_for_behavior(image_patch: ImagePatch, object_name: str, behavior: str, context: str, query: str) -> str"
+    ],
+    "9": [
+        "identify_actions_in_situation(image_patch: ImagePatch, group_name: str, situation: str, query: str) -> str"
+    ],
+    "10": [
+        "identify_held_object(image_patch: ImagePatch, subject_name: str, query: str) -> str"
+    ],
+    "11": [
+        "check_interaction_with_multiple_objects(image_patch: ImagePatch, person_name: str, object_names: list, query: str) -> str"
+    ],
+    "12": [
+        "identify_tool_used_by_object(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "13": [
+        "identify_provider_of_action(image_patch: ImagePatch, action_query: str) -> str"
+    ],
+    "14": [
+        "identify_precaution(image_patch: ImagePatch, action_performer: str, action: str, query: str) -> str"
+    ],
+    "15": [
+        "inquire_effectiveness(action: str, outcome: str, long_answer: bool = True) -> str"
+    ],
+    "16": [
+        "determine_object_nature(image_patch: ImagePatch, object_name: str, reference_object_name: str, possible_natures: list) -> str"
+    ],
+    "17": [
+        "estimate_number_of_items_in_object(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "18": [
+        "find_attribute_of_object_between_two_others(image_patch: ImagePatch, object_name: str, reference_object_name: str, attribute_query: str) -> str"
+    ],
+    "19": [
+        "query_object_state(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "20": [
+        "determine_person_attribute_in_image(image_patch: ImagePatch, person_name: str, attribute: str, query: str) -> str"
+    ],
+    "21": [
+        "check_existence_on_object_excluding_specific(image_patch: ImagePatch, object_name: str, reference_object_name: str, excluded_object_name: str) -> str"
+    ],
+    "22": [
+        "identify_costume_elements(image_patch: ImagePatch, costume_name: str, long_answer: bool = False) -> str"
+    ],
+    "23": [
+        "find_activity_location(image_patch: ImagePatch, activity_name: str, query: str) -> str"
+    ],
+    "24": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "25": [
+        "determine_emotional_appearance(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "26": [
+        "infer_environment_based_on_object(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "27": [
+        "check_object_condition(image_patch: ImagePatch, object_name: str, conditions: List[str], query: str) -> str"
+    ],
+    "28": [
+        "check_object_nature_based_on_overlap(image_patch: ImagePatch, object_name: str, overlap_objects: list, nature_if_overlap: str, nature_if_no_overlap: str) -> str",
+        "check_existence_around_object(image_patch: ImagePatch, object_name: str, surrounding_object_name: str, query: str) -> str"
+    ],
+    "29": [
+        "check_action_while_other_performs(image_patch: ImagePatch, action_object_name: str, action: str, query_object_name: str, query: str) -> str"
+    ],
+    "30": [
+        "check_action_towards_object(image_patch: ImagePatch, actor_name: str, action: str, target_name: str) -> str"
+    ],
+    "31": [
+        "check_action_status(image_patch: ImagePatch, object_name: str, action: str, expected_status: str) -> str"
+    ],
+    "32": [
+        "check_interaction_during_event(image_patch: ImagePatch, object_name: str, event: str) -> str"
+    ],
+    "33": [
+        "query_image_significance(image_patch: ImagePatch, image_name: str, object_name: str) -> str"
+    ],
+    "34": [
+        "check_property_of_object(image_patch: ImagePatch, object_name: str, property_name: str) -> str",
+        "check_property_of_object_part(image_patch: ImagePatch, object_name: str, part_name: str, property_name: str) -> str"
+    ]
+}

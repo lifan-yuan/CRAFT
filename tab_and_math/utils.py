@@ -73,7 +73,16 @@ def davinci_api(message, current_key, temperature=0.3):
 
 # Execute the code in PoT method / during Execution Stage
 def process_code(code, is_api=False):
-    all_code_pieces = re.findall(r"```python\n(.*?)```", code, re.DOTALL)
+    try:
+        all_code_pieces = re.findall(r"```python\n(.*?)```", code, re.DOTALL)
+    except:
+        all_code_pieces = []
+        while "```python" in code:
+            st = code.index("```python") + len("```python")
+            ed = code.index("```", st) if "```" in code[st:] else len(code)
+            all_code_pieces.append(code[st:ed])
+            code = code[:st] + code[ed+3:] if "```" in code[st:] else code[:st]
+
     code_pieces = []
     for i, code_piece in enumerate(all_code_pieces):
 

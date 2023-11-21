@@ -1,0 +1,361 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000496402.jpg,What animal is on the other side of the chessboard?,Identify the animal present on the other side of the chessboard.,Cat.,vqa_4477,,What animal is on the other side of the chessboard?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	chessboard_patches = image_patch.find(""chessboard"")
+	if len(chessboard_patches) == 0:
+		return image_patch.simple_query(""What animal is on the other side of the chessboard?"")
+	chessboard_patch = chessboard_patches[0]
+	animal_patches = image_patch.find(""animal"")
+	if len(animal_patches) == 0:
+		return ""none""
+	for animal_patch in animal_patches:
+		if animal_patch.horizontal_center > chessboard_patch.horizontal_center:
+			return animal_patch.simple_query(""What is this?"")
+	return ""none""",vqa
+000000563185.jpg,Where is the science fiction character?,Identify the location of the character.,Bathroom.,vqa_8041,,Where is the science fiction character?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	character_patches = image_patch.find(""science fiction character"")
+	if len(character_patches) == 0:
+		return image_patch.simple_query(""Where is the science fiction character?"")
+	character_patch = character_patches[0]
+	return character_patch.simple_query(""Where is this?"")",vqa
+000000382554.jpg,How challenging is hill climb for an experienced rider?,Evaluate the difficulty level of hill climb for an experienced rider.,Difficult.,vqa_8493,,How challenging is hill climb for an experienced rider?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	hill_climb_query = ""How challenging is hill climb for an experienced rider?""
+	challenge_degree = image_patch.llm_query(hill_climb_query, long_answer = False)
+	return challenge_degree",vqa
+000000493218.jpg,Who is holding the crutches in the scene?,Identify the woman holding the crutches.,One woman.,vqa_11367,,Who is holding the crutches in the scene?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	crutches_patches = image_patch.find(""crutches"")
+	# If no crutches are found in the photo
+	if len(crutches_patches) == 0:
+		return ""No one is holding crutches in the scene""
+	crutches_patch = crutches_patches[0]
+	person_patches = image_patch.find(""person"")
+	# Assuming there's multiple persons, we will try to find one close to crutches
+	for person_patch in person_patches:
+		if distance(crutches_patch, person_patch) < 10:  # Assuming a reasonable threshold
+			person_name = person_patch.simple_query(""Who is this person?"")
+			return person_name
+	return ""It's unclear who is holding the crutches""",vqa
+000000262376.jpg,What is the atrium adorned with?,Examine the embellishments of the atrium's chandeliers.,Flowers decorations.,vqa_27515,,What is the atrium adorned with?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	atrium_patches = image_patch.find(""atrium"")
+	if len(atrium_patches) == 0:
+		# If no atrium is found, query the image directly with simple_query instead of returning a long string like ""There is no atrium.""
+		return image_patch.simple_query(""What is the atrium adorned with?"")
+	atrium_patch = atrium_patches[0]
+	adornment = atrium_patch.simple_query(""What is the atrium adorned with?"")
+	return adornment",vqa
+000000302443.jpg,Are the silver balls scattered or lined up?,Are the silver balls scattered or lined up?,The silver balls are lined up in the sand.,llava_1996,000000302443,Are the silver balls scattered or lined up?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	balls_patches = image_patch.find(""silver balls"")
+	if len(balls_patches) < 1:
+		return ""There are no silver balls.""
+	# Defining the threshold for determining whether the balls are scattered or lined up.
+	horizontal_threshold = balls_patches[0].width // 2
+	# sorting patches along the x-axis
+	balls_patches.sort(key=lambda patch: patch.horizontal_center)
+	for i in range(len(balls_patches) - 1):
+		if abs(balls_patches[i].horizontal_center - balls_patches[i+1].horizontal_center) > horizontal_threshold:
+			return ""scattered""
+	return ""lined up""",vqa
+000000223550.jpg,What could be the relationship between the girl and the man watching her?,What could be the relationship between the girl and the man watching her?,"There could be several possible relationships between the girl and the man watching her, but it's not possible to definitively determine their relationship based on the image alone. They could be friends, relatives, or even strangers who happen to be on the same beach. The man might also be a surfing instructor observing the woman's progress or giving her guidance.",llava_6775,000000223550,What could be the relationship between the girl and the man watching her?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""girl"")
+	man_patches = image_patch.find(""man watching her"")
+	# If no girl or man watching her is found, query the image directly with simple_query
+	if len(girl_patches) == 0 or len(man_patches) == 0:
+		return image_patch.simple_query(""What could be the relationship between the girl and the man watching her?"")
+	# Using llm_query function to ask GPT-3 to infer the possible relationship
+	relationship = girl_patches[0].llm_query(""What could be the relationship between a girl and a man watching her?"", long_answer=True)
+	return relationship",vqa
+000000063270.jpg,Are there cars around the pole with the tennis racket?,Are there cars around the pole with the tennis racket?,"Yes, there are many parked cars near the pole with the attached tennis racket.",llava_14641,000000063270,Are there cars around the pole with the tennis racket?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pole_patches = image_patch.find(""pole with the tennis racket"")
+	if len(pole_patches) == 0:
+		return ""no""
+	pole_patch = pole_patches[0]
+	car_patches = image_patch.find(""car"")
+	for car_patch in car_patches:
+		if pole_patch.overlaps_with(car_patch.left, car_patch.lower, car_patch.right, car_patch.upper):
+			return ""yes""
+	return ""no""",vqa
+000000219619.jpg,Why is the cookie in the bento box shaped like a mouse?,Why is the cookie in the bento box shaped like a mouse?,"The cookie being shaped like a mouse in the bento box is likely for artistic and aesthetic purposes. Creating visually appealing and creatively designed foods can make the meal more fun and enjoyable, especially for children. The mouse-shaped cookie adds an element of playfulness that can encourage kids to eat their lunch and enjoy the experience. It also demonstrates the creativity and attention to detail that can be found in some bento box preparations.",llava_16654,000000219619,Why is the cookie in the bento box shaped like a mouse?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	cookie_patches = image_patch.find(""cookie"")
+	# Assume only one cookie
+	cookie_patch = cookie_patches[0]
+	if cookie_patch.verify_property(""cookie"", ""mouse-shaped""):
+		explanation_query = ""Why would a cookie in a bento box be shaped like a mouse?""
+		explanation = cookie_patch.llm_query(explanation_query)
+		return explanation
+	else:
+		return ""The cookie is not shaped like a mouse.""",vqa
+000000115158.jpg,"Is the man cutting out newspaper clippings, or is it unclear what type of paper he is cutting?","Is the man cutting out newspaper clippings, or is it unclear what type of paper he is cutting?","It is not definitively clear whether the man is cutting out newspaper clippings or another type of paper, as the image only shows him cutting paper with scissors. However, it is a possibility that he is cutting out newspaper clippings based on one description.",llava_27335,000000115158,"Is the man cutting out newspaper clippings, or is it unclear what type of paper he is cutting?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	# If a man is found in the image:
+	if man_patches:
+		man_activity = man_patches[0].simple_query(""What is the man doing?"")
+		if ""cutting"" in man_activity:
+			object_cut = man_patches[0].simple_query(""What is the man cutting?"")
+			if ""newspaper"" in object_cut:
+				return ""Yes, the man is cutting out newspaper clippings.""
+			else:
+				return ""No, it is unclear what type of paper the man is cutting.""
+		else:
+			return ""No, the man is not cutting anything.""
+	# If no man is found in the image:
+	else:
+		return ""No, there is no man in the image.""",vqa
+000000497537.jpg,What is the bucket filled with?,What is the bucket filled with?,The bucket is filled with water.,llava_45128,000000497537,What is the bucket filled with?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bucket_patches = image_patch.find(""bucket"")
+	if len(bucket_patches) == 0:
+		return ""The bucket does not exist.""
+	# Assumption: bucket_patches[0] is the bucket we are interested in
+	bucket_patch = bucket_patches[0]
+	bucket_content = bucket_patch.simple_query(""What is in the bucket?"")
+	return bucket_content",vqa
+000000497542.jpg,How many metal tubes are coming out of the cement block?,How many metal tubes are coming out of the cement block?,There are two metal tubes coming out of the cement block.,llava_65864,000000497542,How many metal tubes are coming out of the cement block?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	cement_patches = image_patch.find(""cement block"")
+	if len(cement_patches) == 0:
+		return image_patch.simple_query(""How many metal tubes are coming out of the cement block?"")
+	cement_patch = cement_patches[0]
+	tube_patches = image_patch.find(""metal tube"")
+	count = 0
+	for tube_patch in tube_patches:
+		if tube_patch.overlaps_with(cement_patch.left, cement_patch.lower, cement_patch.right, cement_patch.upper):
+			count += 1
+	return str(count)",vqa
+000000194921.jpg,How many bulls are eating from the trough and how many are standing away from them?,How many bulls are eating from the trough and how many are standing away from them?,"There are two bulls eating from the trough, and one bull is standing away from them.",llava_81385,000000194921,How many bulls are eating from the trough and how many are standing away from them?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bull_patches = image_patch.find(""bull"")
+	trough_patches = image_patch.find(""trough"")
+	# The question presumes there is only one trough.
+	trough_patch = trough_patches[0]
+	eating_bulls = 0
+	standing_away_bulls = 0
+	for bull_patch in bull_patches:
+		if bull_patch.overlaps_with(trough_patch.left, trough_patch.lower, trough_patch.right, trough_patch.upper):
+			eating_bulls += 1
+		else:
+			standing_away_bulls += 1
+	return f""{eating_bulls} bulls are eating from the trough and {standing_away_bulls} are standing away.""",vqa
+000000091747.jpg,Is the hat on top of a shelf or on the mannequin?,Is the hat on top of a shelf or on the mannequin?,"The hat is placed on the mannequin, not on a shelf.",llava_83730,000000091747,Is the hat on top of a shelf or on the mannequin?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	hat_patches = image_patch.find(""hat"")
+	# Question assumes one hat patch
+	hat_patch = hat_patches[0]
+	return hat_patch.best_text_match([""on top of a shelf"", ""on the mannequin""])",vqa
+000000405246.jpg,What does the presence of a kilt on the man suggest about his background or the event?,What does the presence of a kilt on the man suggest about his background or the event?,"The man's choice to wear a kilt suggests that he may have a Scottish background, or he is participating in an event with a Scottish theme or influence. A kilt is a traditional Scottish garment worn by men as a symbol of pride and a celebration of Scottish heritage. It is often worn at formal events, such as weddings or cultural gatherings, and showcases the wearer's connection to Scotland and its rich history. The fact that he is wearing a kilt could mean that the event he is attending has Scottish elements or that the man personally identifies with or wishes to honor his Scottish heritage.",llava_90727,000000405246,What does the presence of a kilt on the man suggest about his background or the event?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	kilt_patches = image_patch.find(""kilt"")
+	for kilt_patch in kilt_patches:
+		if image_patch.exists(""man""):
+			return image_patch.llm_query(""What does a man wearing a kilt suggest about his background or the event?"")
+	return ""The man is not wearing a kilt.""",vqa
+000000386783.jpg,What is the role of player #11 in this play?,What is the role of player #11 in this play?,"Player #11's role in this play is to wait in position and attempt to cut off the throw, which could potentially prevent the runner from advancing further or scoring. Cutting off the throw involves intercepting the baseball before it reaches its intended target, such as the baseman covering the base.",llava_92109,000000386783,What is the role of player #11 in this play?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	player_patches = image_patch.find(""player #11"")
+	if len(player_patches) == 0:
+		return image_patch.simple_query(""What is the role of player #11 in this play?"")
+	player_patch = player_patches[0]
+	return player_patch.simple_query(""What is this player's role in the play?"")",vqa
+000000487064.jpg,Is the shopping cart empty or filled with items?,Is the shopping cart empty or filled with items?,"The image does not provide enough information to determine if the shopping cart is filled with items or if it's empty. However, given the unconventional placement of the cart on the street sign, it is likely that the cart is empty or contains relatively light items, as a heavier cart would be more difficult to lift and balance on top of the sign.",llava_98406,000000487064,Is the shopping cart empty or filled with items?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	shopping_cart_patch = image_patch.find(""shopping cart"")[0]
+	return shopping_cart_patch.best_text_match([""empty"", ""filled with items""])",vqa
+000000292596.jpg,How can one infer that the photo was taken in the 1950s?,How can one infer that the photo was taken in the 1950s?,"There are several factors that can help us infer that the photo was taken in the 1950s. First, the woman is wearing a dress that is characteristic of the fashion of that time period. The 1950s' style was often characterized by fuller skirts, cinched waistlines, and fitted tops, giving the women a refined and graceful appearance.
+
+Second, the photo is in black and white, which suggests that it might have been taken in the era when color photography was not yet widespread or affordable for the average family. Black and white photography was the primary mode of capturing images until the mid-20th century when more accessible color photography options became available.
+
+Lastly, the kitchen appliances, decor, and overall setting can also provide clues about the time period of the photograph. Kitchens in the 1950s often had certain distinctive features such as older-style stoves or ovens, vintage countertops and cabinetry, and particular patterns or colors in the wall or floor tiles.
+
+Combining these factors — the woman's attire, the black and white nature of the photo, and the kitchen's overall appearance — we can reasonably infer that the photo was taken in the 1950s.",llava_100597,000000292596,How can one infer that the photo was taken in the 1950s?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	answer = image_patch.llm_query(""What elements or details in this scene would typically indicate that a photo was taken in the 1950s?"")
+	return answer",vqa
+000000570460.jpg,How many wind socks are visible in the image?,How many wind socks are visible in the image?,"The image shows a myriad of wind socks, suggesting that there are numerous wind socks visible in the scene.",llava_118551,000000570460,How many wind socks are visible in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	wind_sock_patches = image_patch.find(""wind sock"")
+	return len(wind_sock_patches)",vqa
+000000502438.jpg,Are the yaks near the edge of the roadway?,Are the yaks near the edge of the roadway?,"Yes, the yaks are standing near the edge of a roadway on the hill in the image.",llava_125362,000000502438,Are the yaks near the edge of the roadway?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	yak_patches = image_patch.find(""yaks"")
+	roadway_patches = image_patch.find(""roadway"")
+	if len(yak_patches) == 0 or len(roadway_patches) == 0:
+		# If no yaks or roadway are found, query the image directly instead.
+		return image_patch.simple_query(""Are the yaks near the edge of the roadway?"")
+	for yak_patch in yak_patches:
+		for roadway_patch in roadway_patches:
+			# If the distance between the yak and the roadway is small, return ""yes""
+			if distance(yak_patch, roadway_patch) < roadway_patch.height / 4:  
+				return ""yes""
+	return ""no""",vqa
+000000372551.jpg,What is a kickflip and how is it performed?,What is a kickflip and how is it performed?,"A kickflip is a popular and visually impressive skateboarding trick. It involves the skateboarder jumping into the air while flipping the skateboard 360 degrees along its horizontal axis, with the board spinning beneath their feet.
+
+To perform a kickflip:
+1. Position the back foot on the tail of the skateboard with the ball of the foot centered on the tail's edge.
+2. Place the front foot slightly behind the front truck, angled slightly towards the nose of the skateboard.
+3. Begin by pushing down on the tail of the board with the back foot, lifting the front of the skateboard into the air.
+4. As the skateboarder starts to jump, use the front foot to flick the side of the skateboard, just behind the front truck. This flicking motion is crucial, as it initiates the board's spinning motion.
+5. While in mid-air, the skateboarder needs to keep an eye on the board's rotation, preparing to catch it with their feet once the board has completed the flip.
+6. As the skateboard completes its rotation, the skateboarder should land back on the board with both feet, placing weight evenly on both legs and bending the knees to absorb impact.
+
+Executing a kickflip requires precise timing, balance, and control. It's a fundamental trick that many skateboarders aspire to master, and it often serves as a foundation for learning more advanced skateboarding maneuvers.",llava_125708,000000372551,What is a kickflip and how is it performed?,"def execute_command(image)->str:
+	query = ""What is a kickflip and how is it performed?""
+	return llm_query(query, long_answer=True)",vqa
+000000331635.jpg,Are both men balding?,Are both men balding?,"Yes, both men in the image are balding.",llava_152406,000000331635,Are both men balding?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	men_patches = image_patch.find(""men"")
+	if len(men_patches) < 2:
+		return ""no""
+	for man_patch in men_patches:
+		if not man_patch.verify_property(""man"", ""balding""):
+			return ""no""
+	return ""yes""",vqa
+000000517485.jpg,"How does popping a wheelie work, and what are some tips for beginners trying to learn it?","How does popping a wheelie work, and what are some tips for beginners trying to learn it?","Popping a wheelie is a cycling trick where the rider lifts the front wheel of the bike off the ground while maintaining balance on the rear wheel. The rider then peddles to keep the wheelie going. Here are some tips for beginners trying to learn to perform a wheelie:
+
+1. Choose the right gear: Start in a lower gear to provide better control while getting used to the balance and feel of the trick. As your skill improves, you can try higher gears.
+
+2. Find a suitable location: Practice in a flat, open space with no obstacles or traffic. A grassy terrain is ideal because it offers a soft landing surface in case of a fall.
+
+3. Position your feet: Place your dominant foot on the front pedal, and the other foot on the back pedal. The dominant foot should be in the power position (around the 2 o'clock mark) while attempting the wheelie.
+
+4. Build momentum: Pedal at a slow to moderate speed before attempting the wheelie. Too much speed can make it difficult to control the bike.
+
+5. Lean back and lift: While pedaling, shift your weight backward, and pull up on the handlebars to lift the front wheel off the ground. Use your legs to pull from the pedals and create more lift.
+
+6. Control the balance: Once you're in the wheelie position, maintain balance by modulating the rear brake and adjusting your body weight. If you feel like you're about to fall backward, apply the rear brake to help bring the front wheel back down.
+
+7. Practice, practice, practice: Popping a wheelie takes time and patience to master. Keep practicing, and you'll gradually improve your balance, control, and overall skill in performing this trick.
+
+Remember, safety comes first. Wear a helmet and protective gear while learning and performing any cycling tricks. Also, consider learning from someone experienced or watching tutorial videos for more guidance.",llava_152657,000000517485,"How does popping a wheelie work, and what are some tips for beginners trying to learn it?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.llm_query(""How does popping a wheelie work, and what are some tips for beginners trying to learn it?"")
+",vqa
+000000572012.jpg,Where is the metal slide located?,Where is the metal slide located?,The metal slide is located in a playground.,llava_161074,000000572012,Where is the metal slide located?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	metal_slide_patches = image_patch.find(""metal slide"")
+	if len(metal_slide_patches) == 0:
+		# If no metal slide is found, return a response that indicates this.
+		return ""The metal slide is not in the image.""
+	metal_slide_patch = metal_slide_patches[0]
+	return metal_slide_patch.simple_query(""where is the metal slide located?"")",vqa
+000000428788.jpg,Are there any police cars on the miniature street scene?,Are there any police cars on the miniature street scene?,"Yes, there are several highway patrol police vehicles on the miniature street scene.",llava_175701,000000428788,Are there any police cars on the miniature street scene?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	police_car_patches = image_patch.find(""police car"")
+	return bool_to_yesno(len(police_car_patches) > 0)",vqa
+000000127553.jpg,What can you infer about the resident's celebration of the holiday season?,What can you infer about the resident's celebration of the holiday season?,"Based on the image, it can be inferred that the residents of the house are likely celebrating the holiday season of December, most probably Christmas, given that the living room is decorated with Christmas decorations as well as a Christmas tree. This suggests that the residents are keen on creating a festive atmosphere within the home, by making an effort to adorn the living room with holiday-themed items.
+
+The presence of Christmas decorations in the living room may also indicate that the residents participate in traditional holiday activities or gatherings with family and friends. Such activities and gatherings can include exchanging gifts, hosting holiday dinners, or enjoying holiday movies and music together in a cozy atmosphere. The decorations may serve to enhance the sense of celebration and warmth within the household, reflecting the spirit of the season and fostering bonding and shared memories among the family members and their guests.
+
+In conclusion, the panoramic photograph depicting the living room decorated with Christmas decorations shows that the residents are enthusiastic about celebrating the holiday season and likely take part in various festivities, traditions, and social gatherings during this time of year.",llava_177360,000000127553,What can you infer about the resident's celebration of the holiday season?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	# Use logical reasoning on how the resident celebrates the holiday season
+	question = ""What can you infer about the resident's celebration of the holiday season?""
+	inference = image_patch.llm_query(question)
+	return inference",vqa
+000000237192.jpg,What is the boy pretending to do while playing with his dad?,What is the boy pretending to do while playing with his dad?,The boy is pretending to be on the phone while playing with his dad.,llava_182845,000000237192,What is the boy pretending to do while playing with his dad?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boy_patches = image_patch.find(""boy"")
+	# If there are multiple boys, we'll just focus on the first one identified.
+	if len(boy_patches) > 0:
+		boy_patch = boy_patches[0]
+		pretend_action = boy_patch.simple_query(""What is the boy pretending to do?"")
+		return pretend_action
+	return ""Cannot identify a boy in the image.""",vqa
+000000274496.jpg,Why might a person in a yellow safety vest be standing in front of the Big Ben clock tower?,Why might a person in a yellow safety vest be standing in front of the Big Ben clock tower?,"A person in a yellow safety vest, like a police officer or traffic warden, might be standing in front of the Big Ben clock tower for a few possible reasons. They may be on duty, providing security or traffic control in the area, as the location is a popular tourist attraction and can be crowded. Additionally, they could be assisting with an event, a ceremony, or a road closure nearby. The yellow safety vest ensures that they are easily visible and identifiable by the public and other officials.",llava_196127,000000274496,Why might a person in a yellow safety vest be standing in front of the Big Ben clock tower?,"def execute_command(image)->str:
+	# This question requires external knowledge and reasoning, not present in the image.
+	# We need to understand the context for why a person in a yellow safety vest would be standing in front of the Big Ben.
+	description = ""a person in a yellow safety vest standing in front of the Big Ben clock tower""
+	explanation = llm_query(f""Why might {description}?"", long_answer=True)
+	return explanation",vqa
+000000316343.jpg,How would you describe the man's level of attention and focus on the task?,How would you describe the man's level of attention and focus on the task?,"The man appears to be highly engaged and focused on the task at hand, as seen by his intent gaze and active use of the game controller. This indicates that he is deeply immersed in playing the video game and is concentrating on his actions and the game's responses.",llava_198273,000000316343,How would you describe the man's level of attention and focus on the task?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""The man is not in the image.""
+	man_patch = man_patches[0]
+	attention_level = man_patch.simple_query(""What is the man's level of attention and focus on the task?"")
+	return attention_level",vqa
+000000382692.jpg,How many garage doors are there in the image?,How many garage doors are there in the image?,There are two garage doors in the image.,llava_198873,000000382692,How many garage doors are there in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	garage_doors_patches = image_patch.find(""garage door"")
+	return str(len(garage_doors_patches))",vqa
+000000442790.jpg,What are the boys doing while sitting on the park bench?,What are the boys doing while sitting on the park bench?,"While sitting on the park bench, one of the boys is eating food from a baggy, and the other boy is holding a chewed-on apple.",llava_200695,000000442790,What are the boys doing while sitting on the park bench?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boys_patches = image_patch.find(""boys on park bench"")
+	if len(boys_patches) == 0:
+		# If no boys are found on the park bench, use simple_query to answer
+		return image_patch.simple_query(""What are the boys doing while sitting on the park bench?"")
+	boys_patch = boys_patches[0]
+	return boys_patch.simple_query(""What are the boys doing?"")",vqa
+000000074340.jpg,Is there a commotion involving a skiing kid and another kid who has fallen?,Is there a commotion involving a skiing kid and another kid who has fallen?,"Yes, there is a situation where a skiing kid is trying to stop before he runs over another kid who has fallen on the slope.",llava_203710,000000074340,Is there a commotion involving a skiing kid and another kid who has fallen?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	skiing_kid_patches = image_patch.find(""skiing kid"")
+	fallen_kid_patches = image_patch.find(""fallen kid"")
+	if len(skiing_kid_patches) == 0 or len(fallen_kid_patches) == 0:
+		return ""no""
+	for skiing_kid_patch in skiing_kid_patches:
+		for fallen_kid_patch in fallen_kid_patches:
+			if abs(distance(skiing_kid_patch, fallen_kid_patch)) < 100:  # arbitrary distance to indicate a commotion
+				return ""yes""
+	return ""no""",vqa
+000000159338.jpg,Is the image of the mules pulling the buggy a recent photo or an old one?,Is the image of the mules pulling the buggy a recent photo or an old one?,"The image is described as a very old picture, which suggests that it was taken quite some time ago, possibly in an era when horse-drawn transportation was more common.",llava_204739,000000159338,Is the image of the mules pulling the buggy a recent photo or an old one?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.best_text_match([""recent"", ""old""])",vqa
+000000172232.jpg,Is the Coke machine a modern or an old-fashioned design?,Is the Coke machine a modern or an old-fashioned design?,"The Coke machine is an old-fashioned design, which is evident from its vintage appearance and Coke bottle dispensing mechanism.",llava_208600,000000172232,Is the Coke machine a modern or an old-fashioned design?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	coke_machine_patches = image_patch.find(""Coke machine"")
+	if len(coke_machine_patches) == 0:
+		# If no Coke machine is found, inform the user instead of returning a long complicated string.
+		return ""No Coke machine found.""
+	coke_machine_patch = coke_machine_patches[0]  # Assuming there's only one Coke machine in the image.
+	return coke_machine_patch.best_text_match([""modern"", ""old-fashioned""])",vqa
+000000410622.jpg,What can be inferred about the living conditions in this particular jail cell?,What can be inferred about the living conditions in this particular jail cell?,"From the black and white image of the jail cell, one can infer that the living conditions inside are basic, cramped, and possibly uncomfortable. The small area contains the essentials, such as a toilet, sink, and bed or cot, but there is no indication of additional amenities or space for personal belongings. 
+
+The old and rusty appearance of the cell suggests that it may not have been well-maintained or regularly updated. This could contribute to an unpleasant and unwelcoming environment for anyone being held there. The lack of color in the photo adds to the bleak and somber atmosphere, further highlighting the austere conditions of the jail cell.
+
+In summary, the living conditions in this particular jail cell appear to be rather basic, confined, and potentially uncomfortable, with a sense of neglect and deterioration from the old and rusty appearance.",llava_215640,000000410622,What can be inferred about the living conditions in this particular jail cell?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	cell_patches = image_patch.find(""cell"")
+	if len(cell_patches) == 0:
+		return image_patch.llm_query(""What can be inferred about the living conditions in this particular jail cell?"")
+	cell_patch = cell_patches[0]
+	furniture_exists = cell_patch.exists(""furniture"")
+	condition_of_wall = cell_patch.best_text_match([""new"", ""old"", ""damaged"", ""clean""])
+	space = cell_patch.simple_query(""how big is the space?"")
+	info_query = f""Inferred living conditions: Space is {space}, condition of wall: {condition_of_wall}, furniture: {'present' if furniture_exists else 'absent'}.""
+	return cell_patch.llm_query(info_query)",vqa
+000000169211.jpg,What is the primary object in the junk yard?,What is the primary object in the junk yard?,The primary objects in the junk yard are old rusted buses and parts of other big vehicles.,llava_216169,000000169211,What is the primary object in the junk yard?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	primary_object = image_patch.simple_query(""What is the primary object?"")
+	return primary_object",vqa
+000000014824.jpg,Do the zombie-dressed individuals appear to be participating in a specific event or gathering?,Do the zombie-dressed individuals appear to be participating in a specific event or gathering?,"While it is not possible to definitively determine the purpose or event for which the group of people is dressed as zombies from the image alone, it is likely that they are participating in some sort of gathering or themed event. Examples of such events include a zombie walk, a Halloween parade, or a promotional event for a film, TV show, or video game that features zombies as central characters. The fact that they are gathered near a stop sign on a city street suggests some degree of organization and intent behind their appearance.",llava_223213,000000014824,Do the zombie-dressed individuals appear to be participating in a specific event or gathering?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	zombie_dressed_patches = image_patch.find(""zombie-dressed individual"")
+	#Assumes atleast one zombie dressed individual in the patch
+	zombie_dressed_patch = zombie_dressed_patches[0]
+	return zombie_dressed_patch.llm_query(""Does this individual appear to be participating in a specific event or gathering?"", long_answer=False)",vqa
+000000244540.jpg,What do the black padded cases contain?,What do the black padded cases contain?,The black padded cases contain electronic equipment.,llava_232811,000000244540,What do the black padded cases contain?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	case_patches = image_patch.find(""black padded case"")
+	if len(case_patches) == 0:
+		# If no black padded case is found, query the image directly with simple_query instead of returning a long string like ""There are no black padded cases.""
+		return image_patch.simple_query(""What do the black padded cases contain?"")
+	# Assuming the first case contains representative contents
+	case_patch = case_patches[0]
+	return case_patch.simple_query(""What does this case contain?"")",vqa
+000000363867.jpg,Is the person riding the escalator alone or are there other people on the escalator as well?,Is the person riding the escalator alone or are there other people on the escalator as well?,"The person is riding the escalator alone, with no other people on it.",llava_249873,000000363867,Is the person riding the escalator alone or are there other people on the escalator as well?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	escalator_patches = image_patch.find(""escalator"")
+	# It is implied there's at least one escalator
+	escalator_patch = escalator_patches[0]
+	people_patches = escalator_patch.find(""people"")
+	# According to the question 'the person' always exists
+	# if there are more than 1 person
+	return ""alone"" if len(people_patches) == 1 else ""not alone""",vqa

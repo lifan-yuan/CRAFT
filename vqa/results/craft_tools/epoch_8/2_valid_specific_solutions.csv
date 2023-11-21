@@ -1,0 +1,412 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000515785.jpg,What activity is the young man doing in the city park?,Identify the young man's activity in the city park.,Throwing frisbee.,vqa_33710,,What activity is the young man doing in the city park?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	activity = image_patch.simple_query(""What activity is the young man doing in the city park?"")
+	return activity",vqa
+000000170888.jpg,Is the patio described as small or large?,Is the patio described as small or large?,The patio is described as large.,llava_23660,000000170888,Is the patio described as small or large?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	patio_patches = image_patch.find(""patio"")
+	if len(patio_patches) == 0:
+		return image_patch.simple_query(""Is the patio small or large?"")
+	patio_patch = patio_patches[0]
+	return patio_patch.best_text_match([""small"", ""large""])",vqa
+000000433129.jpg,Are there any indications of promotions or sales for the car wash in the image?,Are there any indications of promotions or sales for the car wash in the image?,"Yes, the image includes a reference to the car wash sign outdoors with sales, suggesting that promotions or discounts might be available for car wash services at this particular business.",llava_26205,000000433129,Are there any indications of promotions or sales for the car wash in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	promotion_patches = image_patch.find(""promotion"")
+	sale_patches = image_patch.find(""sale"")
+	car_wash_patches = image_patch.find(""car wash"")
+	if len(car_wash_patches) == 0:
+		return ""no""
+	for car_wash_patch in car_wash_patches:
+		for promotion_patch in promotion_patches:
+			if promotion_patch.overlaps_with(car_wash_patch.left, car_wash_patch.lower, car_wash_patch.right, car_wash_patch.upper):
+				return ""yes""
+		for sale_patch in sale_patches:
+			if sale_patch.overlaps_with(car_wash_patch.left, car_wash_patch.lower, car_wash_patch.right, car_wash_patch.upper):
+				return ""yes""
+	return ""no""",vqa
+000000130366.jpg,Has the man on the bicycle already purchased a small tree?,Has the man on the bicycle already purchased a small tree?,"The image indicates that the man on the bicycle may have bought a small tree, as he is riding near a lot selling Christmas trees and there's a tree sale sign. However, we cannot definitively confirm that he has already made a purchase, as it is not explicitly shown in the image.",llava_48415,000000130366,Has the man on the bicycle already purchased a small tree?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_on_bicycle_patches = image_patch.find(""man on bicycle"")
+	if len(man_on_bicycle_patches) == 0:
+		# If no man on bicycle is found, the answer is no
+		return ""no""
+	man_on_bicycle_patch = man_on_bicycle_patches[0]
+	small_tree_patches = image_patch.find(""small tree"")
+	if len(small_tree_patches) == 0:
+		# If no small tree is found, the answer is no
+		return ""no""
+	for small_tree_patch in small_tree_patches:
+		if distance(man_on_bicycle_patch, small_tree_patch) < 0:
+			# If the man on the bicycle and the small tree patches intersect, the answer is yes
+			return ""yes""
+	return ""no""",vqa
+000000168927.jpg,Is one of the men in the image a rabbi?,Is one of the men in the image a rabbi?,"Yes, one of the men in the image is a rabbi.",llava_57460,000000168927,Is one of the men in the image a rabbi?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	men_patches = image_patch.find(""man"") 
+	if len(men_patches) == 0:
+		return ""no""
+	for man_patch in men_patches:
+		if man_patch.verify_property(""man"", ""rabbi""): 
+			return ""yes""
+	return ""no""",vqa
+000000041345.jpg,Did the child create the mess in the room?,Did the child create the mess in the room?,"It is suggested that the child may have been the one who made the mess in the room, with books scattered on the floor around them.",llava_77861,000000041345,Did the child create the mess in the room?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	child_patches = image_patch.find(""child"")
+	mess_patches = image_patch.find(""mess"")
+	if len(child_patches) == 0 or len(mess_patches) == 0:
+		return image_patch.simple_query(""Did the child create the mess in the room?"")
+	child_patch = child_patches[0]
+	# Here we assume there is only one mess patch.
+	mess_patch = mess_patches[0]
+	if child_patch.overlaps_with(mess_patch.left, mess_patch.lower, mess_patch.right, mess_patch.upper):
+		return ""yes""
+	else:
+		return ""no""",vqa
+000000410366.jpg,What color is the disk they are playing with?,What color is the disk they are playing with?,The disk they are playing with is yellow.,llava_81189,000000410366,What color is the disk they are playing with?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	disk_patches = image_patch.find(""disk"")
+	# assuming only one disk is in the image
+	if len(disk_patches) > 0:
+		disk_patch = disk_patches[0]
+		return disk_patch.simple_query(""What color is the disk?"")
+	else:
+		return ""Disk not found in the image""",vqa
+000000325955.jpg,How many people are riding in the carriage being pulled by the bull?,How many people are riding in the carriage being pulled by the bull?,Several men are riding in the carriage being pulled by the bull.,llava_90895,000000325955,How many people are riding in the carriage being pulled by the bull?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	bull_carriage_patches = image_patch.find(""bull carriage"")
+	# Assume only one bull carriage
+	if len(bull_carriage_patches) == 0:
+		return ""0""
+	bull_carriage_patch = bull_carriage_patches[0]
+	people_patches = bull_carriage_patch.find(""people"")
+	return str(len(people_patches))",vqa
+000000222893.jpg,"Based on the autumn colors of the leaves on the trees, what season is it likely to be?","Based on the autumn colors of the leaves on the trees, what season is it likely to be?","Considering the autumn colors of the leaves on the trees, it is most likely the fall season. During this time, the leaves of deciduous trees change color as they prepare to shed for the winter months. The presence of these colors alongside lush green grass indicates a transitional period between summer and winter, which is characteristic of the fall season.",llava_97303,000000222893,"Based on the autumn colors of the leaves on the trees, what season is it likely to be?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	leaf_patches = image_patch.find(""autumn leaves on trees"")
+	if len(leaf_patches) > 0:
+		return ""autumn""
+	else:
+		return image_patch.llm_query(""Based on the color of the leaves on the trees, what season is it likely to be?"", long_answer=False)",vqa
+000000082405.jpg,"Is the Washington Monument under construction, restoration, or neither in the image?","Is the Washington Monument under construction, restoration, or neither in the image?","The Washington Monument is under restoration in the image, as indicated by the reference to its ongoing work.",llava_100660,000000082405,"Is the Washington Monument under construction, restoration, or neither in the image?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	monument_patches = image_patch.find(""Washington Monument"")
+	# If there is no Washington Monument in the image, then return 'neither'
+	if len(monument_patches) == 0:
+		return ""neither""
+	final_verdicts = {'construction': False, 'restoration': False}
+	for status in ['construction', 'restoration']:
+		for monument_patch in monument_patches:
+			if monument_patch.verify_property(""Washington Monument"", status):
+				final_verdicts[status] = True
+	if final_verdicts['construction']:
+		return ""construction""
+	elif final_verdicts['restoration']:
+		return ""restoration""
+	else:
+		return ""neither""",vqa
+000000218399.jpg,Is the little boy's statue used as an advertisement for ice cream?,Is the little boy's statue used as an advertisement for ice cream?,"Yes, the statue of the little boy holding the giant ice cream cone serves as an advertisement for ice cream. It is placed near the freezer, likely to attract customers and promote the sale of ice cream products in the store.",llava_103489,000000218399,Is the little boy's statue used as an advertisement for ice cream?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	statue_patches = image_patch.find(""little boy's statue"")
+	if len(statue_patches) == 0:
+		return image_patch.simple_query(""Is the little boy's statue used as an advertisement for ice cream?"")
+	statue_patch = statue_patches[0]
+	return bool_to_yesno(statue_patch.verify_property(""little boy's statue"", ""used as an advertisement for ice cream""))",vqa
+000000154955.jpg,Are the couple interacting with the cats while being in bed?,Are the couple interacting with the cats while being in bed?,"Yes, the couple in bed is cuddling with their two cats.",llava_107407,000000154955,Are the couple interacting with the cats while being in bed?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	couple_patches = image_patch.find(""couple"")
+	if len(couple_patches) == 0:
+		return ""no""
+	
+	couple_patch = couple_patches[0]
+	cat_patches = image_patch.find(""cats"")
+	if len(cat_patches) == 0:
+		return ""no""
+	
+	interacting_patches = [patch for patch in cat_patches if patch.overlaps_with(couple_patch.left, couple_patch.lower, couple_patch.right, couple_patch.upper)]
+	
+	if len(interacting_patches) > 0 and couple_patch.verify_property(""couple"", ""in bed""):
+		return ""yes""
+	return ""no""",vqa
+000000000943.jpg,Can you discuss the skill level and creativity required to create such sand sculptures?,Can you discuss the skill level and creativity required to create such sand sculptures?,"Creating intricate and detailed sand sculptures like the doghouse and cat depicted in this image requires a significant amount of skill, practice, patience, and creativity. 
+
+Skill and practice are essential for sand sculpting, as the artist must understand how to work with the material (sand) effectively. They need knowledge of using the right sand-to-water ratio to ensure the sand holds its shape, as well as mastery of various sand sculpting tools to carve and mold the sand with precision. Building such complex shapes takes time, and the artist must work carefully to avoid collapsing or damaging the structure as they work.
+
+Creativity plays a vital role in sand sculpture, evident in the choice of subject matter, theme, or storytelling within the sculpture. In this case, the artist not only crafted a doghouse but also created a cat figure and incorporated a toy fire hydrant as a playful accent. This adds character and a sense of whimsy to the scene, making it more engaging and appealing for viewers. A high level of creativity allows the artist to come up with unique and original ideas that capture the interest and admiration of onlookers.
+
+In summary, crafting impressive sand sculptures like the one in the image requires a combination of skill, practice, patience, and creativity. The artist must master the techniques necessary to work with sand as a medium and utilize their creative vision to develop engaging and captivating scenes for viewers to enjoy.",llava_110606,000000000943,Can you discuss the skill level and creativity required to create such sand sculptures?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	sand_sculptures_query = ""Can you discuss the skill level and creativity required to create sand sculptures?""
+	sand_sculptures_discussion = image_patch.llm_query(sand_sculptures_query, long_answer=True)
+	return sand_sculptures_discussion",vqa
+000000515750.jpg,What color is the shirt of the person toasting marshmallows?,What color is the shirt of the person toasting marshmallows?,The person toasting marshmallows is wearing a blue shirt.,llava_112609,000000515750,What color is the shirt of the person toasting marshmallows?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person toasting marshmallows"")
+	if len(person_patches) == 0:
+		# If no person toasting marshmallows is found, query the image directly with simple_query instead of returning a long string like ""There is no person toasting marshmallows.""
+		return image_patch.simple_query(""What color is the shirt of the person toasting marshmallows?"")
+	person_patch = person_patches[0]
+	shirt_color = person_patch.simple_query(""What is the color of the shirt?"")
+	return shirt_color",vqa
+000000071006.jpg,How does the woman appear to feel about her water skiing experience?,How does the woman appear to feel about her water skiing experience?,"The woman seems determined to stay up on her water skis, which indicates that she is focused and enjoying her water skiing experience.",llava_114381,000000071006,How does the woman appear to feel about her water skiing experience?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	# If no woman is found, raise an error
+	if len(woman_patches) == 0:
+		raise ValueError(""Woman not found in image."")
+	woman_patch = woman_patches[0]
+	feeling = woman_patch.simple_query(""What is the woman's emotional state?"")
+	return feeling",vqa
+000000354608.jpg,What can you infer about the owner of these books based on the bird figurine and the globe?,What can you infer about the owner of these books based on the bird figurine and the globe?,"Based on the bird figurine and the globe present in the image, we can infer that the owner of these books might have an interest in nature and travel or geography. The bird figurine suggests an appreciation for wildlife and possibly arts, as figurines often serve as decorative objects or collectibles to showcase personal taste or style. The globe, on the other hand, indicates an interest in world geography and perhaps a desire to learn about different countries and cultures.
+
+Additionally, the presence of many books on the shelf also shows that the owner values knowledge and learning. Collecting books is often a sign of intellectual curiosity and a passion for exploring various subjects. Consequently, the owner could possess a diverse range of interests spanning topics such as history, science, literature, art, and more. 
+
+In summary, the presence of the bird figurine and the globe, along with the sizable book collection, provide insights into the possible interests and hobbies of the book owner, including a passion for learning, an appreciation for nature and wildlife, and an interest in travel, geography, and diverse cultures.",llava_139720,000000354608,What can you infer about the owner of these books based on the bird figurine and the globe?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bird_figurine_patches = image_patch.find(""bird figurine"")
+	globe_patches = image_patch.find(""globe"")
+	if not bird_figurine_patches or not globe_patches:
+		return ""Cannot infer, missing items.""
+	# Combine all the visual information together into a question for the LLM.
+	visual_infos = [bird_figurine_patches[0].simple_query(""Describe the bird figurine.""),
+					globe_patches[0].simple_query(""Describe the globe."")]
+	visual_infos.append(""books"")  # for owner's inference, books should also be described
+	question = ""What can you infer about the owner of some books based on "" + "" and "".join(visual_infos) + ""?""
+	return llm_query(question)",vqa
+000000133247.jpg,Is the motorized chair currently being used or is it empty?,Is the motorized chair currently being used or is it empty?,"The motorized chair is currently empty, as it is parked and unoccupied.",llava_150160,000000133247,Is the motorized chair currently being used or is it empty?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	chair_patches = image_patch.find(""motorized chair"")
+	if len(chair_patches) == 0:
+		return image_patch.simple_query(""Is the motorized chair currently being used or is it empty?"")
+	chair_patch = chair_patches[0]
+	# Checking if there is a person on the chair
+	is_used = chair_patch.verify_property(""motorized chair"", ""person"")
+	return bool_to_yesno(is_used)",vqa
+000000488962.jpg,Is this setting a market or a convention?,Is this setting a market or a convention?,"The image suggests that the setting is a crowded market or convention with demonstration areas displaying a variety of products, including the large banana.",llava_153179,000000488962,Is this setting a market or a convention?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.best_text_match([""market"", ""convention""])",vqa
+000000220417.jpg,Are the man and the little girl standing on grass or dirt?,Are the man and the little girl standing on grass or dirt?,The man and the little girl are standing on the dirt in the field.,llava_155244,000000220417,Are the man and the little girl standing on grass or dirt?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_and_girl_patches = image_patch.find(""man and little girl"")
+	# The question is direct perception, so we ask the patch
+	if len(man_and_girl_patches) == 0:
+		return ""Neither""
+	return man_and_girl_patches[0].best_text_match([""grass"", ""dirt""])",vqa
+000000004444.jpg,Are there any people occupying the seats in the dining car?,Are there any people occupying the seats in the dining car?,"No, the dining car on the train is currently unoccupied, as all the seats are empty.",llava_159171,000000004444,Are there any people occupying the seats in the dining car?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	dining_car_patches = image_patch.find(""dining car"")
+	if len(dining_car_patches) == 0:
+		return ""no""
+	dining_car_patch = dining_car_patches[0]
+	people_patches = dining_car_patch.find(""people"")
+	if len(people_patches) == 0:
+		return ""no""
+	for people_patch in people_patches:
+		if people_patch.verify_property(""people"", ""sitting""):
+			return ""yes""
+	return ""no""",vqa
+000000532505.jpg,What are the two women holding in their hands while sitting on the couch?,What are the two women holding in their hands while sitting on the couch?,"The two women are holding video game controllers, suggesting that they are actively engaged in playing a video game.",llava_159442,000000532505,What are the two women holding in their hands while sitting on the couch?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	# First find the women
+	women_patches = image_patch.find(""women on couch"")
+	# Assuming there are indeed two women on the couch
+	woman1, woman2 = women_patches[:2]
+	# Find out what is in their hands
+	holding1 = woman1.simple_query(""What is in the woman's hand?"")
+	holding2 = woman2.simple_query(""What is in the woman's hand?"")
+	
+	if holding1 == ""nothing"" and holding2 == ""nothing"":
+		return ""Both women are not holding anything.""
+	elif holding1 == ""nothing"":
+		return ""One woman is holding {}, the other is holding nothing."".format(holding2)
+	elif holding2 == ""nothing"":
+		return ""One woman is holding {}, the other is holding nothing."".format(holding1)
+	else:
+		# Return a short string that can be easily made into multiple responses with minimal modification
+		return ""One woman is holding {}, the other is holding {}."".format(holding1, holding2)",vqa
+000000118413.jpg,"Are there any specific characteristics of the older Motorola phone, such as color or material?","Are there any specific characteristics of the older Motorola phone, such as color or material?",The older Motorola phone in the image is silver in color.,llava_166517,000000118413,"Are there any specific characteristics of the older Motorola phone, such as color or material?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	motorola_patches = image_patch.find(""older Motorola phone"")
+	if len(motorola_patches) == 0:
+		return ""Cannot find older Motorola phone in image.""
+	motorola_patch = motorola_patches[0]
+	color_property_verified = motorola_patch.verify_property(""older Motorola phone"", ""color"")
+	material_property_verified = motorola_patch.verify_property(""older Motorola phone"", ""material"")
+	if color_property_verified and material_property_verified:
+		return ""This older Motorola phone is {} in color and made of {} material"".format(
+			motorola_patch.simple_query(""What color is the older Motorola phone?""),
+			motorola_patch.simple_query(""What material is the older Motorola phone made of?"")
+			)
+	elif color_property_verified:
+		return ""This older Motorola phone is {} in color."".format(
+			motorola_patch.simple_query(""What color is the older Motorola phone?"")
+			)
+	elif material_property_verified:
+		return ""This older Motorola phone is made of {} material."".format(
+			motorola_patch.simple_query(""What material is the older Motorola phone made of?"")
+			)
+	else:
+		return ""Cannot find specific characteristics for the older Motorola phone in the image.""",vqa
+000000108164.jpg,"Is the young girl the only one wearing red shoes, or is the adult also wearing red shoes?","Is the young girl the only one wearing red shoes, or is the adult also wearing red shoes?",Both the young girl and the adult are wearing red shoes in the image.,llava_169338,000000108164,"Is the young girl the only one wearing red shoes, or is the adult also wearing red shoes?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	adult_patches = image_patch.find(""adult"")
+	girl_patches = image_patch.find(""young girl"")
+	if len(girl_patches) == 0 or len(adult_patches) == 0:
+		return image_patch.simple_query(""Is the young girl the only one wearing red shoes, or is the adult also wearing red shoes?"")
+	girl_patch = girl_patches[0]
+	adult_patch = adult_patches[0]
+	if girl_patch.verify_property(""shoes"", ""red"") and not adult_patch.verify_property(""shoes"", ""red""):
+		return ""young girl only""
+	elif girl_patch.verify_property(""shoes"", ""red"") and adult_patch.verify_property(""shoes"", ""red""):
+		return ""both""
+	else:
+		return ""none""",vqa
+000000361437.jpg,Are all the antiques in the photo related to advertising?,Are all the antiques in the photo related to advertising?,"Yes, most of the antiques in the photo have a connection to advertising, featuring various advertisements or marketing designs with a focus on female profiles.",llava_170003,000000361437,Are all the antiques in the photo related to advertising?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	antiques_patches = image_patch.find(""antique"")
+	if len(antiques_patches) == 0:
+		# If no antiques are found, query the image directly with simple_query instead of returning a long string like ""There are no antiques.""
+		return image_patch.simple_query(""Are all the antiques in the photo related to advertising?"")
+	for antique_patch in antiques_patches:
+		if not antique_patch.verify_property(""antique"", ""advertising-related""):
+			return ""no""
+	return ""yes""",vqa
+000000344936.jpg,Why might there be a chain link gate or chained rope display around the bed?,Why might there be a chain link gate or chained rope display around the bed?,"There could be a few reasons for the presence of a chain link gate or chained rope display around the bed. One possibility is that the bed is part of a showroom display or an art installation, where the barrier serves to prevent visitors from touching or sitting on the bed. Another possibility is that the bed's owner simply desired a unique and artistic decorative element to distinguish the bed and create a focal point in the bedroom. In any case, the barrier helps to set the bed apart, making it a visually striking and memorable component of the room.",llava_170444,000000344936,Why might there be a chain link gate or chained rope display around the bed?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	chain_link_gate_exists = image_patch.exists(""chain link gate"")
+	chained_rope_display_exists = image_patch.exists(""chained rope display"")
+	if chain_link_gate_exists or chained_rope_display_exists:
+		return image_patch.llm_query(""Why might there be a chain link gate or chained rope display around a bed?"")
+	else:
+		return ""There is no chain link gate or chained rope display around the bed.""",vqa
+000000529570.jpg,"Can you tell if Tomasino's Cellar Ristorante is a specific type of restaurant, such as Italian or French, based on the name?","Can you tell if Tomasino's Cellar Ristorante is a specific type of restaurant, such as Italian or French, based on the name?","Based on the name, Tomasino's Cellar Ristorante is most likely an Italian restaurant. The term ""Ristorante"" in Italian refers to a restaurant, and the combination of ""Tomasino"" and ""Cellar"" gives the impression that it may offer a cozy, intimate dining experience with a focus on Italian cuisine.",llava_184470,000000529570,"Can you tell if Tomasino's Cellar Ristorante is a specific type of restaurant, such as Italian or French, based on the name?","def execute_command(image) -> str:
+	# Extract required information from the external knowledge and language model
+	restaurant_name = ""Tomasino's Cellar Ristorante""
+	external_knowledge_query = ""What type of restaurant is {}?"".format(restaurant_name)
+	restaurant_type = llm_query(external_knowledge_query, long_answer=False)
+	return restaurant_type",vqa
+000000550118.jpg,What indication is there that the television is available for free?,What indication is there that the television is available for free?,"There is a handwritten sign placed on the television with the word ""free,"" indicating that anyone interested can take the television without payment.",llava_187707,000000550118,What indication is there that the television is available for free?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	tv_patches = image_patch.find(""television"")
+	if len(tv_patches) == 0:
+		# If no television is found, query the image directly with simple_query instead of returning already assumed information
+		return image_patch.simple_query(""What indication is there that the television is available for free?"")
+	tv_patch = tv_patches[0]
+	indication_info = tv_patch.simple_query(""Is there any indication the television is for free?"")
+	return indication_info",vqa
+000000157380.jpg,Has the woman had an accident or is she just resting on the snow?,Has the woman had an accident or is she just resting on the snow?,"It is not clear from the image whether the woman has had an accident or is just resting on the snow. However, since she is laying on her side, it is possible that she has either fallen or is simply taking a break and enjoying the snowy surroundings.",llava_195137,000000157380,Has the woman had an accident or is she just resting on the snow?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		return ""There is no woman.""
+	woman_patch = woman_patches[0]
+	action = woman_patch.simple_query(""What is the woman doing?"")
+	if ""resting"" in action:
+		return ""The woman is resting.""
+	if ""accident"" in action:
+		return ""The woman has had an accident.""
+	return ""Not sure what is happening.""",vqa
+000000149726.jpg,Are the skateboarders holding hands while going down the hill?,Are the skateboarders holding hands while going down the hill?,"Yes, the two skateboarders are holding hands as they go down the hill.",llava_200865,000000149726,Are the skateboarders holding hands while going down the hill?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	skateboarders_patches = image_patch.find(""skateboarders"")
+	if len(skateboarders_patches) == 0:
+		return ""no""
+	for patch in skateboarders_patches:
+		if patch.verify_property(""skateboarders"", ""holding hands"") and patch.verify_property(""skateboarders"", ""going down the hill""):
+			return ""yes""
+	return ""no""",vqa
+000000110604.jpg,Is the man's mustache real or fake?,Is the man's mustache real or fake?,The man's mustache appears to be fake.,llava_207047,000000110604,Is the man's mustache real or fake?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return image_patch.simple_query(""Is the man's mustache real or fake?"")
+	man_patch = man_patches[0]
+	return man_patch.best_text_match([""real"", ""fake""], prefix=""man's mustache"")",vqa
+000000459255.jpg,Where does the jumping take place?,Where does the jumping take place?,"The jumping takes place outside, on the side of a road in a yard-like area.",llava_215922,000000459255,Where does the jumping take place?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	jump_patches = image_patch.find(""jump"")
+	if len(jump_patches) == 0:
+		return image_patch.simple_query(""Where does the jumping take place?"")
+	jump_patch = jump_patches[0]
+	event_location = jump_patch.simple_query(""Where is this?"")
+	return event_location",vqa
+000000463179.jpg,Is the motion of the two people running clearly visible or blurred?,Is the motion of the two people running clearly visible or blurred?,"The motion of the two people running in the image is blurred, indicating that the photograph was taken with a slower shutter speed to capture their movement.",llava_228803,000000463179,Is the motion of the two people running clearly visible or blurred?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people running"")
+	if len(people_patches) == 0:
+		return image_patch.simple_query(""Is the motion of the two people running clearly visible or blurred?"")
+	else:
+		# Assuming there are exactly two people
+		motion_visibility = people_patches[0].best_text_match([""clearly visible"", ""blurred""])
+		return motion_visibility",vqa
+000000012107.jpg,Is there any indication that the apartments are available for rent?,Is there any indication that the apartments are available for rent?,"Yes, there is a sign in one of the windows that reads ""for rent.""",llava_242469,000000012107,Is there any indication that the apartments are available for rent?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	indication_patch = image_patch.find(""for rent sign"")
+	if len(indication_patch) > 0:
+		return ""yes""
+	else:
+		indication_patch = image_patch.find(""rent sign"")
+		if len(indication_patch) > 0:
+			return ""yes""
+		else:
+			return ""no""",vqa
+000000335787.jpg,Does the large movie festival poster have any relation to a specific event or milestone?,Does the large movie festival poster have any relation to a specific event or milestone?,"Yes, the large movie festival poster is related to a specific milestone, as it celebrates the ten-year anniversary of the film festival. This implies that the festival has a successful history and has been an important event in the community over the past decade. The billboard could be a symbol of pride and achievement for the festival organizers, as well as an indication of the ongoing support and enthusiasm for the cinematic arts within the city.
+
+The presence of such a large and eye-catching poster in a highly visible location also serves to advertise the event and attract attention from passersby, including the person walking on the city street. It might encourage local residents and visitors to attend the festival and support the film industry by witnessing the diverse range of movies showcased during the event. Overall, the poster plays an essential role in promoting the film festival, celebrating its past accomplishments, and setting the stage for continued growth and success in the years to come.",llava_246440,000000335787,Does the large movie festival poster have any relation to a specific event or milestone?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	poster_patches = image_patch.find(""large movie festival poster"")
+	if len(poster_patches) == 0:
+		return image_patch.simple_query(""Does the large movie festival poster have any relation to a specific event or milestone?"")
+	poster_patch = poster_patches[0]
+	poster_text = poster_patch.simple_query(""What text is on the poster?"")
+	return poster_patch.llm_query(""Does the text '{}' from a movie festival poster have any relation to a specific event or milestone?"".format(poster_text))",vqa
+000000525153.jpg,Which of the father's children is holding a half-eaten pastry?,Which of the father's children is holding a half-eaten pastry?,The girl is holding a half-eaten pastry in her hand.,llava_249397,000000525153,Which of the father's children is holding a half-eaten pastry?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	father_patches = image_patch.find(""father"")
+	if len(father_patches) == 0:
+		return image_patch.simple_query(""Which of the father's children is holding a half-eaten pastry?"")
+	father_patch = father_patches[0]
+	child_patches = image_patch.find(""child"")
+	if len(child_patches) == 0:
+		return ""none""
+	for child_patch in child_patches:
+		if child_patch.overlaps_with(father_patch.left, father_patch.lower, father_patch.right, father_patch.upper):
+			pastry_patches = child_patch.find(""half-eaten pastry"")
+			if len(pastry_patches)>0:
+				return child_patch.simple_query(""Who is this child?"")
+	return ""none""",vqa
+000000373120.jpg,What color are the leaves of the tree under which the man is sitting?,What color are the leaves of the tree under which the man is sitting?,The leaves of the tree under which the man is sitting are red.,llava_249809,000000373120,What color are the leaves of the tree under which the man is sitting?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	# If no man is found, query the image directly with simple_query
+	if len(man_patches) == 0:
+		return image_patch.simple_query(""What color are the leaves of the tree under which the man is sitting?"")
+	man_patch = man_patches[0]
+	tree_patches = image_patch.find(""tree"")
+	# If no tree is found, return ""There are no trees.""
+	if len(tree_patches) == 0:
+		return ""There are no trees.""
+	tree_under_man = None
+	for tree_patch in tree_patches:
+		if tree_patch.vertical_center > man_patch.vertical_center:
+			tree_under_man = tree_patch
+			break
+	# If man is not under a tree, return ""The man is not sitting under a tree.""
+	if tree_under_man is None:
+		return ""The man is not sitting under a tree.""
+	color_of_leaves = tree_under_man.simple_query(""What color are the leaves?"")
+	return color_of_leaves",vqa
+000000357340.jpg,Is there another person watching the shearing process?,Is there another person watching the shearing process?,"Yes, there is another person watching the shearing process in the grass.",llava_253094,000000357340,Is there another person watching the shearing process?,"def execute_command(image)->str:
+	# First find the person who is shearing
+	image_patch = ImagePatch(image)
+	shearing_patches = image_patch.find(""shearing process"")
+	if len(shearing_patches) == 0:
+		return ""no""
+	watching_patches = [patch for patch in image_patch.find(""person"") if patch not in shearing_patches]
+	if len(watching_patches) == 0:
+		return ""no""
+	for shearing_patch in shearing_patches:
+		for watching_patch in watching_patches:
+			if watching_patch.overlaps_with(shearing_patch.left, shearing_patch.lower, shearing_patch.right, shearing_patch.upper):
+				return ""yes""
+	return ""no""",vqa

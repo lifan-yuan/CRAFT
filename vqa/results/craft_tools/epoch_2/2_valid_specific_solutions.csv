@@ -1,0 +1,336 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000169340.jpg,How many firemen can be seen leading the street parade?,How many firemen can be seen leading the street parade?,There are four firemen leading the street parade.,llava_5333,000000169340,How many firemen can be seen leading the street parade?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	firemen_patches = image_patch.find(""fireman leading the street parade"")
+	return str(len(firemen_patches))",vqa
+000000034487.jpg,Can you describe the potential benefits of writing outdoors for someone like the man in the photo?,Can you describe the potential benefits of writing outdoors for someone like the man in the photo?,"Writing outdoors can offer several benefits, particularly in settings like park benches where one can enjoy the natural environment and find inspiration. Some potential advantages of writing outside include:
+
+1. Reduced stress and increased relaxation: Spending time outdoors and enjoying nature has been shown to decrease stress levels and promote a sense of well-being. This can be particularly helpful for the writing process, as a more relaxed state of mind can make it easier to think creatively and express oneself.
+
+2. Fresh perspectives and inspiration: Being surrounded by nature or observing passersby in a public space can spark fresh ideas and provide inspiration for writing. The sights, sounds, and smells of the outdoors can stimulate the senses, leading to new thoughts and associations that can enhance one's writing.
+
+3. Improved focus and concentration: Writing outdoors can help reduce distractions that are often present indoors, such as electronic devices or the clutter of a home or office environment. This can enable the writer to focus more intently on their work and dedicate their full attention to the task at hand.
+
+4. Increased creativity: Research suggests that spending time in nature can boost creativity and cognitive function. This creative boost can be particularly beneficial for writers, as it can help them generate new ideas, explore more imaginative concepts, and overcome writer's block.
+
+In conclusion, the man in the photo may find that writing outdoors on a park bench provides him with reduced stress levels, fresh perspectives, improved focus, and increased creativity, all of which can contribute to a more enjoyable and rewarding writing experience.",llava_20881,000000034487,Can you describe the potential benefits of writing outdoors for someone like the man in the photo?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""There is no man in the photo.""
+	man_patch = man_patches[0]
+	# Query some attributes about the man
+	is_man_outdoors = man_patch.verify_property(""man"", ""outdoors"")
+	is_man_writing = man_patch.verify_property(""man"", ""writing"")
+	if not (is_man_writing and is_man_outdoors):
+		return ""The man in the photo is not writing outdoors.""
+	# If the man is writing outdoors, query GPT-3 for reasoning and inference.
+	return man_patch.llm_query(""What are potential benefits of writing outdoors?"")
+",vqa
+000000362745.jpg,What are the genders of the people pushing the cart?,What are the genders of the people pushing the cart?,The image shows two men pushing the cart.,llava_39899,000000362745,What are the genders of the people pushing the cart?,"def execute_command(image)->List[str]:
+	image_patch = ImagePatch(image)
+	cart_pusher_patches = image_patch.find(""cart pusher"")
+	genders = []
+	if len(cart_pusher_patches) > 0:
+		for cart_pusher in cart_pusher_patches:
+			genders.append(cart_pusher.simple_query(""What is the gender of this person?""))
+	return genders",vqa
+000000391976.jpg,How is the woman washing the puppy? With a bucket or using a spray?,How is the woman washing the puppy? With a bucket or using a spray?,The woman is washing the puppy by spraying water on it.,llava_41084,000000391976,How is the woman washing the puppy? With a bucket or using a spray?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_washing_puppy_patches = image_patch.find(""woman washing puppy"")
+	# Question assumes only one patch
+	woman_washing_puppy_patch = woman_washing_puppy_patches[0]
+	return woman_washing_puppy_patch.best_text_match([""With a bucket"", ""Using a spray""])",vqa
+000000403953.jpg,How would you describe the woman's role in the household based on the tasks she is performing?,How would you describe the woman's role in the household based on the tasks she is performing?,"Based on the tasks that the woman is performing – doing dishes, preparing a meal, and reading – it can be inferred that she plays an active role in managing the household. Her engagement in various activities related to meal preparation and cleaning suggests that she might be a homemaker or a responsible family member who takes care of the needs of the other members in the household. Also, the phrase ""a mom in the kitchen"" implies that she might be a mother who is taking care of her family's well-being in terms of nutrition and maintaining cleanliness in the house. 
+
+However, it's important to note that activities conducted inside a kitchen can't fully determine someone's overall role within a family or household. Nevertheless, it is evident from the image that she is actively involved in managing the kitchen and contributing to the household's day-to-day operations.",llava_51275,000000403953,How would you describe the woman's role in the household based on the tasks she is performing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		return image_patch.simple_query(""How would you describe the woman's role in the household based on the tasks she is performing?"")
+	woman_patch = woman_patches[0]
+	woman_tasks = woman_patch.simple_query(""What tasks is the woman performing?"")
+	return woman_patch.llm_query(f""What does performing {woman_tasks} suggest about a person's role in a household?"", long_answer=True)",vqa
+000000166692.jpg,Is the person signing the guest book an adult or a child?,Is the person signing the guest book an adult or a child?,The person signing the guest book is a little girl.,llava_96243,000000166692,Is the person signing the guest book an adult or a child?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	signing_patches = image_patch.find(""person signing the guest book"")
+	if len(signing_patches) == 0:
+		return image_patch.simple_query(""Is the person signing the guest book an adult or a child?"")
+	signing_patch = signing_patches[0]
+	return signing_patch.best_text_match([""adult"", ""child""])",vqa
+000000014533.jpg,Is the clown engaged in any specific activity or just sitting?,Is the clown engaged in any specific activity or just sitting?,"The clown is just sitting on the park bench without engaging in any specific activity, based on the image.",llava_109549,000000014533,Is the clown engaged in any specific activity or just sitting?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	clown_patches = image_patch.find(""clown"")
+	if len(clown_patches) == 0:
+		# If no clown is found, directly query the image with simple_query instead of returning a long string like ""There is no clown.""
+		return image_patch.simple_query(""Is the clown engaged in any specific activity or just sitting?"")
+	clown_patch = clown_patches[0]
+	activity = clown_patch.simple_query(""What is the clown doing?"")
+	if activity.lower() == ""sitting"":
+		return ""Just sitting""
+	else:
+		return ""Engaged in {}"".format(activity)",vqa
+000000388403.jpg,Is the man doing anything else while juggling the fire torches and the apple?,Is the man doing anything else while juggling the fire torches and the apple?,"Yes, while juggling the fire torches and the apple, the man is also biting the apple as part of his performance.",llava_110672,000000388403,Is the man doing anything else while juggling the fire torches and the apple?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""There is no man.""
+	man_patch = man_patches[0]
+	actions = man_patch.simple_query(""What is the man doing?"")
+	actions_list = actions.split("", "")
+	if ""juggling fire torches"" in actions_list:
+		actions_list.remove(""juggling fire torches"")
+	if ""juggling an apple"" in actions_list:
+		actions_list.remove(""juggling an apple"")
+	if len(actions_list) == 0:
+		return ""no""
+	else:
+		return ""yes""",vqa
+000000310104.jpg,Can you infer the man's possible purpose of carrying the tennis racquet while running on a sidewalk?,Can you infer the man's possible purpose of carrying the tennis racquet while running on a sidewalk?,"Considering the context of the image, it can be inferred that the man might be on his way to participate in a tennis-related activity, such as a friendly match, practice session or a tennis class. His decision to carry the tennis racquet and run on the sidewalk suggests that he might be in a hurry to reach his destination or simply combining exercise with his commute to the tennis activity. However, the exact reason for his actions cannot be determined solely from the image.",llava_114814,000000310104,Can you infer the man's possible purpose of carrying the tennis racquet while running on a sidewalk?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""Cannot find a man in the image""
+	man_patch = man_patches[0]
+	query = ""Why would someone carry a tennis racquet while running on a sidewalk?""
+	response = man_patch.llm_query(query, long_answer=True)
+	return response",vqa
+000000252136.jpg,Do we see a mix of genders among the presenters?,Do we see a mix of genders among the presenters?,"Yes, we can see a mix of genders among the presenters, as there is at least one man and one woman giving presentations.",llava_119869,000000252136,Do we see a mix of genders among the presenters?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	presenter_patches = image_patch.find(""presenter"")
+	if len(presenter_patches) == 0:
+		return ""no""
+	genders = set()
+	for presenter_patch in presenter_patches:
+		gender = presenter_patch.simple_query(""What is the gender of this presenter?"")
+		genders.add(gender)
+	if len(genders) > 1:
+		return ""yes""
+	return ""no""",vqa
+000000337422.jpg,What is the material of the broken coffee mug?,What is the material of the broken coffee mug?,The broken coffee mug is made of ceramic.,llava_133523,000000337422,What is the material of the broken coffee mug?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	broken_mug_patches = image_patch.find(""broken coffee mug"")
+	if len(broken_mug_patches) == 0:
+		return image_patch.simple_query(""What is the material of the broken coffee mug?"")
+	broken_mug_patch = broken_mug_patches[0]
+	mug_material = broken_mug_patch.simple_query(""What is the material?"")
+	return mug_material",vqa
+000000422969.jpg,Are the girls watching TV together or separately?,Are the girls watching TV together or separately?,The girls are watching TV together.,llava_134098,000000422969,Are the girls watching TV together or separately?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girls_patches = image_patch.find(""girl"")
+	if len(girls_patches) < 2:
+		# If less than two girls are found in the image, return ""separately""
+		return ""separately""
+	tv_patches = image_patch.find(""TV"")
+	if len(tv_patches) == 0:
+		# If no TV is found in the image, return ""separately""
+		return ""separately""
+	tv_patch = tv_patches[0]
+	# If distances between each girl and tv less than certain threshold, they are watching together, otherwise separately
+	threshold = 100  # Just for example, need to set a reasonable value according to actual need
+	for girl_patch in girls_patches:
+		if distance(girl_patch, tv_patch) > threshold:
+			return ""separately""
+	return ""together""",vqa
+000000149366.jpg,What kind of shows or performances does this club offer?,What kind of shows or performances does this club offer?,"This club offers shows and performances featuring female impersonators, which are typically drag queens or other performers who dress in clothing and make-up associated with the opposite gender for the purpose of entertainment.",llava_141607,000000149366,What kind of shows or performances does this club offer?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	club_patches = image_patch.find(""club"")
+	club_patch = club_patches[0]
+	club_name = club_patch.simple_query(""What is the name of the club?"")
+	return club_patch.bing_search(f""What kind of shows or performances does {club_name} club offer?"")",vqa
+000000533619.jpg,"Does the image show the women actually placing the pies in the oven, or are they just posing before doing so?","Does the image show the women actually placing the pies in the oven, or are they just posing before doing so?",The image shows the women posing and smiling at the camera before putting the pies in the oven. They are holding the pies but have not yet placed them inside the oven.,llava_165263,000000533619,"Does the image show the women actually placing the pies in the oven, or are they just posing before doing so?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	oven_patches = image_patch.find(""oven"")
+	pie_patches = image_patch.find(""pies"")
+	if len(women_patches) > 0 and len(oven_patches) > 0 and len(pie_patches) > 0:
+		for woman_patch in women_patches:
+			for oven_patch in oven_patches:
+				for pie_patch in pie_patches:
+					if oven_patch.overlaps_with(pie_patch.left, pie_patch.lower, pie_patch.right, pie_patch.upper):
+						return ""Placing pies in the oven""
+		return ""Just posing before doing so""
+	else:
+		return ""Cannot confirm either""",vqa
+000000029821.jpg,How has the presence of cyclists on the road changed since the 1960s?,How has the presence of cyclists on the road changed since the 1960s?,"Since the 1960s, the presence of cyclists on the road has significantly increased. There are several factors that have contributed to this growth. First and foremost, there has been a greater emphasis on promoting sustainable and environmentally friendly transportation options. Biking is an eco-friendly alternative to driving cars, as it reduces carbon emissions, helps conserve energy resources, and alleviates traffic congestion.
+
+Additionally, many cities have expanded and improved their biking infrastructure, such as adding dedicated bike lanes, bike-sharing programs, and bicycle-friendly policies. These efforts have made it safer and more convenient for people to choose bicycles as a viable means of transportation for commuting, exercise, and leisure activities.
+
+Furthermore, advancements in bicycle technology, such as the introduction of electric bikes and more specialized bicycles for various terrains and activities, have made cycling more attractive and accessible to a wider range of people.
+
+In summary, the increased presence of cyclists on the road since the 1960s can be attributed to growing environmental awareness, improvements in urban infrastructure, and advances in bicycle technology, which together have encouraged more people to integrate biking into their daily lives as a sustainable and healthy mode of transportation.",llava_170195,000000029821,How has the presence of cyclists on the road changed since the 1960s?,"def execute_command(image) -> str:
+	external_knowledge_query = ""How has the presence of cyclists on the road changed since the 1960s?""
+	historical_change = bing_search(external_knowledge_query)
+	return historical_change",vqa
+000000417679.jpg,What does the V-formation and the use of patriotic-colored smoke suggest about the purpose of this formation?,What does the V-formation and the use of patriotic-colored smoke suggest about the purpose of this formation?,"The V-formation of planes coupled with the red, white, and blue smoke suggests a display of patriotism, which might be associated with a national celebration, air show or a military event. This aerial demonstration is likely intended to evoke a sense of pride and unity by showcasing the skill and coordination of the pilots, as well as the capabilities of the aircraft.
+
+The choice of red, white, and blue colors for the smoke is significant as these are the traditional colors of many countries' national flags, especially in North America and Europe. Prominently displaying these colors during the flight is a way to pay tribute to and represent the nation they are associated with. It is also common for such formations to be part of official ceremonies, commemorative events, or to honor the armed forces and their service.
+
+In essence, the V-formation of the planes with patriotic-colored smoke indicates a display of national pride and unity, likely performed during a significant event or show where the audience can appreciate the expertise of the pilots and the impressive capabilities of the aircraft.",llava_184295,000000417679,What does the V-formation and the use of patriotic-colored smoke suggest about the purpose of this formation?,"def execute_command(image)->str:
+	# The two key points are the V-formation and the use of patriotic-colored smoke. This suggests a display, so use GPT to provide a more detailed answer.
+	image_patch = ImagePatch(image)
+	v_formation = image_patch.exists(""V-formation"")
+	patriotic_colored_smoke = image_patch.exists(""patriotic-colored smoke"")
+	if not (v_formation and patriotic_colored_smoke):
+		return image_patch.simple_query(""What does the V-formation and the use of patriotic-colored smoke suggest about the purpose of this formation?"")
+	else:
+		return image_patch.llm_query(""What does a V-formation with patriotic-colored smoke suggest?"", long_answer=True)",vqa
+000000575929.jpg,What is the role of the person helping the patient?,What is the role of the person helping the patient?,"The person helping the patient is a nurse, providing care and assistance to the patient in the hospital room.",llava_187908,000000575929,What is the role of the person helping the patient?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	helper_patches = image_patch.find(""person helping patient"")
+	if len(helper_patches) > 0:
+		helper_patch = helper_patches[0]
+		role = helper_patch.simple_query(""What is the role of this person?"")
+		return role
+	else:
+		return ""No person is helping the patient.""",vqa
+000000523487.jpg,Is the runner listening to anything while running?,Is the runner listening to anything while running?,"Yes, the runner is listening to music or a recording, as he has an MP3 player attached to his arm.",llava_188807,000000523487,Is the runner listening to anything while running?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	runner_patches = image_patch.find(""runner"")
+	if len(runner_patches) == 0:
+		return image_patch.simple_query(""Is the runner listening to anything while running?"")
+	runner_patch = runner_patches[0]
+	earphone_patches = runner_patch.find(""earphone"")
+	if(len(earphone_patches) > 0):
+		return ""yes""
+	else:
+		return ""no""",vqa
+000000439324.jpg,What is the hamster eating?,What is the hamster eating?,The hamster is eating a piece of broccoli.,llava_191035,000000439324,What is the hamster eating?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	hamster_patches = image_patch.find(""hamster"")
+	if len(hamster_patches) == 0:
+		return image_patch.simple_query(""What is the hamster eating?"")
+	hamster_patch = hamster_patches[0]
+	eating_item = hamster_patch.simple_query(""What is the hamster eating?"")
+	return eating_item",vqa
+000000027516.jpg,What can be said about the height difference between the man and the woman?,What can be said about the height difference between the man and the woman?,"The woman is noticeably shorter than the man, as she is helping him from behind, and he is described as a tall man.",llava_198007,000000027516,What can be said about the height difference between the man and the woman?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	woman_patches = image_patch.find(""woman"")
+	# If no man or woman is found in the image, directly return ""cannot tell""
+	if len(man_patches) == 0 or len(woman_patches) == 0:
+		return ""cannot tell""
+	man_patch = man_patches[0]
+	woman_patch = woman_patches[0]
+	if man_patch.height > woman_patch.height:
+		return ""the man is taller""
+	elif man_patch.height < woman_patch.height:
+		return ""the woman is taller""
+	else:
+		return ""they are about the same height""",vqa
+000000559728.jpg,What is the woman using to feed the baby goat?,What is the woman using to feed the baby goat?,The woman is using a bottle to feed the baby goat.,llava_205127,000000559728,What is the woman using to feed the baby goat?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	goat_patches = image_patch.find(""baby goat"")
+	if len(woman_patches) == 0 or len(goat_patches) == 0:
+		return image_patch.simple_query(""What is the woman using to feed the baby goat?"")
+	woman_to_goat_distances = [(goat_patch, distance(woman_patches[0], goat_patch)) for goat_patch in goat_patches]
+	woman_to_goat_distances.sort(key=lambda x: x[1])
+	# Assuming that the woman is feeding the closest baby goat
+	closest_goat = woman_to_goat_distances[0][0]
+	# Query with GPT to describe what's happening in the action, querying directly about the object being used
+	action = closest_goat.llm_query(""What is the woman using to feed the baby goat?"")
+	return action",vqa
+000000559728.jpg,Is the woman feeding the baby goat by hand or using any other method?,Is the woman feeding the baby goat by hand or using any other method?,"Yes, the woman is feeding the baby goat by hand, using a bottle to provide the milk.",llava_205129,000000559728,Is the woman feeding the baby goat by hand or using any other method?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		# If no woman is found, query the image directly with simple_query instead of returning a long string like ""There is no woman.""
+		return image_patch.simple_query(""Is the woman feeding the baby goat by hand?"")
+	woman_patch = woman_patches[0]
+	goat_patches = woman_patch.find(""baby goat"")
+	if len(goat_patches) == 0:
+		# If no baby goat is found in the woman's area, return ""No woman feeding a baby goat.""
+		return ""no""
+	goat_patch = goat_patches[0]
+	feeding_method = goat_patch.simple_query(""What is the woman using to feed the baby goat?"")
+	if feeding_method == ""hand"":
+		return ""hand""
+	elif feeding_method != ""not visible"":
+		return ""other""
+	else:
+		return image_patch.simple_query(""Is the woman feeding the baby goat by hand?"")",vqa
+000000449852.jpg,Where are the two girls located while reading the books?,Where are the two girls located while reading the books?,"The two girls are located in their bedroom while they read the books, lying in bed next to each other.",llava_206115,000000449852,Where are the two girls located while reading the books?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girls_reading_patches = image_patch.find(""girls reading books"")
+	if len(girls_reading_patches) != 2:
+		return image_patch.simple_query(""Where are the girls reading books?"")
+	girl1_patch = girls_reading_patches[0]
+	girl2_patch = girls_reading_patches[1]
+	girl1_location = girl1_patch.simple_query(""Where is the girl?"")
+	girl2_location = girl2_patch.simple_query(""Where is the girl?"")
+	return f'One is {girl1_location} and the other is {girl2_location}.'",vqa
+000000020702.jpg,Is the woman feeding the baby hot dogs and fries or something softer?,Is the woman feeding the baby hot dogs and fries or something softer?,"The woman is feeding the baby something softer than hot dogs and fries. She is holding a spoon to the baby's mouth, suggesting that the baby is being fed a softer, more appropriate food for their age.",llava_207050,000000020702,Is the woman feeding the baby hot dogs and fries or something softer?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		# If no woman is found, query the image directly with simple_query instead of returning a long string like ""There is no woman.""
+		return image_patch.simple_query(""Is there a woman feeding the baby hot dogs and fries or something softer?"")
+	woman_patch = woman_patches[0]
+	feeding_object = woman_patch.simple_query(""What is the woman feeding to the baby?"")
+	return woman_patch.best_text_match([""hot dogs and fries"", ""something softer""])",vqa
+000000296894.jpg,Do the girls seem to be happy or upset about the soda?,Do the girls seem to be happy or upset about the soda?,"The girls seem to be happy and excited about the soda, as they are smiling and reacting with positive expressions while holding cans of soda.",llava_212147,000000296894,Do the girls seem to be happy or upset about the soda?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girls_patches = image_patch.find(""girls"")
+	if len(girls_patches) == 0:
+		return ""There are no girls""
+	for girl_patch in girls_patches:
+		emotion_to_soda = girl_patch.simple_query(""Do the girls seem to be happy or upset about the soda?"")
+		if emotion_to_soda == ""happy"" or emotion_to_soda == ""upset"":
+			return emotion_to_soda
+	return ""Indeterminate""",vqa
+000000411705.jpg,Why are orange cones placed around the worker?,Why are orange cones placed around the worker?,"Orange cones are placed around the worker to increase visibility and alert drivers of the presence of the worker and the need to reduce speed or follow specific directions. These cones act as a visual cue, serving as a safety measure to protect the worker and other road users by providing clear boundaries or marking the area where extra caution and attention is needed. By placing cones around the worker holding the stop sign, they create a more noticeable and safer environment for everyone involved.",llava_214440,000000411705,Why are orange cones placed around the worker?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	reason = image_patch.llm_query(""Why are orange cones generally placed around workers?"")
+	return reason",vqa
+000000371794.jpg,Is there a blowup seat in the inflatable boat?,Is there a blowup seat in the inflatable boat?,"Yes, there is a blowup seat in the back of the inflatable raft.",llava_219649,000000371794,Is there a blowup seat in the inflatable boat?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boat_patches = image_patch.find(""inflatable boat"")
+	if len(boat_patches) == 0:
+		# If no boat is found, query the image directly with simple_query instead of returning a long string like ""There is no inflatable boat.""
+		return image_patch.simple_query(""Is there a blowup seat in the inflatable boat?"")
+	boat_patch = boat_patches[0]
+	seat_patches = boat_patch.find(""blowup seat"")
+	if len(seat_patches) == 0:
+		return ""no""
+	else:
+		return ""yes""",vqa
+000000263328.jpg,"Is the jockey racing with other horses, or is this just a solo run?","Is the jockey racing with other horses, or is this just a solo run?","The image does not provide information about whether the jockey is racing with other horses or having a solo run. Therefore, it is impossible to confirm the presence or absence of other horses participating in the race or exercise.",llava_251640,000000263328,"Is the jockey racing with other horses, or is this just a solo run?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	horse_patches = image_patch.find(""horse"")
+	
+	# If there is no horse or just one horse found, it is a solo run
+	if len(horse_patches) <= 1:
+		return ""solo run""
+	else:
+		jockey_patches = image_patch.find(""jockey"")
+		
+		# If there is no jockey found, we cannot determine, so return ""unknown""
+		if len(jockey_patches) == 0:
+			return ""unknown""
+		
+		# Check if there is a horse patch closer to the jockey than his own horse
+		jockey_patch = jockey_patches[0]
+		closest_horse_distance = min(distance(jockey_patch, horse_patch) for horse_patch in horse_patches)
+		
+		# Compare with the minimum possible distance (horse under the jockey)
+		horse_under_jockey_distance = min(distance(jockey_patch, horse_patch) for horse_patch in horse_patches
+											if horse_patch.overlaps_with(jockey_patch.left, jockey_patch.lower, jockey_patch.right, jockey_patch.upper))
+		
+		# If another horse is closer than the horse under the jockey, the jockey is racing with other horses
+		return ""racing with other horses"" if closest_horse_distance < horse_under_jockey_distance else ""solo run""",vqa
+000000378415.jpg,How is the woman handling the steering wheel in comparison to the banana?,How is the woman handling the steering wheel in comparison to the banana?,"The woman seems to be holding the banana with greater care than the steering wheel of the car she is operating. This could imply that she is paying more attention to the banana, or it could simply be a momentary snapshot captured in the image where her focus temporarily shifted away from driving.",llava_256753,000000378415,How is the woman handling the steering wheel in comparison to the banana?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	banana_patches = image_patch.find(""banana"")
+	# If the image does not contain the objects of interest (woman and banana), return directly to reduce calculation overhead
+	if len(woman_patches) == 0 or len(banana_patches) == 0:
+		return image_patch.simple_query(""How is the woman handling the steering wheel in comparison to the banana?"")
+	# Sort the coordinating based on the horizontal center
+	woman_patch, banana_patch = sorted([woman_patches[0], banana_patches[0]], key=lambda x: x.horizontal_center)
+	woman_steering_wheel_action = woman_patch.simple_query(""How is the woman handling the steering wheel?"")
+	banana_steering_wheel_action = banana_patch.simple_query(""How is the banana handling the steering wheel?"")
+	if woman_steering_wheel_action == banana_steering_wheel_action:
+		return ""The same way.""
+	else:
+		return ""Differently.""",vqa

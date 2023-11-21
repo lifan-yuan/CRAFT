@@ -1,0 +1,67 @@
+{
+    "0": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "1": [
+        "describe_potential_benefits(image_patch: ImagePatch, object_name: str, activity: str, activity_location: str, query: str) -> str"
+    ],
+    "2": [
+        "determine_emotion_towards_object(image_patch: ImagePatch, subject_name: str, object_name: str, query: str) -> str"
+    ],
+    "3": [
+        "identify_method(image_patch: ImagePatch, subject_action: str, possible_methods: List[str]) -> str"
+    ],
+    "4": [
+        "identify_object_category(image_patch: ImagePatch, object_name: str, categories: List[str], query: str) -> str"
+    ],
+    "5": [
+        "check_object_activity(image_patch: ImagePatch, object_name: str, activity_to_check: str, query: str) -> str"
+    ],
+    "6": [
+        "check_additional_actions(image_patch: ImagePatch, object_name: str, specified_actions: list) -> str"
+    ],
+    "7": [
+        "infer_purpose_of_carrying_object(image_patch: ImagePatch, person_name: str, object_name: str, situation: str) -> str"
+    ],
+    "8": [
+        "check_mix_of_attribute_among_objects(image_patch: ImagePatch, object_name: str, attribute_query: str) -> str"
+    ],
+    "9": [
+        "identify_object_attributes(image_patch: ImagePatch, object_type: str, attribute_query: str) -> List[str]",
+        "find_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str, query: str) -> str"
+    ],
+    "10": [
+        "query_reason_behind_arrangement(image_patch: ImagePatch, query: str) -> str"
+    ],
+    "11": [
+        "find_services_or_products(image_patch: ImagePatch, establishment_type: str, query: str) -> str"
+    ],
+    "12": [
+        "check_interaction_between_objects(image_patch: ImagePatch, object_names: List[str], interaction: str, no_interaction: str) -> str"
+    ],
+    "13": [
+        "query_historical_change(object_or_group: str, time_period: str) -> str"
+    ],
+    "14": [
+        "identify_role_or_attribute(image_patch: ImagePatch, object_context: str, query: str) -> str"
+    ],
+    "15": [
+        "check_existence_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str, query: str) -> str"
+    ],
+    "16": [
+        "identify_interaction(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "identify_interaction_object(image_patch: ImagePatch, entity1: str, entity2: str, query: str) -> str"
+    ],
+    "17": [
+        "compare_size_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, size_type: str) -> str"
+    ],
+    "18": [
+        "compare_interactions(image_patch: ImagePatch, object1_name: str, object2_name: str, interaction_object_name: str, query: str) -> str"
+    ],
+    "19": [
+        "check_interaction_method(image_patch: ImagePatch, entity_name: str, target_name: str, query: str) -> str"
+    ],
+    "20": [
+        "find_multiple_objects_location(image_patch: ImagePatch, object_name: str, count: int, query: str) -> str"
+    ]
+}

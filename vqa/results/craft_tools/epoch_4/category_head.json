@@ -1,0 +1,84 @@
+{
+    "0": [
+        "determine_two_objects_movement(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "1": [
+        "discuss_importance_of_topic(topic: str, long_answer: bool = True) -> str"
+    ],
+    "2": [
+        "identify_holder_of_object(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "3": [
+        "check_object_in_and_out_area(image_patch: ImagePatch, object_name: str, area_name: str) -> str"
+    ],
+    "4": [
+        "count_overlapping_objects(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str",
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str",
+        "count_objects_with_property_and_location(image_patch: ImagePatch, object_name: str, property_name: str, location_query: str) -> str"
+    ],
+    "5": [
+        "check_subject_actions(image_patch: ImagePatch, subject_name: str, actions: List[str]) -> str"
+    ],
+    "6": [
+        "provide_possible_reasons(image_patch: ImagePatch, object_condition: str, query: str, long_answer: bool = True) -> str",
+        "find_possible_reasons(image_patch: ImagePatch, condition: str, query: str) -> str"
+    ],
+    "7": [
+        "identify_action_of_object_in_location(image_patch: ImagePatch, object_name: str, location: str, query: str) -> str"
+    ],
+    "8": [
+        "analyze_risks_rewards(image_patch: ImagePatch, query: str, action_query: str) -> str"
+    ],
+    "9": [
+        "verify_object_material(image_patch: ImagePatch, object_name: str, material: str) -> str"
+    ],
+    "10": [
+        "infer_about_object(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "11": [
+        "check_service_description(image_patch: ImagePatch, entity_name: str, query: str) -> str"
+    ],
+    "12": [
+        "identify_roles_of_objects(image_patch: ImagePatch, object_name: str, number_of_objects: int, context: str) -> list"
+    ],
+    "13": [
+        "find_object_locations(image_patch: ImagePatch, object_name: str) -> str",
+        "check_object_orientation(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "14": [
+        "identify_interacting_object(image_patch: ImagePatch, object1_name: str, object2_name: str, interacting_object_name: str, query: str) -> str"
+    ],
+    "15": [
+        "check_closeup_view(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "16": [
+        "elaborate_on_topic(topic: str, long_answer: bool = True) -> str"
+    ],
+    "17": [
+        "determine_object_action(image_patch: ImagePatch, object_name: str, actions: List[str], query: str) -> str"
+    ],
+    "18": [
+        "describe_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str) -> str"
+    ],
+    "19": [
+        "check_time_of_day_for_object(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "20": [
+        "infer_reason_for_action(image_patch: ImagePatch, object_name: str, action_query: str, reason_query: str) -> str"
+    ],
+    "21": [
+        "check_existence_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str) -> str"
+    ],
+    "22": [
+        "check_typical_scene(image_patch: ImagePatch, event: str) -> str"
+    ],
+    "23": [
+        "find_properties_of_attribute(image_patch: ImagePatch, object_name: str, attribute_name: str, property_name: str) -> List[str]"
+    ],
+    "24": [
+        "verify_property_in_process(image_patch: ImagePatch, process_name: str, property_name: str, query: str) -> str"
+    ],
+    "25": [
+        "check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ]
+}

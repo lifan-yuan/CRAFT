@@ -1,0 +1,348 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000343692.jpg,What color is the wall behind the moped?,Identify the color of the wall behind the moped.,Yellow.,vqa_2806,,What color is the wall behind the moped?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	moped_patches = image_patch.find(""moped"")
+	if len(moped_patches) == 0:
+		# If no moped is found, query the image directly with simple_query instead of returning a long string like ""There is no moped.""
+		return image_patch.simple_query(""What color is the wall behind the moped?"")
+	moped_patch = moped_patches[0]
+	wall_patches = image_patch.find(""wall"")
+	if len(wall_patches) == 0:
+		return ""unknown""
+	wall_patches = sorted(wall_patches, key=lambda x: distance(x, moped_patch))
+	closest_wall_patch = wall_patches[0] if wall_patches else None
+	if closest_wall_patch and closest_wall_patch.vertical_center > moped_patch.vertical_center:
+		color = closest_wall_patch.simple_query(""What color is the wall?"")
+		return color
+	return ""unknown""",vqa
+000000233997.jpg,Where is the welcome mat placed?,Locate the place of the welcome mat.,At door foot.,vqa_4764,,Where is the welcome mat placed?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	mat_patches = image_patch.find(""welcome mat"")
+	if len(mat_patches) == 0:
+		return ""There is no welcome mat.""
+	mat_patch = mat_patches[0]
+	# Describe the location of the mat in relation to the overall image
+	if mat_patch.vertical_center < image.shape[0]/3:
+		return ""The welcome mat is at the top of the image.""
+	elif mat_patch.vertical_center < 2*image.shape[0]/3:
+		return ""The welcome mat is in the middle of the image.""
+	else:
+		return ""The welcome mat is at the bottom of the image.""",vqa
+000000191300.jpg,What is happening in the plaza?,Observe the scene in the plaza and determine the activity.,Walking around.,vqa_14226,,What is happening in the plaza?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	plaza_patches = image_patch.find(""plaza"")
+	# Check if a plaza is detected in the image
+	if len(plaza_patches) == 0:
+		return ""seems like there is no plaza in the image.""
+	else:
+		plaza_patch = plaza_patches[0]
+		return plaza_patch.simple_query(""What is happening in the plaza?"")",vqa
+000000227607.jpg,"How many men are ringing the gong, and are they happy?",Identify the number of men ringing the gong and their emotions.,Two smiling men.,vqa_26767,,"How many men are ringing the gong, and are they happy?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	men_ringing_gong_patches = image_patch.find(""man ringing gong"")
+	number_of_men = len(men_ringing_gong_patches)
+	any_man_happy = any(man_ringing_gong.simple_query(""Is the man happy?"") == ""yes"" for man_ringing_gong in men_ringing_gong_patches)
+	return f""{number_of_men} and {'yes' if any_man_happy else 'no'}""",vqa
+000000251249.jpg,What can you say about the design or style of the watch based on the image?,What can you say about the design or style of the watch based on the image?,"The watch appears to be an old, possibly antique or vintage, pocket watch. It has an open face, allowing the viewer to see the intricate details and design of the watch's mechanisms. Classic pocket watches often have intricate craftsmanship, with attention to detail in both the interior and exterior design. Considering its age and style, the watch may have a sentimental or historical value and serves as a nostalgic reminder of a time when pocket watches were a common accessory.",llava_1349,000000251249,What can you say about the design or style of the watch based on the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	watch_patches = image_patch.find(""watch"")
+	if len(watch_patches) == 0:
+		return image_patch.simple_query(""What can you say about the design or style of the watch based on the image?"")
+	watch_patch = watch_patches[0]
+	watch_style = watch_patch.simple_query(""Describe the design or style of the watch"")
+	return watch_style",vqa
+000000529667.jpg,Are there people in the image enjoying the park's scenery?,Are there people in the image enjoying the park's scenery?,"Yes, there are people in the image enjoying the beautiful scenery at the park, walking and standing around next to a lake or river.",llava_6808,000000529667,Are there people in the image enjoying the park's scenery?,"def execute_command(image)->str:
+	# Find people in the image
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	# If people are not found in the image, return ""no""
+	if len(people_patches) == 0:
+		return ""no""
+	# Find park's scenery in the image
+	park_patches = image_patch.find(""park's scenery"")
+	# If park's scenery are not found in the image, return ""no""
+	if len(park_patches) == 0:
+		return ""no""
+	# For each person found, check if they are enjoying the scenery by overlapping with the scenery
+	for people_patch in people_patches:
+		for park_patch in park_patches:
+			if people_patch.overlaps_with(park_patch.left, park_patch.lower, park_patch.right, park_patch.upper):
+				return ""yes""
+	# If none of the people found are enjoying the scenery, return ""no""
+	return ""no""",vqa
+000000356845.jpg,In which direction is the racing bike leaning?,In which direction is the racing bike leaning?,The racing bike is leaning far to the right while navigating a curve on the track.,llava_20180,000000356845,In which direction is the racing bike leaning?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bike_patches = image_patch.find(""racing bike"")
+	if len(bike_patches) == 0:
+		return image_patch.simple_query(""In which direction is the racing bike leaning?"")
+	bike_patch = bike_patches[0]
+	leaning_direction = bike_patch.simple_query(""In which direction is the bike leaning?"")
+	return leaning_direction",vqa
+000000217925.jpg,Describe the overall atmosphere in the stadium.,Describe the overall atmosphere in the stadium.,"The atmosphere in the stadium is lively and energetic, with many fans gathered to watch and enjoy the baseball game. Their enthusiasm and excitement contribute to the vibrant ambiance, as they cheer on their favorite teams and players. The image showcases the popularity and appeal of baseball as a spectator sport, reflecting its significant role in the social and cultural fabric of many communities.",llava_24572,000000217925,Describe the overall atmosphere in the stadium.,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	atmosphere_description = image_patch.llm_query(""Describe the overall atmosphere in the stadium."", long_answer=True)
+	return atmosphere_description",vqa
+000000082744.jpg,How is the area where the people are gathered sectioned off from the main event?,How is the area where the people are gathered sectioned off from the main event?,"The area where the people are gathered is sectioned off from the main event by a fence or a gate, providing a clear boundary and separation between those watching and the central square where the event is taking place.",llava_29409,000000082744,How is the area where the people are gathered sectioned off from the main event?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	if len(people_patches) == 0:
+		return image_patch.simple_query(""How is the area where the people are gathered sectioned off from the main event?"")
+	people_patch = people_patches[0]
+	sectioned_area_description = people_patch.simple_query(""How is this area sectioned off from the main event?"")
+	return sectioned_area_description",vqa
+000000331954.jpg,What color is the smock the barber is wearing?,What color is the smock the barber is wearing?,The barber is wearing a blue smock.,llava_30419,000000331954,What color is the smock the barber is wearing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	barber_patches = image_patch.find(""barber"")
+	if len(barber_patches) == 0:
+		return image_patch.simple_query(""What color is the smock the barber is wearing?"")
+	barber_patch = barber_patches[0]
+	smock_color = barber_patch.simple_query(""What color is the smock?"")
+	return smock_color",vqa
+000000137202.jpg,What special attire are the judges of the event wearing?,What special attire are the judges of the event wearing?,"The judges in the event are wearing special vests, which may serve to identify their roles or provide certain functionalities specific to their responsibilities during the event.",llava_49801,000000137202,What special attire are the judges of the event wearing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	judge_patches = image_patch.find(""judge"")
+	if len(judge_patches) == 0:
+		# If no judge is found, query the image directly with simple_query instead of returning a long string like ""There are no judges.""
+		return image_patch.simple_query(""What special attire are the judges of the event wearing?"")
+	# Pick the first judge instance
+	judge_patch = judge_patches[0]
+	attire = judge_patch.simple_query(""What attire is this judge wearing?"")
+	return attire",vqa
+000000163068.jpg,How many people are trying to load the bicycle into the van?,How many people are trying to load the bicycle into the van?,Two people are trying to load the bicycle into the back of the van.,llava_55695,000000163068,How many people are trying to load the bicycle into the van?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	bicycle_patches = image_patch.find(""bicycle"")
+	van_patches = image_patch.find(""van"")
+	if len(bicycle_patches) == 0 or len(van_patches) == 0:
+		return ""0""
+	bicycle_patch = bicycle_patches[0]
+	van_patch = van_patches[0]
+	people_loading_bicycle = 0
+	for person_patch in people_patches:
+		if person_patch.overlaps_with(bicycle_patch.left, bicycle_patch.lower, bicycle_patch.right, bicycle_patch.upper) or person_patch.overlaps_with(van_patch.left, van_patch.lower, van_patch.right, van_patch.upper):
+			people_loading_bicycle += 1
+	return str(people_loading_bicycle)",vqa
+000000457335.jpg,Is the salmon broiled or another method of cooking is used for the salmon?,Is the salmon broiled or another method of cooking is used for the salmon?,The salmon in the image is broiled.,llava_62317,000000457335,Is the salmon broiled or another method of cooking is used for the salmon?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	salmon_patches = image_patch.find(""salmon"")
+	# Assuming one salmon patch
+	salmon_patch = salmon_patches[0]
+	return salmon_patch.best_text_match([""broiled"", ""another method""])",vqa
+000000112385.jpg,What is a wax rub in the context of this image?,What is a wax rub in the context of this image?,"In the context of this image, a wax rub refers to a piece or bar of surfboard wax that the man is using to apply to the surface of his surfboard. The wax rub is designed specifically for this purpose, with the appropriate texture and properties to provide the desired grip and traction on the surfboard surface.",llava_66945,000000112385,What is a wax rub in the context of this image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	context = image_patch.simple_query(""What is the context of this image?"")
+	external_knowledge_query = ""What is a wax rub in the context of {}?"".format(context)
+	return image_patch.bing_search(external_knowledge_query)",vqa
+000000397938.jpg,Are the daughters actively helping in making the sandwiches?,Are the daughters actively helping in making the sandwiches?,"Yes, the daughters are actively helping their mom make sandwiches.",llava_77669,000000397938,Are the daughters actively helping in making the sandwiches?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	daughter_patches = image_patch.find(""daughter"")
+	if not daughter_patches:
+		return ""no""
+	for daughter_patch in daughter_patches:
+		if not daughter_patch.verify_property(""daughter"", ""actively helping""):
+			return ""no""
+	return ""yes""",vqa
+000000469973.jpg,What is the material of the ramp?,What is the material of the ramp?,"The ramp in the image is made of concrete, which is a common material for ramps and skate park structures because of its durability and ease of maintenance.",llava_80053,000000469973,What is the material of the ramp?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	ramp_patches = image_patch.find(""ramp"")
+	if len(ramp_patches) == 0:
+		return image_patch.simple_query(""What is the material of the ramp?"")
+	ramp_patch = ramp_patches[0]
+	return ramp_patch.simple_query(""What is the material of the ramp?"")",vqa
+000000439493.jpg,What information does the car stereo display?,What information does the car stereo display?,"The car stereo displays radio information, which includes the station name and the song or program that is currently playing. In this case, it is playing Edgar Rice Burroughs on Sirius FM.",llava_83279,000000439493,What information does the car stereo display?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	stereo_patches = image_patch.find(""car stereo display"")
+	if len(stereo_patches) == 0:
+		return image_patch.simple_query(""What information does the car stereo display?"")
+	stereo_patch = stereo_patches[0]
+	display_info = stereo_patch.simple_query(""What information does it display?"")
+	return display_info",vqa
+000000121018.jpg,What are the two workers wearing on their faces for protection?,What are the two workers wearing on their faces for protection?,The two workers are wearing face masks for protection.,llava_84051,000000121018,What are the two workers wearing on their faces for protection?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	worker_patches = image_patch.find(""workers"")
+	if len(worker_patches) < 2:
+		return ""Not enough workers in the image for the query""
+	worker_face_protection = worker_patches[0].simple_query(""What is this worker wearing on their face for protection?"")
+	return worker_face_protection",vqa
+000000349791.jpg,What is the purpose of the mosquito nets in the image?,What is the purpose of the mosquito nets in the image?,"The mosquito nets in the image are meant to protect patients from mosquito bites while they are sleeping in their beds. By shielding the patients and preventing mosquito contact, the mosquito nets help reduce the risk of mosquito-borne diseases.",llava_98194,000000349791,What is the purpose of the mosquito nets in the image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	mosquito_net_patches = image_patch.find(""mosquito nets"")
+	if len(mosquito_net_patches) == 0:
+		return ""There are no mosquito nets in the image.""
+	use_of_mosquito_nets = mosquito_net_patches[0].llm_query(""What is the common use of mosquito nets?"")
+	return use_of_mosquito_nets",vqa
+000000326805.jpg,What is the purpose of the shop vac in the image?,What is the purpose of the shop vac in the image?,"The presence of the shop vac in the image suggests that the kitchen and living room are being cleaned or have recently been cleaned. A shop vac is a powerful vacuum cleaner designed for picking up both dry and wet debris, making it a suitable tool for cleaning various surfaces and maintaining the cleanliness and tidiness of the space.",llava_105394,000000326805,What is the purpose of the shop vac in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	shop_vac_patch = image_patch.find(""shop vac"")
+	# Assuming there will only be one shop vac in the image.
+	if not shop_vac_patch:
+		return ""No shop vac exists in the image""
+	return shop_vac_patch[0].llm_query(""What is the purpose of a shop vac?"")
+",vqa
+000000144505.jpg,Could this scene be described as taking place on a ranch?,Could this scene be described as taking place on a ranch?,"Yes, the scene with two horses grazing in the open field, surrounded by trees and a house, can be described as taking place on a ranch.",llava_109853,000000144505,Could this scene be described as taking place on a ranch?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.simple_query(""Does this scene take place on a ranch?"")",vqa
+000000429456.jpg,Are the boys walking in a crowded area?,Are the boys walking in a crowded area?,"Yes, the boys are walking in the city among a crowd of people. In one description, they are walking amongst the crowd, and in another, they are walking behind the crowd.",llava_115487,000000429456,Are the boys walking in a crowded area?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boys_patches = image_patch.find(""boys"")
+	# The question assumes boys exist in the image
+	boys_patch = boys_patches[0]
+	crowded_area_patches = image_patch.find(""crowded area"")
+	for crowded_area_patch in crowded_area_patches:
+		if boys_patch.overlaps_with(crowded_area_patch.left, crowded_area_patch.lower, crowded_area_patch.right, crowded_area_patch.upper):
+			return ""yes""
+	return ""no""",vqa
+000000102225.jpg,Is there a pitching machine or a human pitcher in the scene?,Is there a pitching machine or a human pitcher in the scene?,"There is a Little League pitching machine involved in the game, which is being used to pitch the ball to the kid at bat.",llava_120666,000000102225,Is there a pitching machine or a human pitcher in the scene?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	if image_patch.exists(""pitching machine"") or image_patch.exists(""human pitcher""):
+		return ""yes""
+	else:
+		return ""no""",vqa
+000000460885.jpg,What is the surface the boys are lying on?,What is the surface the boys are lying on?,The boys are lying on a carpeted floor.,llava_144777,000000460885,What is the surface the boys are lying on?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boys_patches = image_patch.find(""boys"")
+	if not boys_patches:
+		return ""There are no boys in the image.""
+	boys_patch = boys_patches[0]
+	surface_query = ""What is the surface under the boys?""
+	surface = boys_patch.simple_query(surface_query)
+	return surface",vqa
+000000027345.jpg,What role do sunglasses play in baseball and can you explain the notable differences between sunglasses designed for baseball and regular sunglasses?,What role do sunglasses play in baseball and can you explain the notable differences between sunglasses designed for baseball and regular sunglasses?,"Sunglasses play a crucial role in baseball for several reasons. First, they protect a player's eyes from the sun's bright glare, preventing potential distractions and enhancing their ability to track the ball during both defensive and offensive plays. Additionally, sunglasses offer a level of protection from UV rays, reducing the risk of eye damage.
+
+There are some key differences between sunglasses specifically designed for baseball and regular sunglasses. Here are a few:
+
+1. Lens Material: Baseball sunglasses often feature lightweight, impact-resistant polycarbonate lenses, which provide both safety and comfort during play. This type of lens material is more resistant to shattering upon impact, which is essential in the event of a collision or a high-speed ball coming towards the player's face.
+
+2. Lens Tint: Baseball sunglasses tend to have specialized tints to enhance contrast and improve the player's ability to track the ball against the sky, the grass, or the crowd. Popular tints include amber, grey, or brown. Some sunglasses even come with interchangeable lenses for different lighting conditions.
+
+3. Frame Design: Baseball sunglasses generally have a wraparound frame style for a wider field of view and improved peripheral vision. This design also helps keep the sunglasses secure during rapid head movements or while running. The frames are typically lightweight and made from materials like nylon or acetate that can withstand rough play.
+
+4. Grip and Comfort: Baseball-specific sunglasses often come equipped with rubberized grip points on the nose pads and temples to prevent slippage when the player sweats or moves around. A comfortable and secure fit is critical to ensure the sunglasses stay in place throughout the game.
+
+In conclusion, sunglasses designed for baseball offer a combination of impact resistance, specialized tints, comfortable and stable frame designs, and grip-enhancing features, setting them apart from regular sunglasses. These design elements work together to enable baseball players to perform at their best, eliminating glare-related distractions and providing protection for their eyes during the game.",llava_147106,000000027345,What role do sunglasses play in baseball and can you explain the notable differences between sunglasses designed for baseball and regular sunglasses?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	sunglasses_baseball = image_patch.llm_query(""What role do sunglasses play in baseball?"")
+	difference_sunglasses = image_patch.llm_query(""What are the notable differences between sunglasses designed for baseball and regular sunglasses?"")
+	answer = sunglasses_baseball + "" "" + difference_sunglasses
+	return answer",vqa
+000000316482.jpg,Is the coffee black or does it have cream and sugar?,Is the coffee black or does it have cream and sugar?,"The coffee in the image is described as black coffee, suggesting that it does not contain any cream or sugar.",llava_163519,000000316482,Is the coffee black or does it have cream and sugar?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	coffee_patches = image_patch.find(""coffee"")
+	# Question assumes one coffee patch
+	return coffee_patches[0].best_text_match([""black"", ""with cream and sugar""])",vqa
+000000340532.jpg,Are there any specific details about his backpack?,Are there any specific details about his backpack?,"Based on the image, the specific details about his backpack are that it contains a dog. The backpack likely has proper openings or adjustments to accommodate the dog comfortably and safely.",llava_181666,000000340532,Are there any specific details about his backpack?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	backpack_patches = image_patch.find(""backpack"")
+	if len(backpack_patches) == 0:
+		return ""no""
+	backpack_patch = backpack_patches[0]
+	specific_detail = backpack_patch.simple_query(""Are there any specific details about the backpack?"")
+	return specific_detail",vqa
+000000444367.jpg,How does the platform appear in terms of cleanliness?,How does the platform appear in terms of cleanliness?,"The platform in the image is clean, indicating that it is well-maintained and cared for by the transportation authorities.",llava_186568,000000444367,How does the platform appear in terms of cleanliness?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	platform_patches = image_patch.find(""platform"")
+	if platform_patches:
+		platform_patch = platform_patches[0]
+		platform_clenliness = platform_patch.simple_query(""How clean is the platform?"")
+		return platform_clenliness
+	else:
+		return ""No platform found.""",vqa
+000000558615.jpg,What type of gathering is taking place around the food trucks? Is it a public event or private gathering?,What type of gathering is taking place around the food trucks? Is it a public event or private gathering?,It appears to be a public event since people have gathered around food trucks and chairs in a public setting.,llava_188572,000000558615,What type of gathering is taking place around the food trucks? Is it a public event or private gathering?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	gathering_patches = image_patch.find(""gathering around food trucks"")
+	if len(gathering_patches) == 0:
+		return ""cannot identify""
+	gathering_patch = gathering_patches[0]
+	return gathering_patch.best_text_match([""public event"", ""private gathering""])",vqa
+000000312467.jpg,Are the objects held together with magnets?,Are the objects held together with magnets?,"Yes, the objects like the screen driver, X-acto knife, potato chip clip, and scissors are being held together using magnets.",llava_199327,000000312467,Are the objects held together with magnets?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	return bool_to_yesno(image_patch.verify_property(""objects"", ""held together with magnets""))",vqa
+000000557659.jpg,What brand is associated with the broken cooler or refrigerator in the image?,What brand is associated with the broken cooler or refrigerator in the image?,The broken cooler or refrigerator in the image is associated with the Pepsi brand.,llava_207079,000000557659,What brand is associated with the broken cooler or refrigerator in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	broken_cooler_patches = image_patch.find(""broken cooler"")
+	broken_refrigerator_patches = image_patch.find(""broken refrigerator"")
+	
+	if len(broken_cooler_patches) > 0:
+		brand = broken_cooler_patches[0].simple_query(""What brand is associated with this?"")
+		if brand:
+			return brand
+	if len(broken_refrigerator_patches) > 0:
+		brand = broken_refrigerator_patches[0].simple_query(""What brand is associated with this?"")
+		if brand:
+			return brand
+	return ""Unknown""",vqa
+000000181564.jpg,What is the age group of the woman waiting for the bus?,What is the age group of the woman waiting for the bus?,The woman waiting for the bus is described as a young woman.,llava_217801,000000181564,What is the age group of the woman waiting for the bus?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	# Assume question refers to the woman closest to the center of the image (most likely to be 'the woman waiting for the bus')
+	woman_patches.sort(key=lambda patch: abs(patch.horizontal_center - image_patch.horizontal_center))
+	woman_patch = woman_patches[0]
+	age_group = woman_patch.simple_query(""What is the age group of the woman?"")
+	return age_group",vqa
+000000534406.jpg,How does the presence of a giant rubber duck in a city waterway affect the atmosphere and public perception?,How does the presence of a giant rubber duck in a city waterway affect the atmosphere and public perception?,"The presence of a giant rubber duck in a city waterway can have various effects on the atmosphere and public perception. It can create a fun and whimsical ambiance, drawing pedestrians' attention and sparking curiosity. Such an unconventional and playful sight can evoke feelings of joy and amusement, offering a refreshing break from the usual urban scenery.
+
+In addition, the giant rubber duck can serve as an opportunity to bring people together, fostering a sense of community as residents and visitors share a unique, collective experience. It may also encourage people to engage in conversation or take photographs, initiating social interactions and creating lasting memories. 
+
+Furthermore, this installation can have a positive impact on local businesses and tourism, as people might be enticed to visit the area specifically to see the giant rubber duck. As a result, nearby shops, restaurants, and other establishments may experience increased foot traffic and potential customers. 
+
+In summary, the presence of a giant rubber duck in a city waterway can generate a light-hearted, communal atmosphere, stimulate social interaction, and positively influence local business and tourism.",llava_218584,000000534406,How does the presence of a giant rubber duck in a city waterway affect the atmosphere and public perception?,"def execute_command(image)->str:
+	# This question is not about image contents, but an external knowledge question. Use llm_query to answer it.
+	external_knowledge_query = ""How does the presence of a giant rubber duck in a city waterway affect the atmosphere and public perception?""
+	return llm_query(external_knowledge_query)",vqa
+000000119765.jpg,Is the man holding a handle or a cable while windsurfing?,Is the man holding a handle or a cable while windsurfing?,"The man is holding a handle or a cable while riding the waves on his surfboard, which is a typical aspect of windsurfing.",llava_219776,000000119765,Is the man holding a handle or a cable while windsurfing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	# if there is no man in the image
+	if len(man_patches) == 0:
+		return ""no man on windsurfing""
+	man_patch = man_patches[0]
+	holding_object = man_patch.best_text_match([""handle"", ""cable""], ""while windsurfing"")
+	return holding_object",vqa
+000000500165.jpg,How many metal kangaroo sculptures are there in total?,How many metal kangaroo sculptures are there in total?,There are a total of two metal kangaroo sculptures.,llava_220451,000000500165,How many metal kangaroo sculptures are there in total?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	kangaroo_sculptures = image_patch.find(""metal kangaroo sculpture"")
+	return str(len(kangaroo_sculptures))",vqa
+000000357036.jpg,Does this bench-to-table transformation require any additional tools or equipment?,Does this bench-to-table transformation require any additional tools or equipment?,"Based on the image series, it appears that the man is able to transform the bench into a picnic table without the need for any additional tools or equipment. The design of the bench itself allows for the transformation.",llava_239606,000000357036,Does this bench-to-table transformation require any additional tools or equipment?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	transformation_description = image_patch.simple_query(""What is the bench-to-table transformation process?"")
+	answer = image_patch.llm_query(f""Does the process '{transformation_description}' require any additional tools or equipment?"", long_answer=False)
+	return answer",vqa
+000000226594.jpg,Is the ski instructor an adult man or an adult woman?,Is the ski instructor an adult man or an adult woman?,"The ski instructor is an adult woman, who is guiding the group of small children in their skiing activity.",llava_240750,000000226594,Is the ski instructor an adult man or an adult woman?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	instructor_patches = image_patch.find(""ski instructor"")
+	# Assume there's one ski instructor
+	instructor_patch = instructor_patches[0]
+	return instructor_patch.best_text_match([""adult man"", ""adult woman""])",vqa
+000000072382.jpg,What object is located next to the purple brick wall?,What object is located next to the purple brick wall?,A parking meter is located next to the purple brick wall.,llava_247840,000000072382,What object is located next to the purple brick wall?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	wall_patches = image_patch.find(""purple brick wall"")
+	if len(wall_patches) == 0:
+		# If no wall is found, query the image directly with simple_query instead of returning a long string like ""There is no wall.""
+		return image_patch.simple_query(""What object is located next to the purple brick wall?"")
+	wall_patch = wall_patches[0]
+	
+	# Find all objects in the image
+	objects_patches = image_patch.find(""object"")
+	
+	# Check which object is the closest to the wall and return its name
+	closest_obj = min(objects_patches, key=lambda obj: distance(obj, wall_patch))
+	object_name = closest_obj.simple_query(""What is this object?"")
+	
+	return object_name",vqa
+000000000165.jpg,Is the woman actually cutting the man's tie or just pretending to?,Is the woman actually cutting the man's tie or just pretending to?,The woman is just pretending to cut the man's tie with the enormous pair of scissors; it is meant to be a funny and lighthearted scene.,llava_250429,000000000165,Is the woman actually cutting the man's tie or just pretending to?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	tie_patches = image_patch.find(""tie"")
+	if len(woman_patches) == 0 or len(tie_patches) == 0:
+		# If either is not found, query the image directly
+		return image_patch.simple_query(""Is the woman cutting the man's tie or just pretending to?"")
+	woman_patch = woman_patches[0]
+	for tie_patch in tie_patches:
+		# Check if woman and tie overlap, which would indicate she is interacting with it
+		if woman_patch.overlaps_with(tie_patch.left, tie_patch.lower, tie_patch.right, tie_patch.upper):
+			# Further check if woman is actually cutting tie or pretending using her properties and actions
+			if woman_patch.verify_property(""woman"", ""cutting"") and tie_patch.verify_property(""tie"", ""being cut""):
+				return ""yes""
+			else:
+				return ""she is pretending""
+	return ""no""",vqa

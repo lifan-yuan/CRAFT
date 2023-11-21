@@ -1,0 +1,70 @@
+{
+    "0": [
+        "check_establishment_status(image_patch: ImagePatch, establishment_type: str, status_options: List[str], query: str) -> str"
+    ],
+    "1": [
+        "identify_object_on_top(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str"
+    ],
+    "2": [
+        "check_object_presence_status(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "3": [
+        "find_object_location(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "4": [
+        "check_legality_of_action(image_patch: ImagePatch, object_name: str, action: str) -> str"
+    ],
+    "5": [
+        "check_action_success(image_patch: ImagePatch, action_object: str, query: str) -> str",
+        "check_success_of_action(image_patch: ImagePatch, query: str) -> str"
+    ],
+    "6": [
+        "identify_object_type(image_patch: ImagePatch, query: str) -> str",
+        "identify_attribute_of_object_in_context(image_patch: ImagePatch, object_context: str, attribute_query: str, original_query: str) -> str",
+        "check_object_name(image_patch: ImagePatch, object_type: str, expected_name: str) -> str"
+    ],
+    "7": [
+        "infer_from_scenario(scenario_description: str) -> str"
+    ],
+    "8": [
+        "discuss_topic_benefits_or_drawbacks(query: str, topic: str, aspect: str) -> str"
+    ],
+    "9": [
+        "determine_object_type(image_patch: ImagePatch, object_name: str, possible_types: List[str], query: str) -> str",
+        "identify_object_contents(image_patch: ImagePatch, object_name: str) -> str",
+        "identify_object_around_location(image_patch: ImagePatch, location: str, possible_objects: list) -> str"
+    ],
+    "10": [
+        "identify_action_on_object(image_patch: ImagePatch, object_on_object: str, possible_actions: list) -> str"
+    ],
+    "11": [
+        "infer_object_purpose(image_patch: ImagePatch, object_name: str, context: str) -> str"
+    ],
+    "12": [
+        "find_entity_type(entity: str) -> str"
+    ],
+    "13": [
+        "check_two_properties(image_patch: ImagePatch, object_name: str, property1: str, property2: str, query: str) -> str"
+    ],
+    "14": [
+        "check_existence_and_interpretation_of_objects(image_patch: ImagePatch, object1: str, object2: str) -> str"
+    ],
+    "15": [
+        "check_activity_at_location(image_patch: ImagePatch, activity: str, query: str) -> str"
+    ],
+    "16": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> int"
+    ],
+    "17": [
+        "identify_protective_object(image_patch: ImagePatch, character_name: str, protected_character_name: str, condition: str, query: str) -> str"
+    ],
+    "18": [
+        "check_appropriateness_of_assumptions(attribute: str, object_type: str) -> str"
+    ],
+    "19": [
+        "describe_size_of_contact_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str"
+    ],
+    "20": [
+        "determine_age_group_in_costume(image_patch: ImagePatch, costume: str, query: str) -> str"
+    ]
+}

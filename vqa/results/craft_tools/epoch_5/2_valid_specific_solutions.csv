@@ -1,0 +1,393 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000325368.jpg,What is prohibited on the right?,Identify the restriction on the right side.,No parking.,vqa_14900,,What is prohibited on the right?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	prohibition_patches = image_patch.find(""prohibition sign"")
+	if len(prohibition_patches) == 0:
+		return ""Nothing is prohibited.""
+	# Sort the prohibition signs from left to right
+	prohibition_patches.sort(key=lambda patch: patch.horizontal_center)
+	for i in range(len(prohibition_patches) - 1):
+		if prohibition_patches[i].horizontal_center < image_patch.width / 2 < prohibition_patches[i + 1].horizontal_center:
+			# If the image's center is between two prohibition signs,
+			# then the prohibited thing on the right is the thing represented by the right prohibition sign
+			return prohibition_patches[i + 1].simple_query(""What does this prohibition sign represent?"")
+	if prohibition_patches[-1].horizontal_center < image_patch.width / 2:
+		# The last prohibition sign is on the left of the image's center, so nothing is prohibited on the right
+		return ""Nothing is prohibited.""
+	return prohibition_patches[-1].simple_query(""What does this prohibition sign represent?"")",vqa
+000000450786.jpg,What is the state of the businesses?,Examine the status of the shops.,Shutters are down.,vqa_18529,,What is the state of the businesses?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	business_patches = image_patch.find(""business"")
+	if len(business_patches) == 0:
+		return ""no businesses found""
+	# Assuming the question is asking about each business individually
+	state_of_businesses = [business_patch.simple_query(""What is the state of the business?"") for business_patch in business_patches]
+	# This will give a list of states. If more meaningful understanding is needed, llm_query or bing_search can be used
+	return "", "".join(state_of_businesses)",vqa
+000000318596.jpg,What does the sign at Dunmore Court instruct pet owners to do?,Read and comprehend the directives on the signboard at Dunmore Court.,Keep dogs off median.,vqa_21073,,What does the sign at Dunmore Court instruct pet owners to do?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	sign_patches = image_patch.find(""sign at Dunmore Court"")
+	if not len(sign_patches):
+		return ""No sign found at Dunmore Court.""
+	first_sign = sign_patches[0]
+	instruction = first_sign.simple_query(""What does the sign instruct pet owners to do?"")
+	return instruction",vqa
+000000315195.jpg,What keeps the runners cool?,Identify the cooling devices.,Fire hydrants.,vqa_21292,,What keeps the runners cool?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	cooling_device_patches = image_patch.find(""cooling device"")
+	if len(cooling_device_patches) == 0:
+		return ""heat""
+	cooling_device_patch = cooling_device_patches[0]
+	return cooling_device_patch.simple_query(""What is this?"")",vqa
+000000424351.jpg,What can be seen in the festival?,Identify the elements of the festival.,"Umbrellas, saris, ascetic.",vqa_30638,,What can be seen in the festival?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	festival_patches = image_patch.find(""festival"")
+	if len(festival_patches) == 0:
+		# If no festival is found, query the image directly with simple_query
+		return image_patch.simple_query(""What can be seen in the festival?"")
+	for festival_patch in festival_patches:
+		return festival_patch.simple_query(""What can be seen here?"")",vqa
+000000548564.jpg,Are there any people standing or walking in the outdoor café?,Are there any people standing or walking in the outdoor café?,"Yes, there are some people standing and walking around blue umbrellas in the outdoor cafe.",llava_2339,000000548564,Are there any people standing or walking in the outdoor café?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	if len(people_patches) == 0:
+		return ""no""
+	outdoor_cafe_patches = image_patch.find(""outdoor café"")
+	if len(outdoor_cafe_patches) == 0:
+		return ""no""
+	for outdoor_cafe_patch in outdoor_cafe_patches:
+		for people_patch in people_patches:
+			if people_patch.verify_property(""people"",""standing"") or people_patch.verify_property(""people"",""walking""):
+				if people_patch.overlaps_with(outdoor_cafe_patch.left,outdoor_cafe_patch.lower,outdoor_cafe_patch.right,outdoor_cafe_patch.upper):
+					return ""yes""
+	return ""no""",vqa
+000000432349.jpg,What are the women doing in the grocery store?,What are the women doing in the grocery store?,The two women are standing and talking while shopping in the grocery store. They appear to be discussing or deciding on products in the refrigerator or freezer section.,llava_3609,000000432349,What are the women doing in the grocery store?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	if len(women_patches) == 0:
+		# If no women are found, directly query image
+		return image_patch.simple_query(""What are the women doing in the grocery store?"")
+	women_patches_in_grocery = [patch for patch in women_patches if patch.exists(""grocery store"")]
+	if not women_patches_in_grocery:
+		return ""no women in the grocery store""
+	activities = [patch.simple_query(""what is this woman doing?"") for patch in women_patches_in_grocery]
+	return ', '.join(activities)",vqa
+000000501189.jpg,Where are the piers located in relation to the baseball diamond?,Where are the piers located in relation to the baseball diamond?,"The piers are located near the baseball diamond, adjacent to the body of water.",llava_22567,000000501189,Where are the piers located in relation to the baseball diamond?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	baseball_patches = image_patch.find(""baseball diamond"")
+	if len(baseball_patches) == 0:
+		return image_patch.simple_query(""Where are the piers located in relation to the baseball diamond?"")
+	baseball_patch = baseball_patches[0]
+	piers_patches = image_patch.find(""piers"")
+	if len(piers_patches) == 0:
+		return ""There are no piers.""
+	# Considering only the first patch of the piers
+	piers_patch = piers_patches[0]
+	if piers_patch.horizontal_center > baseball_patch.horizontal_center and piers_patch.vertical_center < baseball_patch.vertical_center:
+		return ""top right""
+	elif piers_patch.horizontal_center < baseball_patch.horizontal_center and piers_patch.vertical_center < baseball_patch.vertical_center:
+		return ""top left""
+	elif piers_patch.horizontal_center > baseball_patch.horizontal_center and piers_patch.vertical_center > baseball_patch.vertical_center:
+		return ""bottom right""
+	elif piers_patch.horizontal_center < baseball_patch.horizontal_center and piers_patch.vertical_center > baseball_patch.vertical_center:
+		return ""bottom left""
+	elif piers_patch.horizontal_center == baseball_patch.horizontal_center and piers_patch.vertical_center < baseball_patch.vertical_center:
+		return ""above""
+	elif piers_patch.horizontal_center == baseball_patch.horizontal_center and piers_patch.vertical_center > baseball_patch.vertical_center:
+		return ""below""
+	elif piers_patch.horizontal_center > baseball_patch.horizontal_center and piers_patch.vertical_center == baseball_patch.vertical_center:
+		return ""right""
+	elif piers_patch.horizontal_center < baseball_patch.horizontal_center and piers_patch.vertical_center == baseball_patch.vertical_center:
+		return ""left""
+	else:
+		return ""at the same place""",vqa
+000000508220.jpg,How are the kiwis presented in the image?,How are the kiwis presented in the image?,The kiwis are cut in half and displayed alongside the other fruits in the image.,llava_27294,000000508220,How are the kiwis presented in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	kiwis_patches = image_patch.find(""kiwis"")
+	# Question assumes one kiwi patch
+	return kiwis_patches[0].simple_query(""How are the kiwis presented?"")",vqa
+000000117555.jpg,Is the woman kneeling or standing while ironing clothes?,Is the woman kneeling or standing while ironing clothes?,The woman is standing while ironing clothes.,llava_31245,000000117555,Is the woman kneeling or standing while ironing clothes?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	# Question assumes there is only one woman
+	woman_patch = woman_patches[0]
+	return woman_patch.best_text_match([""kneeling"", ""standing""])",vqa
+000000537304.jpg,"What benefits can cooking with children have, such as the young girl making pizzas in the image?","What benefits can cooking with children have, such as the young girl making pizzas in the image?","Cooking with children, such as the young girl making pizzas in the image, has numerous benefits, including:
+
+1. Developing life skills: Cooking is a practical skill that children will use throughout their lives. By learning to cook at an early age, they become more self-sufficient and gain a sense of responsibility.
+
+2. Enhancing fine motor skills: Cooking involves various activities, such as chopping, mixing, and measuring, which help develop children's fine motor skills and hand-eye coordination.
+
+3. Encouraging healthy eating habits: When children participate in preparing healthy meals, they are more likely to develop an appreciation for nutritious food and make healthier choices as they grow older.
+
+4. Building confidence: Accomplishing tasks in the kitchen and creating something delicious helps boost children's confidence and feelings of competence.
+
+5. Strengthening family bonds: Cooking together provides an opportunity for quality time, communication, and bonding between family members.
+
+6. Developing math and reading skills: Following recipes requires measuring ingredients and understanding directions, which can enhance a child's math and reading abilities.
+
+7. Enhancing creativity: Cooking allows children to explore their creativity, experiment with new ingredients, and learn about different cuisines and cultures.
+
+8. Teaching planning and organization: Preparing a meal requires planning and organizing multiple tasks, which can help children develop these essential skills.
+
+In conclusion, involving children in cooking activities, like the young girl making pizzas in the image, not only promotes skill development and healthy habits but also fosters family relationships and teaches valuable life lessons.",llava_32472,000000537304,"What benefits can cooking with children have, such as the young girl making pizzas in the image?","def execute_command(image) -> str:
+	# Question does not perform basic perception: use logical reasoning and external knowledge.
+	return llm_query(""What benefits can cooking with children have, such as making pizzas?"")",vqa
+000000324455.jpg,Is the fallen motorcycle racer described as a casual rider or a competitor?,Is the fallen motorcycle racer described as a casual rider or a competitor?,"The fallen motorcycle racer is described as a young competitor, which suggests that they are participating in a competitive racing event.",llava_33555,000000324455,Is the fallen motorcycle racer described as a casual rider or a competitor?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	racer_patches = image_patch.find(""fallen motorcycle racer"")
+	if len(racer_patches) == 0:
+		return image_patch.simple_query(""Is the fallen motorcycle racer described as a casual rider or a competitor?"")
+	racer_patch = racer_patches[0]
+	return racer_patch.best_text_match([""casual rider"", ""competitor""])",vqa
+000000047944.jpg,"What can you tell me about the book ""The Secret Life of Bees""?","What can you tell me about the book ""The Secret Life of Bees""?","""The Secret Life of Bees"" is a novel written by Sue Monk Kidd, published in 2001. The story is set in the American South during the 1960s and tells the tale of a young white girl named Lily Owens, who lives with her abusive father. After the death of her mother, Lily runs away from home with her African American caregiver, Rosaleen, to escape her difficult life and search for answers about her mother.
+
+Their journey leads them to a trio of beekeeping sisters named August, June, and May, who live in a pink house and have knowledge about Lily's mother. Throughout the novel, themes of love, forgiveness, female empowerment, and racial issues are explored while providing insight into the world of beekeeping and its connection to the characters.
+
+The book has been well received by both readers and critics, gaining popularity due to its engaging storyline and relatable themes. In 2008, ""The Secret Life of Bees"" was adapted into a feature film directed by Gina Prince-Bythewood, starring Dakota Fanning, Queen Latifah, Jennifer Hudson, Alicia Keys, and Sophie Okonedo.",llava_34446,000000047944,"What can you tell me about the book ""The Secret Life of Bees""?","def execute_command(image)->str:
+	# Since the query does not require any interaction with the image, we utilize external sources for information
+	query = ""What can you tell me about the book 'The Secret Life of Bees'?""
+	result = bing_search(query)
+	return result",vqa
+000000258753.jpg,Where is the cardinal positioned on the wine glass?,Where is the cardinal positioned on the wine glass?,The cardinal is positioned on the rim or side of the wine glass in the image.,llava_37475,000000258753,Where is the cardinal positioned on the wine glass?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	cardinal_patches = image_patch.find(""cardinal"")
+	wine_glass_patches = image_patch.find(""wine glass"")
+	if len(cardinal_patches) == 0 or len(wine_glass_patches) == 0:
+		return ""Not found""
+	cardinal_patch = cardinal_patches[0]
+	wine_glass_patch = wine_glass_patches[0]
+	if cardinal_patch.horizontal_center < wine_glass_patch.horizontal_center:
+		if cardinal_patch.vertical_center < wine_glass_patch.vertical_center:
+			return ""top left""
+		else:
+			return ""bottom left""
+	else:
+		if cardinal_patch.vertical_center < wine_glass_patch.vertical_center:
+			return ""top right""
+		else:
+			return ""bottom right""",vqa
+000000445308.jpg,Are the women at a coffee shop or a restaurant?,Are the women at a coffee shop or a restaurant?,The women are in a setting that could be described as either a coffee shop or a restaurant. It may be a coffee house or a casual dining establishment that serves both coffee and food.,llava_65270,000000445308,Are the women at a coffee shop or a restaurant?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	if len(women_patches) == 0:
+		# If no woman is found, query the image directly with simple_query instead of returning a long string like ""There are no women.""
+		return image_patch.simple_query(""Are the women at a coffee shop or a restaurant?"")
+	women_patch = women_patches[0]
+	return women_patch.best_text_match([""coffee shop"", ""restaurant""])",vqa
+000000313873.jpg,Do the teenagers have any notable items with them?,Do the teenagers have any notable items with them?,"Yes, the teenagers have skateboards with them, which suggests that they might be interested in skateboarding as a recreational activity or sport.",llava_77841,000000313873,Do the teenagers have any notable items with them?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	teenager_patches = image_patch.find(""teenager"")
+	for teenager_patch in teenager_patches:
+		notable_items = teenager_patch.simple_query(""Does this teenager have any notable items?"")
+		if notable_items != ""no"":
+			return notable_items
+	return ""no""",vqa
+000000125735.jpg,"Is there a person leading a pony? If so, are they riding or walking?","Is there a person leading a pony? If so, are they riding or walking?","Yes, there is a person leading a pony, and they are walking.",llava_79148,000000125735,"Is there a person leading a pony? If so, are they riding or walking?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pony_patches = image_patch.find(""pony"")
+	if len(pony_patches) == 0:
+		return ""no""
+	person_patches = image_patch.find(""person"")
+	for person_patch in person_patches:
+		for pony_patch in pony_patches:
+			if distance(person_patch, pony_patch) < 10:  # Assuming distance measure
+				action = person_patch.simple_query(""Is the person riding or walking?"")
+				return ""yes, "" + action
+	return ""no""",vqa
+000000043206.jpg,Are the girls running or standing still?,Are the girls running or standing still?,"The girls are running on the beach, trying to catch the frisbee.",llava_88469,000000043206,Are the girls running or standing still?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""girl"")
+	# provide a default response when no girls are found
+	if len(girl_patches) == 0:
+		return ""girls not found""
+	running_girls = 0
+	standing_girls = 0
+	for girl_patch in girl_patches:
+		action = girl_patch.simple_query(""Is the girl running or standing still?"")
+		if action == 'running':
+			running_girls += 1
+		elif action == 'standing still':
+			standing_girls += 1
+	if running_girls > standing_girls:
+		return 'running'
+	elif standing_girls > running_girls:
+		return 'standing still'
+	else:
+		return 'equal number of running and standing girls'",vqa
+000000067515.jpg,"Are there only children on the miniature train, or are there adults as well?","Are there only children on the miniature train, or are there adults as well?","The miniature train is filled with both adults and children, indicating that this ride is for families to enjoy together.",llava_99088,000000067515,"Are there only children on the miniature train, or are there adults as well?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	train_patches = image_patch.find(""miniature train"")
+	if len(train_patches) == 0:
+		# If no train is found, it cannot comment on its passengers.
+		return ""no miniature train""
+	train_patch = train_patches[0]
+	child_patches = train_patch.find(""child"")
+	adult_patches = train_patch.find(""adult"")
+	if len(adult_patches) > 0:
+		return ""both children and adults""
+	elif len(child_patches) > 0:
+		return ""only children""
+	else:
+		return ""no passengers""",vqa
+000000326035.jpg,How is the pen related to the sewing theme in the image?,How is the pen related to the sewing theme in the image?,"Although the pen is not a typical sewing tool, it can still be relevant to the sewing theme in the image. The pen can be used in various ways during crafting or sewing projects, such as marking patterns or measurements on fabric, drawing designs, or making notations on the chosen material. Its versatility makes it a useful tool to have on hand, even though it might not be specifically designed for sewing tasks.",llava_99094,000000326035,How is the pen related to the sewing theme in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pen_patches = image_patch.find(""pen"")
+	if len(pen_patches) == 0:
+		# If no pen is found, query the image directly with simple_query to verify the existance of pen and the sewing theme.
+		return image_patch.simple_query(""How is the pen related to the sewing theme in the image?"")
+	pen_patch = pen_patches[0]
+	sewing_patches = image_patch.find(""sewing theme"")
+	if len(sewing_patches) == 0:
+		return ""no sewing theme""
+	# Extract visual feature from image, tell in text form and then ask GPT for reasoning.
+	visual_features = pen_patch.simple_query(""what visual features does the pen have?"")
+	reason_query = f""Considering its {visual_features}, how might a pen relate to a sewing theme?""
+	reasoning_result = pen_patch.llm_query(reason_query)
+	return reasoning_result",vqa
+000000121001.jpg,Is the toothpaste completely applied or partially applied?,Is the toothpaste completely applied or partially applied?,"Since the person is in the process of applying the toothpaste, it is partially applied to the toothbrush at the time the image was taken.",llava_113689,000000121001,Is the toothpaste completely applied or partially applied?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	toothpaste_patches = image_patch.find('toothpaste')
+	if len(toothpaste_patches) == 0:
+		return ""Toothpaste not present.""
+	else:
+		toothpaste_patch = toothpaste_patches[0]
+		best_match = toothpaste_patch.best_text_match([""completely applied"", ""partially applied""])
+		return best_match",vqa
+000000112228.jpg,Are the mushroom ornaments made from plastic?,Are the mushroom ornaments made from plastic?,"Yes, the mushroom ornaments are made from plastic.",llava_117737,000000112228,Are the mushroom ornaments made from plastic?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	mushroom_patches = image_patch.find(""mushroom ornament"")
+	# Assume only one mushroom ornament per image
+	if len(mushroom_patches) == 0:
+		return ""no""
+	return bool_to_yesno(mushroom_patches[0].verify_property('mushroom ornament', 'plastic'))",vqa
+000000316699.jpg,Is there a man feeding chickens in the image?,Is there a man feeding chickens in the image?,"Yes, there is a man feeding chickens in the image.",llava_137385,000000316699,Is there a man feeding chickens in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	# If no man is found, return ""no.""
+	if len(man_patches) == 0:
+		return ""no""
+	for man_patch in man_patches:
+		feeding_chicken = man_patch.verify_property(""man"", ""feeding chickens"")
+		if feeding_chicken: 
+			return ""yes""
+	return ""no""",vqa
+000000345185.jpg,Are the swimmers swimming in the same or opposite directions?,Are the swimmers swimming in the same or opposite directions?,The two swimmers are swimming in opposite directions.,llava_144627,000000345185,Are the swimmers swimming in the same or opposite directions?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	swimmer_patches = image_patch.find(""swimmers"")
+	if len(swimmer_patches) < 2:  # If there are fewer than two swimmers, there is no comparison to be made
+		return ""no comparison""
+	direction_1 = swimmer_patches[0].simple_query(""What direction is the swimmer going?"")
+	direction_2 = swimmer_patches[1].simple_query(""What direction is the swimmer going?"")
+	if direction_1 == direction_2:
+		return ""same""
+	else:
+		return ""opposite""",vqa
+000000108365.jpg,What kind of pattern does the ledge have where the glove is resting?,What kind of pattern does the ledge have where the glove is resting?,The ledge where the glove is resting has a leopard print pattern.,llava_161385,000000108365,What kind of pattern does the ledge have where the glove is resting?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	glove_patches = image_patch.find(""glove"")
+	if len(glove_patches) == 0:
+		return image_patch.simple_query(""What kind of pattern does the ledge have where the glove is resting?"")
+	glove_patch = glove_patches[0]
+	ledge_patches = image_patch.find(""ledge"")
+	for ledge_patch in ledge_patches:
+		if ledge_patch.overlaps_with(glove_patch.left, glove_patch.lower, glove_patch.right, glove_patch.upper):
+			return ledge_patch.simple_query(""What kind of pattern does the ledge have?"")
+	return ""no pattern found""",vqa
+000000286171.jpg,Is there any indication of an ongoing event or a promotional activity involving Ronald McDonald in the image?,Is there any indication of an ongoing event or a promotional activity involving Ronald McDonald in the image?,"There is no direct indication of an ongoing event or promotional activity involving Ronald McDonald in the image. However, since these statues are often used to promote the brand and create a fun atmosphere, their presence can be considered part of McDonald's overall marketing strategy. In this particular image, the main focus is on the woman talking on her cell phone, with the Ronald McDonald statue serving as a recognizable and interesting background element.",llava_165765,000000286171,Is there any indication of an ongoing event or a promotional activity involving Ronald McDonald in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	# First, find all patches containing Ronald McDonald
+	ronald_patches = image_patch.find(""Ronald McDonald"")
+	if len(ronald_patches) == 0:
+		return ""no""
+	for ronald_patch in ronald_patches:
+		# If there is any indication of an event or promotion, return ""yes""
+		if ronald_patch.exists(""event sign"") or ronald_patch.exists(""promotion sign""):
+			return ""yes""
+	return ""no""",vqa
+000000097391.jpg,What color shirts are the movers wearing?,What color shirts are the movers wearing?,The movers are wearing blue shirts.,llava_167256,000000097391,What color shirts are the movers wearing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	movers_patches = image_patch.find(""movers"")
+	if len(movers_patches) == 0:
+		# If no movers are found, return a neutral answer rather than a long string like ""There are no movers.""
+		return ""unknown""
+	colors = []
+	for mover_patch in movers_patches:
+		color = mover_patch.simple_query(""What color is the shirt?"")
+		colors.append(color)
+	return "", "".join(colors)",vqa
+000000077377.jpg,What might the babies be drinking from their bottles?,What might the babies be drinking from their bottles?,"The babies are most likely drinking milk from their bottles. This milk could be breastmilk, which is an excellent source of nutrition and antibodies for babies, or it could be formula milk, which is specifically designed to meet the nutritional needs of infants when breastfeeding is not possible or not chosen. Both types of milk provide the necessary nutrients for a baby's growth and development.",llava_184024,000000077377,What might the babies be drinking from their bottles?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	possible_drink = image_patch.simple_query(""What might the babies be drinking from their bottles?"")
+	return possible_drink",vqa
+000000164461.jpg,Are the fire trucks real or toys?,Are the fire trucks real or toys?,The fire trucks are toys.,llava_193880,000000164461,Are the fire trucks real or toys?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	fire_truck_patches = image_patch.find(""fire trucks"")
+	# Question assumes that there are fire truck patches
+	return fire_truck_patches[0].best_text_match([""real"", ""toys""])",vqa
+000000377159.jpg,What activity might the young girl be taking a break from?,What activity might the young girl be taking a break from?,"The young girl might be taking a break from playing baseball or a similar bat-related activity, given the presence of the baseball bat on her belly.",llava_194880,000000377159,What activity might the young girl be taking a break from?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""young girl"")
+	# If no girl is found, query the image directly with simple_query instead of returning a long string like ""There is no young girl.""
+	if len(girl_patches) == 0:
+		return image_patch.simple_query(""What activity might the young girl be taking a break from?"")
+	# Get the patch of the young girl
+	girl_patch = girl_patches[0]
+	# Query the girl patch for more context about what is around her.
+	activity = girl_patch.simple_query(""What activity might this person be taking a break from?"")
+	return activity",vqa
+000000144180.jpg,Are the beds in the hospital ward occupied or empty?,Are the beds in the hospital ward occupied or empty?,"There are patients in some of the beds, but there are also a few empty beds in the hospital ward. It appears to be a mix of occupied and empty beds.",llava_200665,000000144180,Are the beds in the hospital ward occupied or empty?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bed_patches = image_patch.find(""beds in the hospital ward"")
+	if len(bed_patches) == 0:
+		# If no beds in the hospital ward are found, then there is no answer to the question since we simply didn't find any beds.
+		return image_patch.simple_query(""Are the beds in the hospital ward occupied or empty?"")
+	# Question assumes one bed patch
+	return bed_patches[0].best_text_match([""occupied"", ""empty""])",vqa
+000000560087.jpg,What could the girl be thinking while looking up in the forest?,What could the girl be thinking while looking up in the forest?,"While it is impossible to know exactly what the girl is thinking as she looks up in the forest, we can speculate on some possibilities. She might be admiring the natural beauty of the forest or observing a particular object, such as a bird or squirrel in the trees. She could also be deep in thought or contemplation, using the peaceful and quiet surroundings of the wooded area as a backdrop for her reflections. Alternatively, she might be seeking inspiration or taking a momentary break from her professional responsibilities, given her business attire.",llava_202091,000000560087,What could the girl be thinking while looking up in the forest?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""girl"")
+	girl_patch = girl_patches[0] if len(girl_patches) > 0 else None
+	if girl_patch and girl_patch.simple_query(""Is the girl looking up?"") == ""yes"":
+		mindset_query = ""What could a girl be thinking while looking up in the forest?""
+		mindset = girl_patch.llm_query(mindset_query, long_answer=True)
+		return mindset
+	else:
+		return ""The girl is not looking up.""",vqa
+000000560687.jpg,What are all three people holding while they walk?,What are all three people holding while they walk?,All three people are holding umbrellas while they walk.,llava_203297,000000560687,What are all three people holding while they walk?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""person"")
+	if len(people_patches) < 3:
+		return image_patch.simple_query(""What are all three people holding while they walk?"")
+	objects = []
+	for person in people_patches:
+		held_object = person.simple_query(""What is the person holding?"")
+		objects.append(held_object)
+	return ', '.join(objects)",vqa
+000000386253.jpg,What type of toys are filling the castle?,What type of toys are filling the castle?,The castle is filled with small stuffed toys and little beanie animals.,llava_205790,000000386253,What type of toys are filling the castle?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	castle_patches = image_patch.find(""castle"")
+	if len(castle_patches) == 0:
+		# If no castle is found, query the image directly with simple_query instead of returning a long string like ""There is no castle.""
+		return image_patch.simple_query(""What type of toys are filling the castle?"")
+	castle_patch = castle_patches[0]
+	toys_patches = castle_patch.find(""toys"")
+	if len(toys_patches) == 0:
+		return ""No toys""
+	# Get the type of the first toy found
+	toy_type = toys_patches[0].simple_query(""What type of toy is this?"")
+	for toy_patch in toys_patches[1:]:
+		# If a toy of a different type is found, return ""mixed types""
+		current_toy_type = toy_patch.simple_query(""What type of toy is this?"")
+		if current_toy_type != toy_type:
+			return ""mixed types""
+	# If all toys are of the same type, return that type
+	return toy_type",vqa
+000000522704.jpg,Is the person focused on eating the ice cream or using the computer?,Is the person focused on eating the ice cream or using the computer?,"Based on the image, it seems that the person is multitasking by eating ice cream and using the computer simultaneously. While they are actively scooping and consuming the ice cream, they are also in front of the computer, suggesting that their attention might be divided between the two activities.",llava_242437,000000522704,Is the person focused on eating the ice cream or using the computer?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person"")
+	if len(person_patches) == 0:
+		# If no person is found, query the image directly with simple_query instead of returning a long string like ""There is no person.""
+		return ""There is no person in the image.""
+	person_patch = person_patches[0]
+	return person_patch.best_text_match([""eating the ice cream"", ""using the computer""])",vqa

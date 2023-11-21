@@ -1,0 +1,86 @@
+{
+    "0": [
+        "identify_sign_content(image_patch: ImagePatch, sign_name: str, query: str) -> str"
+    ],
+    "1": [
+        "check_interaction_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, interaction_object_name: str) -> str"
+    ],
+    "2": [
+        "identify_side_objects(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "3": [
+        "check_potential_danger_based_on_distance(image_patch: ImagePatch, object1_name: str, object2_name: str, danger_distance: int) -> str"
+    ],
+    "4": [
+        "identify_object_action(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "5": [
+        "infer_purpose_of_scene(image_patch: ImagePatch, scene_description: str) -> str"
+    ],
+    "6": [
+        "check_property_existence(image_patch: ImagePatch, object_name: str, property_name: str, query: str) -> str"
+    ],
+    "7": [
+        "identify_held_item(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "8": [
+        "find_object_location(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "9": [
+        "infer_reason_for_situation(image_patch: ImagePatch, situation: str) -> str"
+    ],
+    "10": [
+        "check_inside_object_near_object(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_position: str, query: str) -> str"
+    ],
+    "11": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "12": [
+        "check_relative_vertical_position(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str"
+    ],
+    "13": [
+        "identify_person_state_on_object(image_patch: ImagePatch, object_name: str, possible_states: List[str]) -> str"
+    ],
+    "14": [
+        "compare_object_size(image_patch: ImagePatch, object_name: str, reference_object_name: str, size_type: str, query: str) -> str"
+    ],
+    "15": [
+        "check_object_status(image_patch: ImagePatch, object_name: str, possible_statuses: List[str]) -> str"
+    ],
+    "16": [
+        "determine_main_theme(image_patch: ImagePatch, options: List[str]) -> str"
+    ],
+    "17": [
+        "check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ],
+    "18": [
+        "compare_object_instances(image_patch: ImagePatch, object1: str, object2: str) -> str"
+    ],
+    "19": [
+        "check_same_state_in_containers(image_patch: ImagePatch, container_name: str, object_name: str, state_query: str) -> str"
+    ],
+    "20": [
+        "find_attribute_of_closest_object(image_patch: ImagePatch, object_name: str, reference_object_name: str, attribute_query: str, original_query: str) -> str"
+    ],
+    "21": [
+        "check_indication_of_activity(image_patch: ImagePatch, indication_name: str, activity_query: str) -> str"
+    ],
+    "22": [
+        "check_existence_in_area_with_object(image_patch: ImagePatch, object_to_find: str, area_name: str, reference_object_name: str, query: str) -> str"
+    ],
+    "23": [
+        "infer_emotions_experiences_based_on_age_and_context(image_patch: ImagePatch, person_name: str, context: str) -> str"
+    ],
+    "24": [
+        "find_significance_of_arrangement(image_patch: ImagePatch, object_name: str, shape: str) -> str"
+    ],
+    "25": [
+        "identify_establishment(image_patch: ImagePatch, sign_name: str) -> str"
+    ],
+    "26": [
+        "check_object_sharing_status(image_patch: ImagePatch, object_name: str, shared_object_name: str) -> str"
+    ],
+    "27": [
+        "verify_object_material(image_patch: ImagePatch, object_name: str, material: str, query: str) -> str"
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "image_id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "image_path": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "question": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "answers": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}

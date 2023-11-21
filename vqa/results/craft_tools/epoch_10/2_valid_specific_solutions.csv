@@ -1,0 +1,330 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000018058.jpg,What is the Chinese sign warning against?,Identify the prohibited activity.,Drinking and driving.,vqa_17988,,What is the Chinese sign warning against?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	sign_patches = image_patch.find(""Chinese sign"")
+	if len(sign_patches)==0:
+		return ""The Chinese sign does not exist.""
+	sign_patch = sign_patches[0]
+	warning_against = sign_patch.simple_query(""What is the Chinese sign warning against?"")
+	return warning_against",vqa
+000000081721.jpg,Are the man and woman toasting with their martinis?,Are the man and woman toasting with their martinis?,"Yes, the man and woman are toasting with their martinis, holding their glasses together.",llava_4417,000000081721,Are the man and woman toasting with their martinis?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	woman_patches = image_patch.find(""woman"")
+	martini_patches = image_patch.find(""martini"")
+	
+	# Checks if the man, woman and martinis exist
+	if len(man_patches)==0 or len(woman_patches)==0 or len(martini_patches)<2:
+		return ""no""
+	
+	# Checks if the man and woman patches overlap
+	is_toasting = False
+	for man_patch in man_patches:
+		for woman_patch in woman_patches:
+			if man_patch.overlaps_with(woman_patch.left, woman_patch.lower, woman_patch.right, woman_patch.upper):
+				is_toasting = True
+				break
+	
+	if not is_toasting:
+		return ""no""
+	else:
+		# Checks if two martinis patches overlap
+		for i in range(len(martini_patches)):
+			for j in range(i+1, len(martini_patches)):
+				if martini_patches[i].overlaps_with(martini_patches[j].left, martini_patches[j].lower, martini_patches[j].right, martini_patches[j].upper):
+					return ""yes""
+		return ""no""",vqa
+000000065837.jpg,What is on the side of the tortilla wraps?,What is on the side of the tortilla wraps?,There is a salad served on the side of the tortilla wraps.,llava_9407,000000065837,What is on the side of the tortilla wraps?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	tortilla_wraps_patches = image_patch.find('tortilla wraps')
+	if tortilla_wraps_patches:
+		tortilla_wrap_patch = tortilla_wraps_patches[0]
+		return tortilla_wrap_patch.simple_query(""What is on the side?"")
+	else:
+		return ""No tortilla wraps found""",vqa
+000000355767.jpg,Can this situation be potentially dangerous for the people inside the car or the zebra itself?,Can this situation be potentially dangerous for the people inside the car or the zebra itself?,"Yes, this situation can potentially be dangerous for both the people inside the car and the zebra. Wild animals, such as zebras, can be unpredictable in their behavior, and allowing them to come that close to humans might put both parties at risk.
+
+For the people inside the car, the zebra might unintentionally harm them if it becomes spooked, aggressive, or simply reacts to a sudden movement. While zebras are generally not dangerous animals, their size, strength, and unexpected reactions can cause injuries or damage to the vehicle.
+
+For the zebra, this situation can also be dangerous as it may lead to habituation, meaning the animal becomes more comfortable around humans and vehicles. This may increase the likelihood of the zebra approaching other vehicles in the future, potentially putting itself in harm's way. Furthermore, an open car window could be a source of stress for the animal, as it may feel threatened or trapped once its head is inside the vehicle.
+
+It is essential to always exercise caution when interacting with wild animals and to maintain a safe distance to protect their wellbeing and yours.",llava_32336,000000355767,Can this situation be potentially dangerous for the people inside the car or the zebra itself?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	car_patches = image_patch.find(""car"")
+	zebra_patches = image_patch.find(""zebra"")
+	if len(car_patches) == 0 or len(zebra_patches) == 0:
+		# No one is in danger if either the car or the zebra is not present.
+		return ""no""
+	car_patch = car_patches[0]
+	zebra_patch = zebra_patches[0]
+	distance_between_car_and_zebra = distance(car_patch, zebra_patch)
+	# Let's say less than 20 units (depending on the scale used) is a dangerous distance
+	if -20 < distance_between_car_and_zebra < 20:
+		return ""yes""
+	return ""no""",vqa
+000000391374.jpg,What is the woman doing with her dog while sitting on the surfboard?,What is the woman doing with her dog while sitting on the surfboard?,The woman is holding or hugging her dog while they both sit on the surfboard.,llava_34318,000000391374,What is the woman doing with her dog while sitting on the surfboard?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		return image_patch.simple_query(""What is the woman doing with her dog while sitting on the surfboard?"")
+	woman_patch = woman_patches[0]
+	action = woman_patch.simple_query(""What is the woman doing with her dog while sitting on the surfboard?"")
+	return action",vqa
+000000171566.jpg,What could be the purpose of this gathering of young men with the man holding a Bible?,What could be the purpose of this gathering of young men with the man holding a Bible?,"While the exact purpose cannot be determined from the image alone, it is likely that the gathering involves some form of religious or spiritual discussion, bible study, or sharing of knowledge related to the content of the Bible. The man holding the book might be the leader, facilitator, or a key speaker guiding the discussion and sharing insights with the seated young men. This setting could also be part of a religious service, educational event, community gathering, or a social group engaging in activities or discussions centered around their shared faith and interests.",llava_35533,000000171566,What could be the purpose of this gathering of young men with the man holding a Bible?,"def execute_command(image)->str:
+	# This question is not direct perception, so we need to ask GPT-3 for an inference
+	# Salient information: gathering of young men, man holding a Bible
+	image_patch = ImagePatch(image)
+	gathering_description = ""a gathering of young men with a man holding a Bible""
+	return image_patch.llm_query(""What could be the purpose of {}?"".format(gathering_description))",vqa
+000000505768.jpg,Does the snowy hill have many tracks on it?,Does the snowy hill have many tracks on it?,"Yes, the snowy hill the skier is skiing on has many tracks in it.",llava_44853,000000505768,Does the snowy hill have many tracks on it?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	hill_patches = image_patch.find(""snowy hill"")
+	if len(hill_patches) == 0:
+		# If no snowy hill is found, call simple_query() and ask if a snowy hill exists.
+		return image_patch.simple_query(""Does the snowy hill exist?"")
+	hill_patch = hill_patches[0] # Assuming one snowy hill
+	return bool_to_yesno(hill_patch.verify_property(""hill"", ""many tracks""))",vqa
+000000052648.jpg,What accessory is the dummy holding?,What accessory is the dummy holding?,The dummy is holding a suitcase.,llava_55817,000000052648,What accessory is the dummy holding?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	dummy_patches = image_patch.find(""dummy"")
+	# Assume only one dummy is there
+	dummy_patch = dummy_patches[0]
+	accessory = dummy_patch.simple_query(""What is this accessory?"")
+	return accessory",vqa
+000000492698.jpg,What does the driftwood the dog is carrying signify?,What does the driftwood the dog is carrying signify?,"The driftwood the dog is carrying signifies that the dog is engaged in a fun and playful activity at the beach. Dogs often enjoy playing with sticks and other objects they find in their environment, and this dog has found a large piece of driftwood that it can carry around and play with. The driftwood may also serve as a source of physical and mental stimulation for the dog, as it requires effort and coordination to carry it while navigating the sand and water at the beach.",llava_73238,000000492698,What does the driftwood the dog is carrying signify?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	driftwood_patches = image_patch.find(""driftwood"")
+	# Question assumes one driftwood patch
+	driftwood_patch = driftwood_patches[0]
+	return driftwood_patch.llm_query(""What does the driftwood a dog is carrying signify?"", long_answer=True)",vqa
+000000128409.jpg,Where are the chopsticks resting?,Where are the chopsticks resting?,The chopsticks are resting on the plate of meat and broccoli.,llava_73699,000000128409,Where are the chopsticks resting?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	chopsticks_patches = image_patch.find(""chopsticks"")
+	if len(chopsticks_patches) == 0:
+		return ""No chopsticks found in the image.""
+	chopsticks_patch = chopsticks_patches[0]
+	location_query = ""Where are the chopsticks resting?""
+	location = chopsticks_patch.simple_query(location_query)
+	return location",vqa
+000000235091.jpg,Are there any children interacting with the hot air balloon?,Are there any children interacting with the hot air balloon?,"Yes, there are children playing with a large inflatable balloon character that is part of the colorful hot air balloon.",llava_77421,000000235091,Are there any children interacting with the hot air balloon?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	balloon_patches = image_patch.find(""hot air balloon"")
+	if len(balloon_patches) == 0:
+		# If no hot air balloon is found, query the image directly with simple_query
+		return image_patch.simple_query(""Are there any children interacting with the hot air balloon?"")
+	balloon_patch = balloon_patches[0]
+	children_patches = image_patch.find(""children"")
+	if len(children_patches) == 0:
+		return ""no""
+	for child_patch in children_patches:
+		if distance(child_patch, balloon_patch) < 0:  # the patches overlap, i.e., the child is interacting with the balloon
+			return ""yes""
+	return ""no""",vqa
+000000531205.jpg,Can you explain the role of wind turbines and their significance in this scene?,Can you explain the role of wind turbines and their significance in this scene?,"Wind turbines are devices that harness the power of wind and convert it into clean, renewable electricity. They consist of large blades that rotate when the wind blows, allowing them to generate power for homes, businesses, and other establishments. In the context of this image that features horses grazing in a field near a river, the presence of a wind turbine suggests that the farm or the area is utilizing renewable energy sources for electricity.
+
+The inclusion of a wind turbine in the scene highlights the harmonious coexistence of nature, agriculture, and technology in modern times. It showcases a sustainable approach to energy production that is environmentally friendly and reduces dependency on fossil fuels, which is associated with greenhouse gas emissions and climate change. Moreover, the fact that the wind turbine is placed near a farm implies that the people living and working in the area are committed to using green energy and are likely aware of the importance of preserving natural resources for future generations.
+
+Thus, the presence of the wind turbine in this scene demonstrates the increasing trend towards using renewable energy sources to meet our energy needs while minimizing the environmental impact. It also serves as a reminder of the need to embrace sustainable practices and technologies, such as wind power, in order to maintain the delicate balance between human activities and the natural world.",llava_80364,000000531205,Can you explain the role of wind turbines and their significance in this scene?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	turbine_patches = image_patch.find(""wind turbine"")
+	if len(turbine_patches) == 0:
+		return image_patch.llm_query(""What is the role and significance of wind turbines in general?"")
+	else:
+		scene_description = image_patch.simple_query(""Can you describe the scene?"")
+		return image_patch.llm_query(""What is the role and significance of wind turbines in a scene with {}?"".format(scene_description))",vqa
+000000288683.jpg,What could be the purpose of setting up the table and tent near the minivan?,What could be the purpose of setting up the table and tent near the minivan?,"Setting up the table and tent near the minivan serves several purposes. First, it provides a sheltered and organized space for displaying and selling items, such as vegetables or other goods. It can also protect the vendors and their products from the elements, like sun, rain, or wind. Additionally, having the table and tent set up close to the minivan makes it convenient for the vendors to unload their products and materials directly from the vehicle, minimizing the need for carrying heavy items over long distances. The setup also signals a temporary marketplace or event, allowing potential customers to quickly recognize the sale area and become interested in checking out the offerings. Overall, this arrangement allows for an efficient and effective way to engage with customers and sell products in an outdoor setting.",llava_102648,000000288683,What could be the purpose of setting up the table and tent near the minivan?,"def execute_command(image)->str:
+	# Get the reasoning from large language model
+	reasoning = llm_query(""What could be the purpose of setting up a table and tent near a minivan?"")
+	return reasoning",vqa
+000000218399.jpg,What is inside the cooler near the statue?,What is inside the cooler near the statue?,The cooler near the statue is full of beer.,llava_103488,000000218399,What is inside the cooler near the statue?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	statue_patches = image_patch.find(""statue"")
+	if len(statue_patches) == 0:
+		return image_patch.simple_query(""What is inside the cooler near the statue?"")
+	statue_patch = statue_patches[0]
+	cooler_patches = image_patch.find(""cooler"")
+	if len(cooler_patches) == 0:
+		return ""There are no coolers in the image.""
+	# sort the cooler patches by their distances to the statue patch
+	cooler_patches.sort(key=lambda x: distance(x, statue_patch))
+	nearest_cooler_patch = cooler_patches[0]
+	return nearest_cooler_patch.simple_query(""What is inside this cooler?"")",vqa
+000000072002.jpg,How many pictures are in the film strip?,How many pictures are in the film strip?,"There are three pictures in the film strip, showing people on a white sidewalk.",llava_103906,000000072002,How many pictures are in the film strip?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pictures_patches = image_patch.find(""pictures in a film strip"")
+	return str(len(pictures_patches))",vqa
+000000032668.jpg,Is the banana peel under the man's shoe or next to it?,Is the banana peel under the man's shoe or next to it?,"The banana peel is under the man's shoe, creating a risk of slipping.",llava_108208,000000032668,Is the banana peel under the man's shoe or next to it?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_shoe_patches = image_patch.find(""man's shoe"")
+	peel_patches = image_patch.find(""banana peel"")
+	if len(man_shoe_patches) !=1 or len(peel_patches) != 1:
+		return ""Cannot determine""
+	man_shoe_patch = man_shoe_patches[0]
+	peel_patch = peel_patches[0]
+	if peel_patch.lower > man_shoe_patch.upper:
+		return ""under""
+	else:
+		return ""next to""",vqa
+000000317210.jpg,Is the person on the sleigh standing or seated?,Is the person on the sleigh standing or seated?,The person on the sleigh is seated.,llava_128932,000000317210,Is the person on the sleigh standing or seated?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	sleigh_person_patch = image_patch.find(""person on the sleigh"")[0]
+	return sleigh_person_patch.best_text_match([""standing"", ""seated""])",vqa
+000000412371.jpg,What is the overall height of the boy compared to the refrigerator?,What is the overall height of the boy compared to the refrigerator?,"The small boy is standing inside the refrigerator door, so his height is relatively short compared to the refrigerator.",llava_132104,000000412371,What is the overall height of the boy compared to the refrigerator?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	boy_patches = image_patch.find(""boy"")
+	refrigerator_patches = image_patch.find(""refrigerator"")
+	if not boy_patches or not refrigerator_patches:
+		return image_patch.simple_query(""What is the overall height of the boy compared to the refrigerator?"")
+	boy_patch = boy_patches[0]
+	refrigerator_patch = refrigerator_patches[0]
+	boy_height = boy_patch.upper - boy_patch.lower
+	refrigerator_height = refrigerator_patch.upper - refrigerator_patch.lower
+	if boy_height < refrigerator_height:
+		return ""shorter""
+	elif boy_height > refrigerator_height:
+		return ""taller""
+	else:
+		return ""the same height""",vqa
+000000114468.jpg,Is the food processor full or only partially filled with flour?,Is the food processor full or only partially filled with flour?,"The food processor is only partially filled with flour, containing a small amount of it.",llava_137709,000000114468,Is the food processor full or only partially filled with flour?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	food_processor_patches = image_patch.find(""food processor"")
+	if len(food_processor_patches) == 0:
+		return ""food processor not found in the image""
+	food_processor_patch = food_processor_patches[0]
+	return food_processor_patch.best_text_match([""full"", ""partially filled""]) + "" with flour""",vqa
+000000016009.jpg,Is this image mainly about men's or women's fashion?,Is this image mainly about men's or women's fashion?,"This image is mainly focused on men's fashion, as evidenced by the four mannequins wearing men's clothing.",llava_145614,000000016009,Is this image mainly about men's or women's fashion?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	options = [""men's fashion"", ""women's fashion""]
+	best_match = image_patch.best_text_match(options)
+	return best_match",vqa
+000000508040.jpg,Are the girls laughing in the image?,Are the girls laughing in the image?,"Yes, the girls are laughing at someone outside the train window, indicating that they are enjoying themselves and sharing a playful moment.",llava_149075,000000508040,Are the girls laughing in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girls_patches = image_patch.find(""girls"")
+	if girls_patches:
+		for girl_patch in girls_patches:
+			if girl_patch.verify_property(""girl"", ""laughing""):
+				return ""yes""
+	return ""no""",vqa
+000000488962.jpg,Are there multiple people in the room or just the duo of men running the banana stand?,Are there multiple people in the room or just the duo of men running the banana stand?,"The room is full of people, including the duo of men running the banana stand and others walking by and looking towards the large banana.",llava_153178,000000488962,Are there multiple people in the room or just the duo of men running the banana stand?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	duo_patches = image_patch.find(""duo of men running the banana stand"")
+	if len(people_patches) > len(duo_patches):
+		return ""yes""
+	else:
+		return ""no""",vqa
+000000024076.jpg,Are the scissors in the paintings in the same or different poses?,Are the scissors in the paintings in the same or different poses?,The scissors in the paintings are in different poses.,llava_158622,000000024076,Are the scissors in the paintings in the same or different poses?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	painting_patches = image_patch.find(""painting"")
+	if len(painting_patches) < 2:
+		return ""non-applicable""
+	scissors_poses = []
+	for painting_patch in painting_patches:
+		scissors_patches = painting_patch.find(""scissors"")
+		if len(scissors_patches) > 0:
+			scissors_poses.append(scissors_patches[0].simple_query(""What is the pose of the scissors?""))
+	if len(scissors_poses) < 2:
+		return ""non-applicable""
+	if all(pose == scissors_poses[0] for pose in scissors_poses):
+		return ""same""
+	else:
+		return ""different""",vqa
+000000452775.jpg,What role does the person standing next to the scooter have?,What role does the person standing next to the scooter have?,The person standing next to the scooter is a police officer.,llava_165474,000000452775,What role does the person standing next to the scooter have?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person"")
+	scooter_patches = image_patch.find(""scooter"")
+	
+	# If no scooter or person is found, query the image directly with simple_query instead of returning a long string like ""There is no scooter.""
+	if not scooter_patches or not person_patches:
+		return image_patch.simple_query(""What role does the person standing next to the scooter have?"")
+	
+	closest_distance = float('inf')
+	closest_person = None
+	for scooter_patch in scooter_patches:
+		for person_patch in person_patches:
+			if distance(person_patch, scooter_patch) < closest_distance:
+				closest_distance = distance(person_patch, scooter_patch)
+				closest_person = person_patch
+				
+	if closest_person:
+		return closest_person.simple_query(""What role does this person have?"")
+	else:
+		return ""There isn't a person next to the scooter.""",vqa
+000000082301.jpg,Is there any indication of what they are watching or reading?,Is there any indication of what they are watching or reading?,"There is no specific information available about what they are watching or reading, as we only see the men holding the remote and the book.",llava_174270,000000082301,Is there any indication of what they are watching or reading?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	indication_patches = image_patch.find(""indication"")
+	if len(indication_patches) == 0:
+		return image_patch.simple_query(""Is there any indication of what they are watching or reading?"")
+	indication_patch = indication_patches[0]
+	return indication_patch.simple_query(""What are they watching or reading?"")",vqa
+000000437485.jpg,Are there any additional facilities or services available in the outdoor area where people are browsing the zine library?,Are there any additional facilities or services available in the outdoor area where people are browsing the zine library?,"Yes, the photo shows that the outdoor space where people are browsing the zine library also has facilities for them to charge their phones while they wait or read.",llava_188326,000000437485,Are there any additional facilities or services available in the outdoor area where people are browsing the zine library?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	zine_library_patches = image_patch.find(""zine library"")
+	if len(zine_library_patches) == 0:
+		return image_patch.simple_query(""Are there any additional facilities or services available in the outdoor area?"")
+	zine_library_patch = zine_library_patches[0]
+	outdoor_patches = image_patch.find(""outdoor area"")
+	if len(outdoor_patches) == 0:
+		return ""no""
+	services_patches = []
+	for outdoor_patch in outdoor_patches:
+		if outdoor_patch.overlaps_with(zine_library_patch.left, zine_library_patch.lower, zine_library_patch.right, zine_library_patch.upper):
+			services_patches = outdoor_patch.find(""services"")
+	return bool_to_yesno(len(services_patches) > 0)",vqa
+000000031536.jpg,"Considering the woman's age, can you describe any possible emotions or experiences that she might be having while sitting at the table with the flowers and the food?","Considering the woman's age, can you describe any possible emotions or experiences that she might be having while sitting at the table with the flowers and the food?","Although I cannot definitively determine the emotions of the old woman from the photo, it is plausible to assume that she might be experiencing some form of enjoyment, reflection, or relaxation while sitting at the table adorned with beautiful flowers and plates of food.
+
+At her age, she may appreciate the simple pleasures in life, such as savoring a delicious meal, admiring the beauty of the flowers, and being surrounded by a comfortable and peaceful environment. The presence of the flowers and the plates of food might evoke a sense of warmth, comfort, and contentment for her – potentially serving as reminders of happier times and cherished memories she has accumulated throughout her life.
+
+Additionally, sharing a meal surrounded by a visually pleasing setting can contribute to feelings of connection and gratitude, even during moments of solitude. As such, it is possible that the old woman is experiencing a range of emotions, from happiness to nostalgia, while sitting at the table with the flowers and the food.",llava_193699,000000031536,"Considering the woman's age, can you describe any possible emotions or experiences that she might be having while sitting at the table with the flowers and the food?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	# Assume there is a woman in the image
+	woman_patch = woman_patches[0]
+	age = woman_patch.simple_query(""How old is the woman?"")
+	query = ""Considering a woman's age of {}, what emotions or experiences might she have while sitting at a table with flowers and food?"".format(age)
+	emotions_experiences = image_patch.llm_query(query)
+	return emotions_experiences",vqa
+000000157526.jpg,"What could be the significance of the bacon arranged in the shape of ""54""?","What could be the significance of the bacon arranged in the shape of ""54""?","Although the exact significance of the bacon arranged in the shape of ""54"" is not entirely clear from the image alone, there are a few possibilities. It could represent a special occasion or celebration, such as a birthday or anniversary, for someone who is 54 years old. Having this number represented by the bacon during breakfast might be a creative and fun way to mark the occasion and start the day with a smile.
+
+Another possibility is that it could be an inside joke or reference that holds specific meaning between the person who prepared the breakfast and the person it is meant for. In this case, the bacon's arrangement serves as a playful or meaningful touch meant to enhance the breakfast experience and create a shared moment of connection.
+
+It is important to note that although we can come up with several possible explanations for the significance of the bacon arranged in the shape of ""54,"" we cannot ascertain the exact reason or backstory behind it just by looking at the image.",llava_214033,000000157526,"What could be the significance of the bacon arranged in the shape of ""54""?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	significance_query = ""What could be the significance of the number 54 arranged with bacon?""
+	significance = image_patch.bing_search(significance_query)
+	return significance",vqa
+000000064866.jpg,What kind of establishment is represented by the Starbucks sign?,What kind of establishment is represented by the Starbucks sign?,The Starbucks sign represents a coffee house or a coffee shop.,llava_224433,000000064866,What kind of establishment is represented by the Starbucks sign?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	sign_patches = image_patch.find(""Starbucks sign"")
+	if sign_patches: 
+		establishment = sign_patches[0].simple_query(""What kind of establishment is this?"")
+		return establishment
+	else: 
+		return ""no Starbucks sign detected""",vqa
+000000211850.jpg,Are the women sharing the table or each of them has their own table?,Are the women sharing the table or each of them has their own table?,The women are sharing a large table together while they work on their laptop computers.,llava_225506,000000211850,Are the women sharing the table or each of them has their own table?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""woman"")
+	if len(women_patches) <= 1:
+		return ""no""
+	table_patches = image_patch.find(""table"")
+	if len(table_patches) < len(women_patches):
+		return ""yes""
+	for woman_patch in women_patches:
+		if not any(table_patch.overlaps_with(woman_patch.left, woman_patch.lower, woman_patch.right, woman_patch.upper) for table_patch in table_patches):
+			return ""no""
+	return ""yes""",vqa
+000000337638.jpg,Is the controller actually made out of Legos or just designed to resemble them?,Is the controller actually made out of Legos or just designed to resemble them?,The controller is not made out of actual Legos but features a modified case designed to resemble Lego bricks.,llava_235506,000000337638,Is the controller actually made out of Legos or just designed to resemble them?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	controller_patches = image_patch.find(""controller"")
+	if len(controller_patches) == 0:
+		return image_patch.simple_query(""Is the controller actually made out of Legos or just designed to resemble them?"")
+	controller_patch = controller_patches[0]
+	is_lego = controller_patch.verify_property(""controller"", ""Lego"")
+	if not is_lego:
+		return ""designed to resemble them""
+	else:
+		return ""actually made out of Legos""",vqa
+000000178430.jpg,What might be the reason for the boy to be wrapped in a towel and sitting on the counter?,What might be the reason for the boy to be wrapped in a towel and sitting on the counter?,"There could be several reasons why the young boy is wrapped in an orange towel and sitting on the counter. One possibility is that he has just finished taking a bath or shower and is sitting on the counter for a parent or guardian to help him dry off or get dressed. The towel could also serve as a comfort item for the child, providing warmth and a sense of security while sitting in the room. It's also possible that the child is involved in a fun activity, such as a water play or a painting session, and the towel is used to protect his clothes or provide a barrier between him and the counter. Regardless of the specific reason, it is evident from the image that the boy is sitting comfortably on the counter with a towel wrapped around him.",llava_250081,000000178430,What might be the reason for the boy to be wrapped in a towel and sitting on the counter?,"def execute_command(image)->str:
+	# We need to use llm_query to infer the reason
+	image_patch = ImagePatch(image)
+	return image_patch.llm_query(""What might be the reason for the boy to be wrapped in a towel and sitting on the counter?"")",vqa

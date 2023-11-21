@@ -1,0 +1,1972 @@
+image_path,question,answer,tool_id,query,code,tool,call,tool_call
+000000538242.jpg,How are the two people moving in the military base?,"Man walking, motorcycle.",vqa_11287,How are the two people moving in the military base?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	if len(people_patches) < 2:
+		return image_patch.simple_query(""How are the two people moving in the military base?"")
+	else:
+		person_1_movement = people_patches[0].simple_query(""How is this person moving?"")
+		person_2_movement = people_patches[1].simple_query(""How is this person moving?"")
+		return ""Person 1 is moving "" + person_1_movement + "", Person 2 is moving "" + person_2_movement","def determine_two_objects_movement(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Determine the movements of two specific objects in a given context.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for movement.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The movements of the two objects.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) < 2:
+        return image_patch.simple_query(query)
+    else:
+        object_1_movement = object_patches[0].simple_query(""How is this "" + object_name + "" moving?"")
+        object_2_movement = object_patches[1].simple_query(""How is this "" + object_name + "" moving?"")
+        return ""Object 1 is moving "" + object_1_movement + "", Object 2 is moving "" + object_2_movement","determine_two_objects_movement(image_patch, ""people"", ""How are the two people moving in the military base?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def determine_two_objects_movement(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Determine the movements of two specific objects in a given context.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for movement.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The movements of the two objects.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) < 2:
+	        return image_patch.simple_query(query)
+	    else:
+	        object_1_movement = object_patches[0].simple_query(""How is this "" + object_name + "" moving?"")
+	        object_2_movement = object_patches[1].simple_query(""How is this "" + object_name + "" moving?"")
+	        return ""Object 1 is moving "" + object_1_movement + "", Object 2 is moving "" + object_2_movement
+	image_patch = ImagePatch(image)
+	return determine_two_objects_movement(image_patch, ""people"", ""How are the two people moving in the military base?"")"
+000000493218.jpg,How many elderly women are sitting on the park bench?,Three women.,vqa_11400,How many elderly women are sitting on the park bench?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	elderly_women_patches = image_patch.find(""elderly woman"")
+	park_bench_patches = image_patch.find(""park bench"")
+	if len(elderly_women_patches) == 0 or len(park_bench_patches) == 0:
+		return ""0""
+	count = 0
+	for elderly_woman_patch in elderly_women_patches:
+		for park_bench_patch in park_bench_patches:
+			if elderly_woman_patch.overlaps_with(park_bench_patch.left, park_bench_patch.lower, park_bench_patch.right, park_bench_patch.upper):
+				count += 1
+	return str(count)","def count_overlapping_objects(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+    '''Count the number of a specific type of object that overlaps with another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to count.
+        reference_object_name (str): The name of the reference object.
+       
+    Returns:
+        str: The number of the specific type of object that overlaps with the reference object.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    reference_patches = image_patch.find(reference_object_name)
+    if len(object_patches) == 0 or len(reference_patches) == 0:
+        return ""0""
+    count = 0
+    for object_patch in object_patches:
+        for reference_patch in reference_patches:
+            if object_patch.overlaps_with(reference_patch.left, reference_patch.lower, reference_patch.right, reference_patch.upper):
+                count += 1
+    return str(count)","count_overlapping_objects(image_patch, ""elderly woman"", ""park bench"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def count_overlapping_objects(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+	    '''Count the number of a specific type of object that overlaps with another object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to count.
+	        reference_object_name (str): The name of the reference object.
+	       
+	    Returns:
+	        str: The number of the specific type of object that overlaps with the reference object.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    reference_patches = image_patch.find(reference_object_name)
+	    if len(object_patches) == 0 or len(reference_patches) == 0:
+	        return ""0""
+	    count = 0
+	    for object_patch in object_patches:
+	        for reference_patch in reference_patches:
+	            if object_patch.overlaps_with(reference_patch.left, reference_patch.lower, reference_patch.right, reference_patch.upper):
+	                count += 1
+	    return str(count)
+	image_patch = ImagePatch(image)
+	return count_overlapping_objects(image_patch, ""elderly woman"", ""park bench"")"
+000000279824.jpg,Who is holding a trumpet?,The boy.,vqa_16331,Who is holding a trumpet?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	trumpet_patches = image_patch.find(""trumpet"")
+	if len(trumpet_patches) == 0:
+		return ""No one is holding a trumpet.""
+	# assume there is only one instance of trumpet
+	trumpet_patch = trumpet_patches[0]
+	# crop image based on trumpet location
+	trumpeter_patch = image_patch.crop(trumpet_patch.left - 50, trumpet_patch.lower - 50, trumpet_patch.right + 50, trumpet_patch.upper + 50)
+	return trumpeter_patch.simple_query(""Who is this?"")
+","def identify_holder_of_object(image_patch: ImagePatch, object_name: str) -> str:
+    '''Identify the object or person holding a specific item.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for a holder.
+       
+    Returns:
+        str: The name of the holder if found, ""No one is holding {object_name}."" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return f""No one is holding a {object_name}.""
+    # assume there is only one instance of the object
+    object_patch = object_patches[0]
+    # crop image based on object location
+    holder_patch = image_patch.crop(object_patch.left - 50, object_patch.lower - 50, object_patch.right + 50, object_patch.upper + 50)
+    return holder_patch.simple_query(""Who is this?"")","identify_holder_of_object(image_patch, ""trumpet"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_holder_of_object(image_patch: ImagePatch, object_name: str) -> str:
+	    '''Identify the object or person holding a specific item.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for a holder.
+	       
+	    Returns:
+	        str: The name of the holder if found, ""No one is holding {object_name}."" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return f""No one is holding a {object_name}.""
+	    # assume there is only one instance of the object
+	    object_patch = object_patches[0]
+	    # crop image based on object location
+	    holder_patch = image_patch.crop(object_patch.left - 50, object_patch.lower - 50, object_patch.right + 50, object_patch.upper + 50)
+	    return holder_patch.simple_query(""Who is this?"")
+	image_patch = ImagePatch(image)
+	return identify_holder_of_object(image_patch, ""trumpet"")"
+000000310879.jpg,Where are the flamingos?,In the water.,vqa_22239,Where are the flamingos?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	flamingo_patches = image_patch.find(""flamingo"")
+	if not flamingo_patches:
+		return ""There are no flamingos.""
+	else:
+		locations = [flamingo_patch.simple_query(""Where is this?"") for flamingo_patch in flamingo_patches]
+		return "", "".join(locations)","def find_object_locations(image_patch: ImagePatch, object_name: str) -> str:
+    '''Find the locations of a specific object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to find.
+       
+    Returns:
+        str: The locations of the object if it exists, ""There are no {object_name}s."" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if not object_patches:
+        return f""There are no {object_name}s.""
+    else:
+        locations = [object_patch.simple_query(f""Where is this {object_name}?"") for object_patch in object_patches]
+        return "", "".join(locations)","find_object_locations(image_patch, ""flamingo"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def find_object_locations(image_patch: ImagePatch, object_name: str) -> str:
+	    '''Find the locations of a specific object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to find.
+	       
+	    Returns:
+	        str: The locations of the object if it exists, ""There are no {object_name}s."" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if not object_patches:
+	        return f""There are no {object_name}s.""
+	    else:
+	        locations = [object_patch.simple_query(f""Where is this {object_name}?"") for object_patch in object_patches]
+	        return "", "".join(locations)
+	image_patch = ImagePatch(image)
+	return find_object_locations(image_patch, ""flamingo"")"
+000000489025.jpg,How many supports are in the creek?,Three.,vqa_29623,How many supports are in the creek?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	supports_patches = image_patch.find(""supports"")
+	return str(len(supports_patches))","def count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str:
+    '''Count the number of a specific object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to count objects in.
+        object_name (str): The name of the object to count.
+       
+    Returns:
+        str: The number of the specified object in the image.
+    '''
+    object_patches = image_patch.find(object_name)
+    return str(len(object_patches))","count_objects_in_image(image_patch, ""supports"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str:
+	    '''Count the number of a specific object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to count objects in.
+	        object_name (str): The name of the object to count.
+	       
+	    Returns:
+	        str: The number of the specified object in the image.
+	    '''
+	    object_patches = image_patch.find(object_name)
+	    return str(len(object_patches))
+	image_patch = ImagePatch(image)
+	return count_objects_in_image(image_patch, ""supports"")"
+000000172957.jpg,Is the man only working on the laptop or also playing with the baby?,The man is not only working on the laptop but also playing with the baby.,llava_3000,Is the man only working on the laptop or also playing with the baby?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0: 
+		return ""no man found""
+	man_patch = man_patches[0]
+	working_laptop = man_patch.verify_property(""man"", ""working on laptop"")
+	playing_baby = man_patch.verify_property(""man"", ""playing with baby"")
+	if working_laptop and playing_baby:
+		return ""both""
+	elif working_laptop:
+		return ""only working on laptop""
+	elif playing_baby:
+		return ""only playing with baby""
+	else:
+		return ""neither""","def check_subject_actions(image_patch: ImagePatch, subject_name: str, actions: List[str]) -> str:
+    '''Check the actions performed by a subject.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        subject_name (str): The name of the subject to check.
+        actions (List[str]): The list of actions to check.
+       
+    Returns:
+        str: ""both"" if the subject is performing both actions, ""only {action}"" if the subject is only performing one action, ""neither"" if the subject is not performing any of the actions.
+    '''
+    
+    subject_patches = image_patch.find(subject_name)
+    if len(subject_patches) == 0: 
+        return f""no {subject_name} found""
+    subject_patch = subject_patches[0]
+    actions_status = [subject_patch.verify_property(subject_name, action) for action in actions]
+    if all(actions_status):
+        return ""both""
+    elif any(actions_status):
+        return f""only {actions[actions_status.index(True)]}""
+    else:
+        return ""neither""","check_subject_actions(image_patch, ""man"", [""working on laptop"", ""playing with baby""])","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_subject_actions(image_patch: ImagePatch, subject_name: str, actions: List[str]) -> str:
+	    '''Check the actions performed by a subject.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        subject_name (str): The name of the subject to check.
+	        actions (List[str]): The list of actions to check.
+	       
+	    Returns:
+	        str: ""both"" if the subject is performing both actions, ""only {action}"" if the subject is only performing one action, ""neither"" if the subject is not performing any of the actions.
+	    '''
+	    
+	    subject_patches = image_patch.find(subject_name)
+	    if len(subject_patches) == 0: 
+	        return f""no {subject_name} found""
+	    subject_patch = subject_patches[0]
+	    actions_status = [subject_patch.verify_property(subject_name, action) for action in actions]
+	    if all(actions_status):
+	        return ""both""
+	    elif any(actions_status):
+	        return f""only {actions[actions_status.index(True)]}""
+	    else:
+	        return ""neither""
+	image_patch = ImagePatch(image)
+	return check_subject_actions(image_patch, ""man"", [""working on laptop"", ""playing with baby""])"
+000000064816.jpg,Can you provide some possible reasons as to why one of the men is painted gold?,"There could be several reasons why one of the men is painted gold in this image. Some possible explanations include:
+
+1. Performance or Entertainment: The gold-painted man might be a performer or entertainer, such as a mime or living statue, participating in an event at the location. Gold paint and similar colors are often used to create an eye-catching and unique appearance, attracting attention and engaging audiences.
+
+2. Promotional event: The gold-painted man could be taking part in a promotional event for a product, brand, or upcoming function. In this context, the use of gold paint could be a memorable and bold marketing strategy designed to capture the public's interest and make a lasting impression.
+
+3. Artistic expression: The gold-painted man could be an artist or participant in a creative project, using the paint as a form of expression or exploration of artistic themes. The image might be part of a photography or video production, which incorporates elements of body painting, fashion, and symbolism.
+
+4. Cultural or traditional celebrations: In some regions, events or festivals may involve individuals covering themselves in paint, powder, or even metallic paint, such as gold. This could be a custom or ritual practiced during local celebrations or an expression of faith or spirituality.
+
+5. Personal choice or fashion statement: The gold-painted man might enjoy expressing himself through body paint, using it as a means to stand out and make a statement about his personality or interests.
+
+Overall, these are just a few examples of reasons why one of the men in the image might be painted gold. The specific intention or motive behind the gold paint varies depending on the context and individuals involved.",llava_5722,Can you provide some possible reasons as to why one of the men is painted gold?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	gold_man_patches = image_patch.find(""gold man"")
+	if len(gold_man_patches) > 0:
+		return llm_query(""Why might a man be painted gold?"", long_answer=True)
+	else:
+		return ""There is no man painted gold in the image.""","def provide_possible_reasons(image_patch: ImagePatch, object_condition: str, query: str, long_answer: bool = True) -> str:
+    '''Provide possible reasons for a specific condition of an object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_condition (str): The condition of the object to check for.
+        query (str): The original query to answer.
+        long_answer (bool): Whether to provide a long answer. Default is True.
+       
+    Returns:
+        str: Possible reasons if the object with the specific condition exists, ""There is no {object_condition} in the image."" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_condition)
+    if len(object_patches) > 0:
+        return llm_query(query, long_answer=long_answer)
+    else:
+        return f""There is no {object_condition} in the image.""","provide_possible_reasons(image_patch, ""gold man"", ""Why might a man be painted gold?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def provide_possible_reasons(image_patch: ImagePatch, object_condition: str, query: str, long_answer: bool = True) -> str:
+	    '''Provide possible reasons for a specific condition of an object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_condition (str): The condition of the object to check for.
+	        query (str): The original query to answer.
+	        long_answer (bool): Whether to provide a long answer. Default is True.
+	       
+	    Returns:
+	        str: Possible reasons if the object with the specific condition exists, ""There is no {object_condition} in the image."" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_condition)
+	    if len(object_patches) > 0:
+	        return llm_query(query, long_answer=long_answer)
+	    else:
+	        return f""There is no {object_condition} in the image.""
+	image_patch = ImagePatch(image)
+	return provide_possible_reasons(image_patch, ""gold man"", ""Why might a man be painted gold?"")"
+000000228256.jpg,Is there anyone else in the image observing the lady slicing apples?,"Yes, there is another woman watching the lady as she slices apples on a table outdoors.",llava_31384,Is there anyone else in the image observing the lady slicing apples?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	lady_slices_apples_patches = image_patch.find(""lady slicing apples"")
+	if len(lady_slices_apples_patches) == 0:
+		return ""no""
+	lady_slices_apples_patch = lady_slices_apples_patches[0]
+	person_patches = image_patch.find(""person"")
+	for person_patch in person_patches:
+		if person_patch.overlaps_with(lady_slices_apples_patch.left, lady_slices_apples_patch.lower, lady_slices_apples_patch.right, lady_slices_apples_patch.upper):
+			return ""yes""
+	return ""no""","def check_overlap_with_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+    '''Check the existence of an object overlapping with another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for overlap.
+        reference_object_name (str): The name of the reference object.
+       
+    Returns:
+        str: ""yes"" if the object overlaps, ""no"" otherwise.
+    '''
+    
+    reference_patches = image_patch.find(reference_object_name)
+    if len(reference_patches) == 0:
+        return ""no""
+    reference_patch = reference_patches[0]
+    object_patches = image_patch.find(object_name)
+    for object_patch in object_patches:
+        if object_patch.overlaps_with(reference_patch.left, reference_patch.lower, reference_patch.right, reference_patch.upper):
+            return ""yes""
+    return ""no""","check_overlap_with_object(image_patch, ""person"", ""lady slicing apples"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_overlap_with_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+	    '''Check the existence of an object overlapping with another object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for overlap.
+	        reference_object_name (str): The name of the reference object.
+	       
+	    Returns:
+	        str: ""yes"" if the object overlaps, ""no"" otherwise.
+	    '''
+	    
+	    reference_patches = image_patch.find(reference_object_name)
+	    if len(reference_patches) == 0:
+	        return ""no""
+	    reference_patch = reference_patches[0]
+	    object_patches = image_patch.find(object_name)
+	    for object_patch in object_patches:
+	        if object_patch.overlaps_with(reference_patch.left, reference_patch.lower, reference_patch.right, reference_patch.upper):
+	            return ""yes""
+	    return ""no""
+	image_patch = ImagePatch(image)
+	return check_overlap_with_object(image_patch, ""person"", ""lady slicing apples"")"
+000000581921.jpg,What are the potential risks and rewards associated with performing stunts like the one depicted in the image?,"Performing stunts like the one depicted in the image can be thrilling and exciting for snowboarders, providing a sense of accomplishment, increased skills, and the opportunity to showcase their abilities. Such stunts showcase a high level of athleticism and can be impressive to watch, potentially leading to recognition and sponsorship opportunities within the snowboarding community.
+
+However, attempting these stunts also comes with risks. There is the potential for injury due to the high speeds, airtime, and complex maneuvers involved. Some common snowboarding injuries include wrist, arm, and shoulder fractures, knee ligament injuries, and concussions. These injuries can range from minor to severe, and in some cases, might even be life-altering. 
+
+Additionally, attempting these stunts may lead to collisions with other snowboarders, skiers, or objects such as trees and barriers, further increasing the risk of injury. It is essential for snowboarders performing these stunts to have a solid understanding of their skill level, train extensively, and utilize appropriate safety equipment like helmets and padding to minimize the likelihood of injuries.
+
+In conclusion, while performing snowboarding stunts like the one depicted in the image can yield a sense of accomplishment and various opportunities within the snowboarding community, the risks involved must be carefully considered and mitigated to ensure the safety of the snowboarder and others on the mountain.",llava_46458,What are the potential risks and rewards associated with performing stunts like the one depicted in the image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	action = image_patch.simple_query(""What sort of stunt is being performed?"")
+	llm_query_result = image_patch.llm_query(f""What are the potential risks and rewards associated with performing stunts like {action}?"")
+	return llm_query_result","def analyze_risks_rewards(image_patch: ImagePatch, query: str, action_query: str) -> str:
+    '''Identify the potential risks and rewards associated with an action or event depicted in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to analyze.
+        query (str): The original query to answer.
+        action_query (str): The query to identify the action or event in the image.
+       
+    Returns:
+        str: The potential risks and rewards associated with the action or event.
+    '''
+    
+    action = image_patch.simple_query(action_query)
+    llm_query_result = image_patch.llm_query(f""{query} {action}?"")
+    return llm_query_result","analyze_risks_rewards(image_patch, ""What are the potential risks and rewards associated with"", ""What sort of stunt is being performed?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def analyze_risks_rewards(image_patch: ImagePatch, query: str, action_query: str) -> str:
+	    '''Identify the potential risks and rewards associated with an action or event depicted in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to analyze.
+	        query (str): The original query to answer.
+	        action_query (str): The query to identify the action or event in the image.
+	       
+	    Returns:
+	        str: The potential risks and rewards associated with the action or event.
+	    '''
+	    
+	    action = image_patch.simple_query(action_query)
+	    llm_query_result = image_patch.llm_query(f""{query} {action}?"")
+	    return llm_query_result
+	image_patch = ImagePatch(image)
+	return analyze_risks_rewards(image_patch, ""What are the potential risks and rewards associated with"", ""What sort of stunt is being performed?"")"
+000000547378.jpg,Is the Mickey Mouse cutout made from wood?,"Yes, the Mickey Mouse cutout is made from wood. It is a cartoon wood cutout of the famous Mickey Mouse character.",llava_53982,Is the Mickey Mouse cutout made from wood?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	mickey_patches = image_patch.find(""Mickey Mouse cutout"")
+	if len(mickey_patches) == 0:
+		return ""no""
+	mickey_patch = mickey_patches[0]
+	is_wood = mickey_patch.verify_property(""Mickey Mouse cutout"", ""wood"")
+	return bool_to_yesno(is_wood)","def verify_object_material(image_patch: ImagePatch, object_name: str, material: str) -> str:
+    '''Verify the material of a given object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to verify.
+        material (str): The material to verify.
+       
+    Returns:
+        str: ""yes"" if the object is made from the given material, ""no"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return ""no""
+    object_patch = object_patches[0]
+    is_material = object_patch.verify_property(object_name, material)
+    return bool_to_yesno(is_material)","verify_object_material(image_patch, ""Mickey Mouse cutout"", ""wood"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def verify_object_material(image_patch: ImagePatch, object_name: str, material: str) -> str:
+	    '''Verify the material of a given object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to verify.
+	        material (str): The material to verify.
+	       
+	    Returns:
+	        str: ""yes"" if the object is made from the given material, ""no"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return ""no""
+	    object_patch = object_patches[0]
+	    is_material = object_patch.verify_property(object_name, material)
+	    return bool_to_yesno(is_material)
+	image_patch = ImagePatch(image)
+	return verify_object_material(image_patch, ""Mickey Mouse cutout"", ""wood"")"
+000000048432.jpg,What can be inferred about the young man with the lacrosse stick?,"Based on the visual information in the image, the young man holding the lacrosse stick and the gym bag appears to be a student who is involved in lacrosse as a sport. This can be inferred from his choice of attire, which includes a shirt and a tie, suggesting a school dress code or an organized event.
+
+His interest in sports can be deduced from the lacrosse stick and the Nike gym bag he carries, indicating that he is an active participant in lacrosse activities. The presence of other people with backpacks and gym bags in the street also hints at a possible group of students or athletes who might be on their way to a game or practice session.
+
+The young man's smartly dressed appearance sets him apart from the usual sportswear worn during lacrosse games or practice, which could imply that he takes his athletic pursuits and appearance seriously. In conclusion, from the image, the young man appears to be a dedicated and well-organized lacrosse player who values both his game equipment and his personal presentation.",llava_55960,What can be inferred about the young man with the lacrosse stick?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	young_man_patches = image_patch.find(""young man with lacrosse stick"")
+	if len(young_man_patches) == 0:
+		return image_patch.simple_query(""What can be inferred about the young man with the lacrosse stick?"")
+	young_man_patch = young_man_patches[0]
+	return young_man_patch.llm_query(""What can be inferred about a young man with a lacrosse stick?"", long_answer=True)","def infer_about_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Infer information about a specific object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to infer information about.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The inferred information about the object.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.llm_query(f""What can be inferred about a {object_name}?"", long_answer=True)","infer_about_object(image_patch, ""young man with a lacrosse stick"", ""What can be inferred about the young man with the lacrosse stick?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def infer_about_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Infer information about a specific object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to infer information about.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The inferred information about the object.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return image_patch.simple_query(query)
+	    object_patch = object_patches[0]
+	    return object_patch.llm_query(f""What can be inferred about a {object_name}?"", long_answer=True)
+	image_patch = ImagePatch(image)
+	return infer_about_object(image_patch, ""young man with a lacrosse stick"", ""What can be inferred about the young man with the lacrosse stick?"")"
+000000020460.jpg,"Is there any specific description of the service provided by ""Buster's 24 Hr. Service"" in the image?","No, the image only shows the company name ""Buster's 24 Hr. Service"" without any specific details about the services they provide.",llava_64011,"Is there any specific description of the service provided by ""Buster's 24 Hr. Service"" in the image?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	service_description_patches = image_patch.find(""Buster's 24 Hr. Service description"")
+	if len(service_description_patches) > 0:
+		service_description = service_description_patches[0].simple_query(""What is the description of the service provided by 'Buster's 24 Hr. Service'?"")
+		return service_description
+	else:
+		return ""No specific description found.""","def check_service_description(image_patch: ImagePatch, entity_name: str, query: str) -> str:
+    '''Check the existence of a specific description of a service or product provided by an entity in the image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        entity_name (str): The name of the entity providing the service or product.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The description of the service or product if it exists, ""No specific description found."" otherwise.
+    '''
+    
+    description_patches = image_patch.find(f""{entity_name} description"")
+    if len(description_patches) > 0:
+        description = description_patches[0].simple_query(f""What is the description of the service provided by '{entity_name}'?"")
+        return description
+    else:
+        return ""No specific description found.""","check_service_description(image_patch, ""Buster's 24 Hr. Service"", ""Is there any specific description of the service provided by 'Buster's 24 Hr. Service' in the image?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_service_description(image_patch: ImagePatch, entity_name: str, query: str) -> str:
+	    '''Check the existence of a specific description of a service or product provided by an entity in the image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        entity_name (str): The name of the entity providing the service or product.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The description of the service or product if it exists, ""No specific description found."" otherwise.
+	    '''
+	    
+	    description_patches = image_patch.find(f""{entity_name} description"")
+	    if len(description_patches) > 0:
+	        description = description_patches[0].simple_query(f""What is the description of the service provided by '{entity_name}'?"")
+	        return description
+	    else:
+	        return ""No specific description found.""
+	image_patch = ImagePatch(image)
+	return check_service_description(image_patch, ""Buster's 24 Hr. Service"", ""Is there any specific description of the service provided by 'Buster's 24 Hr. Service' in the image?"")"
+000000454963.jpg,What can you say about the craftsmanship of the wooden rocking horse?,"The wooden rocking horse in the image appears to be crafted by a talented wood carver, as indicated by the intricate details and overall design. It showcases the artist's skill and ability to create a beautiful and functional wooden toy.",llava_67561,What can you say about the craftsmanship of the wooden rocking horse?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	rocking_horse_patches = image_patch.find(""wooden rocking horse"")
+	if len(rocking_horse_patches) == 0:
+		return ""There is no wooden rocking horse found.""
+	rocking_horse_patch = rocking_horse_patches[0]
+	craftsmanship_description = rocking_horse_patch.simple_query(""Describe the craftsmanship of the wooden rocking horse."")
+	return craftsmanship_description","def describe_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str) -> str:
+    '''Describe a specific attribute of an object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to describe.
+        attribute (str): The attribute of the object to describe.
+       
+    Returns:
+        str: The description of the attribute of the object.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return f""There is no {object_name} found.""
+    object_patch = object_patches[0]
+    attribute_description = object_patch.simple_query(f""Describe the {attribute} of the {object_name}."")
+    return attribute_description","describe_object_attribute(image_patch, ""wooden rocking horse"", ""craftsmanship"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def describe_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str) -> str:
+	    '''Describe a specific attribute of an object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to describe.
+	        attribute (str): The attribute of the object to describe.
+	       
+	    Returns:
+	        str: The description of the attribute of the object.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return f""There is no {object_name} found.""
+	    object_patch = object_patches[0]
+	    attribute_description = object_patch.simple_query(f""Describe the {attribute} of the {object_name}."")
+	    return attribute_description
+	image_patch = ImagePatch(image)
+	return describe_object_attribute(image_patch, ""wooden rocking horse"", ""craftsmanship"")"
+000000144280.jpg,What type of piano is present in the image?,There is a grand piano present in the image.,llava_69431,What type of piano is present in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	piano_patches = image_patch.find(""piano"")
+	if len(piano_patches) == 0:
+		# If no piano is found, the simple query will return a negative answer
+		return image_patch.simple_query(""What type of piano is this?"")
+	piano_patch = piano_patches[0]
+	piano_type = piano_patch.simple_query(""What type of piano is this?"")
+	return piano_type","def identify_object_attribute(image_patch: ImagePatch, object_name: str, attribute_query: str) -> str:
+    '''Identify the attribute of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to identify the attribute of.
+        attribute_query (str): The query to identify the attribute of the object.
+       
+    Returns:
+        str: The attribute of the object if it exists, otherwise a negative answer.
+    '''
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, the simple query will return a negative answer
+        return image_patch.simple_query(attribute_query)
+    object_patch = object_patches[0]
+    object_attribute = object_patch.simple_query(attribute_query)
+    return object_attribute","identify_object_attribute(image_patch, ""piano"", ""What type of piano is this?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_object_attribute(image_patch: ImagePatch, object_name: str, attribute_query: str) -> str:
+	    '''Identify the attribute of an object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to identify the attribute of.
+	        attribute_query (str): The query to identify the attribute of the object.
+	       
+	    Returns:
+	        str: The attribute of the object if it exists, otherwise a negative answer.
+	    '''
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        # If no object is found, the simple query will return a negative answer
+	        return image_patch.simple_query(attribute_query)
+	    object_patch = object_patches[0]
+	    object_attribute = object_patch.simple_query(attribute_query)
+	    return object_attribute
+	image_patch = ImagePatch(image)
+	return identify_object_attribute(image_patch, ""piano"", ""What type of piano is this?"")"
+000000110596.jpg,What kind of building are the bride and groom leaving?,"Although I cannot definitively determine the exact type of building the bride and groom are leaving, it is likely to be a place where a wedding ceremony or reception has taken place, such as a church, wedding venue, or banquet hall.",llava_70940,What kind of building are the bride and groom leaving?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	bride_patches = image_patch.find(""bride"")
+	groom_patches = image_patch.find(""groom"")
+	
+	# If there are more than one bride/groom, assume the real bride/groom are nearest to each other
+	if len(bride_patches) > 1 and len(groom_patches) > 1:
+		bride_patches.sort(key=lambda x: min([distance(x, groom) for groom in groom_patches]))
+		groom_patches.sort(key=lambda x: min([distance(x, bride) for bride in bride_patches]))
+	
+	bride_patch = bride_patches[0]
+	groom_patch = groom_patches[0]
+	
+	# Sanity check if bride and groom are near each other
+	if distance(bride_patch, groom_patch) > 50:
+		return image_patch.bing_search(""Building type when bride and groom leaving"")
+	
+	# Check for buildings surrounding bride and groom
+	building_patches = image_patch.find(""building"")
+	building_patches.sort(key=lambda x: min(distance(x, bride_patch), distance(x, groom_patch)))
+	
+	if len(building_patches) > 0:
+		return building_patches[0].simple_query(""What kind of building is this?"")
+	else:
+		# No buildings found, resort to external search
+		return image_patch.bing_search(""Building type when bride and groom leaving"")","def identify_interacting_object(image_patch: ImagePatch, object1_name: str, object2_name: str, interacting_object_name: str, query: str) -> str:
+    '''Identify the type of a specific object that two other objects are interacting with.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object1_name (str): The name of the first object.
+        object2_name (str): The name of the second object.
+        interacting_object_name (str): The name of the object that the first two objects are interacting with.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The type of the interacting object if it exists, otherwise the result of an external search.
+    '''
+    
+    object1_patches = image_patch.find(object1_name)
+    object2_patches = image_patch.find(object2_name)
+    
+    # If there are more than one object1/object2, assume the real objects are nearest to each other
+    if len(object1_patches) > 1 and len(object2_patches) > 1:
+        object1_patches.sort(key=lambda x: min([distance(x, object2) for object2 in object2_patches]))
+        object2_patches.sort(key=lambda x: min([distance(x, object1) for object1 in object1_patches]))
+    
+    object1_patch = object1_patches[0]
+    object2_patch = object2_patches[0]
+    
+    # Sanity check if object1 and object2 are near each other
+    if distance(object1_patch, object2_patch) > 50:
+        return image_patch.bing_search(query)
+    
+    # Check for interacting objects surrounding object1 and object2
+    interacting_object_patches = image_patch.find(interacting_object_name)
+    interacting_object_patches.sort(key=lambda x: min(distance(x, object1_patch), distance(x, object2_patch)))
+    
+    if len(interacting_object_patches) > 0:
+        return interacting_object_patches[0].simple_query(f""What kind of {interacting_object_name} is this?"")
+    else:
+        # No interacting objects found, resort to external search
+        return image_patch.bing_search(query)","identify_interacting_object(image_patch, ""bride"", ""groom"", ""building"", ""What kind of building are the bride and groom leaving?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_interacting_object(image_patch: ImagePatch, object1_name: str, object2_name: str, interacting_object_name: str, query: str) -> str:
+	    '''Identify the type of a specific object that two other objects are interacting with.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object1_name (str): The name of the first object.
+	        object2_name (str): The name of the second object.
+	        interacting_object_name (str): The name of the object that the first two objects are interacting with.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The type of the interacting object if it exists, otherwise the result of an external search.
+	    '''
+	    
+	    object1_patches = image_patch.find(object1_name)
+	    object2_patches = image_patch.find(object2_name)
+	    
+	    # If there are more than one object1/object2, assume the real objects are nearest to each other
+	    if len(object1_patches) > 1 and len(object2_patches) > 1:
+	        object1_patches.sort(key=lambda x: min([distance(x, object2) for object2 in object2_patches]))
+	        object2_patches.sort(key=lambda x: min([distance(x, object1) for object1 in object1_patches]))
+	    
+	    object1_patch = object1_patches[0]
+	    object2_patch = object2_patches[0]
+	    
+	    # Sanity check if object1 and object2 are near each other
+	    if distance(object1_patch, object2_patch) > 50:
+	        return image_patch.bing_search(query)
+	    
+	    # Check for interacting objects surrounding object1 and object2
+	    interacting_object_patches = image_patch.find(interacting_object_name)
+	    interacting_object_patches.sort(key=lambda x: min(distance(x, object1_patch), distance(x, object2_patch)))
+	    
+	    if len(interacting_object_patches) > 0:
+	        return interacting_object_patches[0].simple_query(f""What kind of {interacting_object_name} is this?"")
+	    else:
+	        # No interacting objects found, resort to external search
+	        return image_patch.bing_search(query)
+	image_patch = ImagePatch(image)
+	return identify_interacting_object(image_patch, ""bride"", ""groom"", ""building"", ""What kind of building are the bride and groom leaving?"")"
+000000568418.jpg,Is the CD flipped upside down or right side up on the table?,The CD is flipped upside down on the table.,llava_73105,Is the CD flipped upside down or right side up on the table?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	cd_patches = image_patch.find(""CD"")
+	# Check if we found a CD in the image
+	if len(cd_patches) == 0:
+		return ""No CD found""
+	cd_patch = cd_patches[0]
+	orientation = cd_patch.simple_query(""Is the CD upside down or right side up?"")
+	return orientation","def check_object_orientation(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Check the orientation of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for orientation.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The orientation of the object if it exists, ""No {object_name} found"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    # Check if we found the object in the image
+    if len(object_patches) == 0:
+        return f""No {object_name} found""
+    object_patch = object_patches[0]
+    orientation = object_patch.simple_query(query)
+    return orientation","check_object_orientation(image_patch, ""CD"", ""Is the CD upside down or right side up?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_object_orientation(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Check the orientation of an object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for orientation.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The orientation of the object if it exists, ""No {object_name} found"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    # Check if we found the object in the image
+	    if len(object_patches) == 0:
+	        return f""No {object_name} found""
+	    object_patch = object_patches[0]
+	    orientation = object_patch.simple_query(query)
+	    return orientation
+	image_patch = ImagePatch(image)
+	return check_object_orientation(image_patch, ""CD"", ""Is the CD upside down or right side up?"")"
+000000318403.jpg,How many men are seen napping on the bench in the image?,There are two men napping on the bench in the image.,llava_80008,How many men are seen napping on the bench in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	men_patches = image_patch.find(""man"")
+	napping_men_count = 0
+	for man_patch in men_patches:
+		if man_patch.verify_property(""man"", ""napping"") and man_patch.simple_query(""Is the man on the bench?""):
+			napping_men_count += 1
+	return str(napping_men_count)","def count_objects_with_property_and_location(image_patch: ImagePatch, object_name: str, property_name: str, location_query: str) -> str:
+    '''Count the number of objects with a specific property and location in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to count.
+        property_name (str): The name of the property to verify.
+        location_query (str): The query to verify the location of the object.
+       
+    Returns:
+        str: The count of objects with the specified property and location.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    object_count = 0
+    for object_patch in object_patches:
+        if object_patch.verify_property(object_name, property_name) and object_patch.simple_query(location_query):
+            object_count += 1
+    return str(object_count)","count_objects_with_property_and_location(image_patch, ""man"", ""napping"", ""Is the man on the bench?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def count_objects_with_property_and_location(image_patch: ImagePatch, object_name: str, property_name: str, location_query: str) -> str:
+	    '''Count the number of objects with a specific property and location in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to count.
+	        property_name (str): The name of the property to verify.
+	        location_query (str): The query to verify the location of the object.
+	       
+	    Returns:
+	        str: The count of objects with the specified property and location.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    object_count = 0
+	    for object_patch in object_patches:
+	        if object_patch.verify_property(object_name, property_name) and object_patch.simple_query(location_query):
+	            object_count += 1
+	    return str(object_count)
+	image_patch = ImagePatch(image)
+	return count_objects_with_property_and_location(image_patch, ""man"", ""napping"", ""Is the man on the bench?"")"
+000000182893.jpg,What possible reasons are there for them to be wearing red?,"There could be several reasons for the three skiers to be wearing red. One possible reason is visibility; wearing brightly colored attire, such as red, can make skiers more easily visible against the white snow, enhancing their safety on the slopes. This is particularly important in case of accidents or if the skiers get lost, as rescuers or fellow skiers can spot them more quickly.
+
+Another reason could be related to group identification. When skiing with a group, wearing the same or similar colors can make it easier to keep track of each other on the mountain. This can be especially helpful in busy ski resorts or areas where many people are skiing simultaneously. 
+
+Lastly, wearing red might simply be a personal preference or a coincidental choice. The skiers may each have individually chosen red attire, or they might have been provided with red outfits by their ski school, club, or other organization they are associated with. In any case, wearing red clothing on the slopes can contribute to a visually striking image against the backdrop of the snowy landscape.",llava_82255,What possible reasons are there for them to be wearing red?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_in_red_patches = image_patch.find(""people wearing red"")
+	if len(people_in_red_patches) == 0:
+		# If no people wearing red are found, we simply declare no reasons as there is no one in red.
+		return ""No one is wearing red.""
+	else:
+		# Here we need to refer out as we need more nuanced information that is not directly perceivable.
+		return image_patch.llm_query(""What are some possible reasons for people wearing red?"")","def find_possible_reasons(image_patch: ImagePatch, condition: str, query: str) -> str:
+    '''Find possible reasons for a certain condition in the image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        condition (str): The condition to check for.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: Possible reasons for the condition if it exists, otherwise a statement that the condition does not exist.
+    '''
+    
+    condition_patches = image_patch.find(condition)
+    if len(condition_patches) == 0:
+        # If no condition is found, we simply declare no reasons as the condition does not exist.
+        return f""No {condition} is found.""
+    else:
+        # Here we need to refer out as we need more nuanced information that is not directly perceivable.
+        return image_patch.llm_query(query)","find_possible_reasons(image_patch, ""people wearing red"", ""What are some possible reasons for people wearing red?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def find_possible_reasons(image_patch: ImagePatch, condition: str, query: str) -> str:
+	    '''Find possible reasons for a certain condition in the image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        condition (str): The condition to check for.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: Possible reasons for the condition if it exists, otherwise a statement that the condition does not exist.
+	    '''
+	    
+	    condition_patches = image_patch.find(condition)
+	    if len(condition_patches) == 0:
+	        # If no condition is found, we simply declare no reasons as the condition does not exist.
+	        return f""No {condition} is found.""
+	    else:
+	        # Here we need to refer out as we need more nuanced information that is not directly perceivable.
+	        return image_patch.llm_query(query)
+	image_patch = ImagePatch(image)
+	return find_possible_reasons(image_patch, ""people wearing red"", ""What are some possible reasons for people wearing red?"")"
+000000211283.jpg,How many football players can be seen laying on the ground in the image?,There are two football players laying on the ground in the image.,llava_82278,How many football players can be seen laying on the ground in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	football_players_patches = image_patch.find(""football player"")
+	laying_patches = [player for player in football_players_patches if player.verify_property(""football player"", ""laying"")]
+	return str(len(laying_patches))","def count_objects_with_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str:
+    '''Count the number of objects with a specific property in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to count.
+        property_name (str): The name of the property to check for.
+       
+    Returns:
+        str: The number of objects with the specified property.
+    '''
+    object_patches = image_patch.find(object_name)
+    property_patches = [obj for obj in object_patches if obj.verify_property(object_name, property_name)]
+    return str(len(property_patches))","count_objects_with_property(image_patch, ""football player"", ""laying"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def count_objects_with_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str:
+	    '''Count the number of objects with a specific property in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to count.
+	        property_name (str): The name of the property to check for.
+	       
+	    Returns:
+	        str: The number of objects with the specified property.
+	    '''
+	    object_patches = image_patch.find(object_name)
+	    property_patches = [obj for obj in object_patches if obj.verify_property(object_name, property_name)]
+	    return str(len(property_patches))
+	image_patch = ImagePatch(image)
+	return count_objects_with_property(image_patch, ""football player"", ""laying"")"
+000000037757.jpg,Are the people in the pool during the day or night?,"The people are in the pool during the evening, which suggests that the sun might be setting and the light is still visible but transitioning to night.",llava_82639,Are the people in the pool during the day or night?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pool_patches = image_patch.find(""people in the pool"")
+	if len(pool_patches) == 0:
+		# If no people in the pool are found, query the image directly with simple_query instead of returning a long string like ""There are no people in the pool.""
+		return image_patch.simple_query(""Are the people in the pool during the day or night?"")
+	pool_patch = pool_patches[0]
+	return pool_patch.best_text_match([""day"", ""night""])","def check_time_of_day_for_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Check the time of day (day or night) for a specific object or scene.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object or scene to check.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""day"" or ""night"" depending on the time of day for the object or scene.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.best_text_match([""day"", ""night""])","check_time_of_day_for_object(image_patch, ""people in the pool"", ""Are the people in the pool during the day or night?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_time_of_day_for_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Check the time of day (day or night) for a specific object or scene.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object or scene to check.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: ""day"" or ""night"" depending on the time of day for the object or scene.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+	        return image_patch.simple_query(query)
+	    object_patch = object_patches[0]
+	    return object_patch.best_text_match([""day"", ""night""])
+	image_patch = ImagePatch(image)
+	return check_time_of_day_for_object(image_patch, ""people in the pool"", ""Are the people in the pool during the day or night?"")"
+000000478636.jpg,What might be the reason for the woman loading the horse into the trailer?,"There could be several reasons for the woman loading the horse into the trailer, such as transportation to a different location, participating in a competition, or moving to a new stable. It is not possible to definitively determine the exact reason from the image alone, but these are some common scenarios in which a horse may be loaded onto a trailer.",llava_103191,What might be the reason for the woman loading the horse into the trailer?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	horse_patches = image_patch.find(""horse"")
+	if len(woman_patches) == 0 or len(horse_patches) == 0:
+		return ""Can't find the woman and the horse.""
+	woman_patch = woman_patches[0]
+	horse_patch = horse_patches[0]
+	if woman_patch.llm_query(""Is she loading the horse into the trailer?""):
+		reason_query = ""Why might a woman load a horse into a trailer?""
+		return woman_patch.llm_query(reason_query, long_answer=True)
+	else:
+		return ""The woman is not loading the horse into the trailer.""","def infer_reason_for_action(image_patch: ImagePatch, object_name: str, action_query: str, reason_query: str) -> str:
+    '''Infer the reason for a certain action performed by an object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object performing the action.
+        action_query (str): The query to check if the object is performing the action.
+        reason_query (str): The query to infer the reason for the action.
+       
+    Returns:
+        str: The inferred reason if the object is performing the action, or a statement that the object is not performing the action.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return f""Can't find the {object_name}.""
+    object_patch = object_patches[0]
+    if object_patch.llm_query(action_query):
+        return object_patch.llm_query(reason_query, long_answer=True)
+    else:
+        return f""The {object_name} is not performing the action.""","infer_reason_for_action(image_patch, ""woman"", ""Is she loading the horse into the trailer?"", ""Why might a woman load a horse into a trailer?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def infer_reason_for_action(image_patch: ImagePatch, object_name: str, action_query: str, reason_query: str) -> str:
+	    '''Infer the reason for a certain action performed by an object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object performing the action.
+	        action_query (str): The query to check if the object is performing the action.
+	        reason_query (str): The query to infer the reason for the action.
+	       
+	    Returns:
+	        str: The inferred reason if the object is performing the action, or a statement that the object is not performing the action.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return f""Can't find the {object_name}.""
+	    object_patch = object_patches[0]
+	    if object_patch.llm_query(action_query):
+	        return object_patch.llm_query(reason_query, long_answer=True)
+	    else:
+	        return f""The {object_name} is not performing the action.""
+	image_patch = ImagePatch(image)
+	return infer_reason_for_action(image_patch, ""woman"", ""Is she loading the horse into the trailer?"", ""Why might a woman load a horse into a trailer?"")"
+000000430086.jpg,Is there a girl doing stretches in the park?,"Yes, there is a pretty young woman doing stretches on the grass-covered park.",llava_112014,Is there a girl doing stretches in the park?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girl_stretching_patches = image_patch.find(""girl doing stretches"")
+	if len(girl_stretching_patches) == 0:
+		return ""no""
+	park_patches = image_patch.find(""park"")
+	if len(park_patches) == 0:
+		return ""no""
+	for girl_stretching_patch in girl_stretching_patches:
+		for park_patch in park_patches:
+			if girl_stretching_patch.overlaps_with(park_patch.left, park_patch.lower, park_patch.right, park_patch.upper):
+				return ""yes""
+	return ""no""","def check_existence_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str) -> str:
+    '''Check the existence of an object within another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for existence.
+        container_object_name (str): The name of the container object.
+       
+    Returns:
+        str: ""yes"" if the object exists within the container object, ""no"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return ""no""
+    container_patches = image_patch.find(container_object_name)
+    if len(container_patches) == 0:
+        return ""no""
+    for object_patch in object_patches:
+        for container_patch in container_patches:
+            if object_patch.overlaps_with(container_patch.left, container_patch.lower, container_patch.right, container_patch.upper):
+                return ""yes""
+    return ""no""","check_existence_within_object(image_patch, ""girl doing stretches"", ""park"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_existence_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str) -> str:
+	    '''Check the existence of an object within another object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for existence.
+	        container_object_name (str): The name of the container object.
+	       
+	    Returns:
+	        str: ""yes"" if the object exists within the container object, ""no"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return ""no""
+	    container_patches = image_patch.find(container_object_name)
+	    if len(container_patches) == 0:
+	        return ""no""
+	    for object_patch in object_patches:
+	        for container_patch in container_patches:
+	            if object_patch.overlaps_with(container_patch.left, container_patch.lower, container_patch.right, container_patch.upper):
+	                return ""yes""
+	    return ""no""
+	image_patch = ImagePatch(image)
+	return check_existence_within_object(image_patch, ""girl doing stretches"", ""park"")"
+000000084649.jpg,Is this a typical scene at a pride parade?,"Yes, this is a typical scene at a pride parade. Pride parades often feature participants wearing colorful and rainbow-themed clothing or accessories, showcasing their support for the LGBTQ+ community. These events are meant to celebrate diversity, spread love and acceptance, and raise awareness of LGBTQ+ rights and equality. The presence of two women wearing rainbow colors and riding a motorcycle with a colorful flag is a common sight at such parades, with people gathering to express their joy and solidarity with the community.",llava_112598,Is this a typical scene at a pride parade?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.llm_query(""Is this a typical scene at a pride parade?"")","def check_typical_scene(image_patch: ImagePatch, event: str) -> str:
+    '''Check whether a scene is typical for a certain event.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        event (str): The event or situation to check for.
+       
+    Returns:
+        str: The result of the query.
+    '''
+    return image_patch.llm_query(f""Is this a typical scene at a {event}?"")","check_typical_scene(image_patch, ""pride parade"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_typical_scene(image_patch: ImagePatch, event: str) -> str:
+	    '''Check whether a scene is typical for a certain event.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        event (str): The event or situation to check for.
+	       
+	    Returns:
+	        str: The result of the query.
+	    '''
+	    return image_patch.llm_query(f""Is this a typical scene at a {event}?"")
+	image_patch = ImagePatch(image)
+	return check_typical_scene(image_patch, ""pride parade"")"
+000000381704.jpg,What are the colors of the tuxedos that the young men are wearing?,The tuxedos that the young men are wearing are black and white.,llava_114710,What are the colors of the tuxedos that the young men are wearing?,"def execute_command(image)->List[str]:
+	image_patch = ImagePatch(image)
+	young_men_patches = image_patch.find(""young men"")
+	tuxedo_colors = [man_patch.verify_property(""tuxedo"", ""color"") for man_patch in young_men_patches]
+	return tuxedo_colors","def find_properties_of_attribute(image_patch: ImagePatch, object_name: str, attribute_name: str, property_name: str) -> List[str]:
+    '''Find the properties of a specific attribute of a group of objects.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the group of objects.
+        attribute_name (str): The name of the attribute.
+        property_name (str): The name of the property.
+       
+    Returns:
+        List[str]: A list of the properties of the attribute of the group of objects.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    attribute_properties = [object_patch.verify_property(attribute_name, property_name) for object_patch in object_patches]
+    return attribute_properties","find_properties_of_attribute(image_patch, ""young men"", ""tuxedo"", ""color"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def find_properties_of_attribute(image_patch: ImagePatch, object_name: str, attribute_name: str, property_name: str) -> List[str]:
+	    '''Find the properties of a specific attribute of a group of objects.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the group of objects.
+	        attribute_name (str): The name of the attribute.
+	        property_name (str): The name of the property.
+	       
+	    Returns:
+	        List[str]: A list of the properties of the attribute of the group of objects.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    attribute_properties = [object_patch.verify_property(attribute_name, property_name) for object_patch in object_patches]
+	    return attribute_properties
+	image_patch = ImagePatch(image)
+	return find_properties_of_attribute(image_patch, ""young men"", ""tuxedo"", ""color"")"
+000000244383.jpg,Is the process of moving the bookcase causing any struggle or difficulties for the people involved?,"It cannot be definitively determined from the image whether the process of moving the bookcase is causing any struggle or difficulties for the people involved. However, given the size and weight of a large bookcase, it is reasonable to assume that moving it might pose some challenges and require teamwork and coordination among the individuals.",llava_119489,Is the process of moving the bookcase causing any struggle or difficulties for the people involved?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	process_patches = image_patch.find(""process"")
+	if len(process_patches) == 0:
+		# If no process mentioned in the query is found, directly query the image with simple_query 
+		return image_patch.simple_query(""Is the process of moving the bookcase causing any struggle or difficulties for the people involved?"")
+	process_patch = process_patches[0]
+	return process_patch.verify_property(""process"", ""struggle"")","def verify_property_in_process(image_patch: ImagePatch, process_name: str, property_name: str, query: str) -> str:
+    '''Verify if a certain property is associated with a process involving any object or people.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        process_name (str): The name of the process to check.
+        property_name (str): The name of the property to verify.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""yes"" if the property is associated with the process, ""no"" otherwise.
+    '''
+    
+    process_patches = image_patch.find(process_name)
+    if len(process_patches) == 0:
+        # If no process mentioned in the query is found, directly query the image with simple_query 
+        return image_patch.simple_query(query)
+    process_patch = process_patches[0]
+    return process_patch.verify_property(process_name, property_name)","verify_property_in_process(image_patch, ""moving the bookcase"", ""struggle"", ""Is the process of moving the bookcase causing any struggle or difficulties for the people involved?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def verify_property_in_process(image_patch: ImagePatch, process_name: str, property_name: str, query: str) -> str:
+	    '''Verify if a certain property is associated with a process involving any object or people.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        process_name (str): The name of the process to check.
+	        property_name (str): The name of the property to verify.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: ""yes"" if the property is associated with the process, ""no"" otherwise.
+	    '''
+	    
+	    process_patches = image_patch.find(process_name)
+	    if len(process_patches) == 0:
+	        # If no process mentioned in the query is found, directly query the image with simple_query 
+	        return image_patch.simple_query(query)
+	    process_patch = process_patches[0]
+	    return process_patch.verify_property(process_name, property_name)
+	image_patch = ImagePatch(image)
+	return verify_property_in_process(image_patch, ""moving the bookcase"", ""struggle"", ""Is the process of moving the bookcase causing any struggle or difficulties for the people involved?"")"
+000000461688.jpg,Is the man reading a book wearing glasses?,"Yes, the man reading a book is wearing glasses.",llava_133051,Is the man reading a book wearing glasses?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_reading_book_patches = image_patch.find(""man reading a book"")
+	if len(man_reading_book_patches) == 0:
+		return ""no""
+	for patch in man_reading_book_patches:
+		if patch.verify_property(""man"", ""wearing glasses""):
+			return ""yes""
+	return ""no""","def check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str:
+    '''Check if an object has a specific property.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for the property.
+        property_name (str): The name of the property to check.
+       
+    Returns:
+        str: ""yes"" if the object has the property, ""no"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return ""no""
+    for patch in object_patches:
+        if patch.verify_property(object_name, property_name):
+            return ""yes""
+    return ""no""","check_object_property(image_patch, ""man reading a book"", ""wearing glasses"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str:
+	    '''Check if an object has a specific property.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for the property.
+	        property_name (str): The name of the property to check.
+	       
+	    Returns:
+	        str: ""yes"" if the object has the property, ""no"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return ""no""
+	    for patch in object_patches:
+	        if patch.verify_property(object_name, property_name):
+	            return ""yes""
+	    return ""no""
+	image_patch = ImagePatch(image)
+	return check_object_property(image_patch, ""man reading a book"", ""wearing glasses"")"
+000000462987.jpg,Is there a close-up view of the piano in the image?,"Yes, there is a close-up view of the piano in the image, showing its details along with the nearby bookshelf.",llava_137931,Is there a close-up view of the piano in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	piano_patches = image_patch.find(""piano"")
+	closeup_piano_patches = [piano_patch for piano_patch in piano_patches if piano_patch.width > image_patch.width / 2 and piano_patch.height > image_patch.height / 2]
+	return bool_to_yesno(len(closeup_piano_patches) > 0)","def check_closeup_view(image_patch: ImagePatch, object_name: str) -> str:
+    '''Check the existence of a close-up view of an object in the image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for a close-up view.
+       
+    Returns:
+        str: ""yes"" if a close-up view of the object exists, ""no"" otherwise.
+    '''
+    object_patches = image_patch.find(object_name)
+    closeup_object_patches = [object_patch for object_patch in object_patches if object_patch.width > image_patch.width / 2 and object_patch.height > image_patch.height / 2]
+    return bool_to_yesno(len(closeup_object_patches) > 0)","check_closeup_view(image_patch, ""piano"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_closeup_view(image_patch: ImagePatch, object_name: str) -> str:
+	    '''Check the existence of a close-up view of an object in the image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for a close-up view.
+	       
+	    Returns:
+	        str: ""yes"" if a close-up view of the object exists, ""no"" otherwise.
+	    '''
+	    object_patches = image_patch.find(object_name)
+	    closeup_object_patches = [object_patch for object_patch in object_patches if object_patch.width > image_patch.width / 2 and object_patch.height > image_patch.height / 2]
+	    return bool_to_yesno(len(closeup_object_patches) > 0)
+	image_patch = ImagePatch(image)
+	return check_closeup_view(image_patch, ""piano"")"
+000000149572.jpg,Can you elaborate more about a violinist's body posture and technique while playing the violin?,"Violinists must maintain a proper body posture and technique while playing the violin to achieve a comfortable playing position, optimal sound production, and efficient use of energy. The components of a violinist's body posture and technique include:
+
+1. Head and neck position: The violinist's head should be upright and relaxed, leaning slightly to the left to support the violin between the jaw and collarbone, using a chin rest. The neck should be free of tension to allow for smooth movement and efficient violin control.
+
+2. Shoulder and arm position: The left shoulder should be relaxed and square, without hunching or lifting. The left arm should be slightly curved, with the elbow positioned under the violin. The left hand supports the instrument's neck, with fingers forming an arc over the fingerboard. The right arm should be flexible and easily able to move up and down, with the elbow slightly elevated to allow for a natural bowing motion.
+
+3. Hand and finger position: The left hand fingers should be curved and agile, with fingertips pressing down on the strings to produce different pitches. The right hand should hold the bow with a relaxed and natural grip, maintaining consistent contact with the strings while ensuring clean, fluid strokes.
+
+4. Posture and balance: The violinist should maintain an upright posture with a straight back, relaxed shoulders, and balanced weight distribution between both feet. The legs should be slightly apart for stability, with knees relaxed and not locked.
+
+5. Instrument positioning: The violin should be held securely between the chin and collarbone, angled slightly downward, with the strings parallel to the floor. The scroll should point slightly to the left, allowing the left hand easy access to the fingerboard and the right hand to bow straight across the strings.
+
+When a violinist adheres to proper body posture and technique, they can effectively avoid unnecessary strain, prevent injury, and ensure smoother performances. While individual style, preferences, and body shapes may slightly vary, these general guidelines help maintain a consistent foundation for developing and refining violin-playing skills.",llava_139168,Can you elaborate more about a violinist's body posture and technique while playing the violin?,"def execute_command(image) -> str:
+	# This question asks about external knowledge and doesn't need image processing
+	return llm_query(""Can you elaborate more about a violinist's body posture and technique while playing the violin?"", long_answer=True)","def elaborate_on_topic(topic: str, long_answer: bool = True) -> str:
+    '''Elaborate on a given topic.
+    
+    Args:
+        topic (str): The topic to elaborate on.
+        long_answer (bool): Whether to provide a long answer. Default is True.
+       
+    Returns:
+        str: The elaboration on the topic.
+    '''
+    return llm_query(topic, long_answer=long_answer)","elaborate_on_topic(""a violinist's body posture and technique while playing the violin"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def elaborate_on_topic(topic: str, long_answer: bool = True) -> str:
+	    '''Elaborate on a given topic.
+	    
+	    Args:
+	        topic (str): The topic to elaborate on.
+	        long_answer (bool): Whether to provide a long answer. Default is True.
+	       
+	    Returns:
+	        str: The elaboration on the topic.
+	    '''
+	    return llm_query(topic, long_answer=long_answer)
+	image_patch = ImagePatch(image)
+	return elaborate_on_topic(""a violinist's body posture and technique while playing the violin"")"
+000000579002.jpg,Is there any cloth caught on the corner spire of the church?,"Yes, there is a cloth caught on the corner spire of the church in the image.",llava_151722,Is there any cloth caught on the corner spire of the church?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	spire_patches = image_patch.find(""corner spire of the church"")
+	if len(spire_patches) == 0:
+		return ""no""
+	for spire_patch in spire_patches:
+		cloth_patches = spire_patch.find(""cloth"")
+		if len(cloth_patches) > 0:
+			return ""yes""
+	return ""no""","def check_existence_on_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+    '''Check the existence of an object on another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for existence.
+        reference_object_name (str): The name of the reference object.
+       
+    Returns:
+        str: ""yes"" if the object exists, ""no"" otherwise.
+    '''
+    
+    reference_patches = image_patch.find(reference_object_name)
+    if len(reference_patches) == 0:
+        return ""no""
+    for reference_patch in reference_patches:
+        object_patches = reference_patch.find(object_name)
+        if len(object_patches) > 0:
+            return ""yes""
+    return ""no""","check_existence_on_object(image_patch, ""cloth"", ""corner spire of the church"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_existence_on_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+	    '''Check the existence of an object on another object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for existence.
+	        reference_object_name (str): The name of the reference object.
+	       
+	    Returns:
+	        str: ""yes"" if the object exists, ""no"" otherwise.
+	    '''
+	    
+	    reference_patches = image_patch.find(reference_object_name)
+	    if len(reference_patches) == 0:
+	        return ""no""
+	    for reference_patch in reference_patches:
+	        object_patches = reference_patch.find(object_name)
+	        if len(object_patches) > 0:
+	            return ""yes""
+	    return ""no""
+	image_patch = ImagePatch(image)
+	return check_existence_on_object(image_patch, ""cloth"", ""corner spire of the church"")"
+000000403830.jpg,Is the man relaxing or actively rowing the boat?,"The man is relaxing in the boat, not actively rowing.",llava_169802,Is the man relaxing or actively rowing the boat?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return image_patch.simple_query(""Is the man relaxing or actively rowing the boat?"")
+	man_patch = man_patches[0]
+	return man_patch.best_text_match([""relaxing"", ""actively rowing""])","def determine_object_action(image_patch: ImagePatch, object_name: str, actions: List[str], query: str) -> str:
+    '''Determine the action of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for action.
+        actions (List[str]): A list of possible actions.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The action of the object if found, otherwise the result of the simple_query.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(actions)","determine_object_action(image_patch, ""man"", [""relaxing"", ""actively rowing""], ""Is the man relaxing or actively rowing the boat?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def determine_object_action(image_patch: ImagePatch, object_name: str, actions: List[str], query: str) -> str:
+	    '''Determine the action of an object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for action.
+	        actions (List[str]): A list of possible actions.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The action of the object if found, otherwise the result of the simple_query.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+	        return image_patch.simple_query(query)
+	    object_patch = object_patches[0]
+	    return object_patch.best_text_match(actions)
+	image_patch = ImagePatch(image)
+	return determine_object_action(image_patch, ""man"", [""relaxing"", ""actively rowing""], ""Is the man relaxing or actively rowing the boat?"")"
+000000306535.jpg,How busy is the corner gas station in the photo?,The corner gas station in the photo appears to be quite busy with many customers. Cars are getting gas and the area around the station has significant activity.,llava_200448,How busy is the corner gas station in the photo?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	gas_station_patches = image_patch.find(""corner gas station"")
+	# Assume only one gas station in the photo
+	gas_station_patch = gas_station_patches[0]
+	return gas_station_patch.simple_query(""How busy is it?"")","def evaluate_object_attribute(image_patch: ImagePatch, object_name: str, attribute_query: str) -> str:
+    '''Evaluate a specific attribute of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to evaluate.
+        attribute_query (str): The query to evaluate the attribute of the object.
+       
+    Returns:
+        str: The evaluation result.
+    '''
+    object_patches = image_patch.find(object_name)
+    # Assume only one object of interest in the image
+    object_patch = object_patches[0]
+    return object_patch.simple_query(attribute_query)","evaluate_object_attribute(image_patch, ""corner gas station"", ""How busy is it?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def evaluate_object_attribute(image_patch: ImagePatch, object_name: str, attribute_query: str) -> str:
+	    '''Evaluate a specific attribute of an object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to evaluate.
+	        attribute_query (str): The query to evaluate the attribute of the object.
+	       
+	    Returns:
+	        str: The evaluation result.
+	    '''
+	    object_patches = image_patch.find(object_name)
+	    # Assume only one object of interest in the image
+	    object_patch = object_patches[0]
+	    return object_patch.simple_query(attribute_query)
+	image_patch = ImagePatch(image)
+	return evaluate_object_attribute(image_patch, ""corner gas station"", ""How busy is it?"")"
+000000027343.jpg,What type of material is used for the railing along the waterfront?,The railing along the waterfront is made of metal.,llava_208203,What type of material is used for the railing along the waterfront?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	railing_patches = image_patch.find(""railing along the waterfront"")
+	if len(railing_patches) == 0:
+		return image_patch.simple_query(""What type of material is used for the railing along the waterfront?"")
+	railing_patch = railing_patches[0]
+	railing_material = railing_patch.simple_query(""What material is the railing made of?"")
+	return railing_material","def identify_material_of_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Identify the material of a given object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to identify the material of.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The material of the object.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    object_material = object_patch.simple_query(f""What material is the {object_name} made of?"")
+    return object_material","identify_material_of_object(image_patch, ""railing along the waterfront"", ""What type of material is used for the railing along the waterfront?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_material_of_object(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Identify the material of a given object.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to identify the material of.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The material of the object.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return image_patch.simple_query(query)
+	    object_patch = object_patches[0]
+	    object_material = object_patch.simple_query(f""What material is the {object_name} made of?"")
+	    return object_material
+	image_patch = ImagePatch(image)
+	return identify_material_of_object(image_patch, ""railing along the waterfront"", ""What type of material is used for the railing along the waterfront?"")"
+000000226939.jpg,Can you discuss the importance of introducing oral hygiene habits to children at a young age?,"Introducing good oral hygiene habits to children from a young age is essential for various reasons. It helps instill a sense of responsibility and lays a strong foundation for lifelong dental health.
+
+1. Developing proper habits early on: When children learn the importance of brushing their teeth and maintaining good oral hygiene at a young age, they are more likely to continue practicing these habits as they grow older. This can lead to a lifelong commitment to dental health and help prevent oral health issues in the future.
+
+2. Prevention of dental problems: By teaching children to brush their teeth and practice good oral hygiene, they can prevent common dental issues, such as cavities and gum disease. Early prevention and good habits will help reduce the risk of more severe dental problems later in life.
+
+3. Building positive associations: Encouraging children to take care of their teeth through playful activities, such as the child brushing a toy alligator's teeth, can make the experience more fun and enjoyable. This positive association with dental care can help children feel more comfortable and motivated to take care of their oral health.
+
+4. Fostering a sense of responsibility: Teaching oral hygiene habits to children enables them to take responsibility for their health and well-being. It also serves as a good opportunity to discuss the importance of a healthy diet and regular dental check-ups, reinforcing their understanding of overall health.
+
+In conclusion, introducing oral hygiene habits to children at a young age plays a crucial role in promoting long-term dental health, preventing potential dental issues, and instilling responsibility for maintaining a healthy lifestyle. Encouraging children to engage in fun and creative ways to practice oral hygiene, as seen in the image of the child brushing the toy alligator's teeth, can help create positive associations and ensure they continue these habits as they grow older.",llava_214450,Can you discuss the importance of introducing oral hygiene habits to children at a young age?,"def execute_command(image) -> str:
+	question = ""Can you discuss the importance of introducing oral hygiene habits to children at a young age?""
+	# This question is not image-related and can be directly answered using the llm_query function
+	return llm_query(question, long_answer=True)","def discuss_importance_of_topic(topic: str, long_answer: bool = True) -> str:
+    '''Discuss the importance of a given topic.
+    
+    Args:
+        topic (str): The topic to discuss the importance of.
+        long_answer (bool): Whether to return a long answer. Default is True.
+       
+    Returns:
+        str: The discussion of the importance of the given topic.
+    '''
+    question = f""Can you discuss the importance of {topic}?""
+    return llm_query(question, long_answer=long_answer)","discuss_importance_of_topic(""introducing oral hygiene habits to children at a young age"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def discuss_importance_of_topic(topic: str, long_answer: bool = True) -> str:
+	    '''Discuss the importance of a given topic.
+	    
+	    Args:
+	        topic (str): The topic to discuss the importance of.
+	        long_answer (bool): Whether to return a long answer. Default is True.
+	       
+	    Returns:
+	        str: The discussion of the importance of the given topic.
+	    '''
+	    question = f""Can you discuss the importance of {topic}?""
+	    return llm_query(question, long_answer=long_answer)
+	image_patch = ImagePatch(image)
+	return discuss_importance_of_topic(""introducing oral hygiene habits to children at a young age"")"
+000000056456.jpg,"Are there also people standing outside or around the pool, or are they all in the pool?","There are people standing inside the swimming pool, as well as some people standing around the pool, watching someone on the side. This indicates a mix of people both in and around the pool area.",llava_215281,"Are there also people standing outside or around the pool, or are they all in the pool?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	people_patches = image_patch.find(""people"")
+	pool_patches = image_patch.find(""pool"")
+	# assuming we only have one pool in image
+	pool_patch = pool_patches[0]
+	pool_area_coordinates = (pool_patch.left, pool_patch.lower, pool_patch.right, pool_patch.upper)
+	people_in_pool = False
+	people_outside_pool = False
+	for people_patch in people_patches:
+		if people_patch.overlaps_with(*pool_area_coordinates):
+			people_in_pool = True
+		else:
+			people_outside_pool = True
+	return bool_to_yesno(people_in_pool and people_outside_pool)","def check_object_in_and_out_area(image_patch: ImagePatch, object_name: str, area_name: str) -> str:
+    '''Check the existence of an object both inside and outside a certain area.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for existence.
+        area_name (str): The name of the area.
+       
+    Returns:
+        str: ""yes"" if the object exists both inside and outside the area, ""no"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    area_patches = image_patch.find(area_name)
+    # assuming we only have one area in image
+    area_patch = area_patches[0]
+    area_coordinates = (area_patch.left, area_patch.lower, area_patch.right, area_patch.upper)
+    object_in_area = False
+    object_outside_area = False
+    for object_patch in object_patches:
+        if object_patch.overlaps_with(*area_coordinates):
+            object_in_area = True
+        else:
+            object_outside_area = True
+    return bool_to_yesno(object_in_area and object_outside_area)","check_object_in_and_out_area(image_patch, ""people"", ""pool"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_object_in_and_out_area(image_patch: ImagePatch, object_name: str, area_name: str) -> str:
+	    '''Check the existence of an object both inside and outside a certain area.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for existence.
+	        area_name (str): The name of the area.
+	       
+	    Returns:
+	        str: ""yes"" if the object exists both inside and outside the area, ""no"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    area_patches = image_patch.find(area_name)
+	    # assuming we only have one area in image
+	    area_patch = area_patches[0]
+	    area_coordinates = (area_patch.left, area_patch.lower, area_patch.right, area_patch.upper)
+	    object_in_area = False
+	    object_outside_area = False
+	    for object_patch in object_patches:
+	        if object_patch.overlaps_with(*area_coordinates):
+	            object_in_area = True
+	        else:
+	            object_outside_area = True
+	    return bool_to_yesno(object_in_area and object_outside_area)
+	image_patch = ImagePatch(image)
+	return check_object_in_and_out_area(image_patch, ""people"", ""pool"")"
+000000445898.jpg,What is the squirrel doing on the wooden platform?,"The squirrel is eating seeds on the wooden platform, enjoying a snack.",llava_215885,What is the squirrel doing on the wooden platform?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	squirrel_patches = image_patch.find(""squirrel on the wooden platform"")
+	# If no squirrel is found, directly return a short answer
+	if len(squirrel_patches) == 0:
+		return ""no squirrel found""
+	squirrel_patch = squirrel_patches[0]
+	return squirrel_patch.simple_query(""What is the squirrel doing?"")","def identify_action_of_object_in_location(image_patch: ImagePatch, object_name: str, location: str, query: str) -> str:
+    '''Identify the action of an object in a specific location.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for action.
+        location (str): The specific location of the object.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The action of the object if found, ""no {object_name} found"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(f""{object_name} on the {location}"")
+    if len(object_patches) == 0:
+        return f""no {object_name} found""
+    object_patch = object_patches[0]
+    return object_patch.simple_query(f""What is the {object_name} doing?"")","identify_action_of_object_in_location(image_patch, ""squirrel"", ""wooden platform"", ""What is the squirrel doing on the wooden platform?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_action_of_object_in_location(image_patch: ImagePatch, object_name: str, location: str, query: str) -> str:
+	    '''Identify the action of an object in a specific location.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for action.
+	        location (str): The specific location of the object.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The action of the object if found, ""no {object_name} found"" otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(f""{object_name} on the {location}"")
+	    if len(object_patches) == 0:
+	        return f""no {object_name} found""
+	    object_patch = object_patches[0]
+	    return object_patch.simple_query(f""What is the {object_name} doing?"")
+	image_patch = ImagePatch(image)
+	return identify_action_of_object_in_location(image_patch, ""squirrel"", ""wooden platform"", ""What is the squirrel doing on the wooden platform?"")"
+000000495489.jpg,What role do the two men have in the restaurant?,"The two men in the image are chefs or cooks, responsible for preparing dinner and meals for the restaurant.",llava_245295,What role do the two men have in the restaurant?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	men_patches = image_patch.find(""man"")
+	if len(men_patches) < 2:
+		# In case not enough men are found in the image
+		return ""Could not identify two men in the image.""
+	first_man_role = men_patches[0].simple_query(""What role does this man have in the restaurant?"")
+	second_man_role = men_patches[1].simple_query(""What role does this man have in the restaurant?"")
+	roles = [first_man_role, second_man_role]
+	return roles","def identify_roles_of_objects(image_patch: ImagePatch, object_name: str, number_of_objects: int, context: str) -> list:
+    '''Identify the roles of a certain number of specific objects in a given context.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for roles.
+        number_of_objects (int): The number of objects to check.
+        context (str): The context in which the roles of the objects are to be identified.
+       
+    Returns:
+        list: A list of roles of the objects if they exist, an error message otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) < number_of_objects:
+        # In case not enough objects are found in the image
+        return f""Could not identify {number_of_objects} {object_name} in the image.""
+    roles = []
+    for i in range(number_of_objects):
+        role = object_patches[i].simple_query(f""What role does this {object_name} have in the {context}?"")
+        roles.append(role)
+    return roles","identify_roles_of_objects(image_patch, ""man"", 2, ""restaurant"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def identify_roles_of_objects(image_patch: ImagePatch, object_name: str, number_of_objects: int, context: str) -> list:
+	    '''Identify the roles of a certain number of specific objects in a given context.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for roles.
+	        number_of_objects (int): The number of objects to check.
+	        context (str): The context in which the roles of the objects are to be identified.
+	       
+	    Returns:
+	        list: A list of roles of the objects if they exist, an error message otherwise.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) < number_of_objects:
+	        # In case not enough objects are found in the image
+	        return f""Could not identify {number_of_objects} {object_name} in the image.""
+	    roles = []
+	    for i in range(number_of_objects):
+	        role = object_patches[i].simple_query(f""What role does this {object_name} have in the {context}?"")
+	        roles.append(role)
+	    return roles
+	image_patch = ImagePatch(image)
+	return identify_roles_of_objects(image_patch, ""man"", 2, ""restaurant"")"
+000000534906.jpg,Is the axe real or fake?,"It is not possible to definitively determine from the image if the axe is real or fake. However, given the context and the fact that the man is dressed as Paul Bunyan, it is more likely that the giant axe is a fake, used as a prop for his costume.",llava_245831,Is the axe real or fake?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	axe_patches = image_patch.find(""axe"")
+	if len(axe_patches) == 0:
+		# If no axe is found, query the image directly with simple_query instead of returning a long string like ""There is no axe.""
+		return image_patch.simple_query(""Is the axe real or fake?"")
+	# Assumes only one axe in image
+	axe_patch = axe_patches[0]
+	return axe_patch.best_text_match([""real"", ""fake""])","def determine_object_attribute(image_patch: ImagePatch, object_name: str, possible_attributes: list, query: str) -> str:
+    '''Determine the attribute of an object from a list of possible attributes.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for attributes.
+        possible_attributes (list): A list of possible attributes.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The best matching attribute if the object exists, otherwise the result of the simple_query.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    # Assumes only one object in image
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(possible_attributes)","determine_object_attribute(image_patch, ""axe"", [""real"", ""fake""], ""Is the axe real or fake?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def determine_object_attribute(image_patch: ImagePatch, object_name: str, possible_attributes: list, query: str) -> str:
+	    '''Determine the attribute of an object from a list of possible attributes.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for attributes.
+	        possible_attributes (list): A list of possible attributes.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The best matching attribute if the object exists, otherwise the result of the simple_query.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+	        return image_patch.simple_query(query)
+	    # Assumes only one object in image
+	    object_patch = object_patches[0]
+	    return object_patch.best_text_match(possible_attributes)
+	image_patch = ImagePatch(image)
+	return determine_object_attribute(image_patch, ""axe"", [""real"", ""fake""], ""Is the axe real or fake?"")"
+000000570807.jpg,Is the Church's Chicken restaurant located on a corner or in the middle of a block?,The Church's Chicken restaurant is located on a corner next to a traffic light.,llava_251764,Is the Church's Chicken restaurant located on a corner or in the middle of a block?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	church_chicken_patches = image_patch.find(""Church's Chicken restaurant"")
+	if len(church_chicken_patches) == 0:
+		return image_patch.simple_query(""Is the Church's Chicken restaurant located on a corner or in the middle of a block?"")
+	church_chicken_patch = church_chicken_patches[0]
+	return church_chicken_patch.simple_query(""Is this restaurant located on a corner or in the middle of a block?"")","def check_object_location(image_patch: ImagePatch, object_name: str, query: str) -> str:
+    '''Check the location of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for location.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The location of the object in the image.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.simple_query(query)","check_object_location(image_patch, ""Church's Chicken restaurant"", ""Is the Church's Chicken restaurant located on a corner or in the middle of a block?"")","from PIL import Image
+from typing import *
+from image_patch import *
+def execute_command(image):
+
+	def check_object_location(image_patch: ImagePatch, object_name: str, query: str) -> str:
+	    '''Check the location of an object in an image.
+	    
+	    Args:
+	        image_patch (ImagePatch): The image patch to check.
+	        object_name (str): The name of the object to check for location.
+	        query (str): The original query to answer.
+	       
+	    Returns:
+	        str: The location of the object in the image.
+	    '''
+	    
+	    object_patches = image_patch.find(object_name)
+	    if len(object_patches) == 0:
+	        return image_patch.simple_query(query)
+	    object_patch = object_patches[0]
+	    return object_patch.simple_query(query)
+	image_patch = ImagePatch(image)
+	return check_object_location(image_patch, ""Church's Chicken restaurant"", ""Is the Church's Chicken restaurant located on a corner or in the middle of a block?"")"

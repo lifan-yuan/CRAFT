@@ -1,0 +1,75 @@
+{
+    "0": [
+        "identify_object_on_side(image_patch: ImagePatch, object_name: str, relative_horizontal_position: str) -> str"
+    ],
+    "1": [
+        "check_state_of_objects(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "2": [
+        "extract_info_from_object(image: Image, object_name: str, query: str) -> str"
+    ],
+    "3": [
+        "identify_function_provider(image_patch: ImagePatch, function_provider_name: str, query: str) -> str"
+    ],
+    "4": [
+        "identify_objects_in_location(image_patch: ImagePatch, location_name: str, query: str) -> str"
+    ],
+    "5": [
+        "check_event_or_promotion(image_patch: ImagePatch, character_name: str, indications: list) -> str"
+    ],
+    "6": [
+        "find_activities_in_location(image_patch: ImagePatch, object_name: str, location_name: str, query: str) -> str"
+    ],
+    "7": [
+        "determine_relative_location(image_patch: ImagePatch, object_name: str, reference_object_name: str, query: str) -> str",
+        "determine_relative_position(image_patch: ImagePatch, object1_name: str, object2_name: str) -> str"
+    ],
+    "8": [
+        "identify_object_action(image_patch: ImagePatch, object_name: str, possible_actions: List[str]) -> str"
+    ],
+    "9": [
+        "inquire_benefits_of_activity(activity: str, group: str) -> str"
+    ],
+    "10": [
+        "best_text_match_for_object(image_patch: ImagePatch, object_name: str, options: List[str], query: str) -> str"
+    ],
+    "11": [
+        "infer_activity(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "12": [
+        "check_object_location(image_patch: ImagePatch, object_name: str, locations: List[str], query: str) -> str"
+    ],
+    "13": [
+        "check_attributes_or_items_of_group(image_patch: ImagePatch, group_name: str, query: str) -> str"
+    ],
+    "14": [
+        "check_existence_within_object(image_patch: ImagePatch, object_name: str, object_properties: list, reference_object_names: list) -> str",
+        "check_existence_near_object_and_query(image_patch: ImagePatch, object_name: str, reference_object_name: str, distance_threshold: int, query: str) -> str",
+        "check_types_of_objects_within_object(image_patch: ImagePatch, container_object_name: str, object_names: List[str]) -> str"
+    ],
+    "15": [
+        "check_most_common_action(image_patch: ImagePatch, object_name: str, actions: List[str]) -> str"
+    ],
+    "16": [
+        "check_object_status(image_patch: ImagePatch, object_name: str, status_options: List[str]) -> str",
+        "check_object_status(image_patch: ImagePatch, object_name: str, status_options: List[str], query: str) -> str"
+    ],
+    "17": [
+        "find_relationship_between_object_and_theme(image_patch: ImagePatch, object_name: str, theme_name: str, query: str) -> str"
+    ],
+    "18": [
+        "identify_interactions(image_patch: ImagePatch, object_name: str, interaction_query: str, required_count: int) -> str"
+    ],
+    "19": [
+        "check_most_likely_action(image_patch: ImagePatch, object_name: str, actions: List[str]) -> str"
+    ],
+    "20": [
+        "verify_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ],
+    "21": [
+        "compare_attributes_of_two_objects(image_patch: ImagePatch, object_name: str, attribute: str) -> str"
+    ],
+    "22": [
+        "identify_object_type_within_another(image_patch: ImagePatch, object_name: str, container_object_name: str, query: str) -> str"
+    ]
+}

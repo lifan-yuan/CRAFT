@@ -1,0 +1,88 @@
+{
+    "0": [
+        "identify_object_around_object_horizontally(image_patch: ImagePatch, object_type: str, reference_object_name: str, relative_horizontal_position: str, query: str) -> str"
+    ],
+    "1": [
+        "identify_primary_object(image_patch: ImagePatch, query: str) -> str"
+    ],
+    "2": [
+        "assess_difficulty(image_patch: ImagePatch, task: str, individual_group: str, long_answer: bool = False) -> str"
+    ],
+    "3": [
+        "identify_close_object(image_patch: ImagePatch, target_object_name: str, reference_object_name: str, distance_threshold: int, query: str) -> str"
+    ],
+    "4": [
+        "check_object_adornment(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "5": [
+        "determine_arrangement(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "6": [
+        "infer_relationship_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str, long_answer: bool = True) -> str"
+    ],
+    "7": [
+        "check_individual_participation(image_patch: ImagePatch, individual_type: str, query: str) -> str"
+    ],
+    "8": [
+        "verify_property_and_explain(image_patch: ImagePatch, object_name: str, property_name: str, explanation_query: str) -> str"
+    ],
+    "9": [
+        "check_object_action_on_another(image_patch: ImagePatch, object_name: str, action: str, target_object: str) -> str"
+    ],
+    "10": [
+        "identify_object_content(image_patch: ImagePatch, object_name: str) -> str",
+        "identify_object_contents(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "11": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> int"
+    ],
+    "12": [
+        "count_overlapping_objects(image_patch: ImagePatch, object_name: str, reference_object_name: str, query: str) -> str",
+        "count_objects_interacting_and_not_interacting(image_patch: ImagePatch, object_name: str, interacting_objects_names: List[str]) -> str"
+    ],
+    "13": [
+        "identify_object_action(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "14": [
+        "infer_information_based_on_object(image_patch: ImagePatch, object_name: str, subject_name: str, query: str, absence_message: str) -> str"
+    ],
+    "15": [
+        "identify_role_in_context(image_patch: ImagePatch, object_name: str, context_query: str, specific_query: str) -> str"
+    ],
+    "16": [
+        "check_object_status(image_patch: ImagePatch, object_name: str, possible_states: List[str]) -> str"
+    ],
+    "17": [
+        "categorize_image_based_on_keywords(image_patch: ImagePatch, keywords: List[str]) -> str"
+    ],
+    "18": [
+        "check_existence_around_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str",
+        "check_proximity_between_objects(image_patch: ImagePatch, object_name: str, reference_object_name: str, proximity_ratio: float, query: str) -> str",
+        "check_proximity_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, distance_threshold: int) -> str"
+    ],
+    "19": [
+        "check_property_for_all_instances(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ],
+    "20": [
+        "provide_explanation_and_tips(image_patch: ImagePatch, action: str) -> str"
+    ],
+    "21": [
+        "find_object_location(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "find_object_location(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "22": [
+        "check_object_existence(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "23": [
+        "infer_information_from_image(image_patch: ImagePatch, question: str) -> str"
+    ],
+    "24": [
+        "identify_object_attribute(image_patch: ImagePatch, object_name: str, possible_attributes: List[str]) -> str"
+    ],
+    "25": [
+        "explain_scenario(scenario_description: str, long_answer: bool = True) -> str"
+    ],
+    "26": [
+        "describe_focus_level(image_patch: ImagePatch, object_name: str, task: str) -> str"
+    ]
+}

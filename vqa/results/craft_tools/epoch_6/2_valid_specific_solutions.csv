@@ -1,0 +1,293 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000318066.jpg,Is the Vietnamese restaurant open or closed?,Ascertain the current status of the Vietnamese restaurant.,Closed.,vqa_5794,,Is the Vietnamese restaurant open or closed?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	restaurant_patches = image_patch.find(""Vietnamese restaurant"")
+	if len(restaurant_patches) == 0:
+		return image_patch.simple_query(""Is the Vietnamese restaurant open or closed?"")
+	restaurant_patch = restaurant_patches[0]
+	return restaurant_patch.best_text_match([""open"", ""closed""])",vqa
+000000272241.jpg,What animal is sitting on the Paso 750?,Identify the animal on the motorcycle.,Cat.,vqa_7751,,What animal is sitting on the Paso 750?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	paso_patches = image_patch.find(""Paso 750"")
+	if len(paso_patches) == 0:
+		return ""There is no Paso 750.""
+	paso_patch = paso_patches[0]
+	animal_patches = image_patch.find(""animal"")
+	if len(animal_patches) == 0:
+		return ""There is no animal.""
+	for animal_patch in animal_patches:
+		if paso_patch.overlaps_with(animal_patch.left, animal_patch.lower, animal_patch.right, animal_patch.upper):
+			return animal_patch.simple_query(""What is this?"")
+	return ""There is no animal on the Paso 750.""",vqa
+000000325152.jpg,What is the status of human presence?,Check for people in the area.,No people found.,vqa_15902,,What is the status of human presence?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	return image_patch.simple_query(""What is the status of human presence?"")",vqa
+000000324785.jpg,Where are the lobster traps located?,Identify the position of lobster traps.,On the dock.,vqa_28158,,Where are the lobster traps located?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	lobster_trap_patches = image_patch.find(""lobster trap"")
+	if len(lobster_trap_patches) == 0:
+		# If no lobster trap is found, return a simple string to indicate that
+		return ""No lobster traps found.""
+	# Assume there's only one lobster trap for simplicity
+	lobster_trap_patch = lobster_trap_patches[0]
+	location_query = ""Where is the lobster trap located?""
+	location = lobster_trap_patch.simple_query(location_query)
+	return location",vqa
+000000152958.jpg,Is the man crossing the street legally or illegally?,Is the man crossing the street legally or illegally?,"The man is crossing the street legally, as he is using the traffic light located at the corner of the street.",llava_2735,000000152958,Is the man crossing the street legally or illegally?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return image_patch.llm_query(""Is the man crossing the street legally?"")
+	man_patch = man_patches[0]
+	return man_patch.simple_query(""Is the man crossing the street legally or illegally?"")",vqa
+000000356782.jpg,Why might the little girl be enjoying the rain so much?,Why might the little girl be enjoying the rain so much?,"There could be several reasons why the little girl is enjoying the rain so much. It might be a welcome change from the usual sunny or dry weather, or it could be a rare occurrence in her locality, making the experience thrilling and exciting. 
+
+Being outside, playing, and exploring under the protection of an umbrella may give her a sense of adventure and freedom. Moreover, children often find joy in splashing in puddles, feeling the raindrops, and listening to the sound of rain, which can make the experience even more delightful. 
+
+Furthermore, the little girl's laughter and smiles may also indicate her innocence and carefree nature, as she is uninhibited by the worries or concerns that adults might typically have during rainy weather, such as getting wet, catching a cold, or facing traffic and transportation issues. Overall, the little girl's enjoyment of the rain likely stems from a combination of factors, including her natural curiosity, sense of adventure, and ability to find happiness in simple experiences.",llava_5075,000000356782,Why might the little girl be enjoying the rain so much?,"def execute_command(image)->str:
+	# The question requires reasoning and inference possibly beyond the information available in the image. 
+	# Thus, we can try to locate any facial expressions or other visual clues in the image, then use a language model to infer why she might be enjoying.
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""little girl"")
+	if len(girl_patches) == 0:
+		return image_patch.llm_query(""Why might a little girl enjoy the rain so much?"")
+	girl_patch = girl_patches[0]
+	girl_expression = girl_patch.simple_query(""What is the girl's expression?"") 
+	return girl_patch.llm_query(f""Why might a little girl with a {girl_expression} expression enjoy the rain so much?"")",vqa
+000000491823.jpg,Is the boy successful in dunking the basketball?,Is the boy successful in dunking the basketball?,"Based on the image, it seems that the young boy is in the process of attempting the dunk. It is not possible to tell if he is successful or not without seeing the outcome of his attempt.",llava_21851,000000491823,Is the boy successful in dunking the basketball?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boy_dunk_patches = image_patch.find(""boy dunking basketball"")
+	if len(boy_dunk_patches) == 0:
+		return ""no""
+	boy_dunk_patch = boy_dunk_patches[0]
+	return boy_dunk_patch.simple_query(""Is the dunk successful?"")",vqa
+000000132310.jpg,What kind of establishment is this?,What kind of establishment is this?,"This is a restaurant or a cafe where people are taking meals and engaging in various activities such as eating and using a laptop. The presence of tables and diners implies a setting where food is served, and the person using the laptop suggests a casual, welcoming atmosphere often found in cafes.",llava_25425,000000132310,What kind of establishment is this?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	establishment_name = image_patch.simple_query(""What kind of establishment is this?"")
+	return establishment_name",vqa
+000000404242.jpg,What can you infer from their identical clothing and the fact that they are smoking and talking on their cell phones?,What can you infer from their identical clothing and the fact that they are smoking and talking on their cell phones?,"From their identical clothing, we can infer that the two men likely share a connection or a common context, such as being coworkers, friends, or attending the same event. Their clothing might also indicate a shared profession or dress code they are adhering to. 
+
+Since they are both smoking and talking on their cell phones, it suggests that they might be taking a break from their usual activities, either work-related or social. Using their cell phones could mean that they are communicating with other people, checking for updates, or possibly attending to personal matters. Their simultaneous engagement in these activities may also demonstrate their comfort level and familiarity with each other, given that they seem at ease performing these actions while in each other's company.
+
+Overall, the identical clothing and simultaneous smoking and cell phone usage strongly indicate a connection or shared context between the two men, possibly reflecting similar professional, social, or personal backgrounds.",llava_32235,000000404242,What can you infer from their identical clothing and the fact that they are smoking and talking on their cell phones?,"def execute_command(image)->str:
+	# Create a scenario description with the observed activities
+	scenario_description = ""people wearing identical clothing, smoking and talking on their cell phones""
+	# Use LLM to infer implications of the actions
+	inference = llm_query(f""What can you infer from {scenario_description}?"")
+	return inference",vqa
+000000178040.jpg,Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.,Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.,"Riding bicycles in urban areas offers numerous benefits as an alternative mode of transportation. Some of the primary advantages involve environmental, health, economic, and logistical aspects:
+
+1. Environmental Benefits:
+Cycling emits no greenhouse gases and uses substantially less energy than other modes of transportation, such as cars, buses, and motorcycles. By using bicycles, people can significantly reduce their carbon footprint and overall impact on the environment. Additionally, cycling generates less noise pollution in urban areas compared to other vehicles, which helps maintain a more peaceful and serene atmosphere.
+
+2. Health Benefits:
+Cycling is a great form of exercise, which can help improve cardiovascular health, muscular strength, and overall physical fitness. Bicycling regularly promotes a healthier lifestyle and helps prevent chronic diseases such as obesity, diabetes, and heart disease. Furthermore, cycling has been shown to improve mental well-being by reducing stress levels and increasing overall happiness.
+
+3. Economic Benefits:
+Riding a bicycle is significantly more cost-effective than relying on other forms of transportation, such as public transit or personal vehicles. The expenses involved in purchasing and maintaining a bicycle are relatively low compared to owning a car, which includes fuel, insurance, registration, and maintenance costs. Moreover, cycling reduces traffic congestion, leading to less wasted time and fuel.
+
+4. Logistical Benefits:
+In densely populated cities, cycling can often be the fastest and most efficient mode of transportation, especially during peak traffic hours. Bicycles allow riders to navigate congested areas quickly, find parking more easily, and access routes that are not available for larger vehicles. In addition, many cities are investing in better biking infrastructure, such as dedicated bike lanes and bike-sharing programs, to encourage more people to choose cycling as their primary mode of transportation.
+
+In conclusion, bicycling in urban areas presents numerous advantages as an alternative mode of transportation. By choosing to ride bicycles, individuals can significantly reduce their environmental impact, improve their health, save money, and enjoy greater convenience while navigating busy city streets. With the increasing emphasis on sustainability and healthier lifestyles, cycling is poised to become an increasingly popular mode of urban transportation in the years to come.",llava_36242,000000178040,Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.,"def execute_command(image)->str:
+	query = ""Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.""
+	return llm_query(query)",vqa
+000000066389.jpg,Is the high five taking place during or after the game?,Is the high five taking place during or after the game?,"Although the exact timing cannot be determined from the image itself, the high five is typically a celebratory gesture that can occur during or after the game. It often signifies a positive outcome, such as a good play or a victory.",llava_62928,000000066389,Is the high five taking place during or after the game?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	high_five_patches = image_patch.find(""high five"")
+	# If there's no high five, return ""not applicable"".
+	if len(high_five_patches) == 0:
+		return ""not applicable""
+	high_five_patch = high_five_patches[0]
+	environment = high_five_patch.simple_query(""What is happening around the high five?"")
+	if ""game"" in environment:
+		return ""during""
+	else:
+		return ""after""",vqa
+000000145841.jpg,"Is the office setup meant for a home office or a more professional, corporate environment?","Is the office setup meant for a home office or a more professional, corporate environment?","Based on the image, it is not possible to definitively determine whether the office setup is meant for a home office or a more professional, corporate environment. However, considering the personal computer on the desk and the cozy corner setup, it is more probable that it is a home office setup.",llava_85076,000000145841,"Is the office setup meant for a home office or a more professional, corporate environment?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	office_setup_patches = image_patch.find(""office setup"")
+	if len(office_setup_patches) == 0:
+		return image_patch.simple_query(""Is the office setup meant for a home office or a more professional, corporate environment?"")
+	office_setup_patch = office_setup_patches[0]
+	return office_setup_patch.best_text_match([""home"", ""corporate""])",vqa
+000000513744.jpg,What are the toothbrush holders holding?,What are the toothbrush holders holding?,The toothbrush holders are holding multiple toothbrushes.,llava_91638,000000513744,What are the toothbrush holders holding?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	toothbrush_holder_patches = image_patch.find(""toothbrush holder"")
+	if len(toothbrush_holder_patches) == 0:
+		# If no toothbrush holder is found, return ""nothing""
+		return ""nothing""
+	for toothbrush_holder_patch in toothbrush_holder_patches:
+		contents = toothbrush_holder_patch.simple_query(""What is in the toothbrush holder?"")
+		return contents
+	# If no answer is found for any of the toothbrush holders, return ""nothing""
+	return ""nothing""",vqa
+000000458650.jpg,Is the person cutting vegetables an adult or a child?,Is the person cutting vegetables an adult or a child?,The person cutting vegetables is a young boy.,llava_95649,000000458650,Is the person cutting vegetables an adult or a child?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person cutting vegetables"")
+	if len(person_patches) == 0:
+		# If no person is found, query the image directly with simple_query instead of returning a long string like ""There is no person.""
+		return image_patch.simple_query(""Is the person cutting vegetables an adult or a child?"")
+	person_patch = person_patches[0]
+	return person_patch.best_text_match([""adult"", ""child""])",vqa
+000000361475.jpg,Can you tell if the item around her head is a towel or floppy dog ears?,Can you tell if the item around her head is a towel or floppy dog ears?,"Based on the image, it is not possible to definitively determine whether the item around her head is a towel or floppy dog ears. The image provides ambiguous information, and the object's appearance could be interpreted as either a towel or floppy dog ears.",llava_112153,000000361475,Can you tell if the item around her head is a towel or floppy dog ears?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	item_patches = image_patch.find(""item around her head"")
+	if len(item_patches) == 0:
+		return ""Neither""
+	# Assume only one item patch around her head
+	item_patch = item_patches[0]
+	return item_patch.best_text_match([""towel"", ""floppy dog ears""])",vqa
+000000324654.jpg,What kind of scarf is the snowman wearing?,What kind of scarf is the snowman wearing?,The snowman is wearing a plaid scarf.,llava_128068,000000324654,What kind of scarf is the snowman wearing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	snowman_patches = image_patch.find(""snowman"")
+	# Assume there could be more than one snowman
+	answers = []
+	for snowman_patch in snowman_patches:
+		scarf_patches = snowman_patch.find(""scarf"")
+		# Snowman could potentially not be wearing a scarf
+		if not scarf_patches:
+			answers.append(""None"")
+		else:
+			for scarf_patch in scarf_patches:
+				# Get description of the scarf
+				scarf_type = scarf_patch.simple_query(""What kind of scarf is this?"")
+				answers.append(scarf_type)
+	return "", "".join(answers)",vqa
+000000271167.jpg,What is the emotional state of the child in the bathtub?,What is the emotional state of the child in the bathtub?,"The child is in a happy and playful emotional state, enjoying their bath with a smile on their face.",llava_133662,000000271167,What is the emotional state of the child in the bathtub?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	child_patches = image_patch.find(""child in the bathtub"")
+	if len(child_patches) == 0:
+		return image_patch.simple_query(""What is the emotional state of the child in the bathtub?"")
+	child_patch = child_patches[0]
+	emotion = child_patch.simple_query(""What is the child's emotional state?"")
+	return emotion",vqa
+000000555625.jpg,What could be the purpose of the blue boxes on the ski slope?,What could be the purpose of the blue boxes on the ski slope?,"The blue boxes on the ski slope could serve several purposes. They might indicate specific sections of the slope, such as beginner, intermediate, or advanced ski areas. Alternatively, they could be marking different features or obstacles, such as jumps, rails, or mogul areas. The blue boxes could also be used to point out important locations on the slope, such as ski lifts, emergency phones, or meeting points. Essentially, they are there to help skiers and snowboarders navigate and understand the layout of the ski hill better.",llava_167424,000000555625,What could be the purpose of the blue boxes on the ski slope?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	blue_boxes_patches = image_patch.find(""blue boxes"")
+	# Question assumes single patch
+	blue_boxes_patch = blue_boxes_patches[0]
+	return blue_boxes_patch.llm_query(""What could be the purpose of blue boxes on a ski slope?"")
+",vqa
+000000349669.jpg,What type of shop is Town Moto?,What type of shop is Town Moto?,Town Moto is a motorcycle shop in the city.,llava_179041,000000349669,What type of shop is Town Moto?,"def execute_command(image)->str:
+	return bing_search(""What type of shop is Town Moto?"")",vqa
+000000465969.jpg,Is the circus taking place indoors or outdoors?,Is the circus taking place indoors or outdoors?,"The circus is taking place indoors, as the event is held inside a circus tent.",llava_195183,000000465969,Is the circus taking place indoors or outdoors?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	circus_patches = image_patch.find(""circus"")
+	if len(circus_patches) == 0:
+		# If no circus is found, directly ask the image for information
+		return image_patch.simple_query(""Is the circus taking place indoors or outdoors?"")
+	circus_patch = circus_patches[0]
+	# Compare the two answers. We assume neither will be straight up ""wrong"", one will be more confident
+	indoors_confidence = circus_patch.verify_property(""circus"", ""indoors"")
+	outdoors_confidence = circus_patch.verify_property(""circus"", ""outdoors"")
+	if indoors_confidence > outdoors_confidence:
+		return ""indoors""
+	else:
+		return ""outdoors""",vqa
+000000555473.jpg,Are they successful in their attempt to stand up paddle surf?,Are they successful in their attempt to stand up paddle surf?,"Yes, the people in the image seem to be successfully standing on their surfboards and engaging in stand up paddle surfing. The fact that they are standing on their surfboards indicates that they have managed to find their balance and are capable of propelling themselves using the paddles. Such activities require good balance, core strength, and coordination, so their success in standing up on their surfboards demonstrates their skill and enjoyment of the sport.",llava_199319,000000555473,Are they successful in their attempt to stand up paddle surf?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.simple_query(""Are they successful in their attempt to stand up paddle surf?"")",vqa
+000000418325.jpg,Can we confidently say that this bridge is the London Bridge?,Can we confidently say that this bridge is the London Bridge?,"No, we cannot confidently say that this is the London Bridge, as the image's description is not specific about the location of the bridge or whether it is indeed the London Bridge. We can only deduce that it is an old bridge spanning the width of a bay.",llava_202815,000000418325,Can we confidently say that this bridge is the London Bridge?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	bridge_patches = image_patch.find(""bridge"")
+	# Question assumes only one bridge patch
+	bridge_name = bridge_patches[0].simple_query(""What is the name of the bridge?"")
+	return bool_to_yesno(bridge_name.lower() == ""london bridge"")",vqa
+000000190219.jpg,Is the waterfall they are standing under natural or man-made?,Is the waterfall they are standing under natural or man-made?,The waterfall that the elephants are standing under is a man-made waterfall.,llava_207090,000000190219,Is the waterfall they are standing under natural or man-made?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	waterfall_patches = image_patch.find(""waterfall"")
+	if len(waterfall_patches) == 0:
+		# If no waterfall is found, query the image directly with simple_query instead of returning a long string like ""There is no waterfall.""
+		return image_patch.simple_query(""Is the waterfall they are standing under natural or man-made?"")
+	waterfall_patch = waterfall_patches[0]
+	return waterfall_patch.best_text_match([""natural"", ""man-made""])",vqa
+000000413414.jpg,Could the combination of the horse figure and red chair have any symbolic meaning or artistic purpose?,Could the combination of the horse figure and red chair have any symbolic meaning or artistic purpose?,"While I can't definitively determine the intention behind placing the small horse figure on a large red chair in the snow, it is possible that it could have some symbolic meaning or artistic purpose based on the unusual composition. The striking contrast between the miniature horse and the oversized chair, with the bold red color against the stark, snowy background, creates a visually intriguing scene.
+
+From an artistic standpoint, this juxtaposition could be seen as an exploration of scale or a commentary on the relationship between nature (represented by the horse) and human-made objects (represented by the chair). Alternatively, it might simply be a playful or whimsical arrangement meant to provoke curiosity and engagement from the viewer.
+
+In any case, without further context or information from the creator, it is challenging to pinpoint the exact meaning or purpose behind this composition. Nonetheless, the combination of the horse figure and the red chair in a snowy environment makes for a compelling image that invites the viewer to ponder its significance.",llava_223029,000000413414,Could the combination of the horse figure and red chair have any symbolic meaning or artistic purpose?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	horse_figure_exists = image_patch.exists(""horse figure"")
+	red_chair_exists = image_patch.exists(""red chair"")
+	if horse_figure_exists and red_chair_exists:
+		possible_context = image_patch.simple_query(""What kind of an scene does the image depicts?"")
+		llm_question = f""Could the combination of a horse figure and a red chair in a {possible_context} have any symbolic meaning or artistic purpose?""
+		interpretation = image_patch.llm_query(llm_question, long_answer=True)
+		return interpretation
+	else:
+		return ""The image does not contain both a horse figure and a red chair.""",vqa
+000000212757.jpg,Is there any indication that they are playing golf at a specific location or theme park?,Is there any indication that they are playing golf at a specific location or theme park?,"Yes, the image suggests that the two men are playing golf on a Disney World course, which is a themed golf course located within the Walt Disney World Resort in Florida.
+
+This information might imply that not only are these men showcasing their skills and determination in the face of challenges, but they are also enjoying their leisure time in a renowned recreational destination. The presence of these two golfers with prosthetic legs playing at a Disney World course represents the inclusivity and accessibility of sports and recreational facilities for people of all abilities. Golf, being a sport that can accommodate various skill levels and physical capabilities, provides an opportunity for these men to participate and enjoy the game.",llava_227524,000000212757,Is there any indication that they are playing golf at a specific location or theme park?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	golf_patches = image_patch.find(""golf"")
+	if len(golf_patches) == 0:
+		return ""no""
+	for golf_patch in golf_patches:
+		location = golf_patch.simple_query(""What location is this?"")
+		# search each indication of location or theme park in the golf_patch
+		if image_patch.exists(location):
+			return ""yes""
+	return ""no""",vqa
+000000163009.jpg,How many hang gliders can be seen in the image?,How many hang gliders can be seen in the image?,There are several hang gliders visible in the image.,llava_228640,000000163009,How many hang gliders can be seen in the image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	hang_gliders_patches = image_patch.find(""hang glider"")
+	return len(hang_gliders_patches)",vqa
+000000285699.jpg,What is the boy holding to protect himself and the cat from the rain?,What is the boy holding to protect himself and the cat from the rain?,The boy is holding an umbrella to protect both himself and the cat from the rain.,llava_231855,000000285699,What is the boy holding to protect himself and the cat from the rain?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boy_patches = image_patch.find(""boy"")
+	cat_patches = image_patch.find(""cat"")
+	if len(boy_patches) == 0 or len(cat_patches) == 0:
+		return image_patch.simple_query(""What is the boy holding to protect himself and the cat from the rain?"")
+	boy_patch = boy_patches[0]
+	cat_patch = cat_patches[0]
+	object_patches = [patch for patch in image_patch.find(""object"")
+						if patch.overlaps_with(boy_patch.left, boy_patch.lower, boy_patch.right, boy_patch.upper)
+						and patch.overlaps_with(cat_patch.left, cat_patch.lower, cat_patch.right, cat_patch.upper)]
+	protective_objects = [patch for patch in object_patches if patch.llm_query(""Can this object protect from rain?"")]
+	if len(protective_objects) == 0:
+		return ""nothing""
+	return ', '.join([patch.simple_query(""What is this object?"") for patch in protective_objects])",vqa
+000000537055.jpg,Is it appropriate to make assumptions about the people's body weight and health in this image?,Is it appropriate to make assumptions about the people's body weight and health in this image?,"As an AI visual assistant, my job is to describe the contents of the image objectively while being respectful to the subjects in the photo. Making assumptions about an individual's body weight, health, or lifestyle based on a single image is not appropriate, as it can lead to misunderstandings and reinforce stereotypes or biases. Instead, it is essential to focus on the observable visual details of the image and be mindful of treating the subjects with the respect and dignity they deserve.",llava_237497,000000537055,Is it appropriate to make assumptions about the people's body weight and health in this image?,"def execute_command(image) -> str:
+	return ""no"" # Since such assumptions can be unreliable and considered disrespectful.",vqa
+000000183790.jpg,How would you describe the size of the suitcases the man is pulling?,How would you describe the size of the suitcases the man is pulling?,The size of the suitcases the man is pulling can be described as small.,llava_238485,000000183790,How would you describe the size of the suitcases the man is pulling?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""I can't see a man.""
+	man_patch = man_patches[0]
+	suitcase_patches = image_patch.find(""suitcase"")
+	if len(suitcase_patches) == 0:
+		return ""I can't see a suitcase.""
+	for suitcase_patch in suitcase_patches:
+		if man_patch.overlaps_with(suitcase_patch.left, suitcase_patch.lower, suitcase_patch.right, suitcase_patch.upper):
+			return suitcase_patch.simple_query(""How big is this?"")
+	return ""I can't see a suitcase the man is pulling.""",vqa
+000000518472.jpg,Do the people in the banana costumes appear to be adults or children?,Do the people in the banana costumes appear to be adults or children?,The people in the banana costumes appear to be adults.,llava_248820,000000518472,Do the people in the banana costumes appear to be adults or children?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	banana_costume_people_patches = image_patch.find(""people in banana costumes"")
+	if len(banana_costume_people_patches) == 0:
+		return image_patch.simple_query(""Do the people in the banana costumes appear to be adults or children?"")
+	ages = [patch.simple_query(""Does this person appear to be an adult or a child?"") for patch in banana_costume_people_patches]
+	if ""adult"" in ages and ""child"" in ages:
+		return ""Both adults and children""
+	elif ""adult"" in ages:
+		return ""Adults""
+	else:
+		return ""Children""",vqa
+000000188002.jpg,Is the man sitting or standing on the ox?,Is the man sitting or standing on the ox?,The man is sitting on the ox.,llava_254578,000000188002,Is the man sitting or standing on the ox?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_on_ox_patches = image_patch.find(""man on ox"")
+	if len(man_on_ox_patches) == 0:
+		return ""no man on the ox found""
+	man_on_ox_patch = man_on_ox_patches[0]
+	return man_on_ox_patch.best_text_match([""sitting"", ""standing""])",vqa
+000000486547.jpg,What color is the hammock in the park?,What color is the hammock in the park?,The hammock in the park is red.,llava_254722,000000486547,What color is the hammock in the park?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	park_patches = image_patch.find(""park"")
+	for park_patch in park_patches:
+		hammock_patches = park_patch.find(""hammock"")
+		if hammock_patches:
+			return hammock_patches[0].simple_query(""What color is the hammock?"")
+	return ""There is no hammock in the park.""",vqa

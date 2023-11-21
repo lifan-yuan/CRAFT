@@ -1,0 +1,837 @@
+image_path,question,answer,tool_id,query,code,tool,call
+000000318066.jpg,Is the Vietnamese restaurant open or closed?,Closed.,vqa_5794,Is the Vietnamese restaurant open or closed?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	restaurant_patches = image_patch.find(""Vietnamese restaurant"")
+	if len(restaurant_patches) == 0:
+		return image_patch.simple_query(""Is the Vietnamese restaurant open or closed?"")
+	restaurant_patch = restaurant_patches[0]
+	return restaurant_patch.best_text_match([""open"", ""closed""])","def check_establishment_status(image_patch: ImagePatch, establishment_type: str, status_options: List[str], query: str) -> str:
+    '''Check the status of an establishment.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        establishment_type (str): The type of the establishment to check the status of.
+        status_options (List[str]): The possible status options.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The status of the establishment if it exists, otherwise the result of the simple_query.
+    '''
+    establishment_patches = image_patch.find(establishment_type)
+    if len(establishment_patches) == 0:
+        return image_patch.simple_query(query)
+    establishment_patch = establishment_patches[0]
+    return establishment_patch.best_text_match(status_options)","check_establishment_status(image_patch, ""Vietnamese restaurant"", [""open"", ""closed""], ""Is the Vietnamese restaurant open or closed?"")"
+000000272241.jpg,What animal is sitting on the Paso 750?,Cat.,vqa_7751,What animal is sitting on the Paso 750?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	paso_patches = image_patch.find(""Paso 750"")
+	if len(paso_patches) == 0:
+		return ""There is no Paso 750.""
+	paso_patch = paso_patches[0]
+	animal_patches = image_patch.find(""animal"")
+	if len(animal_patches) == 0:
+		return ""There is no animal.""
+	for animal_patch in animal_patches:
+		if paso_patch.overlaps_with(animal_patch.left, animal_patch.lower, animal_patch.right, animal_patch.upper):
+			return animal_patch.simple_query(""What is this?"")
+	return ""There is no animal on the Paso 750.""","def identify_object_on_top(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+    '''Identify the object that is on top of another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to identify.
+        reference_object_name (str): The name of the reference object.
+       
+    Returns:
+        str: The name of the object if it exists, ""There is no {object_name} on the {reference_object_name}."" otherwise.
+    '''
+    
+    reference_patches = image_patch.find(reference_object_name)
+    if len(reference_patches) == 0:
+        return f""There is no {reference_object_name}.""
+    reference_patch = reference_patches[0]
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return f""There is no {object_name}.""
+    for object_patch in object_patches:
+        if reference_patch.overlaps_with(object_patch.left, object_patch.lower, object_patch.right, object_patch.upper):
+            return object_patch.simple_query(""What is this?"")
+    return f""There is no {object_name} on the {reference_object_name}.""","identify_object_on_top(image_patch, ""animal"", ""Paso 750"")"
+000000325152.jpg,What is the status of human presence?,No people found.,vqa_15902,What is the status of human presence?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	return image_patch.simple_query(""What is the status of human presence?"")","def check_object_presence_status(image_patch: ImagePatch, object_name: str) -> str:
+    '''Check the status of an object's presence.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for presence.
+       
+    Returns:
+        str: The status of the object's presence.
+    '''
+    query = f""What is the status of {object_name} presence?""
+    return image_patch.simple_query(query)","check_object_presence_status(image_patch, ""human"")"
+000000324785.jpg,Where are the lobster traps located?,On the dock.,vqa_28158,Where are the lobster traps located?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	lobster_trap_patches = image_patch.find(""lobster trap"")
+	if len(lobster_trap_patches) == 0:
+		# If no lobster trap is found, return a simple string to indicate that
+		return ""No lobster traps found.""
+	# Assume there's only one lobster trap for simplicity
+	lobster_trap_patch = lobster_trap_patches[0]
+	location_query = ""Where is the lobster trap located?""
+	location = lobster_trap_patch.simple_query(location_query)
+	return location","def find_object_location(image_patch: ImagePatch, object_name: str) -> str:
+    '''Find the location of a specific object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to find.
+       
+    Returns:
+        str: The location of the object if it exists, ""No {object_name} found."" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, return a simple string to indicate that
+        return f""No {object_name} found.""
+    # Assume there's only one object for simplicity
+    object_patch = object_patches[0]
+    location_query = f""Where is the {object_name} located?""
+    location = object_patch.simple_query(location_query)
+    return location","find_object_location(image_patch, ""lobster trap"")"
+000000152958.jpg,Is the man crossing the street legally or illegally?,"The man is crossing the street legally, as he is using the traffic light located at the corner of the street.",llava_2735,Is the man crossing the street legally or illegally?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return image_patch.llm_query(""Is the man crossing the street legally?"")
+	man_patch = man_patches[0]
+	return man_patch.simple_query(""Is the man crossing the street legally or illegally?"")","def check_legality_of_action(image_patch: ImagePatch, object_name: str, action: str) -> str:
+    '''Check the legality of an action performed by an object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object performing the action.
+        action (str): The action to check for legality.
+       
+    Returns:
+        str: ""legally"" if the action is legal, ""illegally"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return image_patch.llm_query(f""Is the {object_name} {action} legally?"")
+    object_patch = object_patches[0]
+    return object_patch.simple_query(f""Is the {object_name} {action} legally or illegally?"")","check_legality_of_action(image_patch, ""man"", ""crossing the street"")"
+000000356782.jpg,Why might the little girl be enjoying the rain so much?,"There could be several reasons why the little girl is enjoying the rain so much. It might be a welcome change from the usual sunny or dry weather, or it could be a rare occurrence in her locality, making the experience thrilling and exciting. 
+
+Being outside, playing, and exploring under the protection of an umbrella may give her a sense of adventure and freedom. Moreover, children often find joy in splashing in puddles, feeling the raindrops, and listening to the sound of rain, which can make the experience even more delightful. 
+
+Furthermore, the little girl's laughter and smiles may also indicate her innocence and carefree nature, as she is uninhibited by the worries or concerns that adults might typically have during rainy weather, such as getting wet, catching a cold, or facing traffic and transportation issues. Overall, the little girl's enjoyment of the rain likely stems from a combination of factors, including her natural curiosity, sense of adventure, and ability to find happiness in simple experiences.",llava_5075,Why might the little girl be enjoying the rain so much?,"def execute_command(image)->str:
+	# The question requires reasoning and inference possibly beyond the information available in the image. 
+	# Thus, we can try to locate any facial expressions or other visual clues in the image, then use a language model to infer why she might be enjoying.
+	image_patch = ImagePatch(image)
+	girl_patches = image_patch.find(""little girl"")
+	if len(girl_patches) == 0:
+		return image_patch.llm_query(""Why might a little girl enjoy the rain so much?"")
+	girl_patch = girl_patches[0]
+	girl_expression = girl_patch.simple_query(""What is the girl's expression?"") 
+	return girl_patch.llm_query(f""Why might a little girl with a {girl_expression} expression enjoy the rain so much?"")","def infer_reason_based_on_visual_clues(image_patch: ImagePatch, object_name: str, situation: str, query: str) -> str:
+    '''Infer the reason why a specific object might be enjoying a certain situation, based on visual clues.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for existence.
+        situation (str): The situation the object is in.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The inferred reason.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return image_patch.llm_query(f""Why might a {object_name} enjoy the {situation} so much?"")
+    object_patch = object_patches[0]
+    object_expression = object_patch.simple_query(f""What is the {object_name}'s expression?"") 
+    return object_patch.llm_query(f""Why might a {object_name} with a {object_expression} expression enjoy the {situation} so much?"")","infer_reason_based_on_visual_clues(image_patch, ""little girl"", ""rain"", ""Why might the little girl be enjoying the rain so much?"")"
+000000491823.jpg,Is the boy successful in dunking the basketball?,"Based on the image, it seems that the young boy is in the process of attempting the dunk. It is not possible to tell if he is successful or not without seeing the outcome of his attempt.",llava_21851,Is the boy successful in dunking the basketball?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boy_dunk_patches = image_patch.find(""boy dunking basketball"")
+	if len(boy_dunk_patches) == 0:
+		return ""no""
+	boy_dunk_patch = boy_dunk_patches[0]
+	return boy_dunk_patch.simple_query(""Is the dunk successful?"")","def check_action_success(image_patch: ImagePatch, action_object: str, query: str) -> str:
+    '''Check the success of a specific action performed by an object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        action_object (str): The name of the object performing the action.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""yes"" if the action is successful, ""no"" otherwise.
+    '''
+    
+    action_patches = image_patch.find(action_object)
+    if len(action_patches) == 0:
+        return ""no""
+    action_patch = action_patches[0]
+    return action_patch.simple_query(query)","check_action_success(image_patch, ""boy dunking basketball"", ""Is the dunk successful?"")"
+000000132310.jpg,What kind of establishment is this?,"This is a restaurant or a cafe where people are taking meals and engaging in various activities such as eating and using a laptop. The presence of tables and diners implies a setting where food is served, and the person using the laptop suggests a casual, welcoming atmosphere often found in cafes.",llava_25425,What kind of establishment is this?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	establishment_name = image_patch.simple_query(""What kind of establishment is this?"")
+	return establishment_name","def identify_object_type(image_patch: ImagePatch, query: str) -> str:
+    '''Identify the type of an object or entity in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        query (str): The query to answer.
+       
+    Returns:
+        str: The type of the object or entity.
+    '''
+    object_type = image_patch.simple_query(query)
+    return object_type","identify_object_type(image_patch, ""What kind of establishment is this?"")"
+000000404242.jpg,What can you infer from their identical clothing and the fact that they are smoking and talking on their cell phones?,"From their identical clothing, we can infer that the two men likely share a connection or a common context, such as being coworkers, friends, or attending the same event. Their clothing might also indicate a shared profession or dress code they are adhering to. 
+
+Since they are both smoking and talking on their cell phones, it suggests that they might be taking a break from their usual activities, either work-related or social. Using their cell phones could mean that they are communicating with other people, checking for updates, or possibly attending to personal matters. Their simultaneous engagement in these activities may also demonstrate their comfort level and familiarity with each other, given that they seem at ease performing these actions while in each other's company.
+
+Overall, the identical clothing and simultaneous smoking and cell phone usage strongly indicate a connection or shared context between the two men, possibly reflecting similar professional, social, or personal backgrounds.",llava_32235,What can you infer from their identical clothing and the fact that they are smoking and talking on their cell phones?,"def execute_command(image)->str:
+	# Create a scenario description with the observed activities
+	scenario_description = ""people wearing identical clothing, smoking and talking on their cell phones""
+	# Use LLM to infer implications of the actions
+	inference = llm_query(f""What can you infer from {scenario_description}?"")
+	return inference","def infer_from_scenario(scenario_description: str) -> str:
+    '''Infer implications from a described scenario.
+    
+    Args:
+        scenario_description (str): The description of the scenario.
+       
+    Returns:
+        str: The inferred implications of the scenario.
+    '''
+    # Use LLM to infer implications of the actions
+    inference = llm_query(f""What can you infer from {scenario_description}?"")
+    return inference","infer_from_scenario(""people wearing identical clothing, smoking and talking on their cell phones"")"
+000000178040.jpg,Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.,"Riding bicycles in urban areas offers numerous benefits as an alternative mode of transportation. Some of the primary advantages involve environmental, health, economic, and logistical aspects:
+
+1. Environmental Benefits:
+Cycling emits no greenhouse gases and uses substantially less energy than other modes of transportation, such as cars, buses, and motorcycles. By using bicycles, people can significantly reduce their carbon footprint and overall impact on the environment. Additionally, cycling generates less noise pollution in urban areas compared to other vehicles, which helps maintain a more peaceful and serene atmosphere.
+
+2. Health Benefits:
+Cycling is a great form of exercise, which can help improve cardiovascular health, muscular strength, and overall physical fitness. Bicycling regularly promotes a healthier lifestyle and helps prevent chronic diseases such as obesity, diabetes, and heart disease. Furthermore, cycling has been shown to improve mental well-being by reducing stress levels and increasing overall happiness.
+
+3. Economic Benefits:
+Riding a bicycle is significantly more cost-effective than relying on other forms of transportation, such as public transit or personal vehicles. The expenses involved in purchasing and maintaining a bicycle are relatively low compared to owning a car, which includes fuel, insurance, registration, and maintenance costs. Moreover, cycling reduces traffic congestion, leading to less wasted time and fuel.
+
+4. Logistical Benefits:
+In densely populated cities, cycling can often be the fastest and most efficient mode of transportation, especially during peak traffic hours. Bicycles allow riders to navigate congested areas quickly, find parking more easily, and access routes that are not available for larger vehicles. In addition, many cities are investing in better biking infrastructure, such as dedicated bike lanes and bike-sharing programs, to encourage more people to choose cycling as their primary mode of transportation.
+
+In conclusion, bicycling in urban areas presents numerous advantages as an alternative mode of transportation. By choosing to ride bicycles, individuals can significantly reduce their environmental impact, improve their health, save money, and enjoy greater convenience while navigating busy city streets. With the increasing emphasis on sustainability and healthier lifestyles, cycling is poised to become an increasingly popular mode of urban transportation in the years to come.",llava_36242,Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.,"def execute_command(image)->str:
+	query = ""Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation.""
+	return llm_query(query)","def discuss_topic_benefits_or_drawbacks(query: str, topic: str, aspect: str) -> str:
+    '''Discuss the benefits or drawbacks of a specific topic.
+    
+    Args:
+        query (str): The original query to answer.
+        topic (str): The topic to discuss.
+        aspect (str): The aspect to discuss about the topic. Options: [""benefits"", ""drawbacks""].
+       
+    Returns:
+        str: The discussion result.
+    '''
+    
+    assert aspect in [""benefits"", ""drawbacks""]
+    query = f""Discuss the {aspect} of {topic}.""
+    return llm_query(query)","discuss_topic_benefits_or_drawbacks(""Discuss the benefits of riding bicycles in urban areas as an alternative mode of transportation."", ""riding bicycles in urban areas as an alternative mode of transportation"", ""benefits"")"
+000000066389.jpg,Is the high five taking place during or after the game?,"Although the exact timing cannot be determined from the image itself, the high five is typically a celebratory gesture that can occur during or after the game. It often signifies a positive outcome, such as a good play or a victory.",llava_62928,Is the high five taking place during or after the game?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	high_five_patches = image_patch.find(""high five"")
+	# If there's no high five, return ""not applicable"".
+	if len(high_five_patches) == 0:
+		return ""not applicable""
+	high_five_patch = high_five_patches[0]
+	environment = high_five_patch.simple_query(""What is happening around the high five?"")
+	if ""game"" in environment:
+		return ""during""
+	else:
+		return ""after""","def check_temporal_relationship_between_events(image_patch: ImagePatch, event_name: str, reference_event_name: str, query: str) -> str:
+    '''Check the temporal relationship between two events.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        event_name (str): The name of the event to check for.
+        reference_event_name (str): The name of the reference event.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""before"", ""during"", ""after"", or ""not applicable"" depending on the temporal relationship.
+    '''
+    
+    event_patches = image_patch.find(event_name)
+    # If there's no event, return ""not applicable"".
+    if len(event_patches) == 0:
+        return ""not applicable""
+    event_patch = event_patches[0]
+    environment = event_patch.simple_query(query)
+    if reference_event_name in environment:
+        return ""during""
+    else:
+        return ""after""","check_temporal_relationship_between_events(image_patch, ""high five"", ""game"", ""What is happening around the high five?"")"
+000000145841.jpg,"Is the office setup meant for a home office or a more professional, corporate environment?","Based on the image, it is not possible to definitively determine whether the office setup is meant for a home office or a more professional, corporate environment. However, considering the personal computer on the desk and the cozy corner setup, it is more probable that it is a home office setup.",llava_85076,"Is the office setup meant for a home office or a more professional, corporate environment?","def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	office_setup_patches = image_patch.find(""office setup"")
+	if len(office_setup_patches) == 0:
+		return image_patch.simple_query(""Is the office setup meant for a home office or a more professional, corporate environment?"")
+	office_setup_patch = office_setup_patches[0]
+	return office_setup_patch.best_text_match([""home"", ""corporate""])","def determine_object_type(image_patch: ImagePatch, object_name: str, possible_types: List[str], query: str) -> str:
+    '''Determine the type of an object based on its attributes.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for existence.
+        possible_types (List[str]): The list of possible types of the object.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The type of the object if it exists, otherwise the result of the simple_query.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(possible_types)","determine_object_type(image_patch, ""office setup"", [""home"", ""corporate""], ""Is the office setup meant for a home office or a more professional, corporate environment?"")"
+000000513744.jpg,What are the toothbrush holders holding?,The toothbrush holders are holding multiple toothbrushes.,llava_91638,What are the toothbrush holders holding?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	toothbrush_holder_patches = image_patch.find(""toothbrush holder"")
+	if len(toothbrush_holder_patches) == 0:
+		# If no toothbrush holder is found, return ""nothing""
+		return ""nothing""
+	for toothbrush_holder_patch in toothbrush_holder_patches:
+		contents = toothbrush_holder_patch.simple_query(""What is in the toothbrush holder?"")
+		return contents
+	# If no answer is found for any of the toothbrush holders, return ""nothing""
+	return ""nothing""","def identify_object_contents(image_patch: ImagePatch, object_name: str) -> str:
+    '''Identify the contents of a given object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to check for contents.
+       
+    Returns:
+        str: The contents of the object if any, ""nothing"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, return ""nothing""
+        return ""nothing""
+    for object_patch in object_patches:
+        contents = object_patch.simple_query(f""What is in the {object_name}?"")
+        return contents
+    # If no answer is found for any of the objects, return ""nothing""
+    return ""nothing""","identify_object_contents(image_patch, ""toothbrush holder"")"
+000000458650.jpg,Is the person cutting vegetables an adult or a child?,The person cutting vegetables is a young boy.,llava_95649,Is the person cutting vegetables an adult or a child?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person cutting vegetables"")
+	if len(person_patches) == 0:
+		# If no person is found, query the image directly with simple_query instead of returning a long string like ""There is no person.""
+		return image_patch.simple_query(""Is the person cutting vegetables an adult or a child?"")
+	person_patch = person_patches[0]
+	return person_patch.best_text_match([""adult"", ""child""])","def identify_object_category(image_patch: ImagePatch, object_name: str, categories: List[str], query: str) -> str:
+    '''Identify the category of an object based on a list of possible categories.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to identify.
+        categories (List[str]): The list of possible categories.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The category of the object if it exists, otherwise the result of the simple_query.
+    '''
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(categories)","identify_object_category(image_patch, ""person cutting vegetables"", [""adult"", ""child""], ""Is the person cutting vegetables an adult or a child?"")"
+000000361475.jpg,Can you tell if the item around her head is a towel or floppy dog ears?,"Based on the image, it is not possible to definitively determine whether the item around her head is a towel or floppy dog ears. The image provides ambiguous information, and the object's appearance could be interpreted as either a towel or floppy dog ears.",llava_112153,Can you tell if the item around her head is a towel or floppy dog ears?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	item_patches = image_patch.find(""item around her head"")
+	if len(item_patches) == 0:
+		return ""Neither""
+	# Assume only one item patch around her head
+	item_patch = item_patches[0]
+	return item_patch.best_text_match([""towel"", ""floppy dog ears""])","def identify_object_around_location(image_patch: ImagePatch, location: str, possible_objects: list) -> str:
+    '''Identify the object around a specific location of another object from a list of possible objects.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        location (str): The location of the object to identify.
+        possible_objects (list): A list of possible objects.
+       
+    Returns:
+        str: The name of the identified object if it exists, ""Neither"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(location)
+    if len(object_patches) == 0:
+        return ""Neither""
+    # Assume only one object patch at the location
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(possible_objects)","identify_object_around_location(image_patch, ""item around her head"", [""towel"", ""floppy dog ears""])"
+000000324654.jpg,What kind of scarf is the snowman wearing?,The snowman is wearing a plaid scarf.,llava_128068,What kind of scarf is the snowman wearing?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	snowman_patches = image_patch.find(""snowman"")
+	# Assume there could be more than one snowman
+	answers = []
+	for snowman_patch in snowman_patches:
+		scarf_patches = snowman_patch.find(""scarf"")
+		# Snowman could potentially not be wearing a scarf
+		if not scarf_patches:
+			answers.append(""None"")
+		else:
+			for scarf_patch in scarf_patches:
+				# Get description of the scarf
+				scarf_type = scarf_patch.simple_query(""What kind of scarf is this?"")
+				answers.append(scarf_type)
+	return "", "".join(answers)","def identify_associated_object_type(image_patch: ImagePatch, main_object: str, associated_object: str, query: str) -> str:
+    '''Identify the type or description of an object associated with another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        main_object (str): The name of the main object.
+        associated_object (str): The name of the associated object.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The type or description of the associated object.
+    '''
+    
+    main_object_patches = image_patch.find(main_object)
+    answers = []
+    for main_object_patch in main_object_patches:
+        associated_object_patches = main_object_patch.find(associated_object)
+        if not associated_object_patches:
+            answers.append(""None"")
+        else:
+            for associated_object_patch in associated_object_patches:
+                associated_object_type = associated_object_patch.simple_query(query)
+                answers.append(associated_object_type)
+    return "", "".join(answers)","identify_associated_object_type(image_patch, ""snowman"", ""scarf"", ""What kind of scarf is this?"")"
+000000271167.jpg,What is the emotional state of the child in the bathtub?,"The child is in a happy and playful emotional state, enjoying their bath with a smile on their face.",llava_133662,What is the emotional state of the child in the bathtub?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	child_patches = image_patch.find(""child in the bathtub"")
+	if len(child_patches) == 0:
+		return image_patch.simple_query(""What is the emotional state of the child in the bathtub?"")
+	child_patch = child_patches[0]
+	emotion = child_patch.simple_query(""What is the child's emotional state?"")
+	return emotion","def identify_attribute_of_object_in_context(image_patch: ImagePatch, object_context: str, attribute_query: str, original_query: str) -> str:
+    '''Identify the attribute of an object in a certain context.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_context (str): The context of the object to check.
+        attribute_query (str): The query to identify the attribute of the object.
+        original_query (str): The original query to answer.
+       
+    Returns:
+        str: The attribute of the object.
+    '''
+    
+    object_patches = image_patch.find(object_context)
+    if len(object_patches) == 0:
+        # If no object in the given context is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_context}.""
+        return image_patch.simple_query(original_query)
+    object_patch = object_patches[0]
+    attribute = object_patch.simple_query(attribute_query)
+    return attribute","identify_attribute_of_object_in_context(image_patch, ""child in the bathtub"", ""What is the child's emotional state?"", ""What is the emotional state of the child in the bathtub?"")"
+000000555625.jpg,What could be the purpose of the blue boxes on the ski slope?,"The blue boxes on the ski slope could serve several purposes. They might indicate specific sections of the slope, such as beginner, intermediate, or advanced ski areas. Alternatively, they could be marking different features or obstacles, such as jumps, rails, or mogul areas. The blue boxes could also be used to point out important locations on the slope, such as ski lifts, emergency phones, or meeting points. Essentially, they are there to help skiers and snowboarders navigate and understand the layout of the ski hill better.",llava_167424,What could be the purpose of the blue boxes on the ski slope?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	blue_boxes_patches = image_patch.find(""blue boxes"")
+	# Question assumes single patch
+	blue_boxes_patch = blue_boxes_patches[0]
+	return blue_boxes_patch.llm_query(""What could be the purpose of blue boxes on a ski slope?"")
+","def infer_object_purpose(image_patch: ImagePatch, object_name: str, context: str) -> str:
+    '''Infer the purpose of an object in a certain context.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to infer the purpose of.
+        context (str): The context in which the object is placed.
+       
+    Returns:
+        str: The inferred purpose of the object.
+    '''
+    object_patches = image_patch.find(object_name)
+    # Question assumes single patch
+    object_patch = object_patches[0]
+    return object_patch.llm_query(f""What could be the purpose of {object_name} in {context}?"")","infer_object_purpose(image_patch, ""blue boxes"", ""a ski slope"")"
+000000349669.jpg,What type of shop is Town Moto?,Town Moto is a motorcycle shop in the city.,llava_179041,What type of shop is Town Moto?,"def execute_command(image)->str:
+	return bing_search(""What type of shop is Town Moto?"")","def find_entity_type(entity: str) -> str:
+    '''Find out the type of a given entity.
+    
+    Args:
+        entity (str): The name of the entity to find the type of.
+       
+    Returns:
+        str: The type of the entity.
+    '''
+    return bing_search(f""What type of entity is {entity}?"")","find_entity_type(""Town Moto"")"
+000000465969.jpg,Is the circus taking place indoors or outdoors?,"The circus is taking place indoors, as the event is held inside a circus tent.",llava_195183,Is the circus taking place indoors or outdoors?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	circus_patches = image_patch.find(""circus"")
+	if len(circus_patches) == 0:
+		# If no circus is found, directly ask the image for information
+		return image_patch.simple_query(""Is the circus taking place indoors or outdoors?"")
+	circus_patch = circus_patches[0]
+	# Compare the two answers. We assume neither will be straight up ""wrong"", one will be more confident
+	indoors_confidence = circus_patch.verify_property(""circus"", ""indoors"")
+	outdoors_confidence = circus_patch.verify_property(""circus"", ""outdoors"")
+	if indoors_confidence > outdoors_confidence:
+		return ""indoors""
+	else:
+		return ""outdoors""","def check_two_properties(image_patch: ImagePatch, object_name: str, property1: str, property2: str, query: str) -> str:
+    '''Check two properties of an object or event and determine which one is more likely.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object or event to check.
+        property1 (str): The first property to check.
+        property2 (str): The second property to check.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The property that is more likely.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    # Compare the two answers. We assume neither will be straight up ""wrong"", one will be more confident
+    property1_confidence = object_patch.verify_property(object_name, property1)
+    property2_confidence = object_patch.verify_property(object_name, property2)
+    if property1_confidence > property2_confidence:
+        return property1
+    else:
+        return property2","check_two_properties(image_patch, ""circus"", ""indoors"", ""outdoors"", ""Is the circus taking place indoors or outdoors?"")"
+000000555473.jpg,Are they successful in their attempt to stand up paddle surf?,"Yes, the people in the image seem to be successfully standing on their surfboards and engaging in stand up paddle surfing. The fact that they are standing on their surfboards indicates that they have managed to find their balance and are capable of propelling themselves using the paddles. Such activities require good balance, core strength, and coordination, so their success in standing up on their surfboards demonstrates their skill and enjoyment of the sport.",llava_199319,Are they successful in their attempt to stand up paddle surf?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	return image_patch.simple_query(""Are they successful in their attempt to stand up paddle surf?"")","def check_success_of_action(image_patch: ImagePatch, query: str) -> str:
+    '''Check the success of an action in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The answer to the query.
+    '''
+    return image_patch.simple_query(query)","check_success_of_action(image_patch, ""Are they successful in their attempt to stand up paddle surf?"")"
+000000418325.jpg,Can we confidently say that this bridge is the London Bridge?,"No, we cannot confidently say that this is the London Bridge, as the image's description is not specific about the location of the bridge or whether it is indeed the London Bridge. We can only deduce that it is an old bridge spanning the width of a bay.",llava_202815,Can we confidently say that this bridge is the London Bridge?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	bridge_patches = image_patch.find(""bridge"")
+	# Question assumes only one bridge patch
+	bridge_name = bridge_patches[0].simple_query(""What is the name of the bridge?"")
+	return bool_to_yesno(bridge_name.lower() == ""london bridge"")","def check_object_name(image_patch: ImagePatch, object_type: str, expected_name: str) -> str:
+    '''Check whether a specific object in the image is a certain named object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_type (str): The type of the object to check.
+        expected_name (str): The expected name of the object.
+       
+    Returns:
+        str: ""yes"" if the object is the expected named object, ""no"" otherwise.
+    '''
+    
+    object_patches = image_patch.find(object_type)
+    # Question assumes only one object patch
+    object_name = object_patches[0].simple_query(f""What is the name of the {object_type}?"")
+    return bool_to_yesno(object_name.lower() == expected_name.lower())","check_object_name(image_patch, ""bridge"", ""London Bridge"")"
+000000190219.jpg,Is the waterfall they are standing under natural or man-made?,The waterfall that the elephants are standing under is a man-made waterfall.,llava_207090,Is the waterfall they are standing under natural or man-made?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	waterfall_patches = image_patch.find(""waterfall"")
+	if len(waterfall_patches) == 0:
+		# If no waterfall is found, query the image directly with simple_query instead of returning a long string like ""There is no waterfall.""
+		return image_patch.simple_query(""Is the waterfall they are standing under natural or man-made?"")
+	waterfall_patch = waterfall_patches[0]
+	return waterfall_patch.best_text_match([""natural"", ""man-made""])","def identify_object_type(image_patch: ImagePatch, object_name: str, query: str, possible_types: List[str]) -> str:
+    '''Identify the type of an object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to identify.
+        query (str): The original query to answer.
+        possible_types (List[str]): A list of possible types that the object could be.
+       
+    Returns:
+        str: The type of the object if it can be identified, otherwise the result of the simple_query.
+    '''
+    
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        # If no object is found, query the image directly with simple_query instead of returning a long string like ""There is no {object_name}.""
+        return image_patch.simple_query(query)
+    object_patch = object_patches[0]
+    return object_patch.best_text_match(possible_types)","identify_object_type(image_patch, ""waterfall"", ""Is the waterfall they are standing under natural or man-made?"", [""natural"", ""man-made""])"
+000000413414.jpg,Could the combination of the horse figure and red chair have any symbolic meaning or artistic purpose?,"While I can't definitively determine the intention behind placing the small horse figure on a large red chair in the snow, it is possible that it could have some symbolic meaning or artistic purpose based on the unusual composition. The striking contrast between the miniature horse and the oversized chair, with the bold red color against the stark, snowy background, creates a visually intriguing scene.
+
+From an artistic standpoint, this juxtaposition could be seen as an exploration of scale or a commentary on the relationship between nature (represented by the horse) and human-made objects (represented by the chair). Alternatively, it might simply be a playful or whimsical arrangement meant to provoke curiosity and engagement from the viewer.
+
+In any case, without further context or information from the creator, it is challenging to pinpoint the exact meaning or purpose behind this composition. Nonetheless, the combination of the horse figure and the red chair in a snowy environment makes for a compelling image that invites the viewer to ponder its significance.",llava_223029,Could the combination of the horse figure and red chair have any symbolic meaning or artistic purpose?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	horse_figure_exists = image_patch.exists(""horse figure"")
+	red_chair_exists = image_patch.exists(""red chair"")
+	if horse_figure_exists and red_chair_exists:
+		possible_context = image_patch.simple_query(""What kind of an scene does the image depicts?"")
+		llm_question = f""Could the combination of a horse figure and a red chair in a {possible_context} have any symbolic meaning or artistic purpose?""
+		interpretation = image_patch.llm_query(llm_question, long_answer=True)
+		return interpretation
+	else:
+		return ""The image does not contain both a horse figure and a red chair.""","def check_existence_and_interpretation_of_objects(image_patch: ImagePatch, object1: str, object2: str) -> str:
+    '''Check the existence of two objects in an image and if they exist, ask for their possible symbolic meaning or artistic purpose.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object1 (str): The name of the first object.
+        object2 (str): The name of the second object.
+       
+    Returns:
+        str: Interpretation of the possible symbolic meaning or artistic purpose of the two objects if they exist, or a message indicating that they do not exist.
+    '''
+    
+    object1_exists = image_patch.exists(object1)
+    object2_exists = image_patch.exists(object2)
+    if object1_exists and object2_exists:
+        possible_context = image_patch.simple_query(""What kind of a scene does the image depict?"")
+        llm_question = f""Could the combination of a {object1} and a {object2} in a {possible_context} have any symbolic meaning or artistic purpose?""
+        interpretation = image_patch.llm_query(llm_question, long_answer=True)
+        return interpretation
+    else:
+        return f""The image does not contain both a {object1} and a {object2}.""","check_existence_and_interpretation_of_objects(image_patch, ""horse figure"", ""red chair"")"
+000000212757.jpg,Is there any indication that they are playing golf at a specific location or theme park?,"Yes, the image suggests that the two men are playing golf on a Disney World course, which is a themed golf course located within the Walt Disney World Resort in Florida.
+
+This information might imply that not only are these men showcasing their skills and determination in the face of challenges, but they are also enjoying their leisure time in a renowned recreational destination. The presence of these two golfers with prosthetic legs playing at a Disney World course represents the inclusivity and accessibility of sports and recreational facilities for people of all abilities. Golf, being a sport that can accommodate various skill levels and physical capabilities, provides an opportunity for these men to participate and enjoy the game.",llava_227524,Is there any indication that they are playing golf at a specific location or theme park?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	golf_patches = image_patch.find(""golf"")
+	if len(golf_patches) == 0:
+		return ""no""
+	for golf_patch in golf_patches:
+		location = golf_patch.simple_query(""What location is this?"")
+		# search each indication of location or theme park in the golf_patch
+		if image_patch.exists(location):
+			return ""yes""
+	return ""no""","def check_activity_at_location(image_patch: ImagePatch, activity: str, query: str) -> str:
+    '''Check the existence of an activity at a specific location.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        activity (str): The name of the activity to check for existence.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""yes"" if the activity is happening at a specific location, ""no"" otherwise.
+    '''
+    
+    activity_patches = image_patch.find(activity)
+    if len(activity_patches) == 0:
+        return ""no""
+    for activity_patch in activity_patches:
+        location = activity_patch.simple_query(query)
+        # search each indication of location in the activity_patch
+        if image_patch.exists(location):
+            return ""yes""
+    return ""no""","check_activity_at_location(image_patch, ""golf"", ""What location is this?"")"
+000000163009.jpg,How many hang gliders can be seen in the image?,There are several hang gliders visible in the image.,llava_228640,How many hang gliders can be seen in the image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	hang_gliders_patches = image_patch.find(""hang glider"")
+	return len(hang_gliders_patches)","def count_objects_in_image(image_patch: ImagePatch, object_name: str) -> int:
+    '''Count the number of a specific object in an image.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to count objects in.
+        object_name (str): The name of the object to count.
+       
+    Returns:
+        int: The number of the specified object in the image.
+    '''
+    object_patches = image_patch.find(object_name)
+    return len(object_patches)","count_objects_in_image(image_patch, ""hang glider"")"
+000000285699.jpg,What is the boy holding to protect himself and the cat from the rain?,The boy is holding an umbrella to protect both himself and the cat from the rain.,llava_231855,What is the boy holding to protect himself and the cat from the rain?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	boy_patches = image_patch.find(""boy"")
+	cat_patches = image_patch.find(""cat"")
+	if len(boy_patches) == 0 or len(cat_patches) == 0:
+		return image_patch.simple_query(""What is the boy holding to protect himself and the cat from the rain?"")
+	boy_patch = boy_patches[0]
+	cat_patch = cat_patches[0]
+	object_patches = [patch for patch in image_patch.find(""object"")
+						if patch.overlaps_with(boy_patch.left, boy_patch.lower, boy_patch.right, boy_patch.upper)
+						and patch.overlaps_with(cat_patch.left, cat_patch.lower, cat_patch.right, cat_patch.upper)]
+	protective_objects = [patch for patch in object_patches if patch.llm_query(""Can this object protect from rain?"")]
+	if len(protective_objects) == 0:
+		return ""nothing""
+	return ', '.join([patch.simple_query(""What is this object?"") for patch in protective_objects])","def identify_protective_object(image_patch: ImagePatch, character_name: str, protected_character_name: str, condition: str, query: str) -> str:
+    '''Identify the object that a certain character is holding to protect himself and another character from a certain condition.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        character_name (str): The name of the character holding the object.
+        protected_character_name (str): The name of the character being protected.
+        condition (str): The condition from which the characters are being protected.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: The name of the protective object if it exists, ""nothing"" otherwise.
+    '''
+    
+    character_patches = image_patch.find(character_name)
+    protected_character_patches = image_patch.find(protected_character_name)
+    if len(character_patches) == 0 or len(protected_character_patches) == 0:
+        return image_patch.simple_query(query)
+    character_patch = character_patches[0]
+    protected_character_patch = protected_character_patches[0]
+    object_patches = [patch for patch in image_patch.find(""object"")
+                        if patch.overlaps_with(character_patch.left, character_patch.lower, character_patch.right, character_patch.upper)
+                        and patch.overlaps_with(protected_character_patch.left, protected_character_patch.lower, protected_character_patch.right, protected_character_patch.upper)]
+    protective_objects = [patch for patch in object_patches if patch.llm_query(f""Can this object protect from {condition}?"")]
+    if len(protective_objects) == 0:
+        return ""nothing""
+    return ', '.join([patch.simple_query(""What is this object?"") for patch in protective_objects])","identify_protective_object(image_patch, ""boy"", ""cat"", ""rain"", ""What is the boy holding to protect himself and the cat from the rain?"")"
+000000537055.jpg,Is it appropriate to make assumptions about the people's body weight and health in this image?,"As an AI visual assistant, my job is to describe the contents of the image objectively while being respectful to the subjects in the photo. Making assumptions about an individual's body weight, health, or lifestyle based on a single image is not appropriate, as it can lead to misunderstandings and reinforce stereotypes or biases. Instead, it is essential to focus on the observable visual details of the image and be mindful of treating the subjects with the respect and dignity they deserve.",llava_237497,Is it appropriate to make assumptions about the people's body weight and health in this image?,"def execute_command(image) -> str:
+	return ""no"" # Since such assumptions can be unreliable and considered disrespectful.","def check_appropriateness_of_assumptions(attribute: str, object_type: str) -> str:
+    '''Check the appropriateness of making assumptions about certain attributes of objects.
+    
+    Args:
+        attribute (str): The attribute about which assumptions are being made.
+        object_type (str): The type of the object about which assumptions are being made.
+       
+    Returns:
+        str: ""yes"" if it's appropriate to make such assumptions, ""no"" otherwise.
+    '''
+    
+    # Since making assumptions about certain attributes (like body weight and health) can be unreliable and considered disrespectful, return ""no""
+    return ""no""","check_appropriateness_of_assumptions(""body weight and health"", ""people"")"
+000000183790.jpg,How would you describe the size of the suitcases the man is pulling?,The size of the suitcases the man is pulling can be described as small.,llava_238485,How would you describe the size of the suitcases the man is pulling?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""I can't see a man.""
+	man_patch = man_patches[0]
+	suitcase_patches = image_patch.find(""suitcase"")
+	if len(suitcase_patches) == 0:
+		return ""I can't see a suitcase.""
+	for suitcase_patch in suitcase_patches:
+		if man_patch.overlaps_with(suitcase_patch.left, suitcase_patch.lower, suitcase_patch.right, suitcase_patch.upper):
+			return suitcase_patch.simple_query(""How big is this?"")
+	return ""I can't see a suitcase the man is pulling.""","def describe_size_of_contact_object(image_patch: ImagePatch, object_name: str, reference_object_name: str) -> str:
+    '''Describe the size of an object that is in contact with another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_name (str): The name of the object to describe.
+        reference_object_name (str): The name of the reference object.
+       
+    Returns:
+        str: The size description of the object if it exists and is in contact with the reference object, otherwise a message indicating the absence of the object or the reference object.
+    '''
+    reference_patches = image_patch.find(reference_object_name)
+    if len(reference_patches) == 0:
+        return f""I can't see a {reference_object_name}.""
+    reference_patch = reference_patches[0]
+    object_patches = image_patch.find(object_name)
+    if len(object_patches) == 0:
+        return f""I can't see a {object_name}.""
+    for object_patch in object_patches:
+        if reference_patch.overlaps_with(object_patch.left, object_patch.lower, object_patch.right, object_patch.upper):
+            return object_patch.simple_query(f""How big is this {object_name}?"")
+    return f""I can't see a {object_name} the {reference_object_name} is in contact with.""","describe_size_of_contact_object(image_patch, ""suitcase"", ""man"")"
+000000518472.jpg,Do the people in the banana costumes appear to be adults or children?,The people in the banana costumes appear to be adults.,llava_248820,Do the people in the banana costumes appear to be adults or children?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	banana_costume_people_patches = image_patch.find(""people in banana costumes"")
+	if len(banana_costume_people_patches) == 0:
+		return image_patch.simple_query(""Do the people in the banana costumes appear to be adults or children?"")
+	ages = [patch.simple_query(""Does this person appear to be an adult or a child?"") for patch in banana_costume_people_patches]
+	if ""adult"" in ages and ""child"" in ages:
+		return ""Both adults and children""
+	elif ""adult"" in ages:
+		return ""Adults""
+	else:
+		return ""Children""","def determine_age_group_in_costume(image_patch: ImagePatch, costume: str, query: str) -> str:
+    '''Determine the age group of people in a specific costume.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        costume (str): The type of costume to check for.
+        query (str): The original query to answer.
+       
+    Returns:
+        str: ""Both adults and children"" if both adults and children are found, ""Adults"" if only adults are found, ""Children"" if only children are found.
+    '''
+    
+    costume_people_patches = image_patch.find(f""people in {costume} costumes"")
+    if len(costume_people_patches) == 0:
+        return image_patch.simple_query(query)
+    ages = [patch.simple_query(""Does this person appear to be an adult or a child?"") for patch in costume_people_patches]
+    if ""adult"" in ages and ""child"" in ages:
+        return ""Both adults and children""
+    elif ""adult"" in ages:
+        return ""Adults""
+    else:
+        return ""Children""","determine_age_group_in_costume(image_patch, ""banana"", ""Do the people in the banana costumes appear to be adults or children?"")"
+000000188002.jpg,Is the man sitting or standing on the ox?,The man is sitting on the ox.,llava_254578,Is the man sitting or standing on the ox?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_on_ox_patches = image_patch.find(""man on ox"")
+	if len(man_on_ox_patches) == 0:
+		return ""no man on the ox found""
+	man_on_ox_patch = man_on_ox_patches[0]
+	return man_on_ox_patch.best_text_match([""sitting"", ""standing""])","def identify_action_on_object(image_patch: ImagePatch, object_on_object: str, possible_actions: list) -> str:
+    '''Identify the action of an object on another object from a list of possible actions.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        object_on_object (str): The name of the object on another object.
+        possible_actions (list): The list of possible actions.
+       
+    Returns:
+        str: The best match action from the list of possible actions, or a message if no object on another object is found.
+    '''
+    object_on_object_patches = image_patch.find(object_on_object)
+    if len(object_on_object_patches) == 0:
+        return f""no {object_on_object} found""
+    object_on_object_patch = object_on_object_patches[0]
+    return object_on_object_patch.best_text_match(possible_actions)","identify_action_on_object(image_patch, ""man on ox"", [""sitting"", ""standing""])"
+000000486547.jpg,What color is the hammock in the park?,The hammock in the park is red.,llava_254722,What color is the hammock in the park?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	park_patches = image_patch.find(""park"")
+	for park_patch in park_patches:
+		hammock_patches = park_patch.find(""hammock"")
+		if hammock_patches:
+			return hammock_patches[0].simple_query(""What color is the hammock?"")
+	return ""There is no hammock in the park.""","def find_attribute_of_object_within_another(image_patch: ImagePatch, outer_object_name: str, inner_object_name: str, attribute_query: str) -> str:
+    '''Find the attribute of an object within another object.
+    
+    Args:
+        image_patch (ImagePatch): The image patch to check.
+        outer_object_name (str): The name of the outer object.
+        inner_object_name (str): The name of the inner object.
+        attribute_query (str): The query to find the attribute of the inner object.
+       
+    Returns:
+        str: The attribute of the inner object if it exists within the outer object, otherwise a message indicating that the inner object does not exist within the outer object.
+    '''
+    
+    outer_patches = image_patch.find(outer_object_name)
+    for outer_patch in outer_patches:
+        inner_patches = outer_patch.find(inner_object_name)
+        if inner_patches:
+            return inner_patches[0].simple_query(attribute_query)
+    return f""There is no {inner_object_name} in the {outer_object_name}.""","find_attribute_of_object_within_another(image_patch, ""park"", ""hammock"", ""What color is the hammock?"")"

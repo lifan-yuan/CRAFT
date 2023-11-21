@@ -108,9 +108,9 @@ def planning(query, table=None):
     plans = [query, response.split("The final answer is: ")[1].strip()]
 
     try:
-        expected_tools = eval(response.split("\n\n")[-2].split("The useful functions are: ")[1].strip("."))
+        expected_tools = eval(response.split("\n")[-2].split("The useful functions are: ")[1].strip("."))
     except:
-        expected_tools = eval(response.split("\n\n")[-2].split("The useful function is: ")[1].strip("."))
+        expected_tools = eval(response.split("\n")[-2].split("The useful function is: ")[1].strip("."))
 
     return plans, expected_tools
 

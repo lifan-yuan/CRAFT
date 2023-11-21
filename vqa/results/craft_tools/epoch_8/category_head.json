@@ -1,0 +1,96 @@
+{
+    "0": [
+        "identify_activity(image_patch: ImagePatch, individual: str, location: str) -> str"
+    ],
+    "1": [
+        "identify_description_from_list(image_patch: ImagePatch, object_name: str, possible_descriptions: List[str], query: str) -> str"
+    ],
+    "2": [
+        "check_indications_around_object(image_patch: ImagePatch, object_name: str, indications: List[str]) -> str"
+    ],
+    "3": [
+        "check_property_of_objects(image_patch: ImagePatch, object_type: str, property_name: str) -> str",
+        "check_all_objects_have_property(image_patch: ImagePatch, object_name: str, property_name: str, query: str) -> str"
+    ],
+    "4": [
+        "check_overlap_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str) -> str"
+    ],
+    "5": [
+        "identify_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str) -> str"
+    ],
+    "6": [
+        "count_objects_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str) -> str"
+    ],
+    "7": [
+        "infer_condition_based_on_object(image_patch: ImagePatch, object_name: str, condition: str, query: str) -> str"
+    ],
+    "8": [
+        "check_object_status(image_patch: ImagePatch, object_name: str, possible_statuses: List[str]) -> str"
+    ],
+    "9": [
+        "verify_object_property(image_patch: ImagePatch, object_name: str, property_query: str, original_query: str) -> str"
+    ],
+    "10": [
+        "check_interaction_in_state(image_patch: ImagePatch, object_name: str, interacting_object_name: str, state: str, query: str) -> str"
+    ],
+    "11": [
+        "discuss_artwork_creation(image_patch: ImagePatch, artwork_type: str) -> str"
+    ],
+    "12": [
+        "find_attribute_of_associated_object(image_patch: ImagePatch, associated_object_name: str, object_name: str, attribute: str, query: str) -> str"
+    ],
+    "13": [
+        "determine_emotional_state(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "14": [
+        "check_object_usage(image_patch: ImagePatch, object_name: str, entity_name: str, query: str) -> str"
+    ],
+    "15": [
+        "identify_setting(image_patch: ImagePatch, possible_settings: List[str]) -> str"
+    ],
+    "16": [
+        "identify_surface(image_patch: ImagePatch, object_name: str, potential_surfaces: list) -> str"
+    ],
+    "17": [
+        "identify_interaction_of_two_objects(image_patch: ImagePatch, object_name: str, interaction_query: str) -> str"
+    ],
+    "18": [
+        "check_property_exclusivity(image_patch: ImagePatch, object1_name: str, object2_name: str, property_name: str, property_value: str, query: str) -> str"
+    ],
+    "19": [
+        "check_object_observing_process(image_patch: ImagePatch, observer_object_name: str, observed_object_name: str) -> str"
+    ],
+    "20": [
+        "check_existence_and_query_reason(image_patch: ImagePatch, object_names: List[str], query: str) -> str"
+    ],
+    "21": [
+        "identify_entity_type(entity_name: str, entity_category: str) -> str"
+    ],
+    "22": [
+        "check_indication_of_attribute(image_patch: ImagePatch, object_name: str, attribute: str, query: str) -> str"
+    ],
+    "23": [
+        "find_color_of_object_relative_to_another(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_vertical_position: str, query: str) -> str"
+    ],
+    "24": [
+        "check_multiple_actions(image_patch: ImagePatch, object_name: str, actions: List[str]) -> str"
+    ],
+    "25": [
+        "determine_object_attribute(image_patch: ImagePatch, object_name: str, attribute_options: List[str], attribute_prefix: str, query: str) -> str"
+    ],
+    "26": [
+        "find_event_location(image_patch: ImagePatch, event_name: str, query: str) -> str"
+    ],
+    "27": [
+        "check_motion_visibility(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "28": [
+        "check_existence_of_indications(image_patch: ImagePatch, indications: List[str]) -> str"
+    ],
+    "29": [
+        "check_text_relation_to_event(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "30": [
+        "identify_relative_holding_object(image_patch: ImagePatch, person_name: str, relative_name: str, object_name: str, query: str) -> str"
+    ]
+}

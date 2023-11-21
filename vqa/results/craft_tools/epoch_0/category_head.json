@@ -1,0 +1,269 @@
+{
+    "0": [
+        "check_reflection_existence(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "1": [
+        "identify_object_clothing(image_patch: ImagePatch, object_name: str) -> str",
+        "identify_wearing(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "2": [
+        "find_unspecified_item_on_object(image_patch: ImagePatch, object_name: str, excluded_items: list) -> str"
+    ],
+    "3": [
+        "identify_action_around_object_vertically(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_vertical_position: str, query: str) -> str"
+    ],
+    "4": [
+        "describe_location(image_patch: ImagePatch, location: str) -> str"
+    ],
+    "5": [
+        "describe_object(image_patch: ImagePatch, object_name: str) -> str",
+        "describe_object_appearance(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "6": [
+        "determine_object_purpose(image_patch: ImagePatch, object_name: str) -> str",
+        "find_object_location(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "find_attribute_of_object_where_another_object_is_located(image_patch: ImagePatch, object_name: str, reference_object_name: str, attribute_query: str, original_query: str) -> str",
+        "determine_relative_position(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str) -> str"
+    ],
+    "7": [
+        "count_instances_of_object_or_activity(image_patch: ImagePatch, object_or_activity: str) -> int",
+        "count_parts_of_object(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "count_objects_near_reference(image_patch: ImagePatch, object_name: str, reference_object_name: str, distance_threshold: int) -> str"
+    ],
+    "8": [
+        "identify_object_attribute(image_patch: ImagePatch, attribute: str, object_name: str) -> str",
+        "identify_attribute_type(image_patch: ImagePatch, attribute_query: str) -> str",
+        "identify_action_of_object_part(image_patch: ImagePatch, object_name: str, part_name: str, query: str) -> str",
+        "identify_purpose_in_area(image_patch: ImagePatch, object_name: str, x: int, y: int, width: int, height: int) -> str"
+    ],
+    "9": [
+        "extract_information_from_image(image_patch: ImagePatch, query: str) -> str"
+    ],
+    "10": [
+        "identify_object_type(image_patch: ImagePatch, object_name: str) -> str",
+        "describe_image_and_check_property(image_patch: ImagePatch, property_query: str, property_name: str) -> str",
+        "identify_object_types(image_patch: ImagePatch, object_name: str, num_types: int, query: str) -> str"
+    ],
+    "11": [
+        "describe_how_object_works(object_name: str) -> str"
+    ],
+    "12": [
+        "identify_main_subject(context, query: str) -> str"
+    ],
+    "13": [
+        "identify_terrain(image_patch: ImagePatch, object_name: str) -> str",
+        "identify_terrain_type(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "14": [
+        "identify_event_type(image_patch: ImagePatch, event_query: str) -> str"
+    ],
+    "15": [
+        "check_multiple_properties(image_patch: ImagePatch, object_name: str, properties: List[str]) -> str",
+        "check_object_visibility(image_patch: ImagePatch, object_name: str) -> str",
+        "check_relative_vertical_position(image_patch: ImagePatch, object_name: str, reference_object_name: str, query: str) -> str",
+        "check_existence_or_empty_except_object(image_patch: ImagePatch, object_name: str, area_name: str, except_object_name: str, query: str) -> str"
+    ],
+    "16": [
+        "identify_object_state(image_patch: ImagePatch, object_name: str, possible_states: List[str], query: str) -> str",
+        "identify_side_object(image_patch: ImagePatch, object_name: str, query: str) -> str",
+        "identify_object_setting(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "17": [
+        "determine_atmosphere(image_patch: ImagePatch, location: str) -> str"
+    ],
+    "18": [
+        "generate_potential_consequences(issue: str, long_answer: bool = True) -> str"
+    ],
+    "19": [
+        "get_animal_conservation_info(animal_name: str) -> str"
+    ],
+    "20": [
+        "understand_animal_behavior(query: str, long_answer: bool = True) -> str"
+    ],
+    "21": [
+        "best_match_from_options(image_patch: ImagePatch, options: List[str]) -> str",
+        "best_match_for_object(image_patch: ImagePatch, object_name: str, options: List[str], query: str) -> str"
+    ],
+    "22": [
+        "provide_info_about_object_in_context(image_patch: ImagePatch, object_name: str, context: str) -> str"
+    ],
+    "23": [
+        "check_same_direction(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "24": [
+        "analyze_position_impact(image_patch: ImagePatch, object_name: str, condition: str) -> str"
+    ],
+    "25": [
+        "analyze_benefits_challenges(query: str) -> str"
+    ],
+    "26": [
+        "inquire_about_activity(image_patch: ImagePatch, activity: str, inquiry_type: str, long_answer: bool = False) -> str"
+    ],
+    "27": [
+        "determine_event_type_based_on_object_count(image_patch: ImagePatch, object_name: str, count_threshold: int, event_type1: str, event_type2: str) -> str"
+    ],
+    "28": [
+        "identify_demographics(image_patch: ImagePatch, group_name: str) -> List[str]"
+    ],
+    "29": [
+        "get_object_perspective(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "30": [
+        "find_purpose_of_object_for_subject(image_patch: ImagePatch, object_name: str, subject_name: str) -> str",
+        "identify_function_and_operation(image_patch: ImagePatch, object_name: str) -> str",
+        "query_object_purpose(image_patch: ImagePatch, object_name: str, context: str, long_answer: bool = False) -> str"
+    ],
+    "31": [
+        "identify_light_source_in_room(image_patch: ImagePatch, room_name: str, query: str) -> str"
+    ],
+    "32": [
+        "explain_risks_and_safety_measures(activity: str) -> str"
+    ],
+    "33": [
+        "get_typical_environment(animal: str, long_answer: bool = False) -> str"
+    ],
+    "34": [
+        "find_object_size(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "35": [
+        "get_detailed_description(topic: str, long_answer: bool = True) -> str"
+    ],
+    "36": [
+        "infer_setting_based_on_nearby_objects(image_patch: ImagePatch, object_name: str, nearby_object_name: str, query: str) -> str"
+    ],
+    "37": [
+        "understand_reasons_behind_action(action: str) -> str"
+    ],
+    "38": [
+        "find_possible_explanation(image_patch: ImagePatch, situation: str, long_answer: bool = False) -> str",
+        "find_possible_reasons(query: str) -> str"
+    ],
+    "39": [
+        "identify_player_position_by_action(image_patch: ImagePatch, sport: str, action: str, query: str) -> str"
+    ],
+    "40": [
+        "identify_challenges_and_coping_mechanisms(activity: str, conditions: str) -> str"
+    ],
+    "41": [
+        "analyze_impact(factor: str, situation: str, long_answer: bool = True) -> str"
+    ],
+    "42": [
+        "retrieve_process_information(query: str) -> str"
+    ],
+    "43": [
+        "check_object_position_on_another(image_patch: ImagePatch, object_name: str, base_object_name: str, possible_positions: list) -> str"
+    ],
+    "44": [
+        "check_interaction_with_category(image_patch: ImagePatch, object_name: str, interacted_object_category: str, query: str) -> str"
+    ],
+    "45": [
+        "identify_additional_components(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "46": [
+        "identify_key_components(image_patch: ImagePatch, scenario: str) -> str",
+        "identify_key_elements_in_scene(image_patch: ImagePatch, scene_name: str, query: str) -> str"
+    ],
+    "47": [
+        "infer_confusion_factors(image_patch: ImagePatch, person_name: str, object_name: str, query: str) -> str"
+    ],
+    "48": [
+        "get_activity_requirements(image_patch: ImagePatch, activity: str) -> str"
+    ],
+    "49": [
+        "get_precautions_for_observing_animal(image_patch: ImagePatch, animal_name: str) -> str"
+    ],
+    "50": [
+        "identify_event_type(image_patch: ImagePatch, object_names: List[str], query: str) -> str"
+    ],
+    "51": [
+        "estimate_skill_level_based_on_action(image_patch: ImagePatch, person_name: str, action_query: str, skill_query_template: str) -> str"
+    ],
+    "52": [
+        "search_typical_action_after_event(query: str) -> str"
+    ],
+    "53": [
+        "understand_reason_for_suitability(condition: str, activity: str, long_answer: bool = True) -> str"
+    ],
+    "54": [
+        "infer_purpose_of_multiple_objects(image_patch: ImagePatch, object_name: str, object_count: int, query: str, long_answer: bool = False) -> str"
+    ],
+    "55": [
+        "extract_general_knowledge(topic: str) -> str"
+    ],
+    "56": [
+        "query_entity_benefits_and_significance(entity: str, context: str, long_answer: bool = True) -> str",
+        "query_benefits(image_patch: ImagePatch, action: str) -> str"
+    ],
+    "57": [
+        "compare_object_state_with_standard(image_patch: ImagePatch, object_state_query: str, standard_comparison_query_template: str) -> str"
+    ],
+    "58": [
+        "describe_environment_and_activity_benefits(image_patch: ImagePatch, activity: str) -> str"
+    ],
+    "59": [
+        "check_special_attire_while_action(image_patch: ImagePatch, object_name: str, action: str, query: str) -> str"
+    ],
+    "60": [
+        "check_safety_of_action(image_patch: ImagePatch, object_action: str, query: str) -> str"
+    ],
+    "61": [
+        "infer_relationship_based_on_interaction(image_patch: ImagePatch, object1: str, object2: str) -> str"
+    ],
+    "62": [
+        "check_status_of_two_objects(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str) -> str"
+    ],
+    "63": [
+        "get_scene_attribute(image_patch: ImagePatch, attribute_query: str) -> str"
+    ],
+    "64": [
+        "identify_cargo(image_patch: ImagePatch, vehicle_name: str) -> str"
+    ],
+    "65": [
+        "find_alternative_methods(query: str, long_answer: bool = True) -> str"
+    ],
+    "66": [
+        "query_cultural_significance(llm_query: Callable, object_or_concept: str, long_answer: bool = True) -> str"
+    ],
+    "67": [
+        "identify_feature_type_in_room(image_patch: ImagePatch, room_name: str, feature_name: str, query: str) -> str"
+    ],
+    "68": [
+        "compare_and_describe_features(object1: str, object2: str, describe_both: bool = False) -> str"
+    ],
+    "69": [
+        "check_camera_perspective(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "70": [
+        "infer_reasons_for_actions(image_patch: ImagePatch, query: str, long_answer: bool = True) -> str"
+    ],
+    "71": [
+        "infer_purpose_of_action(action: str) -> str"
+    ],
+    "72": [
+        "reason_about_situation(query: str, long_answer: bool = True) -> str"
+    ],
+    "73": [
+        "check_object_carrying(image_patch: ImagePatch, carrier_object_name: str, carried_object_name: str) -> str"
+    ],
+    "74": [
+        "find_benefits_of_object_features(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "75": [
+        "determine_location_attribute(image_patch: ImagePatch, attribute: str) -> str"
+    ],
+    "76": [
+        "explain_difference(query: str) -> str"
+    ],
+    "77": [
+        "understand_scenario(image_patch: ImagePatch, query: str) -> str"
+    ],
+    "78": [
+        "extract_info_from_objects(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "79": [
+        "analyze_effect_on_mood(image_patch: ImagePatch, feature: str) -> str"
+    ],
+    "80": [
+        "determine_horizontal_arrangement(image_patch: ImagePatch, object1_name: str, object2_name: str, query: str) -> str"
+    ]
+}

@@ -1,0 +1,425 @@
+image_path,question,instruction,answer,tool_id,id,query,code,task
+000000305871.jpg,What can be seen on the poll?,Identify the object on the poll.,Street signs.,vqa_15511,,What can be seen on the poll?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	poll_patches = image_patch.find(""poll"")
+	if len(poll_patches) == 0:
+		# If no poll is found, query the image directly with simple_query instead of returning a long string like ""There is no poll.""
+		return image_patch.simple_query(""What can be seen on the poll?"")
+	poll_patch = poll_patches[0]
+	return poll_patch.simple_query(""What can be seen on this?"")",vqa
+000000122582.jpg,Who is riding the Ferris wheel?,Identify the person on the ride.,Young boy.,vqa_18306,,Who is riding the Ferris wheel?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	ferris_wheel_patches = image_patch.find(""Ferris wheel"")
+	if len(ferris_wheel_patches) == 0:
+		# If no ferris wheel is found, query the image directly with simple_query instead of returning a long string like ""There is no ferris wheel.""
+		return image_patch.simple_query(""Who is riding the Ferris wheel?"")
+	ferris_wheel_patch = ferris_wheel_patches[0]
+	person_patches = image_patch.find(""person"")
+	if len(person_patches) == 0:
+		return ""no one""
+	for person_patch in person_patches:
+		if ferris_wheel_patch.overlaps_with(person_patch.left, person_patch.lower, person_patch.right, person_patch.upper):
+			return person_patch.simple_query(""Who is this person?"")
+	return ""no one""",vqa
+000000381968.jpg,What type of closure does the case have?,Investigate the top of the case.,Zipper.,vqa_31454,,What type of closure does the case have?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	case_patches = image_patch.find(""case"")
+	if len(case_patches) == 0:
+		# If no case is found, query the image directly with simple_query
+		return image_patch.simple_query(""What type of closure does the case have?"")
+	case_patch = case_patches[0]
+	case_closure_type = case_patch.simple_query(""What type of closure does the case have?"")
+	return case_closure_type",vqa
+000000527786.jpg,"What is an ollie, and how is it performed?","What is an ollie, and how is it performed?","An ollie is a fundamental skateboard trick, allowing the skateboarder to jump off the ground with both the skateboard and their feet remaining in contact with the board. It is executed by simultaneously pressing down on the tail of the skateboard with the back foot, sliding the front foot upward along the board, and jumping. As the back of the skateboard lifts off the ground, the front foot slides up to level out the board, and the skateboarder then lands back on the ground with the board beneath them. The ollie is the foundation for many other skateboard tricks and serves as a basic maneuver for jumping over obstacles, onto curbs, or off ramps.",llava_19747,000000527786,"What is an ollie, and how is it performed?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	question=""What is an ollie and how is it performed?""
+	answer=image_patch.llm_query(question, long_answer=True)
+	return answer",vqa
+000000369191.jpg,Are the two police officers chasing each other?,Are the two police officers chasing each other?,There is no clear indication in the image that the two police officers are chasing each other. They appear to be driving on a city street alongside each other or following a certain route.,llava_28369,000000369191,Are the two police officers chasing each other?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	police_officers_patches = image_patch.find(""police officer"")
+	if len(police_officers_patches) != 2:
+		return ""no""
+	police_officer_1, police_officer_2 = police_officers_patches
+	chasing_each_other = police_officer_1.simple_query(""Is this police officer chasing another?"") and police_officer_2.simple_query(""Is this police officer chasing another?"")
+	return bool_to_yesno(chasing_each_other)",vqa
+000000088458.jpg,Where is the hair cutting taking place?,Where is the hair cutting taking place?,The hair cutting is taking place in a salon.,llava_30823,000000088458,Where is the hair cutting taking place?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	# Find the hair cutting action
+	hair_cutting_patches = image_patch.find(""hair cutting"")
+	if len(hair_cutting_patches) == 0:
+		return ""Cannot identify hair cutting in the image""
+	hair_cutting_patch = hair_cutting_patches[0]
+	# Query image patch for the location
+	location_result = hair_cutting_patch.simple_query(""where is this?"")
+	return location_result",vqa
+000000279422.jpg,Is the image of the man playing the organ considered historic or more recent?,Is the image of the man playing the organ considered historic or more recent?,The image of the man playing the organ is considered an historic photo.,llava_35208,000000279422,Is the image of the man playing the organ considered historic or more recent?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_organ_patches = image_patch.find(""man playing organ"")
+		
+	if len(man_organ_patches) == 0:
+		return image_patch.simple_query(""Is the image of the man playing the organ considered historic or more recent?"")
+	
+	man_organ_patch = man_organ_patches[0]
+	historic_or_recent = man_organ_patch.best_text_match([""historic"", ""recent""])
+	return historic_or_recent",vqa
+000000166141.jpg,"Can you discuss the importance of spending quality time with family, such as the father and son in this picture?","Can you discuss the importance of spending quality time with family, such as the father and son in this picture?","Spending quality time with family is crucial for building strong relationships, creating lasting memories, and fostering personal and emotional growth. In the image, the father and son are enjoying a simple yet meaningful moment together, sharing a hot dog on a bench. Such moments can have significant positive effects on both the parent and the child.
+
+Bonding: Engaging in shared activities or experiences, like eating a hot dog together, can help in forging a close bond between family members. This closeness allows for better communication, understanding, and support during difficult times.
+
+Emotional well-being: Quality time with family provides emotional stability and comfort, which can contribute to better mental health and happiness for both parents and children. It can reduce stress, improve self-esteem, and enhance resilience.
+
+Connection and identity: Regular interaction with family gives children a sense of belonging and helps them understand their family values, culture, and traditions. This connection to their roots can significantly impact their personal development.
+
+Positive role modeling: When parents spend time with their children, they can model positive behaviors, attitudes, and coping mechanisms that their children can learn from and emulate in their own lives. This quality time can help develop essential life skills and healthy habits in children.
+
+Academic and social success: Spending time together can also help children perform better academically and socially. Parents who actively participate in their children's lives are more likely to notice their strengths, weaknesses, and interests, which enables them to guide and support them appropriately.
+
+In conclusion, spending quality time with family, like in the situation shown in the image of the father and son, is essential for personal and emotional growth, bonding, and long-term well-being. It can lead to meaningful connections, improved mental health, and a better understanding of family values and culture. Furthermore, it encourages positive role modeling and contributes to academic and social success in children.",llava_43364,000000166141,"Can you discuss the importance of spending quality time with family, such as the father and son in this picture?","def execute_command(image) -> str:
+	# Take the first person we find in the image as the family member
+	image_patch = ImagePatch(image)
+	family_member_name = image_patch.simple_query(""What is the identity of the father and son?"")
+	# The question is about the importance of spending quality time with family, which is a theme and a general topic unrelated to the specific contents of the image.
+	# So we can use a large language model to get an answer for that.
+	quality_time_importance = image_patch.llm_query(f""Can you discuss the importance of spending quality time with family, such as with a {family_member_name}?"")
+	return quality_time_importance",vqa
+000000381253.jpg,Why might the woman be smiling in the hospital bed?,Why might the woman be smiling in the hospital bed?,"There could be numerous reasons why the woman is smiling while in the hospital bed. She may have received good news regarding her medical condition, or she could be engaging in a pleasant conversation with a visitor, such as a family member or a friend. It's also possible that she may be feeling better after receiving treatment or medication, which has improved her overall well-being and comfort. The specific reason for her happiness cannot be determined with absolute certainty from the image alone, but it is clear that she is in a positive emotional state during her stay at the hospital.",llava_46698,000000381253,Why might the woman be smiling in the hospital bed?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		# If no woman is found, query the image directly with simple_query.
+		return image_patch.simple_query(""Why might the woman be smiling in the hospital bed?"")
+	woman_patch = woman_patches[0]
+	reason_guess = woman_patch.llm_query(""Why might a woman be smiling in a hospital bed?"")
+	return reason_guess",vqa
+000000262848.jpg,What precautions are the mother and daughter taking while crossing the street?,What precautions are the mother and daughter taking while crossing the street?,"The precautions they are taking include the child holding an umbrella to protect against the rain and the mother holding her daughter's hand or guiding her while they cross the street, ensuring their safety and a proper crossing.",llava_47277,000000262848,What precautions are the mother and daughter taking while crossing the street?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	mother_daughter_patches = image_patch.find('mother and daughter')
+	if len(mother_daughter_patches) == 0:
+		return image_patch.simple_query(""What precautions are the mother and daughter taking while crossing the street?"")
+	mother_daughter_patch = mother_daughter_patches[0]
+	precautions = mother_daughter_patch.simple_query(""What precautions are they taking while crossing the street?"")
+	return precautions",vqa
+000000380301.jpg,What are the two girls holding while on the swings?,What are the two girls holding while on the swings?,The two girls are holding teddy bears while sitting on the swings.,llava_73063,000000380301,What are the two girls holding while on the swings?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	girls_patches = image_patch.find(""girls"")
+	if len(girls_patches) == 0:
+		# No girls are found.
+		return ""I can't see any girls on the swings.""
+	girls_patch = girls_patches[0]
+	holding_item = girls_patch.simple_query(""What are the girls holding?"")
+	return holding_item",vqa
+000000280951.jpg,Is the man watching TV while decorating the Christmas tree?,Is the man watching TV while decorating the Christmas tree?,"Yes, the man is watching TV while he's decorating the Christmas tree.",llava_76498,000000280951,Is the man watching TV while decorating the Christmas tree?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		# If no man is found, directly query the image again with simple_query
+		return image_patch.simple_query(""Is the man watching TV while decorating the Christmas tree?"")
+	man_patch = man_patches[0]
+	tv_patches = man_patch.find(""TV"")
+	tree_patches = man_patch.find(""Christmas tree"")
+	# If there's a TV and a Christmas tree in the man's image patch,
+	# then it's likely he's watching TV while decorating the tree
+	if len(tv_patches) > 0 and len(tree_patches) > 0:
+		return ""yes""
+	return ""no""",vqa
+000000195525.jpg,What type of tool is the woman using to dry the child's hair?,What type of tool is the woman using to dry the child's hair?,The woman is using a hair dryer to dry the child's hair.,llava_77156,000000195525,What type of tool is the woman using to dry the child's hair?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		return image_patch.simple_query(""What type of tool is the woman using to dry the child's hair?"")
+	woman_patch = woman_patches[0]
+	tool_patches = woman_patch.find(""tool"")
+	if len(tool_patches) == 0:
+		return ""unknown""
+	tool_patch = tool_patches[0]
+	tool_type = tool_patch.simple_query(""What is this tool?"")
+	return tool_type",vqa
+000000493329.jpg,Is there any indication that multiple people participated in the vandalism?,Is there any indication that multiple people participated in the vandalism?,"There is no clear indication in the image that multiple people participated in the vandalism. The statement ""you can't stop Obama"" in black spray paint could have been done by one or more individuals, but it's not possible to confirm the number of vandals involved just from the image.",llava_78430,000000493329,Is there any indication that multiple people participated in the vandalism?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	vandalism_patches = image_patch.find(""vandalism"")
+	if not vandalism_patches:
+		return ""no""
+	multiple_marks_patches = [patch for patch in vandalism_patches if patch.verify_property(""vandalism"", ""multiple marks"")]
+	if not multiple_marks_patches:
+		return ""no""
+	return ""yes""",vqa
+000000507881.jpg,What precautionary measure is the person taking while cutting the jalapenos?,What precautionary measure is the person taking while cutting the jalapenos?,"The person is wearing gloves while slicing the jalapenos, which is a precautionary measure to protect their hands from the spicy oils present in jalapenos.",llava_82676,000000507881,What precautionary measure is the person taking while cutting the jalapenos?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	jalapeno_cutter_patches = image_patch.find(""person cutting jalapenos"")
+	if len(jalapeno_cutter_patches) == 0:
+		return ""Nothing can be seen.""
+	jalapeno_cutter_patch = jalapeno_cutter_patches[0]
+	precaution = jalapeno_cutter_patch.simple_query(""What precautionary measure is the person taking?"")
+	return precaution",vqa
+000000485248.jpg,Are protests effective in driving change?,Are protests effective in driving change?,"Protests can be effective in driving change, but the success and impact of a protest can vary depending on numerous factors. Protests provide a platform for individuals to collectively voice their concerns, grievances, or demands and bring attention to a specific cause or issue. When protests draw significant attention from the media and the public, they can spark discussions, increase awareness, and influence public opinion.
+
+However, the effectiveness of a protest in driving change often depends on the following factors:
+
+1. Organization and Leadership: A well-organized protest with strong leadership and clear objectives is more likely to be effective in reaching its goals.
+2. Size and Duration: A larger protest with a significant number of participants, or a protest that lasts for an extended period, may attract more media coverage and have a greater impact on public opinion and policy.
+3. Public Support: Protests that resonate with broader society and receive widespread support are more likely to influence policymaking and effect change.
+4. Nonviolent vs. Violent: Historically, nonviolent protests have been more effective in achieving lasting changes, as violence can alienate potential supporters and lead to a negative public perception of the movement.
+5. Government Response: The way a government responds to a protest can also impact its effectiveness. A strong government crackdown may suppress the movement and hinder its goals, while a more conciliatory response could signal a willingness to engage in dialogue and address the protesters' demands.
+
+In summary, protests can be effective in driving change, but the degree of success varies based on factors such as organization, size, public support, the type of protest, and the government's response. Protests can raise awareness, influence public opinion, and encourage policymakers to address the issues at hand, but the overall impact depends on the specific circumstances surrounding each protest.",llava_83598,000000485248,Are protests effective in driving change?,"def execute_command(image) -> str:
+	# This question queries a generic topic, not about the image specifically. Use llm_query.
+	return llm_query(""Are protests effective in driving change?"", long_answer=True)",vqa
+000000232280.jpg,Is the blood on the woman's head real or fake?,Is the blood on the woman's head real or fake?,"The blood on the woman's head is fake, as the entire appearance likely suggests that it's part of her costume or Halloween outfit.",llava_88008,000000232280,Is the blood on the woman's head real or fake?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	if len(woman_patches) == 0:
+		return ""Cannot find woman in the image""
+	woman_patch = woman_patches[0]
+	blood_patches = woman_patch.find(""blood"")
+	if len(blood_patches) == 0:
+		return ""Cannot find blood on woman's head""
+	# Check if the blood is fake or real
+	answer = blood_patches[0].best_text_match([""fake"", ""real""])
+	return answer",vqa
+000000504486.jpg,What is the approximate number of bills in the pile?,What is the approximate number of bills in the pile?,"Since only a description of the image is provided and not the actual image, it is impossible to approximate the exact number of bills in the pile accurately based on the provided statements alone.",llava_88999,000000504486,What is the approximate number of bills in the pile?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pile_patches = image_patch.find(""pile of bills"")
+	# Assuming there is only one pile
+	pile_patch = pile_patches[0]
+	return pile_patch.simple_query(""How many bills are in the pile?"")",vqa
+000000482454.jpg,What is the likely relationship between the family members and the soldier?,What is the likely relationship between the family members and the soldier?,"It can be inferred that the soldier is likely a close relative or friend of the family, possibly the father of the child or a close family member serving in the military. The intimate and warm interactions between the soldier and the child, as well as the presence of the two adults on the call, suggest a close personal connection between them.",llava_98860,000000482454,What is the likely relationship between the family members and the soldier?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	llm_query_string = ""What is the likely relationship between the family members and the soldier?""
+	likely_relationship = image_patch.llm_query(llm_query_string, long_answer=True)
+	return likely_relationship",vqa
+000000188815.jpg,Is the tennis ball in the man's skull real or is it a prop/costume?,Is the tennis ball in the man's skull real or is it a prop/costume?,"The tennis ball in the man's skull is a prop or part of a costume, giving the appearance of the tennis ball being embedded in his head. The man also has makeup applied to enhance the illusion.",llava_108089,000000188815,Is the tennis ball in the man's skull real or is it a prop/costume?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	prop_patches = image_patch.find(""prop"")
+	costume_patches = image_patch.find(""costume"")
+	ball_patches = image_patch.find(""tennis ball"")
+	if len(ball_patches) == 0:
+		return ""The tennis ball cannot be found.""
+	ball_patch = ball_patches[0]
+	for patch in prop_patches + costume_patches:
+		if patch.overlaps_with(ball_patch.left, ball_patch.lower, ball_patch.right, ball_patch.upper):
+			return ""It's a prop/costume.""
+	return ""It's real.""",vqa
+000000579901.jpg,Is Derek Jeter's knee muddy?,Is Derek Jeter's knee muddy?,"Yes, Derek Jeter's knee is muddy, suggesting that he might have slid into a base earlier in the game.",llava_116853,000000579901,Is Derek Jeter's knee muddy?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	derek_jeter_patches = image_patch.find(""Derek Jeter"")
+	# If Derek Jeter not found in the image, return ""No""
+	if len(derek_jeter_patches) == 0:
+		return ""no""
+	for derek_jeter_patch in derek_jeter_patches:
+		knee_patches = derek_jeter_patch.find(""knee"")
+		for knee_patch in knee_patches:
+			if knee_patch.verify_property(""knee"", ""muddy""):
+				return ""yes""
+	return ""no""",vqa
+000000203400.jpg,How does Michael J. Fox appear in terms of age in the image?,How does Michael J. Fox appear in terms of age in the image?,"In the image, Michael J. Fox appears to be older, which indicates that the photo was taken during the later stages of his career or more recently in his life.",llava_126036,000000203400,How does Michael J. Fox appear in terms of age in the image?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	mjfox_patches = image_patch.find(""Michael J. Fox"")
+	if len(mjfox_patches) == 0:
+		# If Michael J. Fox is not found, query the image directly with simple_query instead of returning a long string.
+		return image_patch.simple_query(""How does Michael J. Fox appear in terms of age in the image?"")
+	mjfox_patch = mjfox_patches[0]
+	return mjfox_patch.simple_query(""How does this person appear in terms of age?"")",vqa
+000000578331.jpg,"Is there any face paint on the women, other than the mustaches?","Is there any face paint on the women, other than the mustaches?","Yes, in addition to the painted-on mustaches, the women have words painted on their faces.",llava_129616,000000578331,"Is there any face paint on the women, other than the mustaches?","def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	women_patches = image_patch.find(""women"")
+	if len(women_patches) == 0:
+		return ""no""
+	for woman_patch in women_patches:
+		face_paint_patches = woman_patch.find(""face paint"")
+		if len(face_paint_patches) == 0:
+			continue
+		for paint_patch in face_paint_patches:
+			if not paint_patch.exists(""mustache""):
+				return ""yes""
+	return ""no""",vqa
+000000435713.jpg,What are the key elements of an Indiana Jones costume?,What are the key elements of an Indiana Jones costume?,"The key elements of an Indiana Jones costume typically include a fedora (a wide-brimmed hat), a leather jacket or similar looking long-sleeved shirt, a whip, a pair of khaki pants, and rugged boots. Additionally, Indiana Jones often wears a satchel, and in this case, the man in the image is holding a cup, which might be a prop or a drink at the costume party. The combination of these elements helps to create the classic Indiana Jones look, which is inspired by the popular adventure film franchise featuring Harrison Ford as the titular character.",llava_138743,000000435713,What are the key elements of an Indiana Jones costume?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	costume_elements = image_patch.llm_query(""What are the key elements of an Indiana Jones costume?"", long_answer=False) 
+	return costume_elements",vqa
+000000362166.jpg,Where is the woman blow drying the girl's hair?,Where is the woman blow drying the girl's hair?,The woman is blow drying the girl's hair in the bathroom.,llava_140671,000000362166,Where is the woman blow drying the girl's hair?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	action_query = image_patch.find(""woman blow drying girl's hair"")
+	if action_query:
+		location = action_query[0].simple_query(""Where is this happening?"")
+		return location
+	else:
+		return ""Not found""",vqa
+000000223726.jpg,How many presidents are there in the photograph?,How many presidents are there in the photograph?,"There are five presidents in the photograph, including the current president and four former presidents.",llava_144944,000000223726,How many presidents are there in the photograph?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	president_patches = image_patch.find(""presidents"")
+	return str(len(president_patches))",vqa
+000000048267.jpg,How does the priest appear emotionally in the moment?,How does the priest appear emotionally in the moment?,"The priest appears to be happy and smiling, as he is about to cut the cake.",llava_147720,000000048267,How does the priest appear emotionally in the moment?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	priest_patches = image_patch.find(""priest"")
+	if len(priest_patches) == 0:
+		return image_patch.simple_query(""How does the priest appear emotionally in the moment?"")
+	priest_patch = priest_patches[0]
+	return priest_patch.simple_query(""How does the priest appear emotionally in the moment?"")",vqa
+000000371157.jpg,What does the presence of a Nerf gun on the table suggest about the office environment?,What does the presence of a Nerf gun on the table suggest about the office environment?,"The presence of a Nerf gun on the table suggests that the office environment might have a more casual, fun, and relaxed atmosphere. Nerf guns are generally used for recreational purposes and may be associated with playful office activities or friendly competition among coworkers to lighten up the mood, take short breaks, or encourage team-building activities.
+
+In some office settings, incorporating playful elements, such as toys or games, can contribute to employee satisfaction, motivation, and stress reduction. It can also promote a culture of collaboration and cohesion among team members, leading to better productivity and innovation.
+
+However, it's essential to maintain a balance between fun and work, ensuring employee engagement in their duties while also fostering an enjoyable atmosphere. The cluttered table may serve as a reminder to maintain that balance, avoiding excessive distractions or disorganization, which could negatively impact work efficiency and focus.
+
+Overall, the Nerf gun among the office items on the cluttered table implies a more casual and enjoyable work environment, reflecting the importance of balancing work and play to maintain employee well-being, motivation, and productivity.",llava_148511,000000371157,What does the presence of a Nerf gun on the table suggest about the office environment?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	nerf_gun_patches = image_patch.find(""Nerf gun"")
+	if not nerf_gun_patches:
+		conclusion = image_patch.llm_query(""What does the absence of a Nerf gun suggest about the office environment?"")
+	else:
+		conclusion = image_patch.llm_query(""What does the presence of a Nerf gun suggest about the office environment?"")
+	return conclusion",vqa
+000000508429.jpg,How do you know the man in the image is a Buddhist monk?,How do you know the man in the image is a Buddhist monk?,"The presence of distinct visual cues in the image, such as the man's attire (monastic robes) and his shaved head, suggest that he is a Buddhist monk. Buddhist monks typically wear robes in various shades of yellow, saffron, or maroon, and they shave their heads as a symbol of renunciation and detachment from worldly desires. Seeing these features in the image allows us to determine that the man using the cellphone is likely a Buddhist monk.",llava_149185,000000508429,How do you know the man in the image is a Buddhist monk?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	man_patches = image_patch.find(""man"")
+	if len(man_patches) == 0:
+		return ""There is no man in the image.""
+	man_patch = man_patches[0]
+	answer = man_patch.simple_query(""How do you know the man is a Buddhist monk?"")
+	return answer",vqa
+000000148727.jpg,Is the Santa Claus riding alone or accompanied by other riders?,Is the Santa Claus riding alone or accompanied by other riders?,"The Santa Claus is accompanied by another rider, and they are both driving down the street on their motorcycles.",llava_154091,000000148727,Is the Santa Claus riding alone or accompanied by other riders?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	santa_patches = image_patch.find(""Santa Claus"")
+	if len(santa_patches) == 0:
+		# If no Santa Claus is found
+		return image_patch.simple_query(""Is the Santa Claus riding alone or accompanied by other riders?"")
+	rider_patches = image_patch.find(""riders"")
+	if len(rider_patches) == 0:
+		return ""alone""
+	for rider_patch in rider_patches:
+		if rider_patch.overlaps_with(santa_patches[0].left, santa_patches[0].lower, santa_patches[0].right, santa_patches[0].upper):
+			return ""accompanied""
+	return ""alone""",vqa
+000000304125.jpg,What is the child doing while the woman dries their hair?,What is the child doing while the woman dries their hair?,The child is brushing their teeth while the woman dries their hair with a blow dryer.,llava_160359,000000304125,What is the child doing while the woman dries their hair?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	child_patches = image_patch.find(""child"")
+	
+	if len(woman_patches) == 0 or len(child_patches) == 0:
+		return image_patch.simple_query(""What is the child doing while the woman dries their hair?"")
+	
+	woman_drying_hair = False
+	for woman_patch in woman_patches:
+		if woman_patch.verify_property(""woman"", ""drying hair""):
+			woman_drying_hair = True
+			break
+	
+	if not woman_drying_hair:
+		return ""The woman isn't drying their hair.""
+	
+	child_action = child_patches[0].simple_query(""What is the child doing?"")
+	
+	return child_action",vqa
+000000480088.jpg,What appears to have happened to the Three Stooges in this image?,What appears to have happened to the Three Stooges in this image?,"In the image, the Three Stooges have been tied up and gagged, presumably as part of a comedic scene or skit that they are performing.",llava_165369,000000480088,What appears to have happened to the Three Stooges in this image?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	stooges_patches = image_patch.find(""Three Stooges"")
+	# Assuming there is one patch for the Three Stooges
+	stooges_patch = stooges_patches[0]
+	return stooges_patch.simple_query(""What appears to have happened to the Three Stooges in this image?"")",vqa
+000000094318.jpg,Can we confidently confirm that the woman's jump has ended in failure?,Can we confidently confirm that the woman's jump has ended in failure?,"Based on the image, it is not possible to confidently confirm that the woman's jump has ended in failure. While it looks like she might be struggling to maintain control, the outcome of the jump is uncertain.",llava_170453,000000094318,Can we confidently confirm that the woman's jump has ended in failure?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	woman_patches = image_patch.find(""woman"")
+	# check if woman exists
+	if len(woman_patches) == 0:
+		return ""no""
+	woman_patch = woman_patches[0]
+	# check the woman's jump status
+	jump_status = woman_patch.simple_query(""What is the status of the woman's jump?"")
+	if jump_status == ""failure"":
+		return ""yes""
+	else:
+		return ""no""",vqa
+000000454103.jpg,Is there any interaction with the machine while the person is paying?,Is there any interaction with the machine while the person is paying?,"Yes, there is an interaction with the machine. While the hand manipulates the parking meter, possibly entering the parking duration or other necessary information, a second hand is reaching out, either to insert coins or a credit card for payment.",llava_182350,000000454103,Is there any interaction with the machine while the person is paying?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	interaction = image_patch.simple_query(""Is there any interaction with the machine while the person is paying?"")
+	return interaction",vqa
+000000191320.jpg,What is the significance of Colonel Sanders' image being displayed on the KFC building?,What is the significance of Colonel Sanders' image being displayed on the KFC building?,"Colonel Sanders' image being displayed on the KFC building is significant because he is the founder of Kentucky Fried Chicken (KFC). His face is iconic and synonymous with the brand, representing its origins, legacy, and identity. By displaying his portrait on the front of the restaurant, KFC is paying tribute to the man behind the company and reinforcing its brand recognition in the minds of customers. Moreover, Colonel Sanders' image is often used in KFC's branding, advertisements, and promotions, making it one of the key visual elements associated with the fast-food chain.",llava_185172,000000191320,What is the significance of Colonel Sanders' image being displayed on the KFC building?,"def execute_command(image) -> str:
+	image_patch = ImagePatch(image)
+	query = ""What is the significance of Colonel Sanders' image being displayed on the KFC building?""
+	return image_patch.llm_query(query)",vqa
+000000005021.jpg,Is the customer happy with the service she's receiving?,Is the customer happy with the service she's receiving?,"Yes, the customer appears to be happy while the attendant is helping her retrieve her stuffed animal.",llava_192935,000000005021,Is the customer happy with the service she's receiving?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	customer_patches = image_patch.find(""customer"")
+	# Assume the first ""customer"" found is the one in question
+	if len(customer_patches) > 0:
+		customer_patch = customer_patches[0]
+		return bool_to_yesno(customer_patch.verify_property(""customer"", ""happy""))
+	else:
+		return ""Cannot find the customer.""",vqa
+000000552585.jpg,How are the branches used for the wall construction connected together?,How are the branches used for the wall construction connected together?,"The branches used for the wall construction are tied together using other branches, creating a stable structure.",llava_195321,000000552585,How are the branches used for the wall construction connected together?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	wall_patches = image_patch.find(""wall construction"")
+	# Check each wall patch to see how the branches are connected.
+	for wall_patch in wall_patches:
+		connection_method = wall_patch.simple_query(""How are the branches connected together?"")
+		if connection_method:
+			return connection_method
+	return ""Unknown""",vqa
+000000263358.jpg,Who is providing the haircut service?,Who is providing the haircut service?,"A man is providing the haircut service, cutting the hair of the person sitting in the chair.",llava_207255,000000263358,Who is providing the haircut service?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_giving_haircut_patch = image_patch.simple_query(""Who is providing the haircut service?"")
+	return person_giving_haircut_patch",vqa
+000000069700.jpg,What is the size of the gift being exchanged between the two men?,What is the size of the gift being exchanged between the two men?,"The gift being exchanged between the two men is of a size that can be easily held with one hand, as it appears to resemble a small box.",llava_228258,000000069700,What is the size of the gift being exchanged between the two men?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	men_patches = image_patch.find(""man"")
+	if len(men_patches) != 2:
+		# If there are not exactly two men, we can't determine who is exchanging the gift.
+		return ""unknown""
+	gift_patches = image_patch.find(""gift"")
+	# Ensure the gift is between the two men
+	for gift_patch in gift_patches:
+		if gift_patch.horizontal_center > min(men_patches[0].horizontal_center, men_patches[1].horizontal_center) and \
+		gift_patch.horizontal_center < max(men_patches[0].horizontal_center, men_patches[1].horizontal_center):
+			# Use simple_query to ask the image for the gift's size
+			return gift_patch.simple_query(""What is the size of the gift?"")
+	# If no gift is found between the two men, return ""unknown""
+	return ""unknown""",vqa
+000000495043.jpg,What are the workers doing with the concrete?,What are the workers doing with the concrete?,"The workers are shifting the concrete being poured into the forms, which is likely part of the process of constructing the train track foundation or supports.",llava_230892,000000495043,What are the workers doing with the concrete?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	worker_patches = image_patch.find(""workers with concrete"")
+	if len(worker_patches) == 0:
+		return image_patch.simple_query(""What are the workers doing with the concrete?"")
+	worker_patch = worker_patches[0]
+	return worker_patch.simple_query(""What are the workers doing?"")
+",vqa
+000000453918.jpg,Where is the hair cutting taking place?,Where is the hair cutting taking place?,"The hair cutting is taking place in a kitchen setting, with the woman cutting the blonde girl's hair while they are both sitting.",llava_231596,000000453918,Where is the hair cutting taking place?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	hair_cutting_patches = image_patch.find(""hair cutting"")
+	if len(hair_cutting_patches) == 0:
+		# If no hair cutting activity is found, query the image directly with simple_query instead of returning a long string like ""There is no hair cutting.""
+		return image_patch.simple_query(""Where is the hair cutting taking place?"")
+	hair_cutting_patch = hair_cutting_patches[0]
+	hair_cutting_action_location = hair_cutting_patch.simple_query(""Where is this taking place?"")
+	return hair_cutting_action_location",vqa
+000000407607.jpg,Is the person watching television smoking a cigarette?,Is the person watching television smoking a cigarette?,"Yes, the person watching television is smoking a cigarette.",llava_243265,000000407607,Is the person watching television smoking a cigarette?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	person_patches = image_patch.find(""person"")
+	if len(person_patches) == 0:
+		return ""no""
+	for person_patch in person_patches:
+		if person_patch.verify_property(""person"", ""watching television"") and person_patch.verify_property(""person"", ""smoking a cigarette""):
+			return ""yes""
+	return ""no""",vqa
+000000431211.jpg,Are the pumpkins whole or broken?,Are the pumpkins whole or broken?,"One of the pumpkins appears to be broken, while the other pumpkin is whole. Both bears are eating the pumpkins, seemingly undeterred by the pumpkin's condition.",llava_244646,000000431211,Are the pumpkins whole or broken?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	pumpkin_patches = image_patch.find(""pumpkins"")
+	if len(pumpkin_patches) == 0:
+		return image_patch.simple_query(""Are the pumpkins whole or broken?"")
+		
+	# Assess the first pumpkin found (assumes there's one primary subject of image)
+	pumpkin_condition = pumpkin_patches[0].best_text_match([""whole"", ""broken""])
+	return pumpkin_condition",vqa
+000000162557.jpg,Is there an orchestra leader conducting the choir?,Is there an orchestra leader conducting the choir?,"Yes, there is an orchestra leader conducting the choir in the image.",llava_256396,000000162557,Is there an orchestra leader conducting the choir?,"def execute_command(image)->str:
+	image_patch = ImagePatch(image)
+	leader_patches = image_patch.find(""orchestra leader"")
+	choir_patches = image_patch.find(""choir"")
+	
+	if len(leader_patches) == 0 or len(choir_patches) == 0:
+		return ""no""
+	
+	for leader_patch in leader_patches:
+		for choir_patch in choir_patches:
+			if leader_patch.verify_property(""orchestra leader"", ""conducting"") and leader_patch.overlaps_with(choir_patch.left, choir_patch.lower, choir_patch.right, choir_patch.upper):
+				return ""yes""
+	return ""no""",vqa

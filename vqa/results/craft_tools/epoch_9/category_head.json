@@ -1,0 +1,95 @@
+{
+    "0": [
+        "identify_color_of_object_relative_to_another(image_patch: ImagePatch, object_name: str, reference_object_name: str, relative_vertical_position: str, query: str) -> str"
+    ],
+    "1": [
+        "describe_location(image_patch: ImagePatch, location_name: str, query: str) -> str"
+    ],
+    "2": [
+        "count_objects_with_action_and_check_attribute(image_patch: ImagePatch, object_action: str, attribute_query: str) -> str"
+    ],
+    "3": [
+        "describe_object_style(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "4": [
+        "check_interaction_between_objects(image_patch: ImagePatch, object1_name: str, object2_name: str) -> str"
+    ],
+    "5": [
+        "determine_leaning_direction(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "6": [
+        "describe_atmosphere(image_patch: ImagePatch, location: str) -> str"
+    ],
+    "7": [
+        "describe_area_separation(image_patch: ImagePatch, object_name: str, query: str, separation_query: str) -> str"
+    ],
+    "8": [
+        "identify_attribute_of_associated_object(image_patch: ImagePatch, object_name: str, associated_object_name: str, attribute: str, query: str) -> str",
+        "identify_object_attribute(image_patch: ImagePatch, object_name: str, possible_attributes: list) -> str",
+        "identify_object_attribute(image_patch: ImagePatch, object_name: str, attribute: str, query: str) -> str"
+    ],
+    "9": [
+        "identify_attire_of_person(image_patch: ImagePatch, person_type: str, query: str) -> str"
+    ],
+    "10": [
+        "count_objects_interacting_with_two_others(image_patch: ImagePatch, object_name: str, first_interacted_object_name: str, second_interacted_object_name: str) -> str"
+    ],
+    "11": [
+        "identify_interaction_object(image_patch: ImagePatch, subject_name: str, object_list: list, action: str) -> str"
+    ],
+    "12": [
+        "understand_term_in_image_context(image_patch: ImagePatch, term: str) -> str"
+    ],
+    "13": [
+        "count_objects_in_image(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "14": [
+        "check_additional_resources_for_process(image_patch: ImagePatch, process_query: str, resource_query: str) -> str"
+    ],
+    "15": [
+        "extract_object_info(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "16": [
+        "identify_face_protection(image_patch: ImagePatch, object_name: str, number: int, query: str) -> str"
+    ],
+    "17": [
+        "find_object_purpose(image_patch: ImagePatch, object_name: str) -> str",
+        "find_attribute_of_object_or_alternative(image_patch: ImagePatch, object_names: List[str], attribute_query: str) -> str"
+    ],
+    "18": [
+        "identify_role_gender(image_patch: ImagePatch, role_name: str, gender_options: List[str]) -> str"
+    ],
+    "19": [
+        "check_scene_location(image_patch: ImagePatch, location: str) -> str"
+    ],
+    "20": [
+        "check_existence_within_object(image_patch: ImagePatch, object_name: str, container_object_name: str) -> str"
+    ],
+    "21": [
+        "check_existence_of_objects(image_patch: ImagePatch, object_names: List[str]) -> str"
+    ],
+    "22": [
+        "identify_surface_under_object(image_patch: ImagePatch, object_name: str) -> str"
+    ],
+    "23": [
+        "compare_object_in_contexts(image_patch: ImagePatch, object_name: str, context1: str, context2: str) -> str"
+    ],
+    "24": [
+        "find_closest_object(image_patch: ImagePatch, reference_object_name: str, query: str) -> str"
+    ],
+    "25": [
+        "find_specific_details_about_object(image_patch: ImagePatch, object_name: str, query: str) -> str"
+    ],
+    "26": [
+        "check_interaction_and_verify_action(image_patch: ImagePatch, object1_name: str, object2_name: str, object1_action: str, object2_action: str, query: str) -> str"
+    ],
+    "27": [
+        "identify_event_type(image_patch: ImagePatch, event_name: str, possible_types: List[str]) -> str"
+    ],
+    "28": [
+        "check_object_property(image_patch: ImagePatch, object_name: str, property_name: str) -> str"
+    ],
+    "29": [
+        "analyze_impact(object: str, environment: str) -> str"
+    ]
+}
