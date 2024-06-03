@@ -24,7 +24,7 @@ For the other two tasks, `cd tab_and_math` and install the environment by runnin
 # Citation
 Please kindly cite our paper if you find our method or code useful:
 ```
-@article{yuan2023revisiting,
+@article{yuan2023craft,
       title={CRAFT: Customizing LLMs by Creating and Retrieving from Specialized Toolsets}, 
       author={Yuan, Lifan and Chen, Yangyi and Wang, Xingyao and Fung, Yi R. and Peng, Hao and Ji, Heng},
       journal={arXiv preprint arXiv:2309.17428},
